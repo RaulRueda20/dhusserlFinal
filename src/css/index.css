@@ -1,0 +1,735 @@
+body{
+  margin : 0;
+}
+
+a{
+  cursor: pointer;
+}
+
+.footerDiccionario{
+  background-color: rgb(126, 46, 56);
+  width: 100%;
+  height: 64px;
+  box-shadow: 0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12);
+}
+
+.footerAdmin{
+  background-color: #38673d;
+  width: 100%;
+  height: 64px;
+  box-shadow: 0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12);
+}
+
+@font-face {
+    font-family: DHTitle;
+    src: url(../fuentes/CASTELAR.ttf);
+}
+
+h1{
+    font-family: DHTitle !important;
+    font-weight: bolder;
+}
+
+tp, b, strong, p{
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+}
+
+.contenido {
+  min-height: 100vh;
+}
+
+.divisor{
+  margin: 10px 0px !important;
+}
+
+.hidden {
+  display: none;
+}
+
+.loadingBar {
+  position: fixed !important;
+  top: 0;
+  width: 100%;
+  left: 0;
+  z-index: 99999;
+}
+
+.grids{
+  width: 100% !important;
+}
+
+.gridsLogin{
+  width: 100% !important;
+  height: 212px;
+}
+
+.gridsF{
+  width: 100% !important;
+  padding: 0px 5%;
+}
+
+#menuheader div.MuiPaper-root{
+  margin-top: 25px;
+}
+
+.list-container{
+  height: 83.5vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  width: auto;
+  /* padding: 10px 0px; */
+}
+
+.list-containerP{
+  height: 87.5vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  width: auto;
+}
+
+.list-item{
+  max-width: 100%;
+}
+
+.list-item a{
+  padding: 10px 5px;
+}
+
+.list-item b{
+  padding: 20px 10px;
+}
+
+.header-main{
+  box-shadow: 0 !important;
+}
+
+.input-with-icon-textfield{
+  height: 20px;
+}
+
+ul{
+  list-style: none;
+  margin: 0px;
+  padding: 0px !important;
+}
+
+.sideList{
+  border-bottom: 1px lightgray solid;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  color: rgba(80, 80, 80);
+}
+
+.listasAdmin{
+  padding: 10px;
+  border-bottom: 1px lightgray solid;
+  cursor: pointer;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  color: rgba(80, 80, 80);
+}
+
+.listasAdmin:hover{
+  background: rgba(0,0,0,0.18);
+}
+
+option{
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+}
+
+.sideListIzquierdo{
+  border-bottom: 1px lightgray solid;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  color: rgba(80, 80, 80);
+}
+
+option{
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+}
+
+li.sideList:hover{
+  background: rgba(0,0,0,0.1);
+}
+
+li.sideListIzquierdo:hover{
+  background: rgba(90, 163, 77, 0.2);
+}
+
+.pasajeSeleccionado{
+  background: rgba(90, 163, 77, 0.3);
+}
+
+
+/* width */
+::-webkit-scrollbar {
+  width: 7px;
+  opacity: .75;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  /* box-shadow: inset 0 0 5px grey;  */
+  /* border: 1px rgba(0,0,0, .05) solid; */
+  /* border-radius: 10px; */
+  opacity: .75;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgba(20, 10, 10, .3); 
+  /* border-radius: 10px; */
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(20, 10, 10, .5); 
+}
+
+.selected, .selectedP{
+  background: rgba(0,0,0,0.15);
+}
+
+header{
+  height: 7vh;
+  justify-content: center;
+}
+
+a{
+  color: rgba(80, 80, 80);
+  text-decoration: none;
+}
+
+.selectedButton{
+  color: white !important;
+  background : #38673d !important;
+}
+
+.selectedButton:hover{
+  color: white !important;
+  background : #315a35 !important;
+}
+
+.banderas {
+  width: 32px !important;
+  border-radius: 50%;
+  height: 32px !important;
+}
+
+#simple-menu div.MuiPaper-root{
+  box-shadow: none;
+  margin-top: 40px;
+  background-color: rgba(0,0,0,0);
+}
+
+.botonesLista{
+  border-radius: 100%;
+}
+
+.parrafo{
+  margin-block-start: 10px !important;
+  margin-block-end: 10px !important;
+  padding: 0px 10px;
+}
+
+.consultaDePasajes:hover{
+  color: rgb(7, 142, 184);
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.consultaDePasajes{
+  max-height: 40px;
+  display: inline-block;
+}
+
+.pasajesVisitados{
+  color: rgb(100, 30, 30);
+  text-decoration: underline; 
+}
+
+.ulDelMenuDerecho{
+  max-height: 67px;
+  overflow: scroll;
+  margin-top: 10px;
+  padding: 0 16px !important;
+}
+
+.ulDelMenuDerechoPadres{
+  max-height: 67px;
+  margin-top: 10px;
+  background-color: rgba(20,10,10,.0.08);
+  overflow: scroll;
+}
+
+.ulDelMenuDerechoExpresion{
+  min-height: 40px;
+  margin-top: 5px;
+  background-color: rgba(20,10,10,.0.05);
+  overflow: scroll;
+}
+
+.ulDelMenuDerechoHijos{
+  max-height: 45px;
+  margin-top: 5px;
+  background-color: rgba(20,10,10,.0.02);
+  overflow: scroll;
+}
+
+.ulDelMenuDerechoHijosLibres{
+  max-height: 70px;
+  margin-top: 5px;
+  background-color: rgba(20,10,10,.0.02);
+  overflow: scroll;
+}
+
+.ulDelMenuDerechoVerTambien{
+  max-height: 80px;
+  margin-top: 5px;
+  background-color: rgba(20,10,10,.0.02);
+  overflow: scroll;
+}
+
+.ulDelMenuDerechoReferenciasConsultadas{
+  max-height: 130px;
+  margin-top: 5px;
+  background-color: rgba(20,10,10,.0.02);
+  overflow: scroll;
+  /* display: inline-block !important; */
+}
+
+.panelDeDetallePadres{
+  display: block !important;
+  min-height: 40px;
+  background-color: rgba(20,10,10,.08);
+  padding: 5px 0 0 25px !important;
+  border-bottom: 1px rgba(0,0,0,.1) dashed;
+}
+
+.panelDeDetalleExpresion{
+  display: block !important;
+  min-height: 40px;
+  background-color: rgba(20,10,10,.05);
+  padding: 5px 0 0 25px !important;
+  border-bottom: 1px rgba(0,0,0,.1) dashed;
+}
+
+.panelDeDetalleHijos{
+  display: block !important;
+  max-height: 70px;
+  background-color: rgba(20,10,10,.02);
+  padding: 5px 0 0 25px !important;
+  /* border-bottom: 1px rgba(0,0,0,.1) dashed; */
+}
+
+.panelDeDetalleHijosLibres{
+  display: block !important;
+  max-height: 100px;
+  background-color: rgba(20,10,10,.02);
+  padding: 5px 0 0 25px !important;
+  /* border-bottom: 1px rgba(0,0,0,.1) dashed; */
+}
+
+.panelDeDetalleVerTambien{
+  display: block !important;
+  max-height: 90px;
+  height: 100px;
+  background-color: rgba(20,10,10,.02);
+  padding: 5px 0 0 25px !important;
+  border-bottom: 1px rgba(0,0,0,.1) dashed;
+}
+
+
+.panelDeDetalleReferenciasConsultadas{
+  display: block !important;
+  max-height: 133px;
+  background-color: rgba(20,10,10,.02);
+  padding: 5px 0 0 25px !important;
+  border-bottom: 1px rgba(0,0,0,.1) dashed;
+}
+
+.headerMain{
+  height:9vh;
+}
+
+.bordeDeConsultas{
+  border-bottom: 1px;
+  border-bottom-color: lightgrey;
+  border-bottom-style: dotted;
+  padding: 2px;
+}
+
+.iconosIluminados:hover{
+  color: rgb(7, 142, 184);
+  cursor: pointer;
+}
+
+.banderaIzquierda{
+  width: 35px !important;
+  height: 25px !important;
+  opacity: 0.5;
+}
+
+.banderaIzquierda:hover{
+  opacity:1;
+}
+
+.banderaBusquedaPasajes{
+  width: 25px !important;
+  height: 15px !important;
+  opacity: 0.5;
+}
+
+.banderaBusquedaPasajes:hover{
+  opacity:1;
+}
+
+.banderaPasajes{
+  width: 30px !important;
+  height: 20px !important;
+  opacity: 0.5;
+}
+
+.banderaPasajes:hover{
+  opacity:1;
+}
+
+.bordoDelMenuDerecho{
+  border-left:1px solid lightgrey;
+  background: rgba(0,0,0,0.05);
+}
+
+.menuSimple{
+  padding: 0 0 0 0 !important;
+  opacity:0.7;
+  background-color: transparent !important;
+}
+
+.menuSimple:hover{
+  opacity:1;
+}
+
+.links:hover{
+  color: rgb(7, 142, 184);
+  cursor: pointer;
+}
+
+a:hover{
+  text-decoration: underline;
+}
+
+.links{
+  text-decoration: underline;
+}
+
+.ulDelPanelDeExpresiones{
+  padding: 10px 20px !important;
+  border-top: solid lightgrey;
+  background-color: rgb(255,255,255);
+  border-width: 1px;
+}
+
+.listaIzquierda{
+  height: calc(100vh - 9vh - 80px) !important;
+  overflow-y: scroll; 
+  overflow-x: hidden;
+  width: auto;
+  background-color: rgb(245,245,245);
+  margin-right: 10px !important;
+}
+
+
+.panelesPrincipales{
+  background-color: rgba(0,0,0,.1) !important;
+}
+
+.tagsMenuDerecho{
+  margin:0px !important;
+}
+
+.contenedorMenuDerecho{
+  max-height: calc(100vh - 150px);
+  overflow: auto;
+}
+
+.contenedorMenuDerechoEscondido{
+  max-height: calc(100vh - 488px);
+  overflow: auto;
+}
+
+.contenedorMenuBajo{
+  max-height: 32vh;
+  width: 100%;
+  overflow: auto;
+}
+
+.panelPrincipal{
+  border-bottom: 1px rgba(0,0,0,.18) solid !important;
+}
+
+/* .MuiButtonBase-root{
+  background-color: transparent !important;
+} */
+
+.pasajesRenderizados{
+  padding: 15px 15px 15px 15px;
+  height: calc(91vh - 182px) !important;
+  overflow: auto;
+  border-right: 1px double lightgrey;
+  border-left: 1px double lightgrey;
+  border-top: 1px double lightgrey;
+}
+
+hr{
+  margin-top:1rem;
+  margin-bottom: 1rem;
+  border: 0;
+  border-top: 1px solid rgba(0,0,0,.1)
+}
+
+.subtituloDescarga{
+  background-color: rgba(0,0,0,.1)
+}
+
+.referencia {
+  margin: 10px 0px;
+}
+
+.botonPaginador{
+  width: 40px;
+  vertical-align: bottom;
+  padding: 10px 0px;
+  display: inline-block;
+  text-align: center;
+  border: 1px lightgray solid;
+}
+
+.botonPaginador:hover{
+  background: rgba(90, 163, 77, 0.2);
+  text-decoration: none;
+  font-weight: 500;
+}
+.IconoIzquierdo{
+  position: absolute !important;
+  left:24.3%!important;
+  top:60%;
+  z-index: 10;
+}
+
+.botonIzquierdoEscondido{
+  position: fixed !important;
+  left:-10px !important;
+  top:60%;
+}
+
+.IconoDerecho{
+  position: absolute !important;
+  right:23.8%;
+  top:60%;
+  z-index: 10;
+}
+
+.botonDerechoEscondido{
+  position: fixed !important;
+  right:-16px !important;
+  top:60%;
+}
+
+.iconoAbajo{
+  position: absolute !important;
+  left:  calc(50% - 30px) !important;
+  top:59vh;
+}
+
+.iconoAbajoEscondido{
+  position: fixed !important;
+  bottom: -5px !important;
+  left: 48%
+}
+
+.menuAbajoEscondido{
+  display: none;
+}
+
+.iconoArriba{
+  position: absolute !important;
+  left: calc(50% - 30px) !important;
+  bottom: 0px;
+}
+
+.panelIzquierdoEscondido{
+  display: none;
+}
+
+.panelDerechoEscondido{
+  display: none;
+}
+
+.listaVistaBusqueda{
+  display: none;
+  border-bottom: 1px lightgray solid;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  color: rgba(80, 80, 80);
+}
+
+.contenedorBusqueda{
+  background-color: rgb(230,230,230);
+  margin: 10px 20px;
+  max-height:74.5vh;
+  overflow-y:scroll;
+  text-align: start;
+}
+
+/* .ulBusqueda{
+  height: calc(100vh - 9vh - 31px) !important;
+} */
+
+.tituloResultados{
+  margin: 10px !important;
+}
+
+.liBusqueda{
+  border-bottom: dashed lightgray 1px;
+  padding: 20px !important;
+}
+
+.liBusqueda:hover{
+  color: rgb(7, 142, 184);
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.pasajesRenderizadosBusqueda{
+  padding: 15px 15px 15px 15px;
+  overflow: auto;
+  border-right: 1px double lightgrey;
+  border-left: 1px double lightgrey;
+  border-top: 1px double lightgrey;
+}
+
+.pasajesRenderizadosVistaBusqueda{
+  border-top: solid lightgray 1px;
+}
+
+.jerarquiaBusquedaIzquierda{
+  border-right: dashed lightgray 1px;
+  padding-left: 20px !important;
+  padding-top: 20px !important;
+}
+
+.jerarquiaBusquedaDerecha{
+  padding-left: 20px !important;
+  padding-top: 20px !important;
+}
+
+.consultaDePasajesB{
+  max-height: 40px;
+  padding: 4px 0 0 16px !important;
+  overflow: auto;
+}
+
+.consultaDePasajesB:hover{
+  color: rgb(7, 142, 184);
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.ulDeBusqueda{
+  background-color: rgba(20,10,10,.0.08);
+  align-items: flex-start;
+}
+
+.ulDeBusquedaVerTambien{
+  background-color: rgba(20,10,10,.0.08);
+  overflow: scroll;
+}
+
+.liExpresionesRelacionadas{
+  border-bottom: dashed lightgray 1px;
+  padding: 2px !important;
+}
+
+.liExpresionesRelacionadas:hover{
+  color: rgb(7, 142, 184);
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.pasajesRenderizadosBusquedaPorReferencia{
+  padding: 15px 15px 15px 15px;
+  overflow: auto;
+  border-right: 1px double lightgrey;
+  border-left: 1px double lightgrey;
+  border-top: 1px double lightgrey;
+}
+
+.ulExpresionesRelacionadas{
+  padding-left: 30px !important;
+}
+
+.case{
+  opacity: .4;
+  padding: 0 !important;
+}
+
+.caseSeleccionado{
+  opacity: 1;
+}
+
+.resaltador{
+  background: yellow;
+}
+
+.contenidoPasajes{
+  display:none
+}
+
+.menuPasajeEscondido{
+  height: 24vh;
+  overflow-y: scroll;
+}
+
+
+.listaIzquierdaEscondida{
+  height: 55vh;
+  overflow-y: scroll; 
+  overflow-x: hidden;
+  width: auto;
+  background-color: rgb(245,245,245);
+  margin-right: 10px !important;
+}
+
+.iconoJerarquiaPasajes{
+  font-size: 17px !important;
+}
+
+.iconosIluminadosPasaje{
+  margin-bottom: 3px;
+}
+
+.iconosIluminadosPasaje:hover{
+  color: rgb(7, 142, 184);
+  cursor: pointer;
+}
+
+.acercaDe{
+  margin:50px;
+}
+
+.guia{
+  margin:50px;
+}
+
+.lupita{
+  padding: 0 !important;
+}
+
+.busquedaEnExpresiones{
+  width: -webkit-fill-available;
+}
+
+.iconosAlineado{
+  text-align: center !important;
+}
+
+.tipoDeLetra{
+  font-family: Arial, Helvetica, sans-serif;
+  font-style: normal;
+}
