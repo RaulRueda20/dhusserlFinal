@@ -41,17 +41,6 @@ export default function ListaExpresiones(props){
   const [panelesAbiertos,setPanelesAbiertos] = React.useState([]);
   const [idEncontrado, setIdEncontrado] = React.useState("")
 
-//   const idDeLaExpresionBuscada = expresion =>{
-//     for(var i in expresion){
-//       if(expresion[i].id == props.cambioId){
-//         setIdEncontrado(expresion[i].expresion)
-//       }
-//   }
-// }
-
-// React.useEffect(()=>{
-//   idDeLaExpresionBuscada(props.expresionesGlobales)
-// })
 
   function clickHandleVista(event){
     if(!props.flagDeBusqueda){
@@ -82,8 +71,19 @@ export default function ListaExpresiones(props){
       setPanelesAbiertos(expresionesAbiertas)
   }
   
+  const handleScroll = e => {
+    var element = e.target
+    // console.log('Element', element)
+    if (element.scrollHeight - element.scrollTop === element.clientHeight) {
+      console.log("Entre")
+      props.setChunkList(props.expresiones.slice(0, props.chunkList.length + 20))
+      props.setChunkListGlobal(props.expresionesGlobales.slice(0,props.chunkListGlobal.length + 20))
+    }
+  }
+
+
   return (
-    <div>
+    <div id={"contendor"} onScroll={handleScroll}>
       {props.state.checkedA == false ? 
       <div className={classNames([{[classes.listContainer2] : props.menuEscondido == true}, classes.listContainer])}>
         <ul>

@@ -49,8 +49,18 @@ export default function ListaIzquierdaExpresiones(props){
     }, 5000)
   },[props.idExpresion, props.expresionesGlobales])
 
+  const handleScroll = e => {
+    var element = e.target
+    // console.log('Element', element)
+    if (element.scrollHeight - element.scrollTop === element.clientHeight) {
+      console.log("Entre")
+      props.setChunkList(props.expresiones.slice(0, props.chunkList.length + 20))
+      props.setChunkListGlobal(props.expresionesGlobales.slice(0,props.chunkListGlobal.length + 20))
+    }
+  }
+
   return (
-    <div className="listaIzquierda">
+    <div className="listaIzquierda" onScroll={handleScroll}>
       {props.state.checkedA == false ?
         <ul>
           {props.chunkListGlobal.map((expresion, index)=>{

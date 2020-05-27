@@ -115,10 +115,6 @@ function Pasaje(props){
     } 
   }
   
-  const Chunk = (expresiones) =>{
-    setChunkList(expresiones.slice(0,50))
-  }
-
   React.useEffect(()=>{
     setLoading(true)
     var idDeExpresion=props.match.params.expresion;
@@ -128,8 +124,8 @@ function Pasaje(props){
     if(pasajeService != service){
       setPasajeService(service)
       webService(service, "GET", {}, (dataE) => {
-        Chunk(fixReferencias(dataE.data.response))
         setExpresiones(fixReferencias(dataE.data.response))
+        setChunkList(fixReferencias(dataE.data.response).slice(0,50))
         if(!flagDeBusqueda){
           setExpresionesGlobales(fixReferencias(dataE.data.response))
         }
@@ -209,7 +205,7 @@ function Pasaje(props){
                setIdExpresion={setIdExpresion} language={props.language} setLanguage={props.setLanguage} referenciaSeleccionada={referenciaSeleccionada}
                setReferenciaSeleccionada={setReferenciaSeleccionada} setExpanded1={setExpanded1} setExpanded2={setExpanded2} match={props.match} setFlagLetraMain={props.setFlagLetraMain}
                setPosicionReferenciasConsultadas={setPosicionReferenciasConsultadas} expresionesGlobales={expresionesGlobales} state={state} chunkList={chunkList}
-               chunkListGlobal={chunkListGlobal}/>
+               chunkListGlobal={chunkListGlobal} setChunkList={setChunkList} setChunkListGlobal={setChunkListGlobal}/>
            </Hidden>
            {openHidden == true ?
              <div>

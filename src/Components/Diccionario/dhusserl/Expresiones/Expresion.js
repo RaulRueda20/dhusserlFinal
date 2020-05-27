@@ -92,18 +92,14 @@ function Expresion(props){
     }
     return expresiones
   }
-
-  const Chunk = (expresiones) =>{
-    setChunkList(expresiones.slice(0,50))
-  }
   
   React.useEffect(()=>{
     setLoading(true)
     var service = "/expresiones/" + language + "/" + props.letraMain
     webService(service, "GET", {}, (data) => {
       // console.log("respuesta de expresiones", data.data.response)
-      Chunk(fixReferencias(data.data.response))
       setExpresiones(fixReferencias(data.data.response))
+      setChunkList(fixReferencias(data.data.response).slice(0,50))
       if(!flagDeBusqueda){
         setExpresionesGlobales(fixReferencias(data.data.response))
         if(idExpresion === ''){
@@ -147,7 +143,7 @@ function Expresion(props){
             expresionSeleccionada={expresionSeleccionada} setExpresionSeleccionada={setExpresionSeleccionada}
             getJerarquia={getJerarquia} menuEscondido={menuEscondido} state={state} expresionesGlobales={expresionesGlobales}
             setFlagLetraMain={props.setFlagLetraMain} setOpenModalN={setOpenModalN} flagDeBusqueda={flagDeBusqueda}
-            chunkList={chunkList} chunkListGlobal={chunkListGlobal}
+            chunkList={chunkList} chunkListGlobal={chunkListGlobal} setChunkList={setChunkList} setChunkListGlobal={setChunkListGlobal}
             />
         </Grid>
         <Hidden smUp>
@@ -168,7 +164,7 @@ function Expresion(props){
             busqueda={busqueda} setBusqueda={setBusqueda} setLoading={setLoading} expresionesGlobales={expresionesGlobales} 
             setExpresionesGlobales={setExpresionesGlobales} setModalDebusquedas={setModalDebusquedas} 
             setModalCaracteresInvalidos={setModalCaracteresInvalidos} setModalNumeros={setModalNumeros} setFlagDeBusqueda={setFlagDeBusqueda}
-            idExpresion={idExpresion} setIdExpresion={setIdExpresion} setChunkListGlobal={setChunkListGlobal}
+            idExpresion={idExpresion} setIdExpresion={setIdExpresion}  setChunkListGlobal={setChunkListGlobal}
             />
             <MenuDerecho {...props} idExpresion={idExpresion} setIdExpresion={setIdExpresion} language={language}
               expresiones={expresiones} expresionSeleccionada={expresionSeleccionada} 
