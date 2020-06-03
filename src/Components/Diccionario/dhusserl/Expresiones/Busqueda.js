@@ -55,7 +55,6 @@ function Busqueda(props){
         props.setLoading(true)
         var servicebe = "/referencias/busquedaExpresion"
         webService(servicebe, "POST", {parametro:props.busqueda,case:insensitiveCase}, (data) => {
-          // console.log("busqueda",data.data.response)
           ChunkB(data.data.response)
           props.setExpresionesGlobales(data.data.response)
           props.setLoading(false)
@@ -66,10 +65,11 @@ function Busqueda(props){
       props.expresiones.map(expresion=>{
         var expresionNombre=expresion.expresion +  expresion.traduccion +  expresion.id
         var expresionEncontrada= expresionNombre.indexOf(props.busqueda)
-        // console.log(document.getElementById("expresion"+expresion.id))
-        document.getElementById("expresion"+expresion.id).classList.remove("hiddenE")
-        if(expresionEncontrada == -1){
-          document.getElementById("expresion"+expresion.id).className += " hiddenE";
+        if(document.getElementById("expresion"+expresion.id)!=null){
+          document.getElementById("expresion"+expresion.id).classList.remove("hiddenE")
+          if(expresionEncontrada == -1){
+            document.getElementById("expresion"+expresion.id).className += " hiddenE";
+          }
         }
       })
       props.setLoading(false)

@@ -65,7 +65,7 @@ function ListaBusqueda(props){
                                 className={classNames([{"pasajeSeleccionado":props.posicionPasaje==index},"liBusqueda"])}
                             >
                                 <Typography>
-                                    {expresionEncontradaPorExpresion.term_de+"  /  "+expresionEncontradaPorExpresion.term_es}
+                                    {expresionEncontradaPorExpresion.expresion+"  /  "+expresionEncontradaPorExpresion.traduccion}
                                 </Typography>
                             </li>
                         ))}

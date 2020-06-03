@@ -92,18 +92,18 @@ function Pasaje(props){
       { referenciaSeleccionada != null && referencias.length > 0 ? 
       <div style={{textAlign: 'center'}}>
         <Tooltip title={posicion==0 ? tooltipPaginador(props.lang) : referencias[0].ref_original}>
-          <Link to={posicion==0 ? null : `${props.match.path.slice(0,20)}/pasaje/${props.expresionId}/${referencias[0].refid}`} 
+          <Link to={posicion==0 ? "#" : `${props.match.path.slice(0,20)}/pasaje/${props.expresionId}/${referencias[0].refid}`} 
             className="botonPaginador"><FirstPage fontSize="small"/></Link>
         </Tooltip>
         <Tooltip title={posicion<=0 ? tooltipPaginador(props.lang) : referencias[posicion-1].ref_original}>
-          <Link to={posicion<=0 ? null : `${props.match.path.slice(0,20)}/pasaje/${props.expresionId}/${referencias[posicion-1].refid}`}
+          <Link to={posicion<=0 ? "#" : `${props.match.path.slice(0,20)}/pasaje/${props.expresionId}/${referencias[posicion-1].refid}`}
             className="botonPaginador"><Back fontSize="small"/></Link>
         </Tooltip>
 
         {casillas.map((referencia, index) => {
           return (
             (
-              <Tooltip title={referencias[index].ref_original}>
+              <Tooltip title={referencias[index].ref_original} key={props.expresionId+"-"+index}>
                 <Link to={`${props.match.path.slice(0,20)}/pasaje/${props.expresionId}/${referencia.refid}`} className={classNames(["botonPaginador", {"pasajeSeleccionado": props.referenciaSeleccionada.refid == referencia.refid}])} style={{padding: "13px 0px"}}><span>{referencia.index+1}</span></Link>
               </Tooltip>
             )
@@ -111,10 +111,10 @@ function Pasaje(props){
         }
 
         <Tooltip title={posicion == referencias.length -1 || referencias.length==1 ? tooltipPaginador(props.lang) : referencias[posicion+1].ref_original}>
-          <Link to={posicion >= referencias.length -1 ? null : `${props.match.path.slice(0,20)}/pasaje/${props.expresionId}/${referencias[posicion+1].refid}`} onClick={handleForward}><span className="botonPaginador"><Next fontSize="small"/></span></Link>
+          <Link to={posicion >= referencias.length -1 ? "#" : `${props.match.path.slice(0,20)}/pasaje/${props.expresionId}/${referencias[posicion+1].refid}`} onClick={handleForward}><span className="botonPaginador"><Next fontSize="small"/></span></Link>
         </Tooltip>
         <Tooltip title={posicion == referencias.length - 1 ? tooltipPaginador(props.lang) : referencias[referencias.length -1].ref_original}>
-          <Link to={posicion == referencias.length - 1 ? null : `${props.match.path.slice(0,20)}/pasaje/${props.expresionId}/${referencias[referencias.length -1].refid}`}><span className="botonPaginador"><LastPage fontSize="small"/></span></Link>
+          <Link to={posicion == referencias.length - 1 ? "#" : `${props.match.path.slice(0,20)}/pasaje/${props.expresionId}/${referencias[referencias.length -1].refid}`}><span className="botonPaginador"><LastPage fontSize="small"/></span></Link>
         </Tooltip>
       </div> : null}
       <Typography variant="h5">Hay {referencias.length} {referencias.length > 1 ? "pasajes" : "pasaje"} en total.</Typography>

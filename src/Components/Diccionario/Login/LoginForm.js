@@ -37,10 +37,7 @@ var setStore = (user, pass) => {
   var newSession = {"user" : user, "password" : pass}
   newSession['ultimasVisitadas'] = []
   newSession["ultimaVisitada"] = "alfabeto"
-  console.log(newSession)
   localStore.setObjects("sesion", newSession)
-  // document.getElementById("toMain").click()
-  console.log("inicio",localStore.getObjects("sesion"))
 }
 
 function LoginForm (props){
@@ -96,7 +93,7 @@ function LoginForm (props){
           <Grid item xs={12} sm={8} lg={7} className="grids">
             <TextField
               label={contra(props.lang)}
-              id="custom-css-outlined-input"
+              id={"custom-css-outlined-input" + 1}
               value={password}
               onChange={e => setPassword(e.target.value)}
               className={classes.TextField2}

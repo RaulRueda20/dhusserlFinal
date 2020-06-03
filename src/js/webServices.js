@@ -17,10 +17,8 @@ const webService = (service, method, params, next) => {
       "Content-Type" : 'application/json'
     }
   }).then((response) => {
-    // console.log(response)
     return next(response)
   }).catch(error => {
-    console.log(error)
     alert ("Ha habido un error"+error.status+" : "+error.statusText)
   })
 }
@@ -39,10 +37,8 @@ const adminService = (service, method, params, next) => {
       "Content-Type" : 'application/json'
     }
   }).then((response) => {
-    // console.log(response)
     next(response)
   }).catch(error => {
-    console.log(error)
     alert ("Ha habido un error"+error.status+" : "+error.statusText)
   })
 }
@@ -64,10 +60,8 @@ const loginService = (service, method, params, next) => {
     },
     data: params
   }).then((response) => {
-    console.log("respuesta",response)
     next(response)
   }).catch(error => {
-    console.log(error)
     alert ("Ha habido un error"+error.status+" : "+error.statusText)
   })
 }

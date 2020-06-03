@@ -70,7 +70,6 @@ function MenuDerecho(props){
     if (props.expresionSeleccionada.id!=""){
       var service = "/vertambien/" + props.expresionSeleccionada.id
       webService(service, "GET", {}, data => {
-        console.log("VT", data.data.response)
         setListaVerTambien(data.data.response)
         webService(("/expresiones/"+props.language+"/hijosList/"+props.expresionSeleccionada.id),"GET", {}, (data) => {
           setHijos(data.data.response)

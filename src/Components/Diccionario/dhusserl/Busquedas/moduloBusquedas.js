@@ -42,7 +42,6 @@ function ModuloBusquedas(props){
 
     function abrirLista(){
         setAbierto(!abierto)
-        console.log("abierto",abierto)
     }
 
     return(
@@ -74,9 +73,9 @@ function ModuloBusquedas(props){
                 expresionesEncontradas.length < 1 ? null :
                 <Grid item xs={abierto ? false : 11} sm={abierto ? 6:11} md={abierto ? 8:11}>
                     {tipoBusquedaRealizada == "Referencia" ?
-                        <ResultadoBusquedaReferencia {... props} pasajeSeleccionado={expresionesEncontradas[posicionPasaje]} idPasaje={idPasaje} busqueda={busqueda}/>
+                        <ResultadoBusquedaReferencia history={props.history} match={props.match} pasajeSeleccionado={expresionesEncontradas[posicionPasaje]} idPasaje={idPasaje} busqueda={busqueda}/>
                     :
-                        <ResultadoBusquedaExpresion {...props} expresionSeleccionada={expresionesEncontradas[posicionPasaje]} 
+                        <ResultadoBusquedaExpresion history={props.history} match={props.match} expresionSeleccionada={expresionesEncontradas[posicionPasaje]} 
                         idPasaje={idPasaje} setIdPasaje={setIdPasaje} abierto={abierto} setAbierto={setAbierto} busqueda={busqueda}/>
                     }
                 </Grid>

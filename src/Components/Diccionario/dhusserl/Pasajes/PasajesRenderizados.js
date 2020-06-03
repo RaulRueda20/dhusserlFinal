@@ -84,7 +84,7 @@ function PasajesRenderizados(props){
     return (
         <div>
             {props.cerrado ? 
-            <Grid container xs={12}>
+            <Grid container>
                 <Grid container xs={6}>
                     <Grid item xs={2} sm={2} md={1} lg={1} className={classes.botonDescargas}>
                     <Tooltip title={descarga(props.lang)}>

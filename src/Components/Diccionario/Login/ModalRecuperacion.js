@@ -57,7 +57,6 @@ function ModalRecuperacion(props){
         var email = correoRecuperado
         var service = "/login/recoverPassword/es?email=" + email
         loginService(service, "GET", {}, (data) => {
-            console.log("data en modal",data)
             props.setLoading(false)
             if(data.status==200){
                 props.setSnackbar({open:true,variant:"success",message:exitoBody(props.lang)})
@@ -112,7 +111,7 @@ function ModalRecuperacion(props){
                                     className={classes.campoDeTexto}
                                 />
                             </Grid>
-                            <Grid item={6} className={classes.gridDelBoton}>
+                            <Grid item xs={6} className={classes.gridDelBoton}>
                                 <Button
                                     variant="contained"
                                     color="primary"

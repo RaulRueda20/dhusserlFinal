@@ -6,10 +6,11 @@ import PanelExpresionIzquierdo from './PanelExpresionIzquierdo';
 
 //Other req
 import * as localStore from '../../../../js/localStore';
-// import { setFlagsFromString } from 'v8';
 
 export default function ListaIzquierdaExpresiones(props){
   const [panelesAbiertos,setPanelesAbiertos] = React.useState([]);
+
+
 
   function clickHandleVista(event){
     var expresionClickeada=event.currentTarget.id.split("-")[0];
@@ -42,18 +43,31 @@ export default function ListaIzquierdaExpresiones(props){
   }
 
   React.useEffect(()=>{
+    if(document.getElementById("listaIzquierda").firstChild != null) document.getElementById("listaIzquierda").firstChild.scrollIntoView()
+    var coincidencia = null
+    for(var i in props.expresiones){
+      if(props.expresiones[i].id == props.idExpresion){
+        coincidencia = i
+      }
+    }
+    if(coincidencia){
+      props.setChunkList(props.expresiones.slice(0, parseInt(coincidencia) + 30))
+      setTimeout(() => {
+        if(document.getElementById("VP" + props.idExpresion) != null){
+          document.getElementById("VP" + props.idExpresion).scrollIntoView()
+        }
+      }, 5000)
+    }
     setTimeout(() => {
       if(document.getElementById("VP" + props.idExpresion) != null){
         document.getElementById("VP" + props.idExpresion).scrollIntoView()
       }
     }, 5000)
-  },[props.idExpresion, props.expresionesGlobales])
+  },[props.idExpresion, props.expresionesGlobales, props.expresiones])
 
   const handleScroll = e => {
     var element = e.target
-    // console.log('Element', element)
     if (element.scrollHeight - element.scrollTop === element.clientHeight) {
-      console.log("Entre")
       props.setChunkList(props.expresiones.slice(0, props.chunkList.length + 20))
       props.setChunkListGlobal(props.expresionesGlobales.slice(0,props.chunkListGlobal.length + 20))
     }
@@ -62,7 +76,7 @@ export default function ListaIzquierdaExpresiones(props){
   return (
     <div className="listaIzquierda" onScroll={handleScroll}>
       {props.state.checkedA == false ?
-        <ul>
+        <ul id="listaIzquierda">
           {props.chunkListGlobal.map((expresion, index)=>{
             return(
             <PanelExpresionIzquierdo {...props} key={expresion.id+"-"+index} expresion={expresion} handleClickPanel={handleClickPanel} clickHandleVista={clickHandleVista} index={index}
@@ -71,7 +85,7 @@ export default function ListaIzquierdaExpresiones(props){
           )})}
         </ul>
       :
-        <ul>
+        <ul id="listaIzquierda">
         {props.chunkList.map((expresion, index)=>{
           return(<PanelExpresionIzquierdo {...props} key={expresion.id+"-"+index} expresion={expresion} handleClickPanel={handleClickPanel} clickHandleVista={clickHandleVista} index={index}
           getJerarquia={props.getJerarquia} idReferencias={props.idReferencias} setIdReferencias={props.setIdReferencias} idExpresion={props.idExpresion} open={props.idExpresion == expresion.id}

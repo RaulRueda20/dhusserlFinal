@@ -79,7 +79,7 @@ export default function PanelExpresion(props){
             >
                 <Grid container justify="center" alignItems="center">
                     <Grid item xs={10} id={props.index} onClick={props.clickHandleVista}>
-                        <Link to={props.expresion.referencias[0].refid==null ? null :`${props.match.path.slice(0,20)}/pasaje/${props.expresion.id}/${props.expresion.referencias[0].refid}`} onClick={handleModal}>
+                        <Link to={props.expresion.referencias[0].refid==null ? "#" :`${props.match.path.slice(0,20)}/pasaje/${props.expresion.id}/${props.expresion.referencias[0].refid}`} onClick={handleModal}>
                             <p className="parrafo">{props.expresion.expresion + '//' + props.expresion.traduccion}</p>
                         </Link>
                     </Grid>

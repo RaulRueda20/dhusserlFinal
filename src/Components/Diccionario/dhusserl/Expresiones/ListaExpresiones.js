@@ -39,8 +39,6 @@ export default function ListaExpresiones(props){
   const classes = useStyles();
   const theme = useTheme();
   const [panelesAbiertos,setPanelesAbiertos] = React.useState([]);
-  const [idEncontrado, setIdEncontrado] = React.useState("")
-
 
   function clickHandleVista(event){
     if(!props.flagDeBusqueda){
@@ -61,7 +59,6 @@ export default function ListaExpresiones(props){
 
   function handleClickPanel(event){
     var expresionesAbiertas=panelesAbiertos;
-    var referenciasPrincipales= event.currentTarget.value;
     props.setIdExpresion(event.currentTarget.id)
     if(expresionesAbiertas.indexOf(event.currentTarget.id)>-1){
       expresionesAbiertas.splice(expresionesAbiertas.indexOf(event.currentTarget.id),1)
@@ -73,20 +70,17 @@ export default function ListaExpresiones(props){
   
   const handleScroll = e => {
     var element = e.target
-    // console.log('Element', element)
     if (element.scrollHeight - element.scrollTop === element.clientHeight) {
-      console.log("Entre")
       props.setChunkList(props.expresiones.slice(0, props.chunkList.length + 20))
       props.setChunkListGlobal(props.expresionesGlobales.slice(0,props.chunkListGlobal.length + 20))
     }
   }
 
-
   return (
     <div id={"contendor"} onScroll={handleScroll}>
       {props.state.checkedA == false ? 
       <div className={classNames([{[classes.listContainer2] : props.menuEscondido == true}, classes.listContainer])}>
-        <ul>
+        <ul id="listaIzquierda">
           {props.chunkListGlobal.map((expresion, index)=>(
             <PanelExpresion {...props} key={expresion.id+"-"+index} expresion={expresion} handleClickPanel={handleClickPanel} clickHandleVista={clickHandleVista} index={index}
             getJerarquia={props.getJerarquia} idReferencias={props.idReferencias} setIdReferencias={props.setIdReferencias} expresionSeleccionada={props.expresionSeleccionada}
@@ -95,9 +89,9 @@ export default function ListaExpresiones(props){
         </ul>
       </div> :
       <div className={classNames([{[classes.listContainer2] : props.menuEscondido == true}, classes.listContainer])}>
-        <ul>
+        <ul id="listaIzquierda">
           {props.chunkList.map((expresion, index)=>(
-            <PanelExpresion {...props} key={expresion.id+"-"+index} expresion={expresion} handleClickPanel={handleClickPanel} clickHandleVista={clickHandleVista} index={index}
+            <PanelExpresion match={props.match} key={expresion.id+"-"+index} expresion={expresion} handleClickPanel={handleClickPanel} clickHandleVista={clickHandleVista} index={index}
             getJerarquia={props.getJerarquia} idReferencias={props.idReferencias} setIdReferencias={props.setIdReferencias} expresionSeleccionada={props.expresionSeleccionada}
             setFlagLetraMain={props.setFlagLetraMain} setOpenModalN={props.setOpenModalN}/> 
           ))}

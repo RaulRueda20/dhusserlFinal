@@ -95,9 +95,9 @@ function Expresion(props){
   
   React.useEffect(()=>{
     setLoading(true)
+    if(document.getElementById("listaIzquierda").firstChild != null) document.getElementById("listaIzquierda").firstChild.scrollIntoView()
     var service = "/expresiones/" + language + "/" + props.letraMain
     webService(service, "GET", {}, (data) => {
-      // console.log("respuesta de expresiones", data.data.response)
       setExpresiones(fixReferencias(data.data.response))
       setChunkList(fixReferencias(data.data.response).slice(0,50))
       if(!flagDeBusqueda){
@@ -111,9 +111,6 @@ function Expresion(props){
     if(localStore.getObjects("bienvenida")==false){
       setOpenModal(true)
       localStore.setObjects("bienvenida",true)
-    }
-    if(props.flagLetraMain){
-      setState({checkedA:true})
     }
   }, [props.letraMain, language, flagDeBusqueda, props.flagLetraMain])
 
@@ -131,18 +128,19 @@ function Expresion(props){
     <div>
       <Grid container>
         <Grid item xs={12} >
-            <ListaLetras letraMain={props.letraMain} setLetraMain={props.setLetraMain} flagLetraMain={props.flagLetraMain} setFlagLetraMain={props.setFlagLetraMain}/>
+            <ListaLetras letraMain={props.letraMain} setLetraMain={props.setLetraMain} flagLetraMain={props.flagLetraMain} setFlagLetraMain={props.setFlagLetraMain}
+            setState={setState}/>
         </Grid>
         <Grid item xs={2} sm={1} md={1} xl={1} align="center" style={{borderRight:"1px rgb(240, 240, 240) solid"}}>
             <LetraIndice letraMain={props.letraMain} state={state}/>
             <BanderaButon language={language} setLanguage={setLanguage} lang={props.lang} state={state}/>
         </Grid>
          <Grid item xs={10} sm={8} md={8} xl={8} aling='center' >
-            <ListaExpresiones {...props} expresiones={expresiones} setExpresiones={setExpresiones} idExpresion={idExpresion} 
+            <ListaExpresiones match={props.match} expresiones={expresiones} setExpresiones={setExpresiones} idExpresion={idExpresion} 
             setIdExpresion={setIdExpresion} language={props.language} setLanguage={props.setLanguage} 
             expresionSeleccionada={expresionSeleccionada} setExpresionSeleccionada={setExpresionSeleccionada}
             getJerarquia={getJerarquia} menuEscondido={menuEscondido} state={state} expresionesGlobales={expresionesGlobales}
-            setFlagLetraMain={props.setFlagLetraMain} setOpenModalN={setOpenModalN} flagDeBusqueda={flagDeBusqueda}
+            setFlagLetraMain={props.setFlagLetraMain} setOpenModalN={setOpenModalN} flagDeBusqueda={flagDeBusqueda} letraMain={props.letraMain}
             chunkList={chunkList} chunkListGlobal={chunkListGlobal} setChunkList={setChunkList} setChunkListGlobal={setChunkListGlobal}
             />
         </Grid>

@@ -31,10 +31,6 @@ function SelectorBusqueda(props){
                 fullWidth
                 value={props.tipoBusqueda}
                 onChange={handleChange}
-                // inputProps={{
-                //     name: '',
-                //     id: 'usuario-simple',
-                // }}
             >
                 <MenuItem value="Expresion">
                     {dentroExpresion(props.lang)}

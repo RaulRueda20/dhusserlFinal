@@ -49,7 +49,6 @@ function ResultadoBusquedaExpresion(props){
     const [lang, setLang] = React.useState("al");
 
     React.useEffect(() => { 
-        // console.log(props.expresionSeleccionada)
         if(props.idPasaje==""){
             var service = "/vertambien/" + props.expresionSeleccionada.term_id
             webService(service, "GET", {}, data => {
@@ -80,12 +79,9 @@ function ResultadoBusquedaExpresion(props){
     }, [props.idPasaje, lang, props.expresionSeleccionada])
 
     function resaltarBusqueda(string,separador){
-        console.log("separador", separador)
         var split = string.split(separador)
         var Split = split.join("<span class='resaltador'>" + separador + "</span>")
-        console.log("split", Split)
         var resultado = Split
-        // console.log("resultado", resultado?)
         return resultado
     }
 
@@ -94,7 +90,7 @@ function ResultadoBusquedaExpresion(props){
       }
     
     const clickChangeLanALVB=()=>{
-    setLang("al");
+        setLang("al");
     }
 
     function htmlPasajeOriginal(){
@@ -136,7 +132,6 @@ function ResultadoBusquedaExpresion(props){
         var service = "/referencias/obtieneReferencias/" + idExpresion
         webService(service, "GET", {}, data => {
             var referencias = fixReferenciasConsultadas(data.data.response)
-            console.log("referencias", referencias)
             if(localStore.getObjects("referenciasConsultadas")==false){
                 var referenciasConsultadas = []
                 referenciasConsultadas.push(referencias)
@@ -153,7 +148,7 @@ function ResultadoBusquedaExpresion(props){
         <div className={classes.contenedorPrincipal}>
             <Grid container alignItems="center" alignContent="center">
                 <Grid item md={11} xs={8}>
-                <Typography variant="h2" className={classes.typosTitulos}>{props.expresionSeleccionada.term_de+"  /  "+props.expresionSeleccionada.term_es}</Typography>
+                <Typography variant="h2" className={classes.typosTitulos}>{props.expresionSeleccionada.expresion+"  /  "+props.expresionSeleccionada.traduccion}</Typography>
                 </Grid>
             </Grid>
             <Grid container className={classes.contenedorDeResultados}>

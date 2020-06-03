@@ -153,22 +153,25 @@ function MenuBajo(props){
             </ul>
             </ExpansionPanelDetails>
             </ExpansionPanel>
+            {listaVerTambien != "" ? 
             <ExpansionPanel square expanded={props.expanded2} onChange={()=>props.setExpanded2(!props.expanded2)} className="panelPrincipal">
-            <ExpansionPanelSummary aria-controls="panel2d-content" id="panel2d-header">
-                <Typography>{menuDerechoVerTambien(props.lang)}</Typography>
-            </ExpansionPanelSummary>
+          <ExpansionPanelSummary aria-controls="panel2d-content" id="panel2d-header">
+            <Typography>{menuDerechoVerTambien(props.lang)}</Typography>
+          </ExpansionPanelSummary>
             <ExpansionPanelDetails className="panelDeDetalleVerTambien">
                 <ul className="ulDelMenuDerechoVerTambien">
-                {listaVerTambien.map((expresion,index)=>(
-                    <li key={expresion.id+"-"+index}>
-                        <Link to={`/husserl/pasaje/${expresion.id}`} onClick={()=>handleFlagLetraMain()}>
-                            <Typography className={"consultaDePasajes"} variant="h6" id={expresion.id+"/"+index}>{expresion.expresion + "  //  " + expresion.traduccion + "  --  " + expresion.id}</Typography>
-                        </Link>
+                {listaVerTambien.map((expresion,index)=>{
+                    return <li key={expresion.id+"-"+index}>
+                    <Link to={`/husserl/pasaje/${expresion.id}`} onClick={()=>handleFlagLetraMain()}>
+                        <Typography className={"consultaDePasajes"} variant="h6" id={expresion.id+"/"+index}>{expresion.expresion + "  //  " + expresion.traduccion + "  --  " + expresion.id}</Typography>
+                    </Link>
                     </li>
-                ))}
+                })}
                 </ul>
-            </ExpansionPanelDetails>
-            </ExpansionPanel>
+                </ExpansionPanelDetails>
+            </ExpansionPanel> :
+            null
+            }
             <ExpansionPanel square expanded={props.expanded3} onChange={()=>props.setExpanded3(!props.expanded3)} className="panelPrincipal">
             <ExpansionPanelSummary aria-controls="panel3d-content" id="panel3d-header">
             <Typography>{menuDerechoReferenciasConsultadas(props.lang)}</Typography>

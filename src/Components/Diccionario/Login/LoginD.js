@@ -32,10 +32,7 @@ function LoginD(props){
 
   React.useEffect(()=>{
     if(localStore.getObjects("sesion")){
-      // console.log("Sesion existe")
-      // console.log(localStore.getObjects("sesion").user , localStore.getObjects("sesion").password )
       if(localStore.getObjects("sesion").user && localStore.getObjects("sesion").password){
-        console.log("Dentro", props)
         props.history.push("/diccionario/husserl")
       }
     }
@@ -45,7 +42,7 @@ function LoginD(props){
     <div>
       <div className={classes.back}/>
       <Header lang={props.lang} setLang={props.setLang}/>
-      {login ? <LoginForm {...props} lang={props.lang} setLang={props.setLang} setLogin={setLogin}/> : <RegistroForm {...props} lang={props.lang} setLang={props.setLang} setLogin={setLogin}/>}
+      {login ? <LoginForm history={props.history} match={props.match} lang={props.lang} setLang={props.setLang} setLogin={setLogin}/> : <RegistroForm history={props.history} match={props.match} lang={props.lang} setLang={props.setLang} setLogin={setLogin}/>}
       <br/>
       <Footer lang={props.lang}/>
     </div>
