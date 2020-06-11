@@ -162,7 +162,7 @@ function MenuDerecho(props){
             <ul className="ulDelMenuDerechoVerTambien">
               {listaVerTambien.map((expresion,index)=>{
                 return <li key={expresion.id+"-"+index}>
-                  <Link to={`/husserl/pasaje/${expresion.id}`} onClick={()=>handleFlagLetraMain()}>
+                  <Link to={`${props.match.path.slice(0,20)}/pasaje/${expresion.id}`} onClick={()=>handleFlagLetraMain()}>
                     <Typography className={"consultaDePasajes"} variant="h6" id={expresion.id+"/"+index}>{expresion.expresion + "  //  " + expresion.traduccion + "  --  " + expresion.id}</Typography>
                   </Link>
                 </li>

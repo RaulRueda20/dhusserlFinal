@@ -36,7 +36,7 @@ function Pasaje(props){
   const [referenciaSeleccionada, setReferenciaSeleccionada]=React.useState(null);
   const [expanded1, setExpanded1] = React.useState(false);
   const [expanded2, setExpanded2] = React.useState(false);
-  const [expanded3, setExpanded3] = React.useState(false);
+  const [expanded3, setExpanded3] = React.useState(true);
   const [pasajeService, setPasajeService] = React.useState("");
   const [panelIzquierdo,setPanelIzquierdo]=React.useState(false);
   const [panelDerecho, setPanelDerecho]=React.useState(false);
@@ -53,6 +53,7 @@ function Pasaje(props){
   const [flagDeBusqueda, setFlagDeBusqueda] = React.useState(false);
   const [chunkList, setChunkList] = React.useState([]);
   const [chunkListGlobal, setChunkListGlobal] = React.useState([]);
+  const [compareString, setCompareString] = React.useState("")
   
   const fixReferencias = (referencias) => {
     var expresiones=[]
@@ -116,6 +117,7 @@ function Pasaje(props){
   }
   
   React.useEffect(()=>{
+    console.log(props.lang)
     setLoading(true)
     var idDeExpresion=props.match.params.expresion;
     var idDeLaReferencia=props.match.params.id ? props.match.params.id : false;
@@ -199,12 +201,12 @@ function Pasaje(props){
              language={props.language} setLanguage={props.setLanguage} busqueda={busqueda} setBusqueda={setBusqueda} setFlagDeBusqueda={setFlagDeBusqueda}
               state={state} setState={setState} setExpresionesGlobales={setExpresionesGlobales} setModalDebusquedas={setModalDebusquedas} 
              setModalCaracteresInvalidos={setModalCaracteresInvalidos} setModalNumeros={setModalNumeros} setLoading={setLoading} expresionesGlobales={expresionesGlobales}
-             setChunkListGlobal={setChunkListGlobal}/>
+             setChunkListGlobal={setChunkListGlobal} setChunkList={setChunkList}/>
              <ListaIzquierdaExpresion {...props} expresiones={expresiones} setExpresiones={setExpresiones} idExpresion={idExpresion} 
                setIdExpresion={setIdExpresion} language={props.language} setLanguage={props.setLanguage} referenciaSeleccionada={referenciaSeleccionada}
                setReferenciaSeleccionada={setReferenciaSeleccionada} setExpanded1={setExpanded1} setExpanded2={setExpanded2} match={props.match} setFlagLetraMain={props.setFlagLetraMain}
                setPosicionReferenciasConsultadas={setPosicionReferenciasConsultadas} expresionesGlobales={expresionesGlobales} state={state} chunkList={chunkList}
-               chunkListGlobal={chunkListGlobal} setChunkList={setChunkList} setChunkListGlobal={setChunkListGlobal} letraMain={props.letraMain}/>
+               chunkListGlobal={chunkListGlobal} setChunkList={setChunkList} setChunkListGlobal={setChunkListGlobal} letraMain={props.letraMain} idDeLaReferencia={props.match.params.id}/>
            </Hidden>
            {openHidden == true ?
              <div>
@@ -213,7 +215,7 @@ function Pasaje(props){
                 state={state} setState={setState} openHidden={openHidden} setOpenHidden={setOpenHidden} 
                 setExpresionesGlobales={setExpresionesGlobales} setModalDebusquedas={setModalDebusquedas} 
                 setModalCaracteresInvalidos={setModalCaracteresInvalidos} setModalNumeros={setModalNumeros} setLoading={setLoading}
-                setChunkListGlobal={setChunkListGlobal}/>
+                setChunkListGlobal={setChunkListGlobal} setChunkList={setChunkList}/>
                <ListaEscondida {...props} expresiones={expresiones} setExpresiones={setExpresiones} idExpresion={idExpresion} 
                setIdExpresion={setIdExpresion} language={props.language} setLanguage={props.setLanguage} referenciaSeleccionada={referenciaSeleccionada}
                setReferenciaSeleccionada={setReferenciaSeleccionada} setExpanded1={setExpanded1} setExpanded2={setExpanded2} state={state} setFlagLetraMain={props.setFlagLetraMain}
@@ -228,7 +230,9 @@ function Pasaje(props){
              idExpresion={idExpresion} lang={props.lang} match={props.match} panelDerecho={panelDerecho} panelIzquierdo={panelIzquierdo} 
              lang={props.lang} openHidden={openHidden} setOpenHidden={setOpenHidden}
              />
-             {referenciaSeleccionada == null ? null : <Paginador {...props} lang={props.lang} referencias={referencias} referenciaSeleccionada={referenciaSeleccionada} expresionId={props.match.params.expresion}/>}
+             {referenciaSeleccionada == null ? null 
+             : 
+             <Paginador {...props} lang={props.lang} referencias={referencias} referenciaSeleccionada={referenciaSeleccionada} expresionId={props.match.params.expresion}/>}
          </Grid>
          <Grid item sm={3} md={3} lg={3} className={classNames([{"panelDerechoEscondido" : panelDerecho==true}, "bordoDelMenuDerecho"])}>
            <Hidden xsDown>
@@ -252,7 +256,6 @@ function Pasaje(props){
          }
        </Grid>
        <LinearProgress className={classNames([{"hidden" : !loading}, "loadingBar"])}/>
-       <ModalDeNulos openModalN={openModalN} setOpenModalN={setOpenModalN} lang={props.lang}/>
        <ModalDeBusqueda modalDeBusquedas={modalDeBusquedas} setModalDebusquedas={setModalDebusquedas} lang={props.lang}/>
        <ModalCaracterInvalido modalCaracteresIvalidos={modalCaracteresIvalidos} setModalCaracteresInvalidos={setModalCaracteresInvalidos} lang={props.lang}/>
        <ModalNumeros modalNumeros={modalNumeros} setModalNumeros={setModalNumeros} lang={props.lang}/>

@@ -64,6 +64,10 @@ function BusquedaVP(props){
         props.setChunkListGlobal(expresiones.slice(0,50))
     }
 
+    const ChunkC = (expresiones) =>{
+        props.setChunkList(expresiones)
+    }
+
     const handleChangeBusquedaPasajes = (event) => {
         event.preventDefault()
         if(props.state.checkedA == false){
@@ -87,14 +91,11 @@ function BusquedaVP(props){
                 })
             }
         }else{
-            props.expresiones.map(expresion=>{
-            var expresionNombre=expresion.expresion +  expresion.traduccion +  expresion.id
-            var expresionEncontrada= expresionNombre.indexOf(props.busqueda)
-            document.getElementById("VP"+expresion.id).classList.remove("hiddenE")
-                if (expresionEncontrada == -1){
-                    document.getElementById("VP"+expresion.id).className += " hiddenE";
-                }
+            var servicebl = "/referencias/busquedaExpresionPorLetra" + "/" + props.letraMain
+            webService(servicebl, "POST", {parametro:props.busqueda,case:insensitiveCase},(data)=>{
+                ChunkC(data.data.response)
             })
+            props.setLoading(false)
         }
     }
 

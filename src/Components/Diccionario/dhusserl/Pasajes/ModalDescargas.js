@@ -124,7 +124,7 @@ function ModalDescargas(props){
                 "&hierarchy=" + opciones[6] + "&lang=" + props.lang + "&refid=" + props.match.params.id
                 webService(serviceR, "GET", {}, (data) => {
 		    console.log('Data de General Pdf', data)
-                    document.getElementById("toDownloadDiv").innerHTML = "<a href='/files/"+data.data+".pdf' id='fileToDownload' download></a>"
+                    document.getElementById("toDownloadDiv").innerHTML = "<a href='/files/"+data.data.response+".pdf' id='fileToDownload' download></a>"
                     document.getElementById("fileToDownload").click()
                 })
                 if(checked.length > 0){
@@ -138,7 +138,7 @@ function ModalDescargas(props){
                         "&hierarchy=" + opciones[6] + "&lang=" + props.lang + "&refid=" + refid
                         webService(serviceR, "GET", {}, (data) => {
 			    console.log("Referencias consultadas", data.data)
-                            document.getElementById("toDownloadDiv").innerHTML = "<a href='/files/"+data.data+".pdf' id='fileToDownload' download></a>"
+                            document.getElementById("toDownloadDiv").innerHTML = "<a href='/files/"+data.data.response+".pdf' id='fileToDownload' download></a>"
                             document.getElementById("fileToDownload").click()
                         })
                     }
@@ -150,7 +150,7 @@ function ModalDescargas(props){
                 &referencia_espaniol=1&pasaje_aleman=" + opciones[4] + "&pasaje_espaniol=" + opciones[5] +
                 "&hierarchy=" + opciones[6] + "&lang=" + props.lang + "&refid=" + props.match.params.id
                 webService(serviceR, "GET", {}, (data) => {
-                    document.getElementById("toDownloadDiv").innerHTML = "<a href='/files/"+data.data+".pdf' id='fileToDownload' download></a>"
+                    document.getElementById("toDownloadDiv").innerHTML = "<a href='/files/"+data.data.response+".pdf' id='fileToDownload' download></a>"
                     document.getElementById("fileToDownload").click()
                 })
             }else{

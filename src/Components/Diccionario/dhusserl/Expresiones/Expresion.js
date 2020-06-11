@@ -40,7 +40,7 @@ function Expresion(props){
   const [expresionSeleccionada, setExpresionSeleccionada]=React.useState({id:"", expresione:""});
   const [expanded1, setExpanded1] = React.useState(false);
   const [expanded2, setExpanded2] = React.useState(false);
-  const [expanded3, setExpanded3] = React.useState(false);
+  const [expanded3, setExpanded3] = React.useState(true);
   const [openModal, setOpenModal] = React.useState(false);
   const [state, setState]=React.useState({checkedA:true});
   const [busqueda, setBusqueda] = React.useState("");
@@ -112,6 +112,9 @@ function Expresion(props){
       setOpenModal(true)
       localStore.setObjects("bienvenida",true)
     }
+    if(props.flagLetraMain){
+      setState({checkedA:true})
+    }
   }, [props.letraMain, language, flagDeBusqueda, props.flagLetraMain])
 
   function getJerarquia(event){
@@ -162,7 +165,8 @@ function Expresion(props){
             busqueda={busqueda} setBusqueda={setBusqueda} setLoading={setLoading} expresionesGlobales={expresionesGlobales} 
             setExpresionesGlobales={setExpresionesGlobales} setModalDebusquedas={setModalDebusquedas} 
             setModalCaracteresInvalidos={setModalCaracteresInvalidos} setModalNumeros={setModalNumeros} setFlagDeBusqueda={setFlagDeBusqueda}
-            idExpresion={idExpresion} setIdExpresion={setIdExpresion}  setChunkListGlobal={setChunkListGlobal}
+            idExpresion={idExpresion} setIdExpresion={setIdExpresion} setChunkListGlobal={setChunkListGlobal} setChunkList={setChunkList}
+            letraMain={props.letraMain}
             />
             <MenuDerecho {...props} idExpresion={idExpresion} setIdExpresion={setIdExpresion} language={language}
               expresiones={expresiones} expresionSeleccionada={expresionSeleccionada} 

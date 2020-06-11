@@ -82,9 +82,13 @@ function Pasaje(props){
   }
 
   function handleForward(){
-    if(posicion==props.referencias.length -1){
+    if(posicion==props.referencias.length){
       setNext(props.referencias[referencias.length -1])
     }
+  }
+  
+  function visitPasaje(refid, index){
+    document.getElementById(refid + '/' + index).classList.add('pasajesVisitados')
   }
 
   return(
@@ -104,7 +108,7 @@ function Pasaje(props){
           return (
             (
               <Tooltip title={referencias[index].ref_original} key={props.expresionId+"-"+index}>
-                <Link to={`${props.match.path.slice(0,20)}/pasaje/${props.expresionId}/${referencia.refid}`} className={classNames(["botonPaginador", {"pasajeSeleccionado": props.referenciaSeleccionada.refid == referencia.refid}])} style={{padding: "13px 0px"}}><span>{referencia.index+1}</span></Link>
+                <Link onClick={() => visitPasaje(referencia.refid, index)} to={`${props.match.path.slice(0,20)}/pasaje/${props.expresionId}/${referencia.refid}`} className={classNames(["botonPaginador", {"pasajeSeleccionado": props.referenciaSeleccionada.refid == referencia.refid}])} style={{padding: "13px 0px"}}><span>{referencia.index+1}</span></Link>
               </Tooltip>
             )
           )})

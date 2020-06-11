@@ -1163,6 +1163,21 @@ const cerrarListaTooltip = lang => {
   }
 }
 
+const noContienePasajes = lang => {
+  switch (lang) {
+    case "es":
+      return "No hay ninguna referencia para esta expresión. Ver por favor la lista de expresiones derivadas."
+    case "en":
+      return "There is no reference for this expression. Please see the list of derived expressions."
+    case "fr":
+      return "Il n'y a aucune référence pour cette expression. Veuillez consulter la liste des expressions dérivées."
+    case "al":
+      return "Es gibt keine Referenz für diesen Ausdruck. Bitte beachten Sie die Liste der abgeleiteten Ausdrücke."
+    case "ca":
+      return "No hi ha cap referència per a aquesta expressió. Veure per favor la llista d'expressions derivades."
+  }
+}
+
 export {tituloDiccionario, ingresar, subtituloDiccionario, inicio, email, contra, olvidoDeContra, registrarse, 
   registrado, aqui, Footer1, Footer2, Footer3, registro, nombre, apellido, escuela, puesto, pais, comprobacionContra,
   modalRecuperacionContra,modalIngresarCorreo, exitoBody, correoInvalido, correoNoEncontrado, aceptarAlert, menuDiccionario,
@@ -1172,5 +1187,5 @@ export {tituloDiccionario, ingresar, subtituloDiccionario, inicio, email, contra
   distincionMayusyMinus, BusquedaGeneral, tipoDeBusqueda, dentroExpresion, dentroReferencia, noDerivaDe, noContieneExpresionesDerivadas,
   bienvenido, bienvenidaModal, descargarConsulta, seGeneraArchivo, conReferencias, descargarEn, idiomaAl, idiomaEs, pasajeSeleccionadoOTodos,
   pasajeSeleccionado, todosLosPasajes, tipoDeArchivos, texto, tituloNulos, mensajeNulos, tituloBusqueda, mensajeBusqueda, tituloNumeros,
-  mensajeNumeros, tituloCaracteres, mensajeCaracteres, tooltipPaginador, resultadoBusqueda, abrirListaTooltip, cerrarListaTooltip
+  mensajeNumeros, tituloCaracteres, mensajeCaracteres, tooltipPaginador, resultadoBusqueda, abrirListaTooltip, cerrarListaTooltip, noContienePasajes
 }

@@ -56,7 +56,7 @@ function MenuIdioma(props){
   }
 
   function handleClose() {
-      setAnchorEl(null);
+    setAnchorEl(null);
   }
 
   return(

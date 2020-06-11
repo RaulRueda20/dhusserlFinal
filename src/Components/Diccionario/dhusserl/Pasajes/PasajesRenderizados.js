@@ -13,7 +13,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import BanderaPasajes from './BanderaPasajes';
 
 //Other req
-import {descarga} from '../../../../js/Language';
+import {descarga, noContienePasajes} from '../../../../js/Language';
 import { compose } from '@material-ui/system';
 
 const useStyles = makeStyles(theme => ({
@@ -61,11 +61,11 @@ function PasajesRenderizados(props){
             })
         }else{
             setPasajeRenderizado({
-                original: "Es gibt keine Referenz für diesen Ausdruck. Bitte beachten Sie die Liste der abgeleiteten Ausdrücke.",
-                traduccion : "No hay ninguna referencia para esta expresión. Ver por favor la lista de expresiones derivadas."
+                original : noContienePasajes(props.lang),
+                traduccion : noContienePasajes(props.lang) 
             })
-        }   
-    }, [props.referenciaSeleccionada])
+        }
+    }, [props.referenciaSeleccionada, props.lang])
 
     function resaltarBusqueda(string,separador){
         var split = string.split(separador)
@@ -135,7 +135,7 @@ function PasajesRenderizados(props){
                         </Grid>
                     </Grid>
                     <Grid item xs={8} sm={8} md={10} lg={10} className={classes.gridTituloPasaje}>
-                        <Typography className={classes.typoSize} variant="h2">{props.tituloPasaje.expresion_original}</Typography>
+                        <Typography className={classes.typoSize} variant="h2">{props.tituloPasaje.expresion_traduccion}</Typography>
                     </Grid>
                     <Grid item xs={2} sm={2} md={1} lg={1} className={classes.bandera}>
                         <BanderaPasajes languageP={props.languageP} setLanguageP={props.setLanguageP} lang={props.lang}/>

@@ -22,14 +22,12 @@ const bandIn = {
 function BanderaPasajes(props){
   const {classes} = props;
 
-  var setLanguage=props.setLanguageP
-
   const clickChangeLanguageEsBP=()=>{
-    setLanguage("es");
+    props.setLanguageP("es");
   }
 
   const clickChangeLanguageAlBP=()=>{
-    setLanguage("al");
+    props.setLanguageP("al");
   }
 
   return(
