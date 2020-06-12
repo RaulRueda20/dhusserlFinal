@@ -36,7 +36,7 @@ function Busqueda(props){
   const {classes}=props;
   const [insensitiveCase,setInsensitiveCase]=React.useState(false);
 
-  const ChunkB = (expresiones) =>{
+  const ChunkB = (expresiones, busqueda) =>{
     props.setChunkListGlobal(expresiones.slice(0,50))
   }
 
