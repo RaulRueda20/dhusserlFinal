@@ -14,6 +14,7 @@ import Grid from '@material-ui/core/Grid';
 import Icon from '@mdi/react';
 import { mdiFormatLetterCase } from '@mdi/js';
 import { withStyles } from '@material-ui/styles';
+import Snackbar from '@material-ui/core/Snackbar';
 
 //Other req
 import '../../../../css/expresiones.css';
@@ -35,6 +36,7 @@ const styles = {
 function Busqueda(props){
   const {classes}=props;
   const [insensitiveCase,setInsensitiveCase]=React.useState(false);
+  const [snack, setSnack] = React.useState({open : false, text : ""});
 
   const ChunkB = (expresiones, busqueda) =>{
     props.setChunkListGlobal(expresiones.slice(0,50))
@@ -66,12 +68,30 @@ function Busqueda(props){
         })
       }
     }else{
-      var servicebl = "/referencias/busquedaExpresionPorLetra" + "/" + props.letraMain
-      webService(servicebl, "POST", {parametro:props.busqueda,case:insensitiveCase},(data)=>{
-        ChunkC(data.data.response)
-      })
-      props.setLoading(false)
-    }
+      // console.log("BUSQUEDA",props.busqueda)
+      var letra = props.busqueda.slice(0,1)
+      var letraCapital = letra.toUpperCase()
+      if(letra == letraCapital){
+        var servicebl = "/referencias/busquedaExpresionPorLetra"+"/"+props.letraMain
+        webService(servicebl, "POST", {parametro:props.busqueda,case:insensitiveCase}, (data) => {
+          if(props.letraMain == letraCapital){
+            ChunkC(data.data.response)
+          }else{
+            setSnack({open : true, text: "La primera letra de la busqueda no coincide con la letra del indice"})
+          }
+        })
+      }else{
+        var letraCapital = letra.toUpperCase()
+        var servicebl = "/referencias/busquedaExpresionPorLetra"+"/"+props.letraMain
+        webService(servicebl, "POST", {parametro:props.busqueda,case:insensitiveCase}, (data) => {
+          if(props.letraMain == letraCapital){
+            ChunkC(data.data.response)
+          }else{
+            setSnack({open : true, text: "La primera letra de la busqueda no coincide con la letra del indice"})
+          }
+        })
+      }
+    } 
   }
 
   function handleInsensitiveCase(){
@@ -80,6 +100,10 @@ function Busqueda(props){
 
   const handleSwitch=name=>event=>{
     props.setState({...props.state, [name]:event.target.checked});
+  }
+
+  function handleClose() {
+    setSnack({open: false, text: ""});
   }
 
   return(
@@ -125,6 +149,16 @@ function Busqueda(props){
           </Tooltip>
         </Grid>
       </Grid>
+      <Snackbar
+        anchorOrigin={{ vertical : "top", horizontal : "left" }}
+        key={`top,left`}
+        open={snack.open}
+        onClose={handleClose}
+        ContentProps={{
+        'aria-describedby': 'message-id',
+        }}
+        message={<span id="message-id">{snack.text}</span>}
+      />
     </form>
   )
 }

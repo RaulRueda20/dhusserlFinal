@@ -10,8 +10,6 @@ import * as localStore from '../../../../js/localStore';
 export default function ListaIzquierdaExpresiones(props){
   const [panelesAbiertos,setPanelesAbiertos] = React.useState([]);
 
-
-
   function clickHandleVista(event){
     var expresionClickeada=event.currentTarget.id.split("-")[0];
     var posicionExpresion=event.currentTarget.id.split("-")[1]
@@ -63,6 +61,7 @@ export default function ListaIzquierdaExpresiones(props){
         document.getElementById("VP" + props.idExpresion).scrollIntoView()
       }
     }, 5000)
+
   },[props.idExpresion, props.expresionesGlobales, props.expresiones])
 
   const handleScroll = e => {
@@ -81,7 +80,8 @@ export default function ListaIzquierdaExpresiones(props){
             return(
             <PanelExpresionIzquierdo {...props} key={expresion.id+"-"+index} expresion={expresion} handleClickPanel={handleClickPanel} clickHandleVista={clickHandleVista} index={index}
             getJerarquia={props.getJerarquia} idReferencias={props.idReferencias} setIdReferencias={props.setIdReferencias} expresionSeleccionada={props.expresionSeleccionada} 
-            setFlagLetraMain={props.setFlagLetraMain} idExpresion={props.idExpresion} idDeLaReferencia={props.idDeLaReferencia}/> 
+            setFlagLetraMain={props.setFlagLetraMain} idExpresion={props.idExpresion} idDeLaReferencia={props.idDeLaReferencia} 
+            /> 
           )})}
         </ul>
       :
@@ -89,7 +89,8 @@ export default function ListaIzquierdaExpresiones(props){
         {props.chunkList.map((expresion, index)=>{
           return(<PanelExpresionIzquierdo {...props} key={expresion.id+"-"+index} expresion={expresion} handleClickPanel={handleClickPanel} clickHandleVista={clickHandleVista} index={index}
           getJerarquia={props.getJerarquia} idReferencias={props.idReferencias} setIdReferencias={props.setIdReferencias} idExpresion={props.idExpresion} open={props.idExpresion == expresion.id}
-        match={props.match} setFlagLetraMain={props.setFlagLetraMain} idExpresion={props.idExpresion} idDeLaReferencia={props.idDeLaReferencia}/>
+          match={props.match} setFlagLetraMain={props.setFlagLetraMain} idExpresion={props.idExpresion} idDeLaReferencia={props.idDeLaReferencia} 
+          />
           )})}
         </ul> 
       } 

@@ -8,9 +8,15 @@ import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import { withStyles } from '@material-ui/styles';
+import IconButton from '@material-ui/core/IconButton';
+import Icon from '@mdi/react';
+import { mdiFormatLetterCase } from '@mdi/js';
+import Tooltip from '@material-ui/core/Tooltip';
 
 //Other req
 import '../../../../css/pasajes.css';
+import classNames from 'classnames';
+import {webService} from '../../../../js/webServices';
 
 const styles = {
  TextFieldbus:{
@@ -20,13 +26,13 @@ const styles = {
 
 function BusquedaPasajes(props){
   const { classes } = props;
-  
-  var pasajes=props.pasajes
-
+  const [insensitiveCase,setInsensitiveCase]=React.useState(false);
+  const [busqueda, setBusqueda] = React.useState("");
   
   const handleChangeBusqueda = (event) => {
+    event.preventDefault()
     var busqueda = event.target.value
-    pasajes.map(pasaje=>{
+    props.pasajes.map(pasaje=>{
       var pasajeNombre=pasaje.ref_libro_de + pasaje.ref_libro_es + pasaje.ref_id
       var pasajeBuscado= pasajeNombre.indexOf(busqueda)
       document.getElementById(pasaje.ref_id).classList.remove("hidden")
@@ -35,6 +41,7 @@ function BusquedaPasajes(props){
       }
     })
   }
+
 
   return (
     <FormControl className={classes.TextFieldbus}>

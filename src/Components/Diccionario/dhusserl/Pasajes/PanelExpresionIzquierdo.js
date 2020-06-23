@@ -42,7 +42,6 @@ export default function PanelExpresionIzquierdo(props){
     function handleVisitados(event,index,referencia){
         if(document.getElementById(referencia + "/" + index).className.indexOf("pasajesVisitados")==-1){
             document.getElementById(referencia + "/" + index).className += " pasajesVisitados";
-            setOpen(true)
         }
         var idReferenciaConsultada = props.expresion.id
         var refIdReferenciaConsultada = event.currentTarget.id.split("/")[0]
@@ -61,6 +60,11 @@ export default function PanelExpresionIzquierdo(props){
         })
     }
 
+    function abrir(id){
+        setOpen(!open)
+        !open ? document.getElementById(id).classList.add('abierto') : document.getElementById(id).classList.remove('abierto')
+    }
+
     return (
         <li 
             className={classNames([{"pasajeSeleccionado":props.expresion.id==props.idExpresion}, "sideListIzquierdo"])} 
@@ -73,22 +77,23 @@ export default function PanelExpresionIzquierdo(props){
                         <p className={"parrafo"}>{props.expresion.expresion + '//' + props.expresion.traduccion}</p>
                     </Link>
                 </Grid>
-                <Grid item id={"BTN" + props.expresion.id} xs={2} onClick={()=>setOpen(!open)}>
-                    {open==false ?
-                    <Icon className="iconosIluminados">
-                        <ExpandMoreIcon/>
-                    </Icon> :
-                    <Icon className="iconosIluminados">
-                        <ExpandLessIcon/>
-                    </Icon>
-                }
+                <Grid item id={"BTN" + props.expresion.id} xs={2} onClick={()=>abrir("BTN" + props.expresion.id)}>
+                    {!open ?
+                        <Icon className="iconosIluminados">
+                            <ExpandMoreIcon/>
+                        </Icon> :
+                        <Icon className="iconosIluminados">
+                            <ExpandLessIcon/>
+                        </Icon>
+                    }
                 </Grid>
             </Grid>
             <div>
                 {open ?
                     <ul key={props.expresion.id} id={"referencias"+props.expresion.id} className="ulDelPanelDeExpresiones">
                         {props.expresion.referencias[0].refid == null ? "No hay ninguna referencia para esta expresión. Ver por favor la lista de expresiones derivadas." : 
-                            props.expresion.referencias.map((referencia,index) =>(
+                            props.expresion.referencias.map((referencia,index) =>{
+                            return(
                             <li className="referencia" key={"panel" + index} >
                                 <Grid container justify="center" alignItems="center">
                                     <Grid item xs={10} id={props.expresion.id+"/"+props.index}>
@@ -100,7 +105,8 @@ export default function PanelExpresionIzquierdo(props){
                                     </Grid> 
                                 </Grid>
                             </li>
-                        ))}
+                        )
+                        })}
                     </ul>
                     :null
                 }

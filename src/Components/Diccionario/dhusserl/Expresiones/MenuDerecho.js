@@ -178,13 +178,14 @@ function MenuDerecho(props){
         </ExpansionPanelSummary>
           <ExpansionPanelDetails className="panelDeDetalleReferenciasConsultadas">
             <ul className="ulDelMenuDerechoReferenciasConsultadas">
-              {referenciasConsultadasVista.map((consultas,index)=>(
-                <Link to={`/husserl/pasaje/${consultas.id}/${consultas.referencias[0].refid}`} onClick={()=>handleFlagLetraMain()}  key={consultas.referencias[0].refid+"-"+index}>
-                  <li className="bordeDeConsultas" key={consultas.referencias[0].refid+"-"+index}>
-                      <Typography className="consultaDePasajes" variant="h6" id={consultas.id+"/"+index}>{consultas.expresion + "  :  " + consultas.referencias[0].referencia_original + "/" + consultas.referencias[0].referencia_traduccion}</Typography>
-                  </li>
-                </Link>
-              ))}
+              {referenciasConsultadasVista.map((consultas,index)=>{
+                return(
+                  <Link to={`${props.match.path.slice(0,20)}/pasaje/${consultas.id}/${consultas.referencias[0].refid}`} onClick={()=>handleFlagLetraMain()}  key={consultas.referencias[0].refid+"-"+index}>
+                    <li className="bordeDeConsultas" key={consultas.referencias[0].refid+"-"+index}>
+                        <Typography className="consultaDePasajes" variant="h6" id={consultas.id+"/"+index}>{consultas.expresion + "  :  " + consultas.referencias[0].referencia_original + "/" + consultas.referencias[0].referencia_traduccion}</Typography>
+                    </li>
+                  </Link>
+                )})}
             </ul>
           </ExpansionPanelDetails>
         </ExpansionPanel>

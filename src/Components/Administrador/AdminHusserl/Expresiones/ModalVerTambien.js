@@ -101,7 +101,6 @@ function ModalVerTambien(props){
   };
 
   const checkExistence = () => {
-    console.log(selectedExpresions)
     if(selectedExpresions.length == 0){
       setSnack({open : true, text: "No ha seleccionado ninguna expresión."})
       return true
@@ -133,7 +132,6 @@ function ModalVerTambien(props){
   }
 
   const addEToList = (id) => {
-    console.log(id)
     var se = selectedExpresions
     if(se.indexOf(id) < 0) se.push(id)
     else se.splice(selectedExpresions.indexOf(id), 1)
@@ -150,13 +148,10 @@ function ModalVerTambien(props){
   }
 
   const handleChangeBusquedaVerTambien = (event) => {
-    // console.log("expresiones",props.expresiones)
     var expresionVertBuscada=event.target.value
     props.expresiones.map(expresionp=>{
       var expresionVertNombre=expresionp.t_id + expresionp.t_term_de + expresionp.t_term_es
-      // console.log("expresionVertNombre", expresionVertNombre)
       var expresionVertEncontrada= expresionVertNombre.indexOf(expresionVertBuscada)
-      // console.log("expresion buscada",expresionVertEncontrada)
       document.getElementById("vertam"+props.expresion.t_id).classList.remove("hiddenE")
       if (expresionVertEncontrada == -1){
         document.getElementById("vertam"+expresionp.t_id).className += " hiddenE";
@@ -207,7 +202,6 @@ function ModalVerTambien(props){
           <LinearProgress className={classNames([{"hidden" : !loading}, "loadingBar"])}/>
           <List className={classes.listacontenedor}>
             {listaVerTambien.map(expresion=>{
-              console.log(listaVerTambien)
               return (
                 <ListItem
                   key={expresion.id}

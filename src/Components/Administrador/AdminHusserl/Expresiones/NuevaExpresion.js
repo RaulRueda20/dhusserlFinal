@@ -40,7 +40,8 @@ const emptyObj = {
   ref_original: "",
   ref_traduccion: "",
   refid: "",
-  tpretty: ""}
+  tpretty: ""
+}
 
 function NuevaExpresion(props){
   const { classes } = props;
@@ -50,24 +51,19 @@ function NuevaExpresion(props){
   const [openAl, setOpenAl] = React.useState(false);
   const [snack, setSnack] = React.useState({open : false, text : ""})
   const [pasajeToDelete, setPasajeToDelete] = React.useState("")
-  const [reload, setReload] = React.useState(true);
   const [reloadExpresion, setReloadExpresion] = React.useState(true);
 
   React.useEffect(()=>{
-    console.log("Nueva Expresion", props.expresionSeleccionada)
+    console.log("ESELECC",props.expresionSeleccionada)
     if(props.expresionSeleccionada != ""){
       var service = "/referencias/obtieneReferenciasByTerm/" + props.expresionSeleccionada
       adminService(service, "GET", {}, (expresionEncontrada) => {
-        console.log(expresionEncontrada)
+        console.log("SERV", expresionEncontrada)
         if(expresionEncontrada.data.response.length > 0){
           setExpresion(expresionEncontrada.data.response[0])
-          setPasajes(expresionEncontrada.data.response)
-        }else{
-          adminService("/expresiones/byId/" + props.expresionSeleccionada, "GET", {}, (expresionS) => {
-            console.log(expresionS.data.response[0])
-            setExpresion(expresionS.data.response[0])
-          })
-          setPasajes([])
+          if(expresionEncontrada.data.response[0].refid)
+            setPasajes(expresionEncontrada.data.response)
+          else setPasajes([])
         }
         // adminService("/referencias/obtieneReferencias/" + props.expresionSeleccionada, "GET", {}, (data) => {
         //   console.log("pasajes", data.data.response)
@@ -98,10 +94,8 @@ function NuevaExpresion(props){
   }
 
   function deletePasaje(refid){
-    console.log("ok", refid)
     var service2 = "/referencias/quitarPasaje/" + refid + "/" + expresion.id
     adminService(service2, "DELETE", {}, (data) => {
-      console.log(data)
       setSnack({open : true, text: "Pasaje desasociado con éxito."})
       setOpenAl(false);
       setReloadExpresion(!reloadExpresion)

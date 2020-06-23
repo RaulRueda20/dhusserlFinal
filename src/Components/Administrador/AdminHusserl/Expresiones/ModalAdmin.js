@@ -56,7 +56,6 @@ function ModalAdmin(props){
   const [expresionLetraIndice, setExpresionLetraIndice] = React.useState('A')
   const [expresion, setExpresion] = React.useState('')
   const [expresionContenido, setExpresionContenido] = React.useState('')
-
   const [traduccionLetraIndice, setTraduccionLetraIndice] = React.useState('A')
   const [traduccion, setTraduccion] = React.useState('')
   const [traduccionContenido, setTraduccionContenido] = React.useState('')
@@ -92,7 +91,6 @@ function ModalAdmin(props){
         setSnack({open : true, text: "Expresión creada con éxito."})
         setOpen(false)
         props.setReload(!props.reload)
-        // console.log("datos",data)
     })
 }
 

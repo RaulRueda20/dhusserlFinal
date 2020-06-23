@@ -55,10 +55,8 @@ function InfoExpresiones(props){
   }
 
   function deleteExpresion(){
-    console.log(props.expresion)
     var service = "/expresiones/deleteExpresion/" + props.expresion.id
     adminService(service, "DELETE", {}, (data) =>{
-      console.log("Eliminar",data)
       props.setExpresion("")
       props.setReload(!props.reload)
       setOpenAl(false);

@@ -151,8 +151,8 @@ function Usuarios() {
               <TableCell align="right">País</TableCell>
               <TableCell align="right">Email</TableCell>
               <TableCell align="right">Institución</TableCell>
-              <TableCell align="right">Último Acceso</TableCell>
               <TableCell align="right">Registro</TableCell>
+              <TableCell align="right">Último Acceso</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>

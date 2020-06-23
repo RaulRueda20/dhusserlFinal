@@ -11,6 +11,7 @@ import Button from '@material-ui/core/Button';
 import Tooltip from '@material-ui/core/Tooltip';
 import Switch from '@material-ui/core/Switch';
 import Grid from '@material-ui/core/Grid';
+import Snackbar from '@material-ui/core/Snackbar';
 import Icon from '@mdi/react';
 import { mdiFormatLetterCase } from '@mdi/js';
 import { withStyles } from '@material-ui/styles';
@@ -43,6 +44,7 @@ const styles={
 function BusquedaVP(props){
     const {classes}=props;
     const [insensitiveCase,setInsensitiveCase]=React.useState(false);
+    const [snack, setSnack] = React.useState({open : false, text : ""});
 
     const handleSwitch=name=>event=>{
         props.setState({...props.state, [name]:event.target.checked});
@@ -91,13 +93,36 @@ function BusquedaVP(props){
                 })
             }
         }else{
-            var servicebl = "/referencias/busquedaExpresionPorLetra" + "/" + props.letraMain
-            webService(servicebl, "POST", {parametro:props.busqueda,case:insensitiveCase},(data)=>{
-                ChunkC(data.data.response)
-            })
-            props.setLoading(false)
+            var letra = props.busqueda.slice(0,1)
+            var letraCapital = letra.toUpperCase()
+            if(letra == letraCapital){
+                var servicebl = "/referencias/busquedaExpresionPorLetra"+"/"+props.letraMain
+                webService(servicebl, "POST", {parametro:props.busqueda,case:insensitiveCase}, (data) => {
+                if(props.letraMain == letraCapital){
+                    ChunkC(data.data.response)
+                }else{
+                    setSnack({open : true, text: "La primera letra de la busqueda no coincide con la letra del indice"})
+                }
+                })
+            }else{
+                var letraCapital = letra.toUpperCase()
+                var servicebl = "/referencias/busquedaExpresionPorLetra"+"/"+props.letraMain
+                webService(servicebl, "POST", {parametro:props.busqueda,case:insensitiveCase}, (data) => {
+                if(props.letraMain == letraCapital){
+                    ChunkC(data.data.response)
+                }else{
+                    setSnack({open : true, text: "La primera letra de la busqueda no coincide con la letra del indice"})
+                }
+                })
+            }
         }
     }
+
+
+    function handleClose() {
+        setSnack({open: false, text: ""});
+    }
+
 
     return(
         <form onSubmit={handleChangeBusquedaPasajes}>
@@ -151,6 +176,16 @@ function BusquedaVP(props){
                     </Tooltip>
                 </Grid>
             </Grid>
+            <Snackbar
+                anchorOrigin={{ vertical : "top", horizontal : "left" }}
+                key={`top,left`}
+                open={snack.open}
+                onClose={handleClose}
+                ContentProps={{
+                'aria-describedby': 'message-id',
+                }}
+                message={<span id="message-id">{snack.text}</span>}
+            />
         </form>
     )
 }

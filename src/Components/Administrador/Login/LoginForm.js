@@ -27,13 +27,10 @@ const stylesFor = {
 }
 
 var setStore = (user, pass) => {
-    var newSession = {"email" : user, "user_password" : pass}
-    newSession['ultimasVisitadas'] = []
-    newSession["ultimaVisitada"] = "alfabeto"
-    localStore.setObjects("admin_sesion", newSession)
-
-    // document.getElementById("toMain").click()
-    // linkTo("main.html")
+  var newSession = {"email" : user, "user_password" : pass}
+  newSession['ultimasVisitadas'] = []
+  newSession["ultimaVisitada"] = "alfabeto"
+  localStore.setObjects("admin_sesion", newSession)
 }
 
 function LoginForm(props){

@@ -76,15 +76,15 @@ function ModalAgregarPasaje(props){
   React.useEffect(()=>{
     var service = "/referencias/lista"
     adminService(service, "GET", {}, (data) => {
-      console.log("datos de la data",data)
       setPasajes(data.data.response)
     })
   }, [true])
 
   const addEToList = (pasaje) => {
-    document.getElementsByClassName("selectedP").length > 0 ? document.getElementsByClassName("selectedP")[0].classList.remove("selectedP") : true
-    document.getElementById(pasaje.ref_id).classList.add("selectedP")
-    setSelectedPasajes(pasaje)
+    if(document.getElementById("agregar"+pasaje.ref_id)!=null){
+      document.getElementById("agregar"+pasaje.ref_id).classList.add("selectedP");
+      setSelectedPasajes(pasaje)
+    }
   }
 
   const handleChangeN = (event) => {
@@ -99,7 +99,6 @@ function ModalAgregarPasaje(props){
   }
   var service = "/referencias/agregarReferencia"
   adminService(service, "POST", JSON.stringify(params), (data) =>{
-    console.log("datos",data)
     setSnack({open : true, text: "Pasaje agregado con éxito."})
     props.setReload(!props.reload)
   })
@@ -110,7 +109,6 @@ function ModalAgregarPasaje(props){
     pasajes.map(pasaje=>{
       var pasajeNombre=pasaje.ref_libro_de + pasaje.ref_libro_es + pasaje.ref_id
       var pasajeBuscado= pasajeNombre.indexOf(busquedaAg)
-      console.log("pasajeNombre",pasajeNombre)
       document.getElementById("agregar"+pasaje.ref_id).classList.remove("hidden")
       if (pasajeBuscado == -1){
         document.getElementById("agregar"+pasaje.ref_id).className += " hidden";

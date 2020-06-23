@@ -16,9 +16,8 @@ import * as localStore from '../../../js/localStore';
 export default function Subvistas(props){
   
   
-    React.useEffect(()=>{
-      console.log(localStore.getObjects("admin_sesion"))
-      if(!localStore.getObjects("admin_sesion")) props.history.push("/administrador/login")
+  React.useEffect(()=>{
+    if(!localStore.getObjects("admin_sesion")) props.history.push("/administrador/login")
   }, [true])
 
   return(

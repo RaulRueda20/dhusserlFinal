@@ -1,5 +1,7 @@
 import React, {useState} from 'react';
 import classNames from 'classnames';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
 
 export default function ListaExpresiones(props){
 
@@ -10,11 +12,12 @@ export default function ListaExpresiones(props){
   return(
     <div className="list-container">
       <ul>
-        {props.expresiones.map(expresion=>(
+        {props.expresiones.map((expresion,index)=>(
           <li 
-            className={classNames({"selected" : expresion.id === props.idExpresion}, "sideList")} 
-            key={expresion.id} value={expresion.id} onClick={handleClickExpresion}
+            className={classNames({"selected" : expresion.id === props.idExpresion}, "sideListAdmin")} 
+            key={expresion.id} value={expresion.id} 
             id ={expresion.id}
+            onClick={handleClickExpresion}
           >
             {expresion.id + " - " + expresion.expresion_de + '//' + expresion.expresion_es}
           </li>

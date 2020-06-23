@@ -46,7 +46,6 @@ const letras = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
 
 function FormularioExpresiones(props){
   const {classes} = props;
- 
 
   const handleChange = (event) => {
     props.setLetra(event.target.value)
@@ -79,7 +78,7 @@ function FormularioExpresiones(props){
       <Grid container >
         <Grid item xs={8}>
           <TextField
-            id="input-with-icon-textfield"
+            id="input-with-icon-textfield-ALe"
             className={classes.TextFielIzquierdo}
             value={props.expresion}
             onChange={handleEChange}
@@ -90,7 +89,7 @@ function FormularioExpresiones(props){
         </Grid>
         <Grid item xs={4}>
           <TextField
-              id="input-with-icon-textfield"
+              id="Esp"
               select
               margin="normal"
               value={props.letra ? props.letra : 'A'}
@@ -111,8 +110,10 @@ function FormularioExpresiones(props){
           editor={ ClassicEditor }
           data={props.contenido}
           onChange={ ( event, editor ) => {
-            props.setContenido(editor.getData())
-          } }
+            var data = (editor.getData());
+            console.log("data",data)
+            props.setContenido(data)
+        } }
         />
       </div>
     </div>

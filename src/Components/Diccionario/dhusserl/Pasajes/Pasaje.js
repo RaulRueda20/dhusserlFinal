@@ -53,7 +53,6 @@ function Pasaje(props){
   const [flagDeBusqueda, setFlagDeBusqueda] = React.useState(false);
   const [chunkList, setChunkList] = React.useState([]);
   const [chunkListGlobal, setChunkListGlobal] = React.useState([]);
-  const [compareString, setCompareString] = React.useState("")
   
   const fixReferencias = (referencias) => {
     var expresiones=[]
@@ -117,7 +116,6 @@ function Pasaje(props){
   }
   
   React.useEffect(()=>{
-    console.log(props.lang)
     setLoading(true)
     var idDeExpresion=props.match.params.expresion;
     var idDeLaReferencia=props.match.params.id ? props.match.params.id : false;
@@ -201,12 +199,13 @@ function Pasaje(props){
              language={props.language} setLanguage={props.setLanguage} busqueda={busqueda} setBusqueda={setBusqueda} setFlagDeBusqueda={setFlagDeBusqueda}
               state={state} setState={setState} setExpresionesGlobales={setExpresionesGlobales} setModalDebusquedas={setModalDebusquedas} 
              setModalCaracteresInvalidos={setModalCaracteresInvalidos} setModalNumeros={setModalNumeros} setLoading={setLoading} expresionesGlobales={expresionesGlobales}
-             setChunkListGlobal={setChunkListGlobal} setChunkList={setChunkList}/>
+             setChunkListGlobal={setChunkListGlobal} setChunkList={setChunkList} letraMain={props.letraMain} flagLetraMain={props.flagLetraMain}/>
              <ListaIzquierdaExpresion {...props} expresiones={expresiones} setExpresiones={setExpresiones} idExpresion={idExpresion} 
                setIdExpresion={setIdExpresion} language={props.language} setLanguage={props.setLanguage} referenciaSeleccionada={referenciaSeleccionada}
                setReferenciaSeleccionada={setReferenciaSeleccionada} setExpanded1={setExpanded1} setExpanded2={setExpanded2} match={props.match} setFlagLetraMain={props.setFlagLetraMain}
                setPosicionReferenciasConsultadas={setPosicionReferenciasConsultadas} expresionesGlobales={expresionesGlobales} state={state} chunkList={chunkList}
-               chunkListGlobal={chunkListGlobal} setChunkList={setChunkList} setChunkListGlobal={setChunkListGlobal} letraMain={props.letraMain} idDeLaReferencia={props.match.params.id}/>
+               chunkListGlobal={chunkListGlobal} setChunkList={setChunkList} setChunkListGlobal={setChunkListGlobal} letraMain={props.letraMain} idDeLaReferencia={props.match.params.id}
+               />
            </Hidden>
            {openHidden == true ?
              <div>
@@ -232,7 +231,7 @@ function Pasaje(props){
              />
              {referenciaSeleccionada == null ? null 
              : 
-             <Paginador {...props} lang={props.lang} referencias={referencias} referenciaSeleccionada={referenciaSeleccionada} expresionId={props.match.params.expresion}/>}
+             <Paginador {...props} lang={props.lang} referencias={referencias} referenciaSeleccionada={referenciaSeleccionada} expresionId={props.match.params.expresion} />}
          </Grid>
          <Grid item sm={3} md={3} lg={3} className={classNames([{"panelDerechoEscondido" : panelDerecho==true}, "bordoDelMenuDerecho"])}>
            <Hidden xsDown>
