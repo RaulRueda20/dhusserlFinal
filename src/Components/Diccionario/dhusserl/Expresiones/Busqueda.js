@@ -38,6 +38,10 @@ function Busqueda(props){
   const [insensitiveCase,setInsensitiveCase]=React.useState(false);
   const [snack, setSnack] = React.useState({open : false, text : ""});
 
+  React.useEffect(()=>{
+    console.log("lenguaje de la lista", props.language)
+  }, [props.language])
+
   const ChunkB = (expresiones, busqueda) =>{
     props.setChunkListGlobal(expresiones.slice(0,50))
   }
@@ -68,21 +72,20 @@ function Busqueda(props){
         })
       }
     }else{
-      // console.log("BUSQUEDA",props.busqueda)
       var letra = props.busqueda.slice(0,1)
       var letraCapital = letra.toUpperCase()
       if(letra == letraCapital){
-        var servicebl = "/referencias/busquedaExpresionPorLetra"+"/"+props.letraMain
+        var servicebl = "/referencias/busquedaExpresionPorLetra"+"/"+props.letraMain+"/"+props.language
         webService(servicebl, "POST", {parametro:props.busqueda,case:insensitiveCase}, (data) => {
           if(props.letraMain == letraCapital){
-            ChunkC(data.data.response)
+            ChunkC(data.data.response,letra)
           }else{
             setSnack({open : true, text: "La primera letra de la busqueda no coincide con la letra del indice"})
           }
         })
       }else{
         var letraCapital = letra.toUpperCase()
-        var servicebl = "/referencias/busquedaExpresionPorLetra"+"/"+props.letraMain
+        var servicebl = "/referencias/busquedaExpresionPorLetra"+"/"+props.letraMain+"/"+props.language
         webService(servicebl, "POST", {parametro:props.busqueda,case:insensitiveCase}, (data) => {
           if(props.letraMain == letraCapital){
             ChunkC(data.data.response)

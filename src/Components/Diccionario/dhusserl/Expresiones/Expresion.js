@@ -35,7 +35,6 @@ function Expresion(props){
   const [expresiones, setExpresiones] = React.useState([]);
   const [expresionesGlobales, setExpresionesGlobales] = React.useState([]);
   const [idExpresion, setIdExpresion] = React.useState('');
-  const [open,setOpen]=React.useState(true);
   const [loading, setLoading]=React.useState(false);
   const [expresionSeleccionada, setExpresionSeleccionada]=React.useState({id:"", expresione:""});
   const [expanded1, setExpanded1] = React.useState(false);
@@ -112,9 +111,6 @@ function Expresion(props){
       setOpenModal(true)
       localStore.setObjects("bienvenida",true)
     }
-    if(props.flagLetraMain){
-      setState({checkedA:true})
-    }
   }, [props.letraMain, language, flagDeBusqueda, props.flagLetraMain])
 
   function getJerarquia(event){
@@ -132,7 +128,7 @@ function Expresion(props){
       <Grid container>
         <Grid item xs={12} >
             <ListaLetras letraMain={props.letraMain} setLetraMain={props.setLetraMain} flagLetraMain={props.flagLetraMain} setFlagLetraMain={props.setFlagLetraMain}
-            setState={setState}/>
+            setState={setState} state={state}/>
         </Grid>
         <Grid item xs={2} sm={1} md={1} xl={1} align="center" style={{borderRight:"1px rgb(240, 240, 240) solid"}}>
             <LetraIndice letraMain={props.letraMain} state={state}/>
@@ -166,7 +162,7 @@ function Expresion(props){
             setExpresionesGlobales={setExpresionesGlobales} setModalDebusquedas={setModalDebusquedas} 
             setModalCaracteresInvalidos={setModalCaracteresInvalidos} setModalNumeros={setModalNumeros} setFlagDeBusqueda={setFlagDeBusqueda}
             idExpresion={idExpresion} setIdExpresion={setIdExpresion} setChunkListGlobal={setChunkListGlobal} setChunkList={setChunkList}
-            letraMain={props.letraMain}
+            letraMain={props.letraMain} language={language}
             />
             <MenuDerecho {...props} idExpresion={idExpresion} setIdExpresion={setIdExpresion} language={language}
               expresiones={expresiones} expresionSeleccionada={expresionSeleccionada} 

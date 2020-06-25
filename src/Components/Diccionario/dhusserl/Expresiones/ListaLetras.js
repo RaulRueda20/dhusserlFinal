@@ -30,8 +30,15 @@ const letras = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
 function ListaLetras (props){
   const { classes }= props;
 
+  React.useEffect(()=>{
+    console.log(props.state)
+  },[true])
+
   const handleChangeLetraMain = (event) => {
     props.setLetraMain(event.target.innerText)
+    if(props.state.checkedA==false){
+      props.setState({checkedA:true})
+    }
     if(!props.flagLetraMain){
       props.setFlagLetraMain(true)
     }
