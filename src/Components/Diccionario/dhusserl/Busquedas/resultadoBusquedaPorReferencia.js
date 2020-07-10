@@ -45,6 +45,7 @@ function ResultadoBusquedaReferencia(props){
     }
 
     function htmlPasajeOriginal(){
+        console.log("pasajes.original",pasajes.original)
         return {__html: pasajes.original}
     }
 
@@ -83,7 +84,6 @@ function ResultadoBusquedaReferencia(props){
         var service = "/referencias/obtieneReferencias/" + idExpresion
         webService(service, "GET", {}, data => {
             var referencias = fixReferenciasConsultadas(data.data.response)
-            console.log("referencias", referencias)
             if(localStore.getObjects("referenciasConsultadas")==false){
                 var referenciasConsultadas = []
                 referenciasConsultadas.push(referencias)
@@ -111,7 +111,7 @@ function ResultadoBusquedaReferencia(props){
                             key={expresion.t_id}
                             className="liExpresionesRelacionadas"
                         >
-                            <Link to={`${props.match.path.slice(0,20)}/pasaje/${expresion.t_id}`} onClick={consultaDePasajes}>
+                            <Link to={`${props.match.path.slice(0,20)}/pasaje/${expresion.t_id}/${props.pasajeSeleccionado.ref_id}`} onClick={consultaDePasajes}>
                                 <Typography id={expresion.t_id+"/"+index}>{expresion.expresion_original +"  /  "+ expresion.expresion_traduccion}</Typography>
                             </Link>
                         </li>

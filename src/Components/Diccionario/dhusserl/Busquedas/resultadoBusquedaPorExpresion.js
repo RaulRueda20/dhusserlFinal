@@ -125,7 +125,7 @@ function ResultadoBusquedaExpresion(props){
     function consultaDePasajes(){
         setTimeout(() => {
             if(document.getElementById("VP" + props.idExpresion) != null){
-              document.getElementById("VP" + props.idExpresion).scrollIntoView()
+               document.getElementById("VP" + props.idExpresion).scrollIntoView()
             }
         }, 1000)
         var idExpresion = event.target.id.split("/")[0]

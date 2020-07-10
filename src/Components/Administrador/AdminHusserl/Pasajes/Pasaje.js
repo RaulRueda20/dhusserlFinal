@@ -2,12 +2,13 @@
 import React from 'react';
 
 //Ekements
+
 import CKEditor from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+// import CKEditor from '../../../../ckeditor5-react/dist/ckeditor.js';
+// import ClassicEditor from '../../../../ckeditor5-react/dist/ckeditor.js';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
 import { withStyles } from '@material-ui/styles';
 
 const infopasajes={
@@ -49,25 +50,11 @@ const infopasajes={
 function InfoPasajes(props){
   const {classes}=props;
 
-  const handleChangeC = (event) => {
-    props.setClave(event.target.value)
-  };
-
   return(
     <div className={classes.cartainfodepasajes}>
         <Grid container alignItems="center" className={classes.headerPasajes}>
             <Grid item xs={2}>
-                <Select
-                    value={props.clave}
-                    onChange={handleChangeC}
-                    className={classes.contenedorselectpasaje}
-                >
-                    <MenuItem value="CM">CM</MenuItem>
-                    <MenuItem value="I1">I1</MenuItem>
-                    <MenuItem value="I2">I2</MenuItem>
-                    <MenuItem value="PV">PV</MenuItem>
-                    <MenuItem value="IP">IP</MenuItem>
-                </Select>
+              <TextField id="standard-name" value={props.clave}  onChange={event => props.setClave(event.target.value)}></TextField>
             </Grid>
             <Grid item xs={10}>
                 <TextField
@@ -81,12 +68,12 @@ function InfoPasajes(props){
         <Grid container>
             <Grid item className={classes.contenedoreditorpasaje} id={"pasaje" + props.pasajeName}>
                 <CKEditor
-                    editor={ ClassicEditor }
-                    data={props.pasaje}
-                    onChange={ ( event, editor ) => {
-                        const data = editor.getData();
-                        props.setPasaje(data)
-                    } }
+                  editor={ ClassicEditor }
+                  data={props.pasaje}
+                  onChange={ ( event, editor ) => {
+                      const data = editor.getData();
+                      props.setPasaje(data)
+                  } }
                 />
             </Grid>
         </Grid>  

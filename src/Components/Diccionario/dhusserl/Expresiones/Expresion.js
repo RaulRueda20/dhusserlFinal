@@ -93,6 +93,7 @@ function Expresion(props){
   }
   
   React.useEffect(()=>{
+    console.log("state",state.checkedA)
     setLoading(true)
     if(document.getElementById("listaIzquierda").firstChild != null) document.getElementById("listaIzquierda").firstChild.scrollIntoView()
     var service = "/expresiones/" + language + "/" + props.letraMain
@@ -111,7 +112,7 @@ function Expresion(props){
       setOpenModal(true)
       localStore.setObjects("bienvenida",true)
     }
-  }, [props.letraMain, language, flagDeBusqueda, props.flagLetraMain])
+  }, [props.letraMain, language, flagDeBusqueda, props.flagLetraMain, flagDeBusqueda])
 
   function getJerarquia(event){
     setExpresionSeleccionada({id: event.currentTarget.id.split("/")[0], expresion:event.currentTarget.id.split("/")[1]})
@@ -128,7 +129,7 @@ function Expresion(props){
       <Grid container>
         <Grid item xs={12} >
             <ListaLetras letraMain={props.letraMain} setLetraMain={props.setLetraMain} flagLetraMain={props.flagLetraMain} setFlagLetraMain={props.setFlagLetraMain}
-            setState={setState} state={state}/>
+            setState={setState} state={state} flagDeBusqueda={flagDeBusqueda} setChunkListGlobal={setChunkListGlobal}/>
         </Grid>
         <Grid item xs={2} sm={1} md={1} xl={1} align="center" style={{borderRight:"1px rgb(240, 240, 240) solid"}}>
             <LetraIndice letraMain={props.letraMain} state={state}/>

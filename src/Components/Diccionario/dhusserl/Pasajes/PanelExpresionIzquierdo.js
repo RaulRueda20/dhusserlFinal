@@ -18,6 +18,12 @@ import '../../../../css/expresiones.css';
 export default function PanelExpresionIzquierdo(props){
     const [open, setOpen] = React.useState(false);
 
+    React.useEffect(()=>{
+        if(props.expresion.id == props.match.params.expresion){
+            setOpen(true)
+        }
+    },[props.match.params.expresion])
+
     function fixReferenciasConsultadas(expresion){
         var referencia = {
             clave: expresion[0].clave,
@@ -62,7 +68,12 @@ export default function PanelExpresionIzquierdo(props){
 
     function abrir(id){
         setOpen(!open)
-        !open ? document.getElementById(id).classList.add('abierto') : document.getElementById(id).classList.remove('abierto')
+        !open ? 
+        document.getElementById(id).classList.add('abierto') : document.getElementById(id).classList.remove('abierto')
+    }
+
+    function htmlPrettyE(){
+        return {__html:props.expresion.pretty_e + '<p>//</p>' + props.expresion.pretty_t}
     }
 
     return (
@@ -74,7 +85,7 @@ export default function PanelExpresionIzquierdo(props){
             <Grid container justify="center" alignItems="center">
                 <Grid item xs={10} id={props.expresion.id+"-"+props.index} onClick={props.clickHandleVista}>
                     <Link to={`${props.match.path.slice(0,20)}/pasaje/${props.expresion.id}/${props.expresion.referencias[0].refid}`}>
-                        <p className={"parrafo"}>{props.expresion.expresion + '//' + props.expresion.traduccion}</p>
+                        <span className="Renglones" dangerouslySetInnerHTML={htmlPrettyE()}/>
                     </Link>
                 </Grid>
                 <Grid item id={"BTN" + props.expresion.id} xs={2} onClick={()=>abrir("BTN" + props.expresion.id)}>
@@ -93,8 +104,9 @@ export default function PanelExpresionIzquierdo(props){
                     <ul key={props.expresion.id} id={"referencias"+props.expresion.id} className="ulDelPanelDeExpresiones">
                         {props.expresion.referencias[0].refid == null ? "No hay ninguna referencia para esta expresión. Ver por favor la lista de expresiones derivadas." : 
                             props.expresion.referencias.map((referencia,index) =>{
+                              
                             return(
-                            <li className="referencia" key={"panel" + index} >
+                            <li className="referencia" id={"panel" + index} >
                                 <Grid container justify="center" alignItems="center">
                                     <Grid item xs={10} id={props.expresion.id+"/"+props.index}>
                                         <Typography variant="h6" className={classNames([{"remarcadoDeReferencias" : referencia.orden==1}])} >

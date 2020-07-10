@@ -70,6 +70,14 @@ export default function PanelExpresion(props){
         }
     }
 
+    function htmlPrettyE(){
+        return {__html:props.expresion.pretty_e + '<p> // </p>' + props.expresion.pretty_t}
+    }
+
+    // function htmlPrettyT(){
+    //     return {__html:props.expresion.pretty_t}
+    // }
+
     return (
         <div>
             <li 
@@ -80,7 +88,7 @@ export default function PanelExpresion(props){
                 <Grid container justify="center" alignItems="center">
                     <Grid item xs={10} id={props.index} onClick={props.clickHandleVista}>
                         <Link to={props.expresion.referencias[0].refid==null ? "#" :`${props.match.path.slice(0,20)}/pasaje/${props.expresion.id}/${props.expresion.referencias[0].refid}`} onClick={handleModal}>
-                            <p className="parrafo">{props.expresion.expresion + '//' + props.expresion.traduccion}</p>
+                            <span className="Renglones" style={{}} dangerouslySetInnerHTML={htmlPrettyE()}/>
                         </Link>
                     </Grid>
                     <Grid item id={props.expresion.id} xs={1} onClick={()=>setOpen(!open)}>

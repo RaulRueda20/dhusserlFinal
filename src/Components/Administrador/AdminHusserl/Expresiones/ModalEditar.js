@@ -1,4 +1,7 @@
+//React
 import React from 'react';
+
+//Elements
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import Modal from '@material-ui/core/Modal';
@@ -13,10 +16,13 @@ import SwipeableViews from 'react-swipeable-views';
 import {adminService} from '../../../../js/webServices';
 import Snackbar from '@material-ui/core/Snackbar';
 
-import es from "../../../../Imagenes/spain.png";
-import al from "../../../../Imagenes/germany.png";
+//Components
 
 import FormularioExpresiones from './FormularioExpresiones';
+
+//Other re1s
+import es from "../../../../Imagenes/spain.png";
+import al from "../../../../Imagenes/germany.png";
 
 const estiloModalExpresiones = theme => ({
   Boton1:{

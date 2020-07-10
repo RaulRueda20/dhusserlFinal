@@ -598,13 +598,13 @@ const toolTipIdiomaDeLaLista= lang => {
     case "es":
       return "Idioma de la lista"
     case "en":
-      return "List languages"
+      return "Language of the list"
     case "fr":
-      return "Liste des langues"
+      return "Langue de la liste"
     case "al":
-      return "Listen Sie die Sprachen auf"
+      return "Sprache der Liste"
     case "ca":
-      return "Idiomes de la llista"
+      return "Idioma de la llista"
   }
 }
 
@@ -1178,6 +1178,51 @@ const noContienePasajes = lang => {
   }
 }
 
+const numeroDePasajes = lang => {
+  switch (lang) {
+    case "es":
+      return "Pasajes en total."
+    case "en":
+      return "passages."
+    case "fr":
+      return "passages au total."
+    case "al":
+      return "pasajesen"
+    case "ca":
+      return "passatges en total."
+  }
+}
+
+const pasajeSingular = lang => {
+  switch (lang) {
+    case "es":
+      return "Pasaje en total."
+    case "en":
+      return "passage."
+    case "fr":
+      return "passage au total."
+    case "al":
+      return "pasajeen"
+    case "ca":
+      return "passatge en total."
+  }
+}
+
+const descargarConsultadas = lang => {
+  switch (lang) {
+    case "es":
+      return "Descargar expresiones consultadas."
+    case "en":
+      return "Download consulted expressions."
+    case "fr":
+      return "Télécharger les expressions consultées."
+    case "al":
+      return "Konsultieren Sie konsultierte Ausdrücke"
+    case "ca":
+      return "Descarregar expressions consultades."
+  }
+}
+
 export {tituloDiccionario, ingresar, subtituloDiccionario, inicio, email, contra, olvidoDeContra, registrarse, 
   registrado, aqui, Footer1, Footer2, Footer3, registro, nombre, apellido, escuela, puesto, pais, comprobacionContra,
   modalRecuperacionContra,modalIngresarCorreo, exitoBody, correoInvalido, correoNoEncontrado, aceptarAlert, menuDiccionario,
@@ -1187,5 +1232,6 @@ export {tituloDiccionario, ingresar, subtituloDiccionario, inicio, email, contra
   distincionMayusyMinus, BusquedaGeneral, tipoDeBusqueda, dentroExpresion, dentroReferencia, noDerivaDe, noContieneExpresionesDerivadas,
   bienvenido, bienvenidaModal, descargarConsulta, seGeneraArchivo, conReferencias, descargarEn, idiomaAl, idiomaEs, pasajeSeleccionadoOTodos,
   pasajeSeleccionado, todosLosPasajes, tipoDeArchivos, texto, tituloNulos, mensajeNulos, tituloBusqueda, mensajeBusqueda, tituloNumeros,
-  mensajeNumeros, tituloCaracteres, mensajeCaracteres, tooltipPaginador, resultadoBusqueda, abrirListaTooltip, cerrarListaTooltip, noContienePasajes
+  mensajeNumeros, tituloCaracteres, mensajeCaracteres, tooltipPaginador, resultadoBusqueda, abrirListaTooltip, cerrarListaTooltip, noContienePasajes,
+  numeroDePasajes, pasajeSingular, descargarConsultadas
 }

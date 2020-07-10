@@ -25,7 +25,7 @@ import {webService} from '../../../../js/webServices';
 
 
 //Language
-import {descargarConsulta, seGeneraArchivo, menuDerechoJerarquia, conReferencias, descargarEn, idiomaAl, idiomaEs, pasajeSeleccionadoOTodos, pasajeSeleccionado, todosLosPasajes, tipoDeArchivos, texto} from '../../../../js/Language';
+import {descargarConsulta, seGeneraArchivo, menuDerechoJerarquia, conReferencias, descargarEn, idiomaAl, idiomaEs, pasajeSeleccionadoOTodos, pasajeSeleccionado, todosLosPasajes, tipoDeArchivos, texto, descargarConsultadas} from '../../../../js/Language';
 
 const modalDescargas={
     modalinDescarga:{
@@ -85,7 +85,6 @@ function ModalDescargas(props){
     }
 
     function clickHandleDescarga(){
-	console.log("longitud del checked",checked.length)
         var opciones = [0,0,0,0]
         checkedB ? opciones.push(1) : opciones.push(0)
         checkedC ? opciones.push(1) : opciones.push(0)
@@ -96,21 +95,17 @@ function ModalDescargas(props){
                 &referencia_espaniol=1&pasaje_aleman=" + opciones[4] + "&pasaje_espaniol=" + opciones[5] +
                 "&hierarchy=" + opciones[6] + "&lang=" + props.lang + "&refid=" + props.match.params.id
                 webService(serviceR, "GET", {}, (data) => {
-		    console.log('Reporte General de Texto',data.data.response)
                     document.getElementById("toDownloadDiv").innerHTML = "<a href='/files/"+data.data.response+".txt' id='fileToDownload' download></a>"
                     document.getElementById("fileToDownload").click()
                 })
                 if(checked.length > 0){
-		    console.log("entre al if del checked del texto")
                     for(var i in checked){
                         var refid = checked[i].split("/")[0]
                         var id = checked[i].split("/")[1]
-                        console.log("refid y id",refid, id)
                         var serviceR = "/reporte/reporteText/" + id + "?expresion_aleman=1&expresion_espaniol=1&referencia_aleman=1\
                         &referencia_espaniol=1&pasaje_aleman=" + opciones[4] + "&pasaje_espaniol=" + opciones[5] +
                         "&hierarchy=" + opciones[6] + "&lang=" + props.lang + "&refid=" + refid
                         webService(serviceR, "GET", {}, (data) => {
-			    console.log("expresiones consultadas en texto",data.data.response)
                             document.getElementById("toDownloadDiv").innerHTML = "<a href='/files/"+data.data.response+".txt' id='fileToDownload' download></a>"
                             document.getElementById("fileToDownload").click()
                         })
@@ -123,21 +118,17 @@ function ModalDescargas(props){
                 &referencia_espaniol=1&pasaje_aleman=" + opciones[4] + "&pasaje_espaniol=" + opciones[5] +
                 "&hierarchy=" + opciones[6] + "&lang=" + props.lang + "&refid=" + props.match.params.id
                 webService(serviceR, "GET", {}, (data) => {
-		    console.log('Data de General Pdf', data)
                     document.getElementById("toDownloadDiv").innerHTML = "<a href='/files/"+data.data.response+".pdf' id='fileToDownload' download></a>"
                     document.getElementById("fileToDownload").click()
                 })
                 if(checked.length > 0){
-	            console.log("entre al checked del pdf")
                     for(var i in checked){
                         var refid = checked[i].split("/")[0]
                         var id = checked[i].split("/")[1]
-                        console.log("refid y id",refid, id)
                        var serviceR = "/reporte/reportepdf/" + id + "?expresion_aleman=1&expresion_espaniol=1&referencia_aleman=1\
                         &referencia_espaniol=1&pasaje_aleman=" + opciones[4] + "&pasaje_espaniol=" + opciones[5] +
                         "&hierarchy=" + opciones[6] + "&lang=" + props.lang + "&refid=" + refid
                         webService(serviceR, "GET", {}, (data) => {
-			    console.log("Referencias consultadas", data.data)
                             document.getElementById("toDownloadDiv").innerHTML = "<a href='/files/"+data.data.response+".pdf' id='fileToDownload' download></a>"
                             document.getElementById("fileToDownload").click()
                         })
@@ -158,7 +149,6 @@ function ModalDescargas(props){
                 &referencia_espaniol=1&pasaje_aleman=" + opciones[4] + "&pasaje_espaniol=" + opciones[5] +
                 "&hierarchy=" + opciones[6] + "&lang=" + props.lang + "&refid=" + props.match.params.id
                 webService(serviceR, "GET", {}, (data) => {
-		    console.log(data)
                     document.getElementById("toDownloadDiv").innerHTML = "<a href='/files/"+data.data.response+".txt' id='fileToDownload' download></a>"
                     document.getElementById("fileToDownload").click()
                 })
@@ -264,7 +254,7 @@ function ModalDescargas(props){
                 <Divider className="divisor"/>
                 <Grid container >
                         <Grid item xs={12} className={classes.tituloConsultados}>
-                            <Typography>Descargar expresiones consultadas</Typography>
+                            <Typography>{descargarConsultadas(props.lang)}</Typography>
                         </Grid>
                     <Grid item xs={12}>
                         <ListaDeConsultados checked={checked} setChecked={setChecked}/>

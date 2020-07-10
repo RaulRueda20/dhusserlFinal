@@ -34,6 +34,7 @@ function BusquedaPasajes(props){
     var busqueda = event.target.value
     props.pasajes.map(pasaje=>{
       var pasajeNombre=pasaje.ref_libro_de + pasaje.ref_libro_es + pasaje.ref_id
+      console.log("nombre", pasajeNombre)
       var pasajeBuscado= pasajeNombre.indexOf(busqueda)
       document.getElementById(pasaje.ref_id).classList.remove("hidden")
       if (pasajeBuscado == -1){

@@ -77,6 +77,7 @@ function InfoPasajes(props){
   const [traduccionPasajeName, setTraduccionPasajeName] = React.useState("")
   const [opcionGuardado, setOpcionGuardado] = React.useState("editar")
   
+  
   React.useEffect(() => {
     const pasajeSeleccionado = props.pasajeSeleccionado
     setExpresionClave(pasajeSeleccionado.clave)
@@ -98,7 +99,6 @@ function InfoPasajes(props){
   }
 
   const handleClickEditarPasaje=()=>{
-    console.log("expresion pasajes",expresionPasaje)
     var params = {
       "ref_id": btoa(expresionId),
       "pasaje_de" : btoa(expresionPasaje),
@@ -110,17 +110,13 @@ function InfoPasajes(props){
     if (opcionGuardado != "editar"){
         var servicio = "/referencias/new/nuevoPasaje"
         adminService(servicio, "POST", JSON.stringify(params), (data) =>{
-          console.log("nuevo pasaje", data)
           setSnack({open : true, text: "Pasaje creado con éxito"})
           props.setReload(!props.reload)
         })
       }else{
-        console.log("params", params)
         var servicio = "/referencias/editarPasaje/" + expresionId
-        console.log("id",expresionId)
         adminService(servicio, "POST", JSON.stringify(params), (data) => {
           setSnack({open : true, text: "Pasaje editado con éxito"})
-          console.log("Edición de pasajes", data)
       })
     }
   }
@@ -134,9 +130,7 @@ function InfoPasajes(props){
       adminService("/referencias/eliminarPasaje/" + expresionId, "DELETE", {}, (datad) => {
         setSnack({open : true, text: "Pasaje eliminado con éxito."})
         handleClickiNuevoPasaje()
-        // props.setPasajeSeleccionado(emptyPasajeNuevo)
         props.setReload(!props.reload)
-        console.log("pasaje eliminado", datad)
       })
     }
   }
@@ -193,7 +187,6 @@ function InfoPasajes(props){
       <Grid container>
         <Grid item xs={12}>
           <Button
-            // variant="contained"
             className={classNames({"selectedButton" : vista == 0})}
             onClick={() => setVista(0)}
             size="small"
@@ -201,7 +194,6 @@ function InfoPasajes(props){
             Aleman
           </Button>
           <Button
-            // variant="contained"
             className={classNames({"selectedButton" : vista == 1}, classes.botonEs)}
             size="small"
             onClick={() => setVista(1)}

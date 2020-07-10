@@ -81,6 +81,16 @@ function PasajesRenderizados(props){
         return {__html:pasajeRenderizado.traduccion}
     }
 
+    function htmlPrettyE(){
+        console.log("referencia seleccionada",props.referenciaSeleccionada)
+        return {__html:props.referenciaSeleccionada.epretty}
+    }
+    
+    function htmlPrettyT(){
+        return {__html:props.referenciaSeleccionada.tpretty}
+    }
+    
+
     return (
         <div>
             {props.cerrado ? 
@@ -94,12 +104,12 @@ function PasajesRenderizados(props){
                     </Tooltip>
                     </Grid>
                     <Grid item xs={8} className={classes.gridTituloPasaje}>
-                        <Typography className={classes.typoSize} variant="h2">{props.tituloPasaje.expresion_original}</Typography>
+                        <Typography className={classes.typoSize} variant="h2"><div dangerouslySetInnerHTML={htmlPrettyE()}></div></Typography>
                     </Grid>
                     <Grid item xs={12} className="pasajesRenderizados"><div id={"pasajes"} dangerouslySetInnerHTML={htmlPasajeOriginal()}></div></Grid>
                 </Grid>
                 <Grid container xs={6}>
-                    <Grid item xs={12} className={classes.gridTituloPasaje}><Typography className={classes.typoSize} variant="h2">{props.tituloPasaje.expresion_traduccion}</Typography></Grid>
+                    <Grid item xs={12} className={classes.gridTituloPasaje}><Typography className={classes.typoSize} variant="h2"><div dangerouslySetInnerHTML={htmlPrettyT()}></div></Typography></Grid>
                     <Grid item xs={12} className="pasajesRenderizados"><div id={"pasajes"} dangerouslySetInnerHTML={htmlPasajeTraduccion()}></div></Grid>
                 </Grid>
             </Grid>
@@ -116,7 +126,7 @@ function PasajesRenderizados(props){
                         </Grid>
                     </Grid>
                     <Grid item xs={8} sm={8} md={10} lg={10} className={classes.gridTituloPasaje}>
-                        <Typography className={classes.typoSize} variant="h2">{props.tituloPasaje.expresion_original}</Typography>
+                        <Typography className={classes.typoSize} variant="h2">Original</Typography>
                     </Grid>
                     <Grid item xs={2} sm={2} md={1} lg={1} className={classes.bandera}>
                         <BanderaPasajes languageP={props.languageP} setLanguageP={props.setLanguageP} lang={props.lang}/>
@@ -135,7 +145,7 @@ function PasajesRenderizados(props){
                         </Grid>
                     </Grid>
                     <Grid item xs={8} sm={8} md={10} lg={10} className={classes.gridTituloPasaje}>
-                        <Typography className={classes.typoSize} variant="h2">{props.tituloPasaje.expresion_traduccion}</Typography>
+                        <Typography className={classes.typoSize} variant="h2">traduccion</Typography>
                     </Grid>
                     <Grid item xs={2} sm={2} md={1} lg={1} className={classes.bandera}>
                         <BanderaPasajes languageP={props.languageP} setLanguageP={props.setLanguageP} lang={props.lang}/>

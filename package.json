@@ -26,6 +26,7 @@
     "react-scroll-to-top": "^0.2.3",
     "react-swipeable-views": "^0.13.3",
     "react-to-target-auto-scroll": "^1.0.5",
+    "regenerator-runtime": "^0.13.5",
     "webpack-dev-server": "^3.10.3"
   },
   "scripts": {

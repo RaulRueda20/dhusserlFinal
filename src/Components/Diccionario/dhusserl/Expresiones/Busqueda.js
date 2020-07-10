@@ -38,10 +38,6 @@ function Busqueda(props){
   const [insensitiveCase,setInsensitiveCase]=React.useState(false);
   const [snack, setSnack] = React.useState({open : false, text : ""});
 
-  React.useEffect(()=>{
-    console.log("lenguaje de la lista", props.language)
-  }, [props.language])
-
   const ChunkB = (expresiones, busqueda) =>{
     props.setChunkListGlobal(expresiones.slice(0,50))
   }
@@ -52,49 +48,55 @@ function Busqueda(props){
 
   const handleChangeBusquedaExpresiones = (event) => {
     event.preventDefault()
-    if(props.state.checkedA == false){
-      var stringCaracteres = props.busqueda.replace(/(?!\w|\s)./g, '')
-      var stringNumeros = props.busqueda.replace(/([0-9])./g, '')
-      if(props.busqueda.length<2){
-        props.setModalDebusquedas(true)
-      }else if(stringCaracteres.length<2){
-        props.setModalCaracteresInvalidos(true)
-      }else if(stringNumeros.length<2){
-        props.setModalNumeros(true)
-      }else if(props.busqueda.length>2){
-        props.setLoading(true)
-        var servicebe = "/referencias/busquedaExpresion"
-        webService(servicebe, "POST", {parametro:props.busqueda,case:insensitiveCase}, (data) => {
-          ChunkB(data.data.response)
-          props.setExpresionesGlobales(data.data.response)
-          props.setLoading(false)
-          props.setFlagDeBusqueda(true)
-        })
-      }
-    }else{
-      var letra = props.busqueda.slice(0,1)
-      var letraCapital = letra.toUpperCase()
-      if(letra == letraCapital){
-        var servicebl = "/referencias/busquedaExpresionPorLetra"+"/"+props.letraMain+"/"+props.language
-        webService(servicebl, "POST", {parametro:props.busqueda,case:insensitiveCase}, (data) => {
-          if(props.letraMain == letraCapital){
-            ChunkC(data.data.response,letra)
-          }else{
-            setSnack({open : true, text: "La primera letra de la busqueda no coincide con la letra del indice"})
-          }
-        })
+    if(props.busqueda != ""){
+      if(props.state.checkedA == false){
+        var stringCaracteres = props.busqueda.replace(/(?!\w|\s)./g, '')
+        var stringNumeros = props.busqueda.replace(/([0-9])./g, '')
+        if(props.busqueda.length<2){
+          props.setModalDebusquedas(true)
+        }else if(stringCaracteres.length<2){
+          props.setModalCaracteresInvalidos(true)
+        }else if(stringNumeros.length<2){
+          props.setModalNumeros(true)
+        }else if(props.busqueda.length>2){
+          props.setLoading(true)
+          var servicebe = "/referencias/busquedaExpresion"
+          webService(servicebe, "POST", {parametro:props.busqueda,case:insensitiveCase}, (data) => {
+            ChunkB(data.data.response)
+            props.setExpresionesGlobales(data.data.response)
+            props.setLoading(false)
+            props.setFlagDeBusqueda(true)
+          })
+        }
       }else{
+        var letra = props.busqueda.slice(0,1)
         var letraCapital = letra.toUpperCase()
-        var servicebl = "/referencias/busquedaExpresionPorLetra"+"/"+props.letraMain+"/"+props.language
-        webService(servicebl, "POST", {parametro:props.busqueda,case:insensitiveCase}, (data) => {
-          if(props.letraMain == letraCapital){
-            ChunkC(data.data.response)
-          }else{
-            setSnack({open : true, text: "La primera letra de la busqueda no coincide con la letra del indice"})
-          }
-        })
-      }
-    } 
+        if(letra == letraCapital){
+          // console.log("letra", letra)
+          var servicebl = "/referencias/busquedaExpresionPorLetra"+"/"+props.letraMain+"/"+props.language
+          webService(servicebl, "POST", {parametro:props.busqueda,case:insensitiveCase}, (data) => {
+            if(props.letraMain == letraCapital){
+              ChunkC(data.data.response)
+            }else{
+              setSnack({open : true, text: "La primera letra de la busqueda no coincide con la letra del indice"})
+            }
+          })
+        }else{
+          // console.log("letra", letra)
+          var letraCapital = letra.toUpperCase()
+          var servicebl = "/referencias/busquedaExpresionPorLetra"+"/"+props.letraMain+"/"+props.language
+          webService(servicebl, "POST", {parametro:props.busqueda,case:insensitiveCase}, (data) => {
+            if(props.letraMain == letraCapital){
+              ChunkC(data.data.response)
+            }else{
+              setSnack({open : true, text: "La primera letra de la busqueda no coincide con la letra del indice"})
+            }
+          })
+        }
+      } 
+    }else{
+      props.setChunkList(props.expresiones.slice(0,50))
+    }
   }
 
   function handleInsensitiveCase(){

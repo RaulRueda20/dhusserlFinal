@@ -85,35 +85,53 @@ function BusquedaAbajo(props){
     
     const handleChangeBusquedaExpresiones = (event) => {
         event.preventDefault()
-        if(props.state.checkedA == false){  
-            var stringCaracteres = props.busqueda.replace(/(?!\w|\s)./g, '')
-            var stringNumeros = props.busqueda.replace(/([0-9])./g, '')
-            if(props.busqueda.length<2){
-              props.setModalDebusquedas(true)
-            }else if(stringCaracteres.length<2){
-              props.setModalCaracteresInvalidos(true)
-            }else if(stringNumeros.length<2){
-              props.setModalNumeros(true)
-            }else if(props.busqueda.length>2){
-              props.setLoading(true)
-              var servicebe = "/referencias/busquedaExpresion"
-              webService(servicebe, "POST", {parametro:props.busqueda,case:insensitiveCase}, (data) => {
-                ChunkB(data.data.response)
-                var expresiones = data.data.response
-                props.setExpresionesGlobales(fixReferencias(expresiones))
-                props.setLoading(false)
-                props.setFlagDeBusqueda(true)
-              })
+        if(props.busqueda!=""){
+            if(props.state.checkedA == false){  
+                var stringCaracteres = props.busqueda.replace(/(?!\w|\s)./g, '')
+                var stringNumeros = props.busqueda.replace(/([0-9])./g, '')
+                if(props.busqueda.length<2){
+                  props.setModalDebusquedas(true)
+                }else if(stringCaracteres.length<2){
+                  props.setModalCaracteresInvalidos(true)
+                }else if(stringNumeros.length<2){
+                  props.setModalNumeros(true)
+                }else if(props.busqueda.length>2){
+                  props.setLoading(true)
+                  var servicebe = "/referencias/busquedaExpresion"
+                  webService(servicebe, "POST", {parametro:props.busqueda,case:insensitiveCase}, (data) => {
+                    ChunkB(data.data.response)
+                    var expresiones = data.data.response
+                    props.setExpresionesGlobales(fixReferencias(expresiones))
+                    props.setLoading(false)
+                    props.setFlagDeBusqueda(true)
+                  })
+                }
+            }else{
+                var letra = props.busqueda.slice(0,1)
+                var letraCapital = letra.toUpperCase()
+                if(letra == letraCapital){
+                  var servicebl = "/referencias/busquedaExpresionPorLetra"+"/"+props.letraMain+"/"+props.language
+                  webService(servicebl, "POST", {parametro:props.busqueda,case:insensitiveCase}, (data) => {
+                    if(props.letraMain == letraCapital){
+                      ChunkC(data.data.response)
+                    }else{
+                      setSnack({open : true, text: "La primera letra de la busqueda no coincide con la letra del indice"})
+                    }
+                  })
+                }else{
+                  var letraCapital = letra.toUpperCase()
+                  var servicebl = "/referencias/busquedaExpresionPorLetra"+"/"+props.letraMain+"/"+props.language
+                  webService(servicebl, "POST", {parametro:props.busqueda,case:insensitiveCase}, (data) => {
+                    if(props.letraMain == letraCapital){
+                      ChunkC(data.data.response)
+                    }else{
+                      setSnack({open : true, text: "La primera letra de la busqueda no coincide con la letra del indice"})
+                    }
+                  })
+                }
             }
         }else{
-        props.expresiones.map(expresion=>{
-            var expresionNombre=expresion.expresion +  expresion.traduccion +  expresion.id
-            var expresionEncontrada= expresionNombre.indexOf(props.busqueda)
-            document.getElementById("expresion"+expresion.id).classList.remove("hiddenE")
-            if (expresionEncontrada == -1){
-            document.getElementById("expresion"+expresion.id).className += " hiddenE";
-            }
-        })
+            props.setChunkList(props.expresiones.slice(0,50))
         }
     }
 

@@ -655,6 +655,7 @@ hr{
 .pasajesRenderizadosBusquedaPorReferencia{
   padding: 15px 15px 15px 15px;
   overflow: auto;
+  overflow-y: auto;
   border-right: 1px double lightgrey;
   border-left: 1px double lightgrey;
   border-top: 1px double lightgrey;
@@ -737,4 +738,13 @@ hr{
   font-family: "Roboto", "Helvetica", "Arial", sans-serif;
   color: rgba(80, 80, 80);
   cursor: pointer;
+}
+
+.Renglones{
+  display: flex;
+}
+
+.Renglones p{
+  margin-left: 5px;
+  margin-right: 5px;
 }

@@ -3,7 +3,6 @@ import React from 'react';
 import classNames from 'classnames';
 
 // Components
-import Tooltip from '@material-ui/core/Tooltip';
 import FirstPage from '@material-ui/icons/FirstPage';
 import LastPage from '@material-ui/icons/LastPage';
 import Back from '@material-ui/icons/KeyboardArrowLeft';
@@ -12,7 +11,7 @@ import {Link} from 'react-router-dom';
 import { Typography } from '@material-ui/core';
 
 //Language
-import {tooltipPaginador} from '../../../../js/Language';
+import {numeroDePasajes, pasajeSingular} from '../../../../js/Language';
 
 
 function Pasaje(props){
@@ -21,6 +20,8 @@ function Pasaje(props){
   const [posicion, setPosicion] = React.useState(0)
   const [referenciaSeleccionada, setReferenciaSeleccionada] = React.useState(null);
   const [next, setNext] = React.useState("");
+  const [indexLista, setIndexLista] = React.useState("")
+
 
   // var idDeExpresion es el id que se toma de la URL, idExpresion es un estado que llama servicios y tiene otras funcionalidades
 
@@ -30,6 +31,15 @@ function Pasaje(props){
     if(props.referenciaSeleccionada != null){
       setReferenciaSeleccionada(props.referenciaSeleccionada)
       acortadorPaginador(props.referencias)
+    }
+    if(indexLista==0){
+      setTimeout(()=>{
+        document.getElementById(props.referenciaSeleccionada.refid + '/' + 0).classList.add('pasajesVisitados')
+      },1000)
+    }else{
+      setTimeout(()=>{
+        document.getElementById(props.referenciaSeleccionada.refid + '/' + indexLista).classList.add('pasajesVisitados')
+      },1000)
     }
   }, [props.referencias, props.referenciaSeleccionada, posicion])
 
@@ -78,6 +88,7 @@ function Pasaje(props){
         setCasillas(referencias)
       }
     }
+    setIndexLista(refPos)
     return referencias
   }
 
@@ -86,51 +97,28 @@ function Pasaje(props){
       setNext(props.referencias[referencias.length -1])
     }
   }
-  
-  function visitPasaje(refid, index, id){
-    // console.log(document.getElementById("BTN"+id))
-    var elemento = document.getElementById("BTN"+id)
-    if(elemento.classList.contains('abierto')==false){
-      elemento.click()
-      setTimeout(()=>{
-        document.getElementById(refid + '/' + index).classList.add('pasajesVisitados')
-      },1000)
-    }else{
-      document.getElementById(refid + '/' + index).classList.add('pasajesVisitados');
-    }
-  }
 
   return(
     <div style={{borderLeft: "1px lightgray solid",borderRight: "1px lightgray solid",padding: "0px 10px"}}>
       { referenciaSeleccionada != null && referencias.length > 0 ? 
       <div style={{textAlign: 'center'}}>
-        <Tooltip title={posicion==0 ? tooltipPaginador(props.lang) : referencias[0].ref_original}>
-          <Link to={posicion==0 ? "#" : `${props.match.path.slice(0,20)}/pasaje/${props.expresionId}/${referencias[0].refid}`} 
-            className="botonPaginador"><FirstPage fontSize="small"/></Link>
-        </Tooltip>
-        <Tooltip title={posicion<=0 ? tooltipPaginador(props.lang) : referencias[posicion-1].ref_original}>
-          <Link to={posicion<=0 ? "#" : `${props.match.path.slice(0,20)}/pasaje/${props.expresionId}/${referencias[posicion-1].refid}`}
-            className="botonPaginador"><Back fontSize="small"/></Link>
-        </Tooltip>
+        <Link to={posicion==0 ? "#" : `${props.match.path.slice(0,20)}/pasaje/${props.expresionId}/${referencias[0].refid}`} 
+          className="botonPaginador"><FirstPage fontSize="small"/></Link>
+        <Link to={posicion<=0 ? "#" : `${props.match.path.slice(0,20)}/pasaje/${props.expresionId}/${referencias[posicion-1].refid}`}
+          className="botonPaginador"><Back fontSize="small"/></Link>
 
         {casillas.map((referencia, index) => {
           return (
             (
-              <Tooltip title={referencias[index].ref_original} key={props.expresionId+"-"+index}>
-                <Link onClick={() => visitPasaje(referencia.refid, index, referencia.id)} to={`${props.match.path.slice(0,20)}/pasaje/${props.expresionId}/${referencia.refid}`} className={classNames(["botonPaginador", {"pasajeSeleccionado": props.referenciaSeleccionada.refid == referencia.refid}])} style={{padding: "13px 0px"}}><span>{referencia.index+1}</span></Link>
-              </Tooltip>
+              <Link to={`${props.match.path.slice(0,20)}/pasaje/${props.expresionId}/${referencia.refid}`} className={classNames(["botonPaginador", {"pasajeSeleccionado": props.referenciaSeleccionada.refid == referencia.refid}])} style={{padding: "13px 0px"}}><span>{referencia.index+1}</span></Link>
             )
           )})
         }
 
-        <Tooltip title={posicion == referencias.length -1 || referencias.length==1 ? tooltipPaginador(props.lang) : referencias[posicion+1].ref_original}>
           <Link to={posicion >= referencias.length -1 ? "#" : `${props.match.path.slice(0,20)}/pasaje/${props.expresionId}/${referencias[posicion+1].refid}`} onClick={handleForward}><span className="botonPaginador"><Next fontSize="small"/></span></Link>
-        </Tooltip>
-        <Tooltip title={posicion == referencias.length - 1 ? tooltipPaginador(props.lang) : referencias[referencias.length -1].ref_original}>
           <Link to={posicion == referencias.length - 1 ? "#" : `${props.match.path.slice(0,20)}/pasaje/${props.expresionId}/${referencias[referencias.length -1].refid}`}><span className="botonPaginador"><LastPage fontSize="small"/></span></Link>
-        </Tooltip>
       </div> : null}
-      <Typography variant="h5">Hay {referencias.length} {referencias.length > 1 ? "pasajes" : "pasaje"} en total.</Typography>
+      <Typography variant="h5">{referencias.length} {referencias.length > 1 ? numeroDePasajes(props.lang) : pasajeSingular(props.lang)} </Typography>
     </div>
   )
 }

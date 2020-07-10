@@ -161,9 +161,6 @@ function Pasaje(props){
         
       }
     }, 1000)
-    if(props.flagLetraMain){
-      setState({checkedA:true})
-    }
   }, [props.letraMain, props.language, props.match.params.expresion, props.match.params.id, props.flagLetraMain, expresionesGlobales])
 
   return(
@@ -191,7 +188,7 @@ function Pasaje(props){
        </Hidden>
        <Grid container>
          <Grid item xs={12}>
-           <ListaLetras letraMain={props.letraMain} setLetraMain={props.setLetraMain} setFlagLetraMain={props.setFlagLetraMain} flagLetraMain={props.flagLetraMain}/>
+           <ListaLetras letraMain={props.letraMain} setLetraMain={props.setLetraMain} setFlagLetraMain={props.setFlagLetraMain} flagLetraMain={props.flagLetraMain} setState={setState} state={state}/>
          </Grid>
          <Grid item xs={12} sm={3} md={3} lg={3} className={classNames([{"panelIzquierdoEscondido" : panelIzquierdo==true}])}>
            <Hidden xsDown>

@@ -41,10 +41,11 @@ function ContenidoPasaje(props){
   const [tituloPasaje, setTituloPasaje]=React.useState("");
   const [openDescargas, setOpenDescargas]=React.useState(false)
 
-  React.useEffect(() => {
-    var nombreExpresion =  props.referenciaSeleccionada != null ? props.referenciaSeleccionada : emptyPasaje
-    setTituloPasaje(nombreExpresion)
-  }, [props.referenciaSeleccionada])
+  // React.useEffect(() => {
+  //   console.log("referencia Seleccionada",props.referenciaSeleccionada)
+  //   var nombreExpresion =  props.referenciaSeleccionada != null ? props.referenciaSeleccionada : emptyPasaje
+  //   setTituloPasaje(nombreExpresion)
+  // }, [props.referenciaSeleccionada])
 
   function clickHandleDescargas(){
     setOpenDescargas(true)
@@ -68,7 +69,7 @@ function ContenidoPasaje(props){
       <Grid container>
         <Grid item xs={12}>
           <PasajesRenderizados referenciaSeleccionada={props.referenciaSeleccionada} languageP={props.languageP} setLanguageP={props.setLanguageP} lang={props.lang}
-          cerrado={props.panelIzquierdo || props.panelDerecho} idDelURL={props.idDelURL} tituloPasaje={tituloPasaje} clickHandleDescargas={clickHandleDescargas}
+          cerrado={props.panelIzquierdo || props.panelDerecho} idDelURL={props.idDelURL} clickHandleDescargas={clickHandleDescargas}
           />
         </Grid>
       </Grid>
