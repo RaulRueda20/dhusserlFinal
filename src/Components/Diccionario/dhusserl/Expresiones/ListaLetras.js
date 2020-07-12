@@ -35,7 +35,6 @@ function ListaLetras (props){
     if(props.state.checkedA==false){
       props.setState({checkedA:true})
     }
-    props.setChunkListGlobal([])
     if(!props.flagLetraMain){
       props.setFlagLetraMain(true)
     }

@@ -72,7 +72,6 @@ function Busqueda(props){
         var letra = props.busqueda.slice(0,1)
         var letraCapital = letra.toUpperCase()
         if(letra == letraCapital){
-          // console.log("letra", letra)
           var servicebl = "/referencias/busquedaExpresionPorLetra"+"/"+props.letraMain+"/"+props.language
           webService(servicebl, "POST", {parametro:props.busqueda,case:insensitiveCase}, (data) => {
             if(props.letraMain == letraCapital){
@@ -93,7 +92,7 @@ function Busqueda(props){
             }
           })
         }
-      } 
+      }
     }else{
       props.setChunkList(props.expresiones.slice(0,50))
     }
