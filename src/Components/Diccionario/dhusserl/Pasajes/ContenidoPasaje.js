@@ -12,8 +12,6 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import PasajesRenderizados from './PasajesRenderizados';
 import ModalDescargas from './ModalDescargas';
 
-const emptyPasaje = {clave:"", epretty:"", expresion_original:"", expresion_traduccion:"", orden:"", pasaje_original: "", pasaje_traduccion:"",ref_original:"", ref_traduccion:"", refid:"", tpretty:""}
-
 const useStyles = makeStyles(theme => ({
   gridTituloPasaje:{
     textAlign: "center",
@@ -38,14 +36,7 @@ const useStyles = makeStyles(theme => ({
 function ContenidoPasaje(props){
   const classes = useStyles();
   const theme = useTheme();
-  const [tituloPasaje, setTituloPasaje]=React.useState("");
   const [openDescargas, setOpenDescargas]=React.useState(false)
-
-  // React.useEffect(() => {
-  //   console.log("referencia Seleccionada",props.referenciaSeleccionada)
-  //   var nombreExpresion =  props.referenciaSeleccionada != null ? props.referenciaSeleccionada : emptyPasaje
-  //   setTituloPasaje(nombreExpresion)
-  // }, [props.referenciaSeleccionada])
 
   function clickHandleDescargas(){
     setOpenDescargas(true)

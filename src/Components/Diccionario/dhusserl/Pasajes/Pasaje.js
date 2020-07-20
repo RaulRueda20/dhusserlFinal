@@ -119,6 +119,7 @@ function Pasaje(props){
     setLoading(true)
     var idDeExpresion=props.match.params.expresion;
     var idDeLaReferencia=props.match.params.id ? props.match.params.id : false;
+    console.log('idDeLaReferencia', idDeLaReferencia)
     var service = "/expresiones/" + props.language + "/" + props.letraMain;
     if(pasajeService != service){
       setPasajeService(service)
@@ -161,7 +162,10 @@ function Pasaje(props){
         
       }
     }, 1000)
-  }, [props.letraMain, props.language, props.match.params.expresion, props.match.params.id, props.flagLetraMain, expresionesGlobales])
+    if(state.checkedA==true){
+      setChunkListGlobal([])
+    }
+  }, [props.letraMain, props.language, props.match.params.expresion, props.match.params.id, props.flagLetraMain, expresionesGlobales, state])
 
   return(
     <div>
@@ -188,7 +192,8 @@ function Pasaje(props){
        </Hidden>
        <Grid container>
          <Grid item xs={12}>
-           <ListaLetras letraMain={props.letraMain} setLetraMain={props.setLetraMain} setFlagLetraMain={props.setFlagLetraMain} flagLetraMain={props.flagLetraMain} setState={setState} state={state}/>
+           <ListaLetras letraMain={props.letraMain} setLetraMain={props.setLetraMain} setFlagLetraMain={props.setFlagLetraMain} flagLetraMain={props.flagLetraMain} setState={setState} state={state} language={props.language} 
+           setChunkListGlobal={setChunkListGlobal} setChunkList={setChunkList}/>
          </Grid>
          <Grid item xs={12} sm={3} md={3} lg={3} className={classNames([{"panelIzquierdoEscondido" : panelIzquierdo==true}])}>
            <Hidden xsDown>
@@ -224,7 +229,7 @@ function Pasaje(props){
          className={classNames([{"contenidoPasajes" : openHidden==true}])}>
              <ContenidoPasaje referencias={referencias}  referenciaSeleccionada={referenciaSeleccionada} languageP={languageP} setLanguageP={setLanguageP}
              idExpresion={idExpresion} lang={props.lang} match={props.match} panelDerecho={panelDerecho} panelIzquierdo={panelIzquierdo} 
-             lang={props.lang} openHidden={openHidden} setOpenHidden={setOpenHidden}
+             lang={props.lang} openHidden={openHidden} setOpenHidden={setOpenHidden} 
              />
              {referenciaSeleccionada == null ? null 
              : 

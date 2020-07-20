@@ -81,7 +81,6 @@ function Busqueda(props){
             }
           })
         }else{
-          // console.log("letra", letra)
           var letraCapital = letra.toUpperCase()
           var servicebl = "/referencias/busquedaExpresionPorLetra"+"/"+props.letraMain+"/"+props.language
           webService(servicebl, "POST", {parametro:props.busqueda,case:insensitiveCase}, (data) => {
@@ -121,7 +120,7 @@ function Busqueda(props){
             id="input-with-icon-adornment"
             startAdornment={
               <InputAdornment position="end">
-                <Tooltip title={distincionMayusyMinus(props.lang)}>
+                <Tooltip title="Activar para distinguir entre mayusculas y minusculas">
                     <IconButton onClick={handleInsensitiveCase} className={classNames([{"caseSeleccionado" : insensitiveCase == true}, "case"])}>
                         <Icon path={mdiFormatLetterCase}
                         title="User Profile"

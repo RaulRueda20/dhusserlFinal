@@ -85,7 +85,7 @@ export default function PanelExpresionIzquierdo(props){
             <Grid container justify="center" alignItems="center">
                 <Grid item xs={10} id={props.expresion.id+"-"+props.index} onClick={props.clickHandleVista}>
                     <Link to={`${props.match.path.slice(0,20)}/pasaje/${props.expresion.id}/${props.expresion.referencias[0].refid}`}>
-                        <span className="Renglones" dangerouslySetInnerHTML={htmlPrettyE()}/>
+                        <p className="Renglones" dangerouslySetInnerHTML={htmlPrettyE()}/>
                     </Link>
                 </Grid>
                 <Grid item id={"BTN" + props.expresion.id} xs={2} onClick={()=>abrir("BTN" + props.expresion.id)}>

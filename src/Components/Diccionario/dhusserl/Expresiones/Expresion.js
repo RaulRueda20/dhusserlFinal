@@ -131,7 +131,8 @@ function Expresion(props){
       <Grid container>
         <Grid item xs={12} >
             <ListaLetras letraMain={props.letraMain} setLetraMain={props.setLetraMain} flagLetraMain={props.flagLetraMain} setFlagLetraMain={props.setFlagLetraMain}
-            setState={setState} state={state} flagDeBusqueda={flagDeBusqueda} chunkListGlobal={chunkListGlobal} setChunkListGlobal={setChunkListGlobal} setChunkList={setChunkList} />
+            setState={setState} state={state} flagDeBusqueda={flagDeBusqueda} chunkListGlobal={chunkListGlobal} setChunkListGlobal={setChunkListGlobal} setChunkList={setChunkList} 
+            language={language}/>
         </Grid>
         <Grid item xs={2} sm={1} md={1} xl={1} align="center" style={{borderRight:"1px rgb(240, 240, 240) solid"}}>
             <LetraIndice letraMain={props.letraMain} state={state}/>

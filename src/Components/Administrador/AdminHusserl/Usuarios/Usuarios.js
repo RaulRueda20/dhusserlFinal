@@ -18,7 +18,10 @@ import LastPageIcon from '@material-ui/icons/LastPage';
 import Typography from '@material-ui/core/Typography';
 import {  makeStyles, useTheme } from '@material-ui/styles';
 
+// Other req
 import {adminService} from '../../../../js/webServices';
+import '../../../../css/expresiones.css';
+
 
 const useStyles1 = makeStyles(theme => ({
   root: {

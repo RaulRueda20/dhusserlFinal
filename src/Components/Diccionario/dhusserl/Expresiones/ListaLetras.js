@@ -1,12 +1,16 @@
+//React
 import React from 'react';
-import classNames from 'classnames';
+
+//Elements
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import Grid from '@material-ui/core/Grid';
 import { withStyles } from '@material-ui/styles';
 
-// import Expresiones from './Expresiones'
+//Other req
 import { Typography } from '@material-ui/core';
+import classNames from 'classnames';
+import {webService} from '../../../../js/webServices';
 
 const styleList = {
   lista:{
@@ -30,7 +34,48 @@ const letras = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
 function ListaLetras (props){
   const { classes }= props;
 
+  const fixReferencias = (referencias) => {
+    var expresiones=[]
+    var posicActual = -1
+    var expreActual = ""
+    var i = 0
+    while (i<referencias.length){
+      if (expreActual != referencias[i].expresion){
+        posicActual++
+        expreActual = referencias[i].expresion
+        expresiones.push({
+          clave : referencias[i].clave,
+          expresion : referencias[i].expresion,
+          id : referencias[i].id,
+          index_de: referencias[i].index_de,
+          index_es: referencias[i].index_es,
+          pretty_e: referencias[i].pretty_e,
+          pretty_t: referencias[i].pretty_t,
+          referencias : [],
+          traduccion: referencias[i].traduccion
+        })
+        expresiones[posicActual].referencias.push({
+          referencia_original : referencias[i].referencia_original,
+          referencia_traduccion : referencias[i].referencia_traduccion,
+          refid : referencias[i].refid,
+          orden: referencias[i].orden,
+        })
+        i++
+      }else{
+        expresiones[posicActual].referencias.push({
+          referencia_original : referencias[i].referencia_original,
+          referencia_traduccion : referencias[i].referencia_traduccion,
+          refid : referencias[i].refid,
+          orden: referencias[i].orden,
+        })
+        i++
+      }
+    }
+    return expresiones
+  }
+
   const handleChangeLetraMain = (event) => {
+    console.log("de Pasajes",props.language)
     props.setLetraMain(event.target.innerText)
     if(props.state.checkedA==false){
       props.setState({checkedA:true})
@@ -38,6 +83,13 @@ function ListaLetras (props){
     if(!props.flagLetraMain){
       props.setFlagLetraMain(true)
     }
+    var service = "/expresiones/" + props.language + "/" + props.letraMain
+    webService(service, "GET", {}, (data) => {
+      props.setChunkList(fixReferencias(data.data.response).slice(0,50))
+      if(!props.flagDeBusqueda){
+        props.setChunkListGlobal(fixReferencias(data.data.response))
+      }
+    })
   };
 
   return(
