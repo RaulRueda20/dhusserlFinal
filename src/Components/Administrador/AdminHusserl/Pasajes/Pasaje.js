@@ -3,8 +3,8 @@ import React from 'react';
 
 //Ekements
 
-import CKEditor from '@ckeditor/ckeditor5-react';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import CKEditor from 'ckeditor4-react';
+// import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 // import CKEditor from '../../../../ckeditor5-react/dist/ckeditor.js';
 // import ClassicEditor from '../../../../ckeditor5-react/dist/ckeditor.js';
 import Grid from '@material-ui/core/Grid';
@@ -38,7 +38,8 @@ const infopasajes={
     paddingLeft:"3px",
   },
   contenedoreditorpasaje:{
-    width: "100%",
+    width: "75vw",
+    height: "36vh",
     padding: "25px"
   },
   headerPasajes:{
@@ -68,7 +69,6 @@ function InfoPasajes(props){
         <Grid container>
             <Grid item className={classes.contenedoreditorpasaje} id={"pasaje" + props.pasajeName}>
                 <CKEditor
-                  editor={ ClassicEditor }
                   data={props.pasaje}
                   onChange={ ( event, editor ) => {
                       const data = editor.getData();

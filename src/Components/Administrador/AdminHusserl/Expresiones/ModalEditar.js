@@ -34,7 +34,7 @@ const estiloModalExpresiones = theme => ({
     width: "60vw",
     padding: "20px 30px",
     position: "absolute",
-    height: "50vh"
+    height: "60vh"
   },
   contenedorSubtitulos:{
     padding: "15px 15px"

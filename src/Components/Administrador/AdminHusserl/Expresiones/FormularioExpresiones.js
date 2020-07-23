@@ -2,8 +2,8 @@
 import React from 'react';
 
 //Components
-import CKEditor from '@ckeditor/ckeditor5-react';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import CKEditor from 'ckeditor4-react';
+// import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import Typography from '@material-ui/core/Typography';
 import Divider from "@material-ui/core/Divider";
 import TextField from '@material-ui/core/TextField';
@@ -107,11 +107,9 @@ function FormularioExpresiones(props){
       <Divider className={classes.divisor}/>
       <div className={classes.editor}>
         <CKEditor
-          editor={ ClassicEditor }
           data={props.contenido}
           onChange={ ( event, editor ) => {
             var data = (editor.getData());
-            console.log("data",data)
             props.setContenido(data)
         } }
         />
