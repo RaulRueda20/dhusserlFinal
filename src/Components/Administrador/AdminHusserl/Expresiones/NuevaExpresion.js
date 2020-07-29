@@ -54,11 +54,9 @@ function NuevaExpresion(props){
   const [reloadExpresion, setReloadExpresion] = React.useState(true);
 
   React.useEffect(()=>{
-    console.log("ESELECC",props.expresionSeleccionada)
     if(props.expresionSeleccionada != ""){
       var service = "/referencias/obtieneReferenciasByTerm/" + props.expresionSeleccionada
       adminService(service, "GET", {}, (expresionEncontrada) => {
-        console.log("SERV", expresionEncontrada)
         if(expresionEncontrada.data.response.length > 0){
           setExpresion(expresionEncontrada.data.response[0])
           if(expresionEncontrada.data.response[0].refid)

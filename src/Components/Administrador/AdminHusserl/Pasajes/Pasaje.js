@@ -3,7 +3,7 @@ import React from 'react';
 
 //Ekements
 
-import CKEditor from 'ckeditor4-react';
+import CKEditor from 'ckeditor4-react-advanced';
 // import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 // import CKEditor from '../../../../ckeditor5-react/dist/ckeditor.js';
 // import ClassicEditor from '../../../../ckeditor5-react/dist/ckeditor.js';
@@ -70,10 +70,21 @@ function InfoPasajes(props){
             <Grid item className={classes.contenedoreditorpasaje} id={"pasaje" + props.pasajeName}>
                 <CKEditor
                   data={props.pasaje}
-                  onChange={ ( event, editor ) => {
-                      const data = editor.getData();
-                      props.setPasaje(data)
-                  } }
+                  onChange={(evt)=>{
+                    var data = evt.editor.getData()
+                    props.setPasaje(data)
+                  }}
+                  config={ {
+                    toolbar: [
+                        ['Bold', 'Italic','Underline', 'Subscript', 'Superscript', 'Link','Unlink','Image'],
+                        ['NumberedList', 'BulletedList', 'list', 'indent', 'blocks' ,'Paragraph' ],
+                        ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo', 'Replace', '-', 'SelectAll', '-', 'Scayt'],
+                        ['Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton', 'HiddenField'],
+                        ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl', 'Language'],
+                        ['Link', 'Unlink', 'Anchor','Image', 'Flash', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak', 'Iframe']
+                      ]
+                    } 
+                  }
                 />
             </Grid>
         </Grid>  

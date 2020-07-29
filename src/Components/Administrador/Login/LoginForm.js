@@ -50,7 +50,6 @@ function LoginForm(props){
       localStore.setObjects("admin_sesion", params)
       var service = "/login/admin?userId=" + correo + "&password=" + password
       loginService(service, "GET", params, (data) => {
-        console.log(data.data.response)
         setLoading(false)
         localStorage.removeItem("admin_sesion")
         setStore(data.data.response.email, data.data.response.user_password)
@@ -76,7 +75,6 @@ function LoginForm(props){
           <Grid item xs={12} sm={8} md={6} lg={5} className="grids">
             <TextField
               label="Usuario"
-              // variant="outlined"
               id="custom-css-outlined-input"
               margin="normal"
               value={correo}
@@ -87,7 +85,6 @@ function LoginForm(props){
           <Grid item xs={12} sm={8} md={6} lg={5} className="grids">
             <TextField
               label="Contraseña"
-              // variant="outlined"
               id="custom-css-outlined-input"
               value={password}
               onChange={e => setPassword(e.target.value)}

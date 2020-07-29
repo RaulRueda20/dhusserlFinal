@@ -2,8 +2,8 @@
 import React from 'react';
 
 //Components
-import CKEditor from 'ckeditor4-react';
-// import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import CKEditor from 'ckeditor4-react-advanced';
+// import ClassicEditor from 'ckeditor4-react';
 import Typography from '@material-ui/core/Typography';
 import Divider from "@material-ui/core/Divider";
 import TextField from '@material-ui/core/TextField';
@@ -108,10 +108,21 @@ function FormularioExpresiones(props){
       <div className={classes.editor}>
         <CKEditor
           data={props.contenido}
-          onChange={ ( event, editor ) => {
-            var data = (editor.getData());
+          onChange={(evt)=>{
+            var data = evt.editor.getData()
             props.setContenido(data)
-        } }
+          }}
+          config={ {
+            toolbar: [
+                ['Bold', 'Italic','Underline', 'Subscript', 'Superscript', 'Link','Unlink','Image'],
+                ['NumberedList', 'BulletedList', 'list', 'indent', 'blocks' ,'Paragraph' ],
+                ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo', 'Replace', '-', 'SelectAll', '-', 'Scayt'],
+                ['Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton', 'HiddenField'],
+                ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl', 'Language'],
+                ['Link', 'Unlink', 'Anchor','Image', 'Flash', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak', 'Iframe']
+              ]
+            } 
+          }
         />
       </div>
     </div>
