@@ -64,7 +64,6 @@ function ListaPadresBajo(props){
 
     function handleFlagLetraMain(){
         props.setFlagLetraMain(false)
-        console.log("id",event.target.id)
         var idExpresion = event.target.id.split("/")[0]
         var service = "/referencias/obtieneReferencias/" + idExpresion
         webService(service, "GET", {}, data => {

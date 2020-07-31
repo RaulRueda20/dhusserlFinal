@@ -8,11 +8,11 @@ export default function ListaClaves(props){
   return(
     <div>
       <ul className="list-containerP">
-        {props.pasajes.map(referencia=>(
-          <li id={referencia.ref_id} key={referencia.ref_id} className={classNames({"selected" : referencia.ref_id == pasajeSeleccionado}, "sideListAdmin")} onClick={() => props.setPasajeId(referencia.ref_id)}>
+        {props.pasajes.map((referencia)=>{
+          return <li id={referencia.ref_id} key={referencia.ref_id} className={classNames({"selected" : referencia.ref_id == pasajeSeleccionado}, "sideListAdmin")} onClick={() => props.setPasajeId(referencia.ref_id)}>
             {referencia.ref_id + ": " + referencia.ref_libro_de + " // " + referencia.ref_libro_es}
           </li>
-        ))}
+        })}
       </ul>
     </div>
   )

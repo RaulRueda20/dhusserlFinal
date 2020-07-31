@@ -26,7 +26,6 @@ const styles = {
 
 function BusquedaPasajes(props){
   const { classes } = props;
-  const [insensitiveCase,setInsensitiveCase]=React.useState(false);
   const [busqueda, setBusqueda] = React.useState("");
   
   const handleChangeBusqueda = (event) => {
@@ -34,7 +33,6 @@ function BusquedaPasajes(props){
     var busqueda = event.target.value
     props.pasajes.map(pasaje=>{
       var pasajeNombre=pasaje.ref_libro_de + pasaje.ref_libro_es + pasaje.ref_id
-      console.log("nombre", pasajeNombre)
       var pasajeBuscado= pasajeNombre.indexOf(busqueda)
       document.getElementById(pasaje.ref_id).classList.remove("hidden")
       if (pasajeBuscado == -1){
@@ -42,7 +40,6 @@ function BusquedaPasajes(props){
       }
     })
   }
-
 
   return (
     <FormControl className={classes.TextFieldbus}>
