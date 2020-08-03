@@ -40,6 +40,10 @@ export default function ListaExpresiones(props){
   const theme = useTheme();
   const [panelesAbiertos,setPanelesAbiertos] = React.useState([]);
 
+  React.useEffect(()=>{
+    console.log("lenguaje",props.lenguaje)
+  }, [props.lenguaje])
+
   function clickHandleVista(event){
     if(!props.flagDeBusqueda){
       var expresionesReferencias=props.expresiones[event.currentTarget.id];
@@ -81,20 +85,20 @@ export default function ListaExpresiones(props){
       {props.state.checkedA == false ? 
       <div className={classNames([{[classes.listContainer2] : props.menuEscondido == true}, classes.listContainer])}>
         <ul id="listaIzquierda">
-          {props.chunkListGlobal.map((expresion, index)=>(
+          {props.chunkListGlobal.map((expresion, index)=>{
             <PanelExpresion {...props} key={expresion.id+"-"+index} expresion={expresion} handleClickPanel={handleClickPanel} clickHandleVista={clickHandleVista} index={index}
             getJerarquia={props.getJerarquia} idReferencias={props.idReferencias} setIdReferencias={props.setIdReferencias} expresionSeleccionada={props.expresionSeleccionada}
             setFlagLetraMain={props.setFlagLetraMain} setOpenModalN={props.setOpenModalN} flagDeBusqueda={props.flagDeBusqueda} idExpresion={props.idExpresion}/> 
-          ))}
+          })}
         </ul>
       </div> :
       <div className={classNames([{[classes.listContainer2] : props.menuEscondido == true}, classes.listContainer])}>
         <ul id="listaIzquierda">
-          {props.chunkList.map((expresion, index)=>(
-            <PanelExpresion match={props.match} key={expresion.id+"-"+index} expresion={expresion} handleClickPanel={handleClickPanel} clickHandleVista={clickHandleVista} index={index}
+          {props.chunkList.map((expresion, index)=>{
+            return<PanelExpresion match={props.match} key={expresion.id+"-"+index} expresion={expresion} handleClickPanel={handleClickPanel} clickHandleVista={clickHandleVista} index={index}
             getJerarquia={props.getJerarquia} idReferencias={props.idReferencias} setIdReferencias={props.setIdReferencias} expresionSeleccionada={props.expresionSeleccionada}
-            setFlagLetraMain={props.setFlagLetraMain} setOpenModalN={props.setOpenModalN}/> 
-          ))}
+            setFlagLetraMain={props.setFlagLetraMain} setOpenModalN={props.setOpenModalN} lenguaje={props.lenguaje}/> 
+          })}
         </ul>
       </div>}
     </div>

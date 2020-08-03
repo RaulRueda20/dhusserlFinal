@@ -24,6 +24,8 @@ import '../../../../css/expresiones.css';
 export default function PanelExpresion(props){
     const [open, setOpen] = React.useState(false);
 
+
+
     function fixReferenciasConsultadas(expresion){
         var referencia = {
             clave: expresion[0].clave,
@@ -74,6 +76,10 @@ export default function PanelExpresion(props){
         return {__html:props.expresion.pretty_e + '<p> // </p>' + props.expresion.pretty_t}
     }
 
+    function htmlPrettyT(){
+        return {__html:props.expresion.pretty_t + '<p> // </p>' + props.expresion.pretty_e}
+    }
+
     // function htmlPrettyT(){
     //     return {__html:props.expresion.pretty_t}
     // }
@@ -89,6 +95,7 @@ export default function PanelExpresion(props){
                     <Grid item xs={10} id={props.index} onClick={props.clickHandleVista}>
                         <Link to={props.expresion.referencias[0].refid==null ? "#" :`${props.match.path.slice(0,20)}/pasaje/${props.expresion.id}/${props.expresion.referencias[0].refid}`} onClick={handleModal}>
                             <span className="Renglones" style={{}} dangerouslySetInnerHTML={htmlPrettyE()}/>
+                            {/* {props.lenguaje == "al" ? <span className="Renglones" style={{}} dangerouslySetInnerHTML={htmlPrettyE()}/> : <span className="Renglones" style={{}} dangerouslySetInnerHTML={htmlPrettyT()}/>} */}
                         </Link>
                     </Grid>
                     <Grid item id={props.expresion.id} xs={1} onClick={()=>setOpen(!open)}>

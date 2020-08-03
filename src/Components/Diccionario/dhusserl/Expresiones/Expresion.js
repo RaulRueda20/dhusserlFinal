@@ -145,6 +145,7 @@ function Expresion(props){
             getJerarquia={getJerarquia} menuEscondido={menuEscondido} state={state} expresionesGlobales={expresionesGlobales}
             setFlagLetraMain={props.setFlagLetraMain} setOpenModalN={setOpenModalN} flagDeBusqueda={flagDeBusqueda} letraMain={props.letraMain}
             chunkList={chunkList} chunkListGlobal={chunkListGlobal} setChunkList={setChunkList} setChunkListGlobal={setChunkListGlobal}
+            lenguaje={language}
             />
         </Grid>
         <Hidden smUp>

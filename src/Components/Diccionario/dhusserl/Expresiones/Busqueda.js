@@ -84,6 +84,7 @@ function Busqueda(props){
           var letraCapital = letra.toUpperCase()
           var servicebl = "/referencias/busquedaExpresionPorLetra"+"/"+props.letraMain+"/"+props.language
           webService(servicebl, "POST", {parametro:props.busqueda,case:insensitiveCase}, (data) => {
+            console.log("data",data.data.response)
             if(props.letraMain == letraCapital){
               ChunkC(data.data.response)
             }else{

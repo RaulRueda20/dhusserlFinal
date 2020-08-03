@@ -133,6 +133,7 @@ function Pasaje(props){
     }
     var service = "/referencias/obtieneReferencias/" + idDeExpresion
     webService(service, "GET", {}, (data) => {
+      console.log(data.data.response)
       setReferencias(data.data.response)
       setIdExpresion(idDeExpresion)
       if(idDeLaReferencia && idDeLaReferencia!=null){
@@ -212,7 +213,7 @@ function Pasaje(props){
            {openHidden == true ?
              <div>
                <BusquedaEscondida expresiones={expresiones} setExpresiones={setExpresiones} lang={props.lang} 
-               language={props.language} setLanguage={props.setLanguage} busqueda={busqueda} setBusqueda={setBusqueda}
+                language={props.language} setLanguage={props.setLanguage} busqueda={busqueda} setBusqueda={setBusqueda}
                 state={state} setState={setState} openHidden={openHidden} setOpenHidden={setOpenHidden} 
                 setExpresionesGlobales={setExpresionesGlobales} setModalDebusquedas={setModalDebusquedas} 
                 setModalCaracteresInvalidos={setModalCaracteresInvalidos} setModalNumeros={setModalNumeros} setLoading={setLoading}

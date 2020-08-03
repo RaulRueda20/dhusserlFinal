@@ -29,12 +29,12 @@ const estiloModalExpresiones = theme => ({
     width:"80%"
   },
   modalin:{
-    top: "25vh",
-    left: "calc(20vw - 30px)",
+    top: "10vh",
+    left: "calc(20vw - 120px)",
     width: "60vw",
+    height: "54vh",
     padding: "20px 30px",
-    position: "absolute",
-    height: "60vh"
+    position: "absolute"
   },
   contenedorSubtitulos:{
     padding: "15px 15px"
