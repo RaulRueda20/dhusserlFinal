@@ -8,6 +8,7 @@ import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 //Components
 import LoginD from './Login/LoginD';
 import Subvistas from './dhusserl/Subvistas';
+import Recuperacion from './Login/RecuperacionPassword'
 
 const theme = createMuiTheme({
     palette: {
@@ -66,11 +67,16 @@ const theme = createMuiTheme({
 
 function RutaDiccionario({match,lang,setLang}){
 
+  React.useEffect(()=>{
+    console.log("match", match.url)
+  })
+
   return(
       <MuiThemeProvider theme={theme}>
           <Switch>
               <Route path={`${match.url}/husserl`} render={(props) => <Subvistas {...props} lang={lang} setLang={setLang}/>}/>
               <Route path={`${match.url}/login`} render={(props) => <LoginD {...props} lang={lang} setLang={setLang}/>}/>
+              <Route path={`${match.url}/recuperacionPass/`} render={(props) => <Recuperacion {...props} lang={lang} setLang={setLang}/>}/>
               <Route path={`${match.url}/`}>
                   <Redirect to={`${match.url}/login`} />
               </Route>

@@ -52,11 +52,14 @@ function ModalRecuperacion(props){
     const [correoRecuperado, setCorreoRecuperado]=React.useState("")
 
     function onFormSubmit1(event){
+        console.log("entre")
         event.preventDefault();
         props.setLoading(true)
         var email = correoRecuperado
         var service = "/login/recoverPassword/es?email=" + email
+        var enconding = window.btoa(email)
         loginService(service, "GET", {}, (data) => {
+            console.log("data", data)
             props.setLoading(false)
             if(data.status==200){
                 props.setSnackbar({open:true,variant:"success",message:exitoBody(props.lang)})
