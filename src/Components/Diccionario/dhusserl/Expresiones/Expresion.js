@@ -27,10 +27,13 @@ import ModalNumeros from '../ModalNumeros';
 
 //Other req
 import {Switch, Redirect, Link, Route} from 'react-router-dom';
-import {webService} from '../../../../js/webServices';
+import {webService, loginService} from '../../../../js/webServices';
 import * as localStore from '../../../../js/localStore';
+import { sesionStore } from '../../../../sesionStore';
+import Snackbars from '../../Login/Snackbars';
 
 function Expresion(props){
+  const global = React.useContext(sesionStore);
   const [language,setLanguage] = React.useState("al");
   const [expresiones, setExpresiones] = React.useState([]);
   const [expresionesGlobales, setExpresionesGlobales] = React.useState([]);
@@ -51,6 +54,7 @@ function Expresion(props){
   const [flagDeBusqueda, setFlagDeBusqueda] = React.useState(false);
   const [chunkList, setChunkList] = React.useState([]);
   const [chunkListGlobal, setChunkListGlobal] = React.useState([]);
+  const [snackbar, setSnackbar]=React.useState({open:false, variant:"", message:""});
   
   const fixReferencias = (referencias) => {
     var expresiones=[]
@@ -93,6 +97,19 @@ function Expresion(props){
   }
   
   React.useEffect(()=>{
+    console.log("global", global)
+    if (global.sesion == null && localStore.getObjects('sesion')){
+      console.log("Sesion!!", global)
+      var service = "/login/usuario"
+      var params = JSON.stringify({'userId' : localStore.getObjects("sesion").user , 'password' : localStore.getObjects("sesion").password})
+      loginService(service, "POST", params, (data) => {
+        if(data.data.error){
+          setSnackbar({open:true,variant:"error",message:'Su sesión se ha cerrado, por favor inicie nuevamente.'})
+        }else{
+          global.setSesion(data.data.response);
+        }
+      })
+    }
     setLoading(true)
     if(document.getElementById("listaIzquierda").firstChild != null) document.getElementById("listaIzquierda").firstChild.scrollIntoView()
     var service = "/expresiones/" + language + "/" + props.letraMain
@@ -124,6 +141,10 @@ function Expresion(props){
 
   function handleMenuEscondido(){
     setMenuEscondido(!menuEscondido)
+  }
+
+  const handleClose=(event,reason)=>{
+    setSnackbar({open:false,variant:snackbar.variant,message:""})
   }
 
   return(
@@ -199,6 +220,7 @@ function Expresion(props){
       <ModalCaracterInvalido modalCaracteresIvalidos={modalCaracteresIvalidos} setModalCaracteresInvalidos={setModalCaracteresInvalidos} lang={props.lang}/>
       <ModalNumeros modalNumeros={modalNumeros} setModalNumeros={setModalNumeros} lang={props.lang}/>
       <Link id="toLogin" to="/"/>
+      <Snackbars snackbar={snackbar} handleClose={handleClose} lang={props.lang}/>
     </div>
   )
 }

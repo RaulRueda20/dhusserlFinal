@@ -14,6 +14,8 @@ import Snackbars from './Snackbars';
 import ModalRecuperacion from './ModalRecuperacion';
 import {loginService} from '../../../js/webServices';
 import * as localStore from '../../../js/localStore';
+import { sesionStore } from '../../../sesionStore';
+
 
 const stylesFor = {
  TextField1:{
@@ -42,6 +44,7 @@ var setStore = (user, pass) => {
 
 function LoginForm (props){
   const {classes}=props;
+  const global = React.useContext(sesionStore);
   const [correo, setCorreo]=React.useState("");
   const [password, setPassword]=React.useState("");
   const [snackbar, setSnackbar]=React.useState({open:false, variant:"", message:""});
@@ -63,7 +66,6 @@ function LoginForm (props){
       setLoading(false)
     })
   }
-
   function handleClickModal(){
     setRecuperarContra(true)
   }
