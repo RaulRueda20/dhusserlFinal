@@ -3,9 +3,11 @@ import * as localStore from './localStore';
 const serverUrl = "http://localhost:1938/api/v1.0"
 //const serverUrl = "https://" + window.location.host + "/api/v1.0" 
 
-const webService = (service, method, params, next) => {
-  var serverUsername = localStore.getObjects("sesion").user
-  var serverPassword = localStore.getObjects("sesion").password
+const webService = (service, method, params, sesion, next) => {
+  //var serverUsername = localStore.getObjects("sesion").user
+  //var serverPassword = localStore.getObjects("sesion").password
+  var serverUsername = sesion.usuario
+  var serverPassword = sesion.password
   var auth = "Basic " + btoa(serverUsername + ":" + serverPassword)
   axios({
     method: method,

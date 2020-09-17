@@ -22,7 +22,7 @@ import ListaDeConsultados from './ListaDeConsultados';
 
 // Other req
 import {webService} from '../../../../js/webServices';
-
+import { sesionStore } from '../../../../sesionStore';
 
 //Language
 import {descargarConsulta, seGeneraArchivo, menuDerechoJerarquia, conReferencias, descargarEn, idiomaAl, idiomaEs, pasajeSeleccionadoOTodos, pasajeSeleccionado, todosLosPasajes, tipoDeArchivos, texto, descargarConsultadas} from '../../../../js/Language';
@@ -48,6 +48,7 @@ const modalDescargas={
 }
 
 function ModalDescargas(props){
+    const global = React.useContext(sesionStore);
     const {classes}=props;
     const [checkedA,setCheckedA] =React.useState(false);
     const [checkedB,setCheckedB] =React.useState(false);
@@ -94,7 +95,7 @@ function ModalDescargas(props){
                 var serviceR = "/reporte/reporteGeneralTxt/" + props.idExpresion + "?expresion_aleman=1&expresion_espaniol=1&referencia_aleman=1\
                 &referencia_espaniol=1&pasaje_aleman=" + opciones[4] + "&pasaje_espaniol=" + opciones[5] +
                 "&hierarchy=" + opciones[6] + "&lang=" + props.lang + "&refid=" + props.match.params.id
-                webService(serviceR, "GET", {}, (data) => {
+                webService(serviceR, "GET", {}, global.sesion, (data) => {
                     document.getElementById("toDownloadDiv").innerHTML = "<a href='/files/"+data.data.response+".txt' id='fileToDownload' download></a>"
                     document.getElementById("fileToDownload").click()
                 })
@@ -105,7 +106,7 @@ function ModalDescargas(props){
                         var serviceR = "/reporte/reporteText/" + id + "?expresion_aleman=1&expresion_espaniol=1&referencia_aleman=1\
                         &referencia_espaniol=1&pasaje_aleman=" + opciones[4] + "&pasaje_espaniol=" + opciones[5] +
                         "&hierarchy=" + opciones[6] + "&lang=" + props.lang + "&refid=" + refid
-                        webService(serviceR, "GET", {}, (data) => {
+                        webService(serviceR, "GET", {}, global.sesion, (data) => {
                             document.getElementById("toDownloadDiv").innerHTML = "<a href='/files/"+data.data.response+".txt' id='fileToDownload' download></a>"
                             document.getElementById("fileToDownload").click()
                         })
@@ -117,7 +118,7 @@ function ModalDescargas(props){
                 var serviceR = "/reporte/reporteGeneralpdf/" + props.idExpresion + "?expresion_aleman=1&expresion_espaniol=1&referencia_aleman=1\
                 &referencia_espaniol=1&pasaje_aleman=" + opciones[4] + "&pasaje_espaniol=" + opciones[5] +
                 "&hierarchy=" + opciones[6] + "&lang=" + props.lang + "&refid=" + props.match.params.id
-                webService(serviceR, "GET", {}, (data) => {
+                webService(serviceR, "GET", {}, global.sesion,(data) => {
                     document.getElementById("toDownloadDiv").innerHTML = "<a href='/files/"+data.data.response+".pdf' id='fileToDownload' download></a>"
                     document.getElementById("fileToDownload").click()
                 })
@@ -140,7 +141,7 @@ function ModalDescargas(props){
                 var serviceR = "/reporte/reportepdf/" + props.idExpresion + "?expresion_aleman=1&expresion_espaniol=1&referencia_aleman=1\
                 &referencia_espaniol=1&pasaje_aleman=" + opciones[4] + "&pasaje_espaniol=" + opciones[5] +
                 "&hierarchy=" + opciones[6] + "&lang=" + props.lang + "&refid=" + props.match.params.id
-                webService(serviceR, "GET", {}, (data) => {
+                webService(serviceR, "GET", {}, global.sesion, (data) => {
                     document.getElementById("toDownloadDiv").innerHTML = "<a href='/files/"+data.data.response+".pdf' id='fileToDownload' download></a>"
                     document.getElementById("fileToDownload").click()
                 })
@@ -148,7 +149,7 @@ function ModalDescargas(props){
                 var serviceR = "/reporte/reporteText/" + props.idExpresion + "?expresion_aleman=1&expresion_espaniol=1&referencia_aleman=1\
                 &referencia_espaniol=1&pasaje_aleman=" + opciones[4] + "&pasaje_espaniol=" + opciones[5] +
                 "&hierarchy=" + opciones[6] + "&lang=" + props.lang + "&refid=" + props.match.params.id
-                webService(serviceR, "GET", {}, (data) => {
+                webService(serviceR, "GET", {}, global.sesion, (data) => {
                     document.getElementById("toDownloadDiv").innerHTML = "<a href='/files/"+data.data.response+".txt' id='fileToDownload' download></a>"
                     document.getElementById("fileToDownload").click()
                 })

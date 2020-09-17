@@ -19,6 +19,7 @@ import { withStyles } from '@material-ui/styles';
 //Other req
 import '../../../../css/expresiones.css';
 import {webService} from '../../../../js/webServices';
+import { sesionStore } from '../../../../sesionStore';
 import classNames from 'classnames';
 
 //Language
@@ -41,6 +42,7 @@ const styles = {
 
 function BusquedaAbajo(props){
     const {classes}=props;
+    const global = React.useContext(sesionStore);
     const [insensitiveCase,setInsensitiveCase]=React.useState(false);
 
     const fixReferencias = (referencias) => {
@@ -98,7 +100,7 @@ function BusquedaAbajo(props){
                 }else if(props.busqueda.length>2){
                   props.setLoading(true)
                   var servicebe = "/referencias/busquedaExpresion"
-                  webService(servicebe, "POST", {parametro:props.busqueda,case:insensitiveCase}, (data) => {
+                  webService(servicebe, "POST", {parametro:props.busqueda,case:insensitiveCase}, global.sesion, (data) => {
                     ChunkB(data.data.response)
                     var expresiones = data.data.response
                     props.setExpresionesGlobales(fixReferencias(expresiones))
@@ -111,7 +113,7 @@ function BusquedaAbajo(props){
                 var letraCapital = letra.toUpperCase()
                 if(letra == letraCapital){
                   var servicebl = "/referencias/busquedaExpresionPorLetra"+"/"+props.letraMain+"/"+props.language
-                  webService(servicebl, "POST", {parametro:props.busqueda,case:insensitiveCase}, (data) => {
+                  webService(servicebl, "POST", {parametro:props.busqueda,case:insensitiveCase}, global.sesion, (data) => {
                     if(props.letraMain == letraCapital){
                       ChunkC(data.data.response)
                     }else{
@@ -121,7 +123,7 @@ function BusquedaAbajo(props){
                 }else{
                   var letraCapital = letra.toUpperCase()
                   var servicebl = "/referencias/busquedaExpresionPorLetra"+"/"+props.letraMain+"/"+props.language
-                  webService(servicebl, "POST", {parametro:props.busqueda,case:insensitiveCase}, (data) => {
+                  webService(servicebl, "POST", {parametro:props.busqueda,case:insensitiveCase}, global.sesion, (data) => {
                     if(props.letraMain == letraCapital){
                       ChunkC(data.data.response)
                     }else{

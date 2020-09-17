@@ -13,6 +13,7 @@ import Footer from './Footer';
 //Other req
 import fondo from "../../../Imagenes/fondo.png";
 import * as localStore from '../../../js/localStore';
+import { sesionStore } from '../../../sesionStore';
 
 const loGin ={
   back: {
@@ -29,8 +30,10 @@ const loGin ={
 function LoginD(props){
   const [login, setLogin] = React.useState(true)
   const {classes} = props
+  const global = React.useContext(sesionStore);
 
   React.useEffect(()=>{
+    console.log("global", global.sesion)
     if(localStore.getObjects("sesion")){
       if(localStore.getObjects("sesion").user && localStore.getObjects("sesion").password){
         props.history.push("/diccionario/husserl")

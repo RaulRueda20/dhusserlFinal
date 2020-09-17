@@ -16,6 +16,7 @@ import ListaHijosEscondido from './ListaHijosEscondido';
 
 //Other req
 import {webService} from '../../../../js/webServices';
+import { sesionStore } from '../../../../sesionStore';
 import * as localStore from '../../../../js/localStore';
 import {menuDerechoJerarquia, menuDerechoJerarquiaDerivadaDe, menuDerechoJerarquiaExpresion, menuDerechoJerarquiaExpresionesDerivadas, menuDerechoVerTambien, menuDerechoReferenciasConsultadas} from '../../../../js/Language';
 
@@ -57,6 +58,7 @@ const ExpansionPanelSummary = withStyles({
 })(MuiExpansionPanelSummary);
 
 function MenuEscondido(props){
+  const global = React.useContext(sesionStore);
   const [referenciasConsultadasVista, setReferenciasConsultadasVista]=React.useState([])
   const [listaVerTambien,setListaVerTambien]=React.useState([]);
   const [hijos,setHijos]=React.useState([]);
@@ -72,7 +74,7 @@ function MenuEscondido(props){
     }
     if (props.idExpresion!=""){
     var service = "/vertambien/" + props.idExpresion
-    webService(service, "GET", {}, data => {
+    webService(service, "GET", {}, global.sesion , data => {
       setListaVerTambien(data.data.response)
       webService(("/expresiones/"+props.language+"/hijosList/"+props.idExpresion),"GET", {}, (data) =>{
         setHijos(data.data.response)
@@ -90,7 +92,7 @@ function MenuEscondido(props){
     props.setFlagLetraMain(false)
     var idExpresion = event.target.id.split("/")[0]
     var service = "/referencias/obtieneReferencias/" + idExpresion
-    webService(service, "GET", {}, data => {
+    webService(service, "GET", {}, global.sesion , data => {
       var referencias = fixReferenciasConsultadas(data.data.response)
       if(localStore.getObjects("referenciasConsultadas")==false){
           var referenciasConsultadas = []

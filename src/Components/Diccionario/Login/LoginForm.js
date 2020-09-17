@@ -61,11 +61,19 @@ function LoginForm (props){
         setSnackbar({open:true,variant:"error",message:correoInvalido(props.lang)})
       }else{
         setStore(correo, password)
+        var nuevaSesion = {
+          usuario : correo,
+          password : password
+        }
+        nuevaSesion['ultimasVisitadas'] = []
+        nuevaSesion["ultimaVisitada"] = "alfabeto"
+        global.setSesion(nuevaSesion)
         props.history.push("/husserl")
       }
       setLoading(false)
     })
   }
+
   function handleClickModal(){
     setRecuperarContra(true)
   }

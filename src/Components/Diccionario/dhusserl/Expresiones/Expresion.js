@@ -102,7 +102,7 @@ function Expresion(props){
       console.log("Sesion!!", global)
       var service = "/login/usuario"
       var params = JSON.stringify({'userId' : localStore.getObjects("sesion").user , 'password' : localStore.getObjects("sesion").password})
-      loginService(service, "POST", params, (data) => {
+      loginService(service, "POST", params, global.sesion, (data) => {
         if(data.data.error){
           setSnackbar({open:true,variant:"error",message:'Su sesión se ha cerrado, por favor inicie nuevamente.'})
         }else{
@@ -113,7 +113,7 @@ function Expresion(props){
     setLoading(true)
     if(document.getElementById("listaIzquierda").firstChild != null) document.getElementById("listaIzquierda").firstChild.scrollIntoView()
     var service = "/expresiones/" + language + "/" + props.letraMain
-    webService(service, "GET", {}, (data) => {
+    webService(service, "GET", {}, global.sesion, (data) => {
       setExpresiones(fixReferencias(data.data.response))
       setChunkList(fixReferencias(data.data.response).slice(0,50))
       if(!flagDeBusqueda){

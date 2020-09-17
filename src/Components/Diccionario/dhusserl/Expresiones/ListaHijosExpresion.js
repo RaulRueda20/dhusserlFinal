@@ -17,10 +17,12 @@ import {noDerivaDe, noContieneExpresionesDerivadas, menuDerechoJerarquiaDerivada
 // Other req
 import {webService} from '../../../../js/webServices';
 import * as localStore from '../../../../js/localStore';
+import { sesionStore } from '../../../../sesionStore';
 
 const ITEM_HEIGHT = 48;
 
 function ListaHijosExpresion(props){
+    const global = React.useContext(sesionStore);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
     const [padreDeHijos,setPadreDeHijos]=React.useState([]);
@@ -29,10 +31,10 @@ function ListaHijosExpresion(props){
     const handleClickExpresionesDerivadas = event =>{
         setAnchorEl(event.currentTarget)
         var hid = event.currentTarget.id.split("hijo")[1]
-        webService(("/expresiones/"+props.language+"/abuelosList/"+hid),"GET", {}, (data2) => {
+        webService(("/expresiones/"+props.language+"/abuelosList/"+hid),"GET", {}, global.sesion, (data2) => {
           setPadreDeHijos(data2.data.response)
         })
-        webService(("/expresiones/"+props.language+"/hijosList/"+hid),"GET", {}, (data) => {
+        webService(("/expresiones/"+props.language+"/hijosList/"+hid),"GET", {}, global.sesion, (data) => {
           setHijosDeHijos(data.data.response)
         })
       }
@@ -71,7 +73,7 @@ function ListaHijosExpresion(props){
         }, 1000)
         var idExpresion = event.target.id.split("/")[0]
         var service = "/referencias/obtieneReferencias/" + idExpresion
-        webService(service, "GET", {}, data => {
+        webService(service, "GET", {}, global.sesion, data => {
             var referencias = fixReferenciasConsultadas(data.data.response)
             if(localStore.getObjects("referenciasConsultadas")==false){
                 var referenciasConsultadas = []

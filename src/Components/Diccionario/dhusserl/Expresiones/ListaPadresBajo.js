@@ -14,6 +14,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 // Other req
 import {webService} from '../../../../js/webServices';
 import * as localStore from '../../../../js/localStore';
+import { sesionStore } from '../../../../sesionStore';
 
 //Language
 import {noDerivaDe, noContieneExpresionesDerivadas, menuDerechoJerarquiaDerivadaDe, menuDerechoJerarquiaExpresionesDerivadas} from '../../../../js/Language';
@@ -21,6 +22,7 @@ import {noDerivaDe, noContieneExpresionesDerivadas, menuDerechoJerarquiaDerivada
 const ITEM_HEIGHT = 48;
 
 function ListaPadresBajo(props){
+    const global = React.useContext(sesionStore);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
     const [padreDePadres,setPadreDePadres]=React.useState([]);
@@ -29,10 +31,10 @@ function ListaPadresBajo(props){
     const handleClickDerivadaDe = event => {
         setAnchorEl(event.currentTarget);
         var pid = event.currentTarget.id.split("padre")[1]
-        webService(("/expresiones/"+props.language+"/abuelosList/"+pid),"GET", {}, (data2) => {
+        webService(("/expresiones/"+props.language+"/abuelosList/"+pid),"GET", {}, global.sesion, (data2) => {
           setPadreDePadres(data2.data.response)
         })
-        webService(("/expresiones/"+props.language+"/hijosList/"+pid),"GET", {}, (data) => {
+        webService(("/expresiones/"+props.language+"/hijosList/"+pid),"GET", {}, global.sesion, (data) => {
           setHijosDePadres(data.data.response)
         })
     };
@@ -66,7 +68,7 @@ function ListaPadresBajo(props){
         props.setFlagLetraMain(false)
         var idExpresion = event.target.id.split("/")[0]
         var service = "/referencias/obtieneReferencias/" + idExpresion
-        webService(service, "GET", {}, data => {
+        webService(service, "GET", {}, global.sesion, data => {
             var referencias = fixReferenciasConsultadas(data.data.response)
             if(localStore.getObjects("referenciasConsultadas")==false){
                 var referenciasConsultadas = []

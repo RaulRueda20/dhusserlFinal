@@ -17,11 +17,11 @@ import { mdiFormatLetterCase } from '@mdi/js';
 
 //Other request
 import {webService} from '../../../../js/webServices';
+import { sesionStore } from '../../../../sesionStore';
 import classNames from 'classnames';
 
 //Language
 import {busquedas, distincionMayusyMinus} from '../../../../js/Language';
-
 
 const search={
     buscador:{
@@ -35,6 +35,7 @@ const search={
 
 function Busquedas(props){
     const {classes}=props;
+    const global = React.useContext(sesionStore);
     const [loading, setLoading]=React.useState(false);
     const [insensitiveCase,setInsensitiveCase]=React.useState(false)
 
@@ -81,7 +82,7 @@ function Busquedas(props){
         setLoading(true)
         if(props.tipoBusqueda=="Referencia"){
             var servicebr = "/expresiones/busqueda/" + insensitiveCase
-            webService(servicebr, "POST", {parametro:props.busqueda}, (data) => {
+            webService(servicebr, "POST", {parametro:props.busqueda}, global.sesion, (data) => {
                 var referencias = data.data.response
                 props.setExpresionesEncontradas([])
                 props.setTipoBusquedaRealizada("Referencia")
@@ -90,7 +91,7 @@ function Busquedas(props){
             })
         }else{
             var servicebe = "/referencias/busquedaExpresion"
-            webService(servicebe, "POST", {parametro:props.busqueda,case:insensitiveCase}, (data) => {
+            webService(servicebe, "POST", {parametro:props.busqueda,case:insensitiveCase}, global.sesion, (data) => {
                 var expresiones = data.data.response
                 props.setExpresionesEncontradas([])
                 props.setTipoBusquedaRealizada("Expresion")

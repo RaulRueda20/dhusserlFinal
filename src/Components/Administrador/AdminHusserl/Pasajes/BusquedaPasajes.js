@@ -16,7 +16,8 @@ import Tooltip from '@material-ui/core/Tooltip';
 //Other req
 import '../../../../css/pasajes.css';
 import classNames from 'classnames';
-import {webService} from '../../../../js/webServices';
+//import { sesionStore } from '../../../sesionStore';
+//import {webService} from '../../../../js/webServices';
 
 const styles = {
  TextFieldbus:{
@@ -27,6 +28,7 @@ const styles = {
 function BusquedaPasajes(props){
   const { classes } = props;
   const [busqueda, setBusqueda] = React.useState("");
+  //const global = React.useContext(sesionStore);
   
   const handleChangeBusqueda = (event) => {
     event.preventDefault()

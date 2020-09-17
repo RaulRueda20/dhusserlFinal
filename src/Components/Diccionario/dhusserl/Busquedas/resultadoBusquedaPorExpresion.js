@@ -11,6 +11,7 @@ import Button from '@material-ui/core/Button';
 //Other req
 import {webService} from '../../../../js/webServices';
 import * as localStore from '../../../../js/localStore';
+import { sesionStore } from '../../../../sesionStore';
 import es from "../../../../Imagenes/spain.png";
 import al from "../../../../Imagenes/germany.png";
 
@@ -39,6 +40,7 @@ const resultadoBusqueda={
 
 function ResultadoBusquedaExpresion(props){
     const {classes}=props;
+    const global = React.useContext(sesionStore);
     const [listaVerTambien,setListaVerTambien] = React.useState([]);
     const [pasajes, setPasajes] = React.useState({
         "original" : "",
@@ -53,10 +55,10 @@ function ResultadoBusquedaExpresion(props){
             var service = "/vertambien/" + props.expresionSeleccionada.term_id
             webService(service, "GET", {}, data => {
                 setListaVerTambien(data.data.response)
-                webService(("/expresiones/"+lang+"/hijosList/"+props.expresionSeleccionada.term_id),"GET", {}, (data) => {
+                webService(("/expresiones/"+lang+"/hijosList/"+props.expresionSeleccionada.term_id),"GET", {}, global.sesion, (data) => {
                     setHijos(data.data.response)
                 })
-                webService(("/expresiones/"+lang+"/abuelosList/"+props.expresionSeleccionada.term_id), "GET", {}, (data2) =>{
+                webService(("/expresiones/"+lang+"/abuelosList/"+props.expresionSeleccionada.term_id), "GET", {}, global.sesion, (data2) =>{
                     setPadres(data2.data.response)
                 })
             })
@@ -64,10 +66,10 @@ function ResultadoBusquedaExpresion(props){
             var service = "/vertambien/" + props.idPasaje
             webService(service, "GET", {}, data => {
                 setListaVerTambien(data.data.response)
-                webService(("/expresiones/"+lang+"/hijosList/"+props.idPasaje),"GET", {}, (data) => {
+                webService(("/expresiones/"+lang+"/hijosList/"+props.idPasaje),"GET", {}, global.sesion, (data) => {
                     setHijos(data.data.response)
                 })
-                webService(("/expresiones/"+lang+"/abuelosList/"+props.idPasaje), "GET", {}, (data2) =>{
+                webService(("/expresiones/"+lang+"/abuelosList/"+props.idPasaje), "GET", {}, global.sesion, (data2) =>{
                     setPadres(data2.data.response)
                 })
             })

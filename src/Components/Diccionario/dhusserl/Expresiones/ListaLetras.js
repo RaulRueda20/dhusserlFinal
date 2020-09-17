@@ -6,11 +6,12 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import Grid from '@material-ui/core/Grid';
 import { withStyles } from '@material-ui/styles';
+import { Typography } from '@material-ui/core';
 
 //Other req
-import { Typography } from '@material-ui/core';
 import classNames from 'classnames';
 import {webService} from '../../../../js/webServices';
+import { sesionStore } from '../../../../sesionStore';
 
 const styleList = {
   lista:{
@@ -33,6 +34,7 @@ const letras = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
 
 function ListaLetras (props){
   const { classes }= props;
+  const global = React.useContext(sesionStore);
 
   const fixReferencias = (referencias) => {
     var expresiones=[]
@@ -84,7 +86,7 @@ function ListaLetras (props){
       props.setFlagLetraMain(true)
     }
     var service = "/expresiones/" + props.language + "/" + props.letraMain
-    webService(service, "GET", {}, (data) => {
+    webService(service, "GET", {}, global.sesion, (data) => {
       props.setChunkList(fixReferencias(data.data.response).slice(0,50))
       if(!props.flagDeBusqueda){
         props.setChunkListGlobal(fixReferencias(data.data.response))

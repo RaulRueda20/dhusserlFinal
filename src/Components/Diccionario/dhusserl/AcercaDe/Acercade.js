@@ -8,15 +8,17 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import {webService} from '../../../../js/webServices';
 import classNames from 'classnames';
 import * as localStore from '../../../../js/localStore';
+import { sesionStore } from '../../../../sesionStore';
 
 function Acercade(props){
+    const global = React.useContext(sesionStore);
     const [acercade, setAcercade] = React.useState("");
     const [loading, setLoading]=React.useState(false);
 
     React.useEffect(()=>{
         if(!localStore.getObjects("sesion")) document.getElementById("toLogin").click()
         setLoading(true)
-        webService("/acerca_de/get", "GET", {}, (data) => {
+        webService("/acerca_de/get", "GET", {}, global.sesion, (data) => {
            setAcercade(data.data.response[0]) 
         })
         setLoading(false)

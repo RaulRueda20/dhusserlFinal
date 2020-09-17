@@ -12,6 +12,7 @@ import {menuDerechoJerarquia, menuDerechoJerarquiaDerivadaDe, menuDerechoJerarqu
 
 import {webService} from '../../../../js/webServices';
 import * as localStore from '../../../../js/localStore';
+import { sesionStore } from '../../../../sesionStore';
 
 import ListaPadresBajo from './ListaPadresBajo';
 import ListaHijosBajo from './ListaHijosBajo';
@@ -53,6 +54,7 @@ expanded: {minHeight: "0px !important", height: "48px", alignItems: "center"},
 })(MuiExpansionPanelSummary);
 
 function MenuBajo(props){
+    const global = React.useContext(sesionStore);
     const [referenciasConsultadasVista, setReferenciasConsultadasVista]=React.useState([])
     const [listaVerTambien,setListaVerTambien]=React.useState([]);
     const [hijos,setHijos]=React.useState([]);
@@ -67,10 +69,10 @@ function MenuBajo(props){
             var service = "/vertambien/" + props.idExpresion
             webService(service, "GET", {}, data => {
                 setListaVerTambien(data.data.response)
-                webService(("/expresiones/"+props.language+"/hijosList/"+props.idExpresion),"GET", {}, (data) =>{
+                webService(("/expresiones/"+props.language+"/hijosList/"+props.idExpresion),"GET", {}, global.sesion, (data) =>{
                     setHijos(data.data.response)
                 })
-                webService(("/expresiones/"+props.language+"/abuelosList/"+props.idExpresion), "GET", {}, (data2) =>{
+                webService(("/expresiones/"+props.language+"/abuelosList/"+props.idExpresion), "GET", {}, global.sesion, (data2) =>{
                     setPadres(data2.data.response)
                 })
             })
@@ -102,7 +104,7 @@ function MenuBajo(props){
         props.setFlagLetraMain(false)
         var idExpresion = event.target.id.split("/")[0]
         var service = "/referencias/obtieneReferencias/" + idExpresion
-        webService(service, "GET", {}, data => {
+        webService(service, "GET", {}, global.sesion, data => {
             var referencias = fixReferenciasConsultadas(data.data.response)
             if(localStore.getObjects("referenciasConsultadas")==false){
                 var referenciasConsultadas = []

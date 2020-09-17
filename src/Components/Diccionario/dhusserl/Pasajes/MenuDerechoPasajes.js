@@ -20,6 +20,7 @@ import {menuDerechoJerarquia, menuDerechoJerarquiaDerivadaDe, menuDerechoJerarqu
 
 // Other req
 import {webService} from '../../../../js/webServices';
+import { sesionStore } from '../../../../sesionStore';
 import * as localStore from '../../../../js/localStore';
 
 const ExpansionPanel = withStyles({
@@ -59,6 +60,7 @@ const ExpansionPanelSummary = withStyles({
 })(MuiExpansionPanelSummary);
 
 function MenuDerechoPasajes(props){
+  const global = React.useContext(sesionStore);
   const [referenciasConsultadasVista, setReferenciasConsultadasVista]=React.useState([])
   const [listaVerTambien,setListaVerTambien]=React.useState([]);
   const [hijos,setHijos]=React.useState([]);
@@ -79,7 +81,7 @@ function MenuDerechoPasajes(props){
     }
     if (props.idExpresion!=""){
       var service = "/vertambien/" + props.idExpresion
-      webService(service, "GET", {}, data => {
+      webService(service, "GET", {}, global.sesion, data => {
         setListaVerTambien(data.data.response)
         webService(("/expresiones/"+props.language+"/hijosList/"+props.idExpresion),"GET", {}, (data) => {
           setHijos(data.data.response)

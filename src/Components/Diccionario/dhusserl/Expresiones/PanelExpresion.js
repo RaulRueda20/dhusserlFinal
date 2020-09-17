@@ -17,14 +17,14 @@ import classNames from 'classnames';
 // Other req
 import {webService} from '../../../../js/webServices';
 import * as localStore from '../../../../js/localStore';
+import { sesionStore } from '../../../../sesionStore';
 
 // CSS
 import '../../../../css/expresiones.css';
 
 export default function PanelExpresion(props){
     const [open, setOpen] = React.useState(false);
-
-
+    const global = React.useContext(sesionStore);
 
     function fixReferenciasConsultadas(expresion){
         var referencia = {
@@ -51,7 +51,7 @@ export default function PanelExpresion(props){
         var idReferenciaConsultada = props.expresion.id
         var refIdReferenciaConsultada = event.currentTarget.id.split("/")[0]
         var service = "/referencias/obtieneReferenciasIdRefId/"+ idReferenciaConsultada + "/" + refIdReferenciaConsultada
-        webService(service, "GET", {}, data => {
+        webService(service, "GET", {}, global.sesion, data => {
             var referencias = fixReferenciasConsultadas(data.data.response)
             if(localStore.getObjects("referenciasConsultadas")==false){
                 var referenciasConsultadas = []
@@ -79,10 +79,6 @@ export default function PanelExpresion(props){
     function htmlPrettyT(){
         return {__html:props.expresion.pretty_t + '<p> // </p>' + props.expresion.pretty_e}
     }
-
-    // function htmlPrettyT(){
-    //     return {__html:props.expresion.pretty_t}
-    // }
 
     return (
         <div>

@@ -10,6 +10,7 @@ import { withStyles } from '@material-ui/styles';
 //Other req
 import {webService} from '../../../../js/webServices';
 import * as localStore from '../../../../js/localStore';
+import { sesionStore } from '../../../../sesionStore';
 
 const resultadoBusquedaRef={
     typosTitulos:{
@@ -25,6 +26,7 @@ const resultadoBusquedaRef={
 
 function ResultadoBusquedaReferencia(props){
     const {classes}=props;
+    const global = React.useContext(sesionStore);
     const [pasajes,setPasajes]=React.useState({
         "original": "",
         "traduccion": ""
@@ -82,7 +84,7 @@ function ResultadoBusquedaReferencia(props){
         }, 1000)
         var idExpresion = event.target.id.split("/")[0]
         var service = "/referencias/obtieneReferencias/" + idExpresion
-        webService(service, "GET", {}, data => {
+        webService(service, "GET", {}, global.sesion, data => {
             var referencias = fixReferenciasConsultadas(data.data.response)
             if(localStore.getObjects("referenciasConsultadas")==false){
                 var referenciasConsultadas = []

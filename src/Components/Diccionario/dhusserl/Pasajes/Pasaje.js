@@ -26,9 +26,11 @@ import ModalCaracterInvalido from '../ModalCaracterInvalido';
 import ModalNumeros from '../ModalNumeros'
 
 // Other req
+import { sesionStore } from '../../../../sesionStore';
 import {webService} from '../../../../js/webServices';
 
 function Pasaje(props){
+  const global = React.useContext(sesionStore);
   const [expresiones, setExpresiones] = React.useState([]);
   const [expresionesGlobales, setExpresionesGlobales] = React.useState([]);
   const [idExpresion, setIdExpresion] = React.useState('');
@@ -123,7 +125,7 @@ function Pasaje(props){
     var service = "/expresiones/" + props.language + "/" + props.letraMain;
     if(pasajeService != service){
       setPasajeService(service)
-      webService(service, "GET", {}, (dataE) => {
+      webService(service, "GET", {}, global.sesion, (dataE) => {
         setExpresiones(fixReferencias(dataE.data.response))
         setChunkList(fixReferencias(dataE.data.response).slice(0,50))
         if(!flagDeBusqueda){
@@ -132,7 +134,7 @@ function Pasaje(props){
       })
     }
     var service = "/referencias/obtieneReferencias/" + idDeExpresion
-    webService(service, "GET", {}, (data) => {
+    webService(service, "GET", {}, global.sesion, (data) => {
       console.log(data.data.response)
       setReferencias(data.data.response)
       setIdExpresion(idDeExpresion)

@@ -8,7 +8,8 @@ import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 //Components
 import LoginD from './Login/LoginD';
 import Subvistas from './dhusserl/Subvistas';
-//import Recuperacion from './Login/Recuperacion'
+import { sesionStore } from '../../sesionStore';
+//imort Recuperacion from './Login/Recuperacion'
 
 
 const theme = createMuiTheme({
@@ -67,9 +68,11 @@ const theme = createMuiTheme({
   }
 
 function RutaDiccionario({match,lang,setLang}){
+  const global = React.useContext(sesionStore);
 
   React.useEffect(()=>{
     console.log("match", match.url)
+    console.log(global)
   })
 
   return(

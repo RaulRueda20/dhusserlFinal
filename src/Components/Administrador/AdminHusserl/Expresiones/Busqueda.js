@@ -69,7 +69,7 @@ function Busqueda(props){
   const handleChangeBusquedaExpresiones = (event) => {
     event.preventDefault()
     var servicebl = "/referencias/busquedaExpresionPorLetraAdmin" + "/" + props.letraMain
-      webService(servicebl, "POST", {parametro:busqueda,case:insensitiveCase},(data)=>{
+      webService(servicebl, "POST", {parametro:busqueda,case:insensitiveCase}, (data)=>{
         props.setExpresiones(fixExpresiones(data.data.response))
       })
   }

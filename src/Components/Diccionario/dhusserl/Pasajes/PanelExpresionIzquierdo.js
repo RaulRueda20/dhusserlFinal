@@ -13,9 +13,11 @@ import classNames from 'classnames';
 // Other req
 import {webService} from '../../../../js/webServices';
 import * as localStore from '../../../../js/localStore';
+import { sesionStore } from '../../../../sesionStore';
 import '../../../../css/expresiones.css';
 
 export default function PanelExpresionIzquierdo(props){
+    const global = React.useContext(sesionStore);
     const [open, setOpen] = React.useState(false);
 
     React.useEffect(()=>{
@@ -52,7 +54,7 @@ export default function PanelExpresionIzquierdo(props){
         var idReferenciaConsultada = props.expresion.id
         var refIdReferenciaConsultada = event.currentTarget.id.split("/")[0]
         var service = "/referencias/obtieneReferenciasIdRefId/"+ idReferenciaConsultada + "/" + refIdReferenciaConsultada
-        webService(service, "GET", {}, data => {
+        webService(service, "GET", {}, global.sesion, data => {
             var referencias = fixReferenciasConsultadas(data.data.response)
             if(localStore.getObjects("referenciasConsultadas")==false){
                 var referenciasConsultadas = []
