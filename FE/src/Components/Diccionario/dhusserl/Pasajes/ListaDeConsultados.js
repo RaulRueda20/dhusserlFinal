@@ -15,6 +15,7 @@ import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
 
 import * as localStore from '../../../../js/localStore';
+import { sesionStore } from '../../../../sesionStore';
 import { Typography } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
@@ -41,10 +42,12 @@ const useStyles = makeStyles(theme => ({
 
 function ListaDeConsultados(props){
     const classes = useStyles();
+    const global = React.useContext(sesionStore);
     const [listaC, setListaC] = React.useState([]);
 
     function fixListaC(lista){
-        var lista =  localStore.getObjects("referenciasConsultadas")
+        //var lista =  localStore.getObjects("referenciasConsultadas")
+        var lista = global.ultimasVisitadas
         var listaNueva = []
         var listaFinal = []
         for(var i in lista){
@@ -67,7 +70,8 @@ function ListaDeConsultados(props){
     }
 
     React.useEffect(()=>{
-        var listaConsultas = localStore.getObjects("referenciasConsultadas")
+        //var listaConsultas = localStore.getObjects("referenciasConsultadas")
+        var listaConsultas = global.ultimasVisitadas
         var listaVacia = []
         for(var i in listaConsultas){
             listaVacia.push(listaConsultas[i])

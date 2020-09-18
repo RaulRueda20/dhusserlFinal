@@ -11,6 +11,7 @@ import PanelExpresion from './PanelExpresion';
 
 //Other req
 import * as localStore from '../../../../js/localStore';
+import { sesionStore } from '../../../../sesionStore';
 
 const useStyles = makeStyles(theme => ({
   listContainer:{
@@ -36,21 +37,19 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default function ListaExpresiones(props){
+  const global = React.useContext(sesionStore);
   const classes = useStyles();
   const theme = useTheme();
   const [panelesAbiertos,setPanelesAbiertos] = React.useState([]);
 
-  React.useEffect(()=>{
-    console.log("lenguaje",props.lenguaje)
-  }, [props.lenguaje])
-
   function clickHandleVista(event){
     if(!props.flagDeBusqueda){
       var expresionesReferencias=props.expresiones[event.currentTarget.id];
+      console.log("expresionesReferencias", expresionesReferencias)
     }else{
       var expresionesReferencias=props.expresionesGlobales[[event.currentTarget.id]]
     }
-    if(localStore.getObjects("referenciasConsultadas")==false){
+    /*if(localStore.getObjects("referenciasConsultadas")==false){
       var referenciasConsultadas=[];
       referenciasConsultadas.push(expresionesReferencias)
       localStore.setObjects("referenciasConsultadas",referenciasConsultadas)
@@ -58,7 +57,12 @@ export default function ListaExpresiones(props){
       var store=localStore.getObjects("referenciasConsultadas")
       store.push(expresionesReferencias)
       localStore.setObjects("referenciasConsultadas",store)
-    }
+    }*/
+    var nuevasVisitadas = global.ultimasVisitadas
+    //console.log("nuevasVisitadas",nuevasVisitadas)
+    nuevasVisitadas.push(expresionesReferencias)
+    //console.log("nuevasVisitadas", nuevasVisitadas)
+    global.setUltimasVisitadas(nuevasVisitadas)
   }
 
   function handleClickPanel(event){

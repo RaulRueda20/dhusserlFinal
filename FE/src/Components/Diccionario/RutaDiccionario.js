@@ -70,11 +70,6 @@ const theme = createMuiTheme({
 function RutaDiccionario({match,lang,setLang}){
   const global = React.useContext(sesionStore);
 
-  React.useEffect(()=>{
-    console.log("match", match.url)
-    console.log(global)
-  })
-
   return(
       <MuiThemeProvider theme={theme}>
           <Switch>

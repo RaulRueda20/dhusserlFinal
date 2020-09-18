@@ -65,13 +65,14 @@ function MenuDerecho(props){
   const [padres,setPadres]=React.useState([]);
 
   React.useEffect(()=>{
-    if(localStore.getObjects("referenciasConsultadas")!=false){
-      var store=localStore.getObjects("referenciasConsultadas")
-      setReferenciasConsultadasVista(store)
-    }
+    //if(localStore.getObjects("referenciasConsultadas")!=false){
+      //var store=localStore.getObjects("referenciasConsultadas")
+      //setReferenciasConsultadasVista(store)
+    //
+    setReferenciasConsultadasVista(global.ultimasVisitadas)
     if (props.expresionSeleccionada.id!=""){
       var service = "/vertambien/" + props.expresionSeleccionada.id
-      webService(service, "GET", {}, data => {
+      webService(service, "GET", {}, global.sesion, data => {
         setListaVerTambien(data.data.response)
         webService(("/expresiones/"+props.language+"/hijosList/"+props.expresionSeleccionada.id),"GET", {}, global.sesion, (data) => {
           setHijos(data.data.response)
@@ -104,13 +105,15 @@ function MenuDerecho(props){
     return referencia
   }
 
-  function handleFlagLetraMain(){
+  function handleFlagLetraMain(event){
     props.setFlagLetraMain(false)
     var idExpresion = event.target.id.split("/")[0]
     var service = "/referencias/obtieneReferencias/" + idExpresion
     webService(service, "GET", {}, global.sesion, data => {
+      console.log("data", data)
       var referencias = fixReferenciasConsultadas(data.data.response)
-      if(localStore.getObjects("referenciasConsultadas")==false){
+      console.log("referencias",referencias)
+      /*if(localStore.getObjects("referenciasConsultadas")==false){
           var referenciasConsultadas = []
           referenciasConsultadas.push(referencias)
           localStore.setObjects("referenciasConsultadas",referenciasConsultadas)
@@ -118,7 +121,10 @@ function MenuDerecho(props){
           var store = localStore.getObjects("referenciasConsultadas")
           store.push(referencias)
           localStore.setObjects("referenciasConsultadas",store)
-      }
+      }*/
+      var nuevasVisitadas = global.ultimasVisitadas
+      nuevasVisitadas.push(referencias)
+      global.setUltimasVisitadas(nuevasVisitadas)
     })
   }
 
@@ -164,7 +170,7 @@ function MenuDerecho(props){
             <ul className="ulDelMenuDerechoVerTambien">
               {listaVerTambien.map((expresion,index)=>{
                 return <li key={expresion.id+"-"+index}>
-                  <Link to={`${props.match.path.slice(0,20)}/pasaje/${expresion.id}`} onClick={()=>handleFlagLetraMain()}>
+                  <Link to={`${props.match.path.slice(0,20)}/pasaje/${expresion.id}`} onClick={(event)=>handleFlagLetraMain(eventevent)}>
                     <Typography className={"consultaDePasajes"} variant="h6" id={expresion.id+"/"+index}>{expresion.expresion + "  //  " + expresion.traduccion + "  --  " + expresion.id}</Typography>
                   </Link>
                 </li>

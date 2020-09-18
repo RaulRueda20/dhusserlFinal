@@ -65,8 +65,8 @@ function LoginForm (props){
           usuario : correo,
           password : password
         }
-        nuevaSesion['ultimasVisitadas'] = []
-        nuevaSesion["ultimaVisitada"] = "alfabeto"
+        //nuevaSesion['ultimasVisitadas'] = []
+        //nuevaSesion["ultimaVisitada"] = "alfabeto"
         global.setSesion(nuevaSesion)
         props.history.push("/husserl")
       }

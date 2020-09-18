@@ -121,7 +121,6 @@ function Pasaje(props){
     setLoading(true)
     var idDeExpresion=props.match.params.expresion;
     var idDeLaReferencia=props.match.params.id ? props.match.params.id : false;
-    console.log('idDeLaReferencia', idDeLaReferencia)
     var service = "/expresiones/" + props.language + "/" + props.letraMain;
     if(pasajeService != service){
       setPasajeService(service)
@@ -135,7 +134,6 @@ function Pasaje(props){
     }
     var service = "/referencias/obtieneReferencias/" + idDeExpresion
     webService(service, "GET", {}, global.sesion, (data) => {
-      console.log(data.data.response)
       setReferencias(data.data.response)
       setIdExpresion(idDeExpresion)
       if(idDeLaReferencia && idDeLaReferencia!=null){

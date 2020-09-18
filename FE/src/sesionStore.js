@@ -5,10 +5,11 @@ const { Provider } = sesionStore;
 
 const SesionProvider = ({ children }) => {
   const [sesion, setSesion] = React.useState(null);
+  const [ultimasVisitadas, setUltimasVisitadas] = React.useState([]);
 
   return (
     <Provider
-      value={{ sesion, setSesion}}>
+      value={{ sesion, setSesion, ultimasVisitadas, setUltimasVisitadas}}>
       {children}
     </Provider>
   );

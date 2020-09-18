@@ -76,7 +76,7 @@ function ListaHijosEscondido(props){
         var service = "/referencias/obtieneReferencias/" + idExpresion
         webService(service, "GET", {}, global.sesion, data => {
             var referencias = fixReferenciasConsultadas(data.data.response)
-            if(localStore.getObjects("referenciasConsultadas")==false){
+            /*if(localStore.getObjects("referenciasConsultadas")==false){
                 var referenciasConsultadas = []
                 referenciasConsultadas.push(referencias)
                 localStore.setObjects("referenciasConsultadas",referenciasConsultadas)
@@ -84,7 +84,10 @@ function ListaHijosEscondido(props){
                 var store = localStore.getObjects("referenciasConsultadas")
                 store.push(referencias)
                 localStore.setObjects("referenciasConsultadas",store)
-            }
+            }*/
+            var nuevasVisitadas = global.ultimasVisitadas
+            nuevasVisitadas.push(referencias)
+            global.setUltimasVisitadas(nuevasVisitadas)
         })
     }
 

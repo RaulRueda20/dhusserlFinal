@@ -16,7 +16,8 @@ function Guia(props){
     const [loading, setLoading]=React.useState(false);
 
     React.useEffect(()=>{
-        if(!localStore.getObjects("sesion")) document.getElementById("toLogin").click()
+        //if(!localStore.getObjects("sesion")) document.getElementById("toLogin").click()
+        if(global.ultimasVisitadas) document.getElementById("toLogin").click()
         setLoading(true)
         webService("/manual/get", "GET", {}, global.sesion, (data) => {
            setGuia(data.data.response[0])

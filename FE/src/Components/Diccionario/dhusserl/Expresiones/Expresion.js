@@ -98,7 +98,10 @@ function Expresion(props){
   
   React.useEffect(()=>{
     console.log("global", global)
-    if (global.sesion == null && localStore.getObjects('sesion')){
+    /*if(global.sesion == null){
+
+    }*/
+    /*if (global.sesion == null && localStore.getObjects('sesion')){
       console.log("Sesion!!", global)
       var service = "/login/usuario"
       var params = JSON.stringify({'userId' : localStore.getObjects("sesion").user , 'password' : localStore.getObjects("sesion").password})
@@ -109,7 +112,7 @@ function Expresion(props){
           global.setSesion(data.data.response);
         }
       })
-    }
+    }*/
     setLoading(true)
     if(document.getElementById("listaIzquierda").firstChild != null) document.getElementById("listaIzquierda").firstChild.scrollIntoView()
     var service = "/expresiones/" + language + "/" + props.letraMain

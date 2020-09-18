@@ -33,12 +33,13 @@ function LoginD(props){
   const global = React.useContext(sesionStore);
 
   React.useEffect(()=>{
-    console.log("global", global.sesion)
-    if(localStore.getObjects("sesion")){
-      if(localStore.getObjects("sesion").user && localStore.getObjects("sesion").password){
-        props.history.push("/diccionario/husserl")
-      }
-    }
+    //console.log("global", global.sesion)
+    //if(localStore.getObjects("sesion")){
+      //if(localStore.getObjects("sesion").user && localStore.getObjects("sesion").password){
+        if(global.sesion != null)
+          props.history.push("/diccionario/husserl")
+      //}
+    //}
   }, [true])
 
   return(

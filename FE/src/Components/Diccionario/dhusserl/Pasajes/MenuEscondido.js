@@ -68,10 +68,11 @@ function MenuEscondido(props){
   const emptyPasaje = {clave:"", epretty:"", expresion_original:"", expresion_traduccion:"", orden:"", pasaje_original: "", pasaje_traduccion:"",ref_original:"", ref_traduccion:"", refid:"", tpretty:""}
 
   React.useEffect(()=>{
-    if(localStore.getObjects("referenciasConsultadas")!=false){
+    /*if(localStore.getObjects("referenciasConsultadas")!=false){
       var referenciaConsultadaSacada = localStore.getObjects("referenciasConsultadas")
       setReferenciasConsultadasVista(referenciaConsultadaSacada)
-    }
+    }*/
+    setReferenciasConsultadasVista(global.ultimasVisitadas)
     if (props.idExpresion!=""){
     var service = "/vertambien/" + props.idExpresion
     webService(service, "GET", {}, global.sesion , data => {
@@ -88,13 +89,13 @@ function MenuEscondido(props){
     setNombre(expresion_original)
   },[props.idExpresion,props.referenciaSeleccionada,props.setLetraMain])
 
-  function handleFlagLetraMain(){
+  function handleFlagLetraMain(event){
     props.setFlagLetraMain(false)
     var idExpresion = event.target.id.split("/")[0]
     var service = "/referencias/obtieneReferencias/" + idExpresion
     webService(service, "GET", {}, global.sesion , data => {
       var referencias = fixReferenciasConsultadas(data.data.response)
-      if(localStore.getObjects("referenciasConsultadas")==false){
+      /*if(localStore.getObjects("referenciasConsultadas")==false){
           var referenciasConsultadas = []
           referenciasConsultadas.push(referencias)
           localStore.setObjects("referenciasConsultadas",referenciasConsultadas)
@@ -102,7 +103,10 @@ function MenuEscondido(props){
           var store = localStore.getObjects("referenciasConsultadas")
           store.push(referencias)
           localStore.setObjects("referenciasConsultadas",store)
-      }
+      }*/
+      var nuevasVisitadas = global.ultimasVisitadas
+      nuevasVisitadas.push(referencias)
+      global.setUltimasVisitadas(nuevasVisitadas)
     })
   }
 
@@ -150,7 +154,7 @@ function MenuEscondido(props){
               <ul className="ulDelMenuDerechoVerTambien">
                 {listaVerTambien.map((expresion,index)=>{
                   return <li key={expresion.id+"-"+index}>
-                    <Link to={`/husserl/pasaje/${expresion.id}`} onClick={()=>handleFlagLetraMain()}>
+                    <Link to={`/husserl/pasaje/${expresion.id}`} onClick={(event)=>handleFlagLetraMain(event)}>
                       <Typography className={"consultaDePasajes"} variant="h6" id={expresion.id+"/"+index}>{expresion.expresion + "  //  " + expresion.traduccion + "  --  " + expresion.id}</Typography>
                     </Link>
                   </li>

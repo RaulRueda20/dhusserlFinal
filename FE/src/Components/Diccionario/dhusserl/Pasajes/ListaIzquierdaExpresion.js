@@ -14,7 +14,7 @@ export default function ListaIzquierdaExpresiones(props){
     var expresionClickeada=event.currentTarget.id.split("-")[0];
     var posicionExpresion=event.currentTarget.id.split("-")[1]
     var expresionesReferencias=props.expresiones[posicionExpresion];
-    if(localStore.getObjects("referenciasConsultadas")==false){
+    /*if(localStore.getObjects("referenciasConsultadas")==false){
       var referenciasConsultadas=[];
       referenciasConsultadas.push(expresionesReferencias)
       localStore.setObjects("referenciasConsultadas",referenciasConsultadas)
@@ -22,7 +22,10 @@ export default function ListaIzquierdaExpresiones(props){
       var store=localStore.getObjects("referenciasConsultadas")
       store.push(expresionesReferencias)
       localStore.setObjects("referenciasConsultadas",store)
-    }
+    }*/
+    var nuevasVisitadas = global.ultimasVisitadas
+    nuevasVisitadas.push(referenciasConsultadas)
+    global.setUltimasVisitadas(nuevasVisitadas)
     props.setPosicionReferenciasConsultadas(posicionExpresion)
     props.setIdExpresion(expresionClickeada)
     props.setExpanded1(true)

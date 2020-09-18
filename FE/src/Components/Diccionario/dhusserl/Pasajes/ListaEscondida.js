@@ -6,15 +6,16 @@ import PanelExpresionIzquierdo from './PanelExpresionIzquierdo';
 
 //Elements
 import * as localStore from '../../../../js/localStore';
+import { sesionStore } from '../../../../sesionStore';
 
 function ListaEscondida(props){
   const [panelesAbiertos,setPanelesAbiertos] = React.useState([]);
-
+  const global = React.useContext(sesionStore);
   function clickHandleVista(event){
     var expresionClickeada=event.currentTarget.id.split("-")[0];
     var posicionExpresion=event.currentTarget.id.split("-")[1]
     var expresionesReferencias=props.expresiones[posicionExpresion];
-    if(localStore.getObjects("referenciasConsultadas")==false){
+    /*if(localStore.getObjects("referenciasConsultadas")==false){
       var referenciasConsultadas=[];
       referenciasConsultadas.push(expresionesReferencias)
       localStore.setObjects("referenciasConsultadas",referenciasConsultadas)
@@ -22,7 +23,10 @@ function ListaEscondida(props){
       var store=localStore.getObjects("referenciasConsultadas")
       store.push(expresionesReferencias)
       localStore.setObjects("referenciasConsultadas",store)
-    }
+    }*/
+    var nuevasVisitadas = global.ultimasVisitadas
+    nuevasVisitadas.push(expresionesReferencias)
+    global.setUltimasVisitadas(nuevasVisitadas)
     props.setIdExpresion(expresionClickeada)
     props.setExpanded1(true)
     props.setExpanded2(true)

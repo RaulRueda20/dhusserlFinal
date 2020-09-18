@@ -16,7 +16,7 @@ function Acercade(props){
     const [loading, setLoading]=React.useState(false);
 
     React.useEffect(()=>{
-        if(!localStore.getObjects("sesion")) document.getElementById("toLogin").click()
+        if(global.sesion == null) document.getElementById("toLogin").click()
         setLoading(true)
         webService("/acerca_de/get", "GET", {}, global.sesion, (data) => {
            setAcercade(data.data.response[0]) 

@@ -70,23 +70,25 @@ function MenuDerechoPasajes(props){
   const emptyPasaje = {clave:"", epretty:"", expresion_original:"", expresion_traduccion:"", orden:"", pasaje_original: "", pasaje_traduccion:"",ref_original:"", ref_traduccion:"", refid:"", tpretty:""}
 
   React.useEffect(()=>{
+    console.log("global.ultimasVisitadas",global.ultimasVisitadas)
     setTimeout(() => {
       if(document.getElementById("VP" + props.idExpresion) != null){
         document.getElementById("VP" + props.idExpresion).scrollIntoView()
       }
     }, 1000)
-    if(localStore.getObjects("referenciasConsultadas")!=false){
+    /*if(localStore.getObjects("referenciasConsultadas")!=false){
       var store=localStore.getObjects("referenciasConsultadas")
       setReferenciasConsultadasVista(store)   
-    }
+    }*/
+    setReferenciasConsultadasVista(global.ultimasVisitadas)
     if (props.idExpresion!=""){
       var service = "/vertambien/" + props.idExpresion
       webService(service, "GET", {}, global.sesion, data => {
         setListaVerTambien(data.data.response)
-        webService(("/expresiones/"+props.language+"/hijosList/"+props.idExpresion),"GET", {}, (data) => {
+        webService(("/expresiones/"+props.language+"/hijosList/"+props.idExpresion),"GET", {}, global.sesion, (data) => {
           setHijos(data.data.response)
         })
-        webService(("/expresiones/"+props.language+"/abuelosList/"+props.idExpresion), "GET", {}, (data2) =>{
+        webService(("/expresiones/"+props.language+"/abuelosList/"+props.idExpresion), "GET", {}, global.sesion, (data2) =>{
           setPadres(data2.data.response)
         })
       })
@@ -116,13 +118,13 @@ function MenuDerechoPasajes(props){
     return referencia
   }
  
-  function handleFlagLetraMain(){
+  function handleFlagLetraMain(event){
     props.setFlagLetraMain(false)
     var idExpresion = event.target.id.split("/")[0]
     var service = "/referencias/obtieneReferencias/" + idExpresion
-    webService(service, "GET", {}, data => {
+    webService(service, "GET", {}, global.sesion, data => {
       var referencias = fixReferenciasConsultadas(data.data.response)
-      if(localStore.getObjects("referenciasConsultadas")==false){
+      /*if(localStore.getObjects("referenciasConsultadas")==false){
           var referenciasConsultadas = []
           referenciasConsultadas.push(referencias)
           localStore.setObjects("referenciasConsultadas",referenciasConsultadas)
@@ -130,7 +132,11 @@ function MenuDerechoPasajes(props){
           var store = localStore.getObjects("referenciasConsultadas")
           store.push(referencias)
           localStore.setObjects("referenciasConsultadas",store)
-      }
+      }*/
+      var nuevasVisitadas = global.ultimasVisitadas
+      nuevasVisitadas.push(referencias)
+      //console.log("nuevasVisitadas", nuevasVisitadas)
+      global.setUltimasVisitadas(nuevasVisitadas)
     })
   }
 
@@ -178,7 +184,7 @@ function MenuDerechoPasajes(props){
             <ul className="ulDelMenuDerechoVerTambien">
               {listaVerTambien.map((expresion,index)=>(
                 <li key={expresion.id+"-"+index}>
-                  <Link to={`${props.match.path.slice(0,20)}/pasaje/${expresion.id}`} onClick={()=>handleFlagLetraMain()}>
+                  <Link to={`${props.match.path.slice(0,20)}/pasaje/${expresion.id}`} onClick={(event)=>handleFlagLetraMain(event)}>
                     <Typography className={"consultaDePasajes"} variant="h6" id={expresion.id+"/"+index}>{expresion.expresion + "  //  " + expresion.traduccion + "  --  " + expresion.id}</Typography>
                   </Link>
                 </li>

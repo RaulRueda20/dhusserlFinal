@@ -11,17 +11,19 @@ import Pasaje from './Pasajes/Pasaje';
 import ModuloBusquedas from './Busquedas/moduloBusquedas'
 import Acercade from './AcercaDe/Acercade';
 import Guia from './Guia/Guia';
+import { sesionStore } from '../../../sesionStore';
 
 //Other req
 import * as localStore from '../../../js/localStore';
 
 export default function Subvistas({match, lang, setLang, history}){
+    const global = React.useContext(sesionStore);
     const [language,setLanguage] = React.useState("al");
     const [letraMain, setLetraMain] = React.useState("A");
     const [flagLetraMain, setFlagLetraMain]=React.useState(false);
 
     React.useEffect(()=>{
-        if(!localStore.getObjects("sesion")) history.push("/diccionario/login")
+        if(global.sesion == null) history.push("/diccionario/login")
     }, [true])
 
     return(
