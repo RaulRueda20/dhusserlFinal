@@ -118,6 +118,7 @@ function Pasaje(props){
   }
   
   React.useEffect(()=>{
+    console.log("chunkList", chunkList)
     setLoading(true)
     var idDeExpresion=props.match.params.expresion;
     var idDeLaReferencia=props.match.params.id ? props.match.params.id : false;
@@ -160,7 +161,6 @@ function Pasaje(props){
     setTimeout(() => {
       if(document.getElementById("VP" + props.idExpresion) != null){
         document.getElementById("VP" + props.idExpresion).scrollIntoView()
-        
       }
     }, 1000)
     if(state.checkedA==true){
@@ -261,7 +261,6 @@ function Pasaje(props){
        <ModalDeBusqueda modalDeBusquedas={modalDeBusquedas} setModalDebusquedas={setModalDebusquedas} lang={props.lang}/>
        <ModalCaracterInvalido modalCaracteresIvalidos={modalCaracteresIvalidos} setModalCaracteresInvalidos={setModalCaracteresInvalidos} lang={props.lang}/>
        <ModalNumeros modalNumeros={modalNumeros} setModalNumeros={setModalNumeros} lang={props.lang}/>
-       {/* <Link id="toLogin" to="/"/> */}
     </div>
   )
 }

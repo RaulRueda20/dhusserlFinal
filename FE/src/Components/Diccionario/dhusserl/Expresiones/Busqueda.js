@@ -40,7 +40,7 @@ function Busqueda(props){
   const [insensitiveCase,setInsensitiveCase]=React.useState(false);
   const [snack, setSnack] = React.useState({open : false, text : ""});
 
-  const ChunkB = (expresiones, busqueda) =>{
+  const ChunkB = (expresiones) =>{
     props.setChunkListGlobal(expresiones.slice(0,50))
   }
 
@@ -75,6 +75,7 @@ function Busqueda(props){
         var letraCapital = letra.toUpperCase()
         if(letra == letraCapital){
           var servicebl = "/referencias/busquedaExpresionPorLetra"+"/"+props.letraMain+"/"+props.language
+          console.log("servicebl", servicebl)
           webService(servicebl, "POST", {parametro:props.busqueda,case:insensitiveCase}, global.sesion, (data) => {
             if(props.letraMain == letraCapital){
               console.log("data", data.data.response)
@@ -86,6 +87,7 @@ function Busqueda(props){
         }else{
           var letraCapital = letra.toUpperCase()
           var servicebl = "/referencias/busquedaExpresionPorLetra"+"/"+props.letraMain+"/"+props.language
+          console.log("servicebl", servicebl)
           webService(servicebl, "POST", {parametro:props.busqueda,case:insensitiveCase}, global.sesion, (data) => {
             console.log("data",data.data.response)
             if(props.letraMain == letraCapital){

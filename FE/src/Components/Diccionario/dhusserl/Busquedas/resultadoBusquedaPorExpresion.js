@@ -53,7 +53,7 @@ function ResultadoBusquedaExpresion(props){
     React.useEffect(() => { 
         if(props.idPasaje==""){
             var service = "/vertambien/" + props.expresionSeleccionada.term_id
-            webService(service, "GET", {}, data => {
+            webService(service, "GET", {}, global.sesion, data => {
                 setListaVerTambien(data.data.response)
                 webService(("/expresiones/"+lang+"/hijosList/"+props.expresionSeleccionada.term_id),"GET", {}, global.sesion, (data) => {
                     setHijos(data.data.response)
@@ -64,7 +64,7 @@ function ResultadoBusquedaExpresion(props){
             })
         }else{
             var service = "/vertambien/" + props.idPasaje
-            webService(service, "GET", {}, data => {
+            webService(service, "GET", {}, global.sesion, data => {
                 setListaVerTambien(data.data.response)
                 webService(("/expresiones/"+lang+"/hijosList/"+props.idPasaje),"GET", {}, global.sesion, (data) => {
                     setHijos(data.data.response)

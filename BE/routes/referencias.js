@@ -523,7 +523,8 @@ router.post('/busquedaExpresionPorLetraAdmin/:letra', function(req, res, next){
 })
 
 router.post('/busquedaExpresionPorLetra/:letra/:lenguaje', function(req, res, next){
-    console.log("req", req.params)
+    //console.log("req", req.params)
+    console.log("global.rol", global.rol)
     if(global.rol != "guest"){
         var currentdate = new Date();
         var datetime = currentdate.getDay() + "/"+(currentdate.getMonth() + 1)
@@ -532,7 +533,7 @@ router.post('/busquedaExpresionPorLetra/:letra/:lenguaje', function(req, res, ne
         + currentdate.getMinutes() + ":" + currentdate.getSeconds();
         var filter = ["%"+req.body.parametro+"%"]
         //var letra = req.body.parametro.slice(0,1)
-        console.log("letra",req.params.letra)
+        //console.log("letra",req.params.letra)
         //console.log("case al entrar al servicio", req.body.case)
         if(req.params.lenguaje == "es"){
             if(req.body.case){
@@ -540,7 +541,7 @@ router.post('/busquedaExpresionPorLetra/:letra/:lenguaje', function(req, res, ne
             }else{
                 var condicion = "where termino.t_term_es ilike $1 and termino.t_index_de like '"+req.params.letra+"%'"
             }
-            var ordenamiento = "order by termino.t_term_es,"
+            var ordenamiento = "order by termino.t_term_es"
             var terminos = "termino.t_term_es as expresion, termino.t_term_de as traduccion,"
             var prettys = "termino.t_em_de as pretty_t, termino.t_em_es as pretty_e,"
         }else{   
@@ -549,7 +550,7 @@ router.post('/busquedaExpresionPorLetra/:letra/:lenguaje', function(req, res, ne
             }else{
                 var condicion = "where termino.t_term_de ilike $1 and termino.t_index_de ilike '"+req.params.letra+"%'"
             }
-            var ordenamiento = "order by termino.t_term_de,"
+            var ordenamiento = "order by termino.t_term_de"
             var terminos = "termino.t_term_de as expresion, termino.t_term_es as traduccion,"
             var prettys = "termino.t_em_de as pretty_e, termino.t_em_es as pretty_t,"
         }
@@ -569,7 +570,7 @@ router.post('/busquedaExpresionPorLetra/:letra/:lenguaje', function(req, res, ne
         referencia.ref_def_es as ref_def_es\
         from termino\
         inner join termino_referencia on cast (termino_referencia.tr_termid as int) = cast(termino.t_id as int)\
-        inner join referencia on referencia.ref_id = termino_referencia.tr_refid " + condicion + ordenamiento
+        inner join referencia on referencia.ref_id = termino_referencia.tr_refid " + condicion + " " + ordenamiento
         //console.log("queryString", queryString)
         res.locals.connection.query(queryString, filter)
     .then(function(results) {
@@ -577,7 +578,7 @@ router.post('/busquedaExpresionPorLetra/:letra/:lenguaje', function(req, res, ne
         res.send(JSON.stringify({"status": 200, "error": null, "response": fixReferencias(results)}));
         //If there is no error, all is good and response is 200OK.
   	}).catch(function(error){
-        //console.log("error", error)
+        console.log("error", error)
         res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
     });}else{res.send(JSON.stringify({"status": 401, "error": "Está prohibido para este usuario.", "response": null}));}
 })
@@ -601,7 +602,7 @@ const fixPasajes = (res, pasaje, tid) =>{
                     var posicionClick = pedazo.indexOf("onclick")
                     var pedazoClick = pedazo.slice(posicionClick, posicionFinal+1)
                     var refid = pedazoClick.split("'")[1]
-                    var reemplazo = pasaje.split(pedazo)[0] + "<a href='https://diccionariohusserl.org/#/husserl/pasaje/" + tid + "/" + refid + "'>" + pasaje.split(pedazo)[1]
+                    var reemplazo = pasaje.split(pedazo)[0] + "<a href='/#/diccionario/husserl/pasaje/" + tid + "/" + refid + "'>" + pasaje.split(pedazo)[1]
                     // console.log(reemplazo)
                     return fixPasajes(res, reemplazo)
                 }

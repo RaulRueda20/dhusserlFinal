@@ -13,7 +13,7 @@ export default function ListaIzquierdaExpresiones(props){
   function clickHandleVista(event){
     var expresionClickeada=event.currentTarget.id.split("-")[0];
     var posicionExpresion=event.currentTarget.id.split("-")[1]
-    var expresionesReferencias=props.expresiones[posicionExpresion];
+    //var expresionesReferencias=props.expresiones[posicionExpresion];
     /*if(localStore.getObjects("referenciasConsultadas")==false){
       var referenciasConsultadas=[];
       referenciasConsultadas.push(expresionesReferencias)
@@ -44,6 +44,7 @@ export default function ListaIzquierdaExpresiones(props){
   }
 
   React.useEffect(()=>{
+    console.log("chunkList",props.chunkList)
     if(document.getElementById("listaIzquierda").firstChild != null) document.getElementById("listaIzquierda").firstChild.scrollIntoView()
     var coincidencia = null
     for(var i in props.expresiones){

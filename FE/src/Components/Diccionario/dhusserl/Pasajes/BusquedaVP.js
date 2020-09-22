@@ -69,6 +69,7 @@ function BusquedaVP(props){
     }
 
     const ChunkC = (expresiones) =>{
+        console.log("expresiones",expresiones)
         props.setChunkList(expresiones)
     }
 
@@ -102,7 +103,7 @@ function BusquedaVP(props){
                     var servicebl = "/referencias/busquedaExpresionPorLetra"+"/"+props.letraMain+"/"+props.language
                     webService(servicebl, "POST", {parametro:props.busqueda,case:insensitiveCase}, global.sesion, (data) => {
                     if(props.letraMain == letraCapital){
-                        console.log(data.data.response)
+                        console.log("Mayuscula",data.data.response)
                         ChunkC(data.data.response)
                     }else{
                         setSnack({open : true, text: "La primera letra de la busqueda no coincide con la letra del indice"})
@@ -122,7 +123,8 @@ function BusquedaVP(props){
                 }
             }
         }else{
-            props.setChunkList(props.expresiones.slice(0,50))
+            //props.setChunkList(props.expresiones.slice(0,50))
+            console.log("Ay caramba!!")
         }
     }
 

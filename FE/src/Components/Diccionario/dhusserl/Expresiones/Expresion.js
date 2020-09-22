@@ -97,7 +97,6 @@ function Expresion(props){
   }
   
   React.useEffect(()=>{
-    console.log("global", global)
     /*if(global.sesion == null){
 
     }*/
@@ -117,6 +116,7 @@ function Expresion(props){
     if(document.getElementById("listaIzquierda").firstChild != null) document.getElementById("listaIzquierda").firstChild.scrollIntoView()
     var service = "/expresiones/" + language + "/" + props.letraMain
     webService(service, "GET", {}, global.sesion, (data) => {
+      //console.log("data", data.data.response)
       setExpresiones(fixReferencias(data.data.response))
       setChunkList(fixReferencias(data.data.response).slice(0,50))
       if(!flagDeBusqueda){

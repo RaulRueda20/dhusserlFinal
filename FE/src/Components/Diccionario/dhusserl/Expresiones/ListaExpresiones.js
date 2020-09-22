@@ -45,7 +45,6 @@ export default function ListaExpresiones(props){
   function clickHandleVista(event){
     if(!props.flagDeBusqueda){
       var expresionesReferencias=props.expresiones[event.currentTarget.id];
-      console.log("expresionesReferencias", expresionesReferencias)
     }else{
       var expresionesReferencias=props.expresionesGlobales[[event.currentTarget.id]]
     }
@@ -59,9 +58,7 @@ export default function ListaExpresiones(props){
       localStore.setObjects("referenciasConsultadas",store)
     }*/
     var nuevasVisitadas = global.ultimasVisitadas
-    //console.log("nuevasVisitadas",nuevasVisitadas)
     nuevasVisitadas.push(expresionesReferencias)
-    //console.log("nuevasVisitadas", nuevasVisitadas)
     global.setUltimasVisitadas(nuevasVisitadas)
   }
 
@@ -90,19 +87,21 @@ export default function ListaExpresiones(props){
       <div className={classNames([{[classes.listContainer2] : props.menuEscondido == true}, classes.listContainer])}>
         <ul id="listaIzquierda">
           {props.chunkListGlobal.map((expresion, index)=>{
+            return (
             <PanelExpresion {...props} key={expresion.id+"-"+index} expresion={expresion} handleClickPanel={handleClickPanel} clickHandleVista={clickHandleVista} index={index}
             getJerarquia={props.getJerarquia} idReferencias={props.idReferencias} setIdReferencias={props.setIdReferencias} expresionSeleccionada={props.expresionSeleccionada}
             setFlagLetraMain={props.setFlagLetraMain} setOpenModalN={props.setOpenModalN} flagDeBusqueda={props.flagDeBusqueda} idExpresion={props.idExpresion}/> 
-          })}
+          )})}
         </ul>
       </div> :
       <div className={classNames([{[classes.listContainer2] : props.menuEscondido == true}, classes.listContainer])}>
         <ul id="listaIzquierda">
           {props.chunkList.map((expresion, index)=>{
-            return<PanelExpresion match={props.match} key={expresion.id+"-"+index} expresion={expresion} handleClickPanel={handleClickPanel} clickHandleVista={clickHandleVista} index={index}
+            return(
+            <PanelExpresion match={props.match} key={expresion.id+"-"+index} expresion={expresion} handleClickPanel={handleClickPanel} clickHandleVista={clickHandleVista} index={index}
             getJerarquia={props.getJerarquia} idReferencias={props.idReferencias} setIdReferencias={props.setIdReferencias} expresionSeleccionada={props.expresionSeleccionada}
             setFlagLetraMain={props.setFlagLetraMain} setOpenModalN={props.setOpenModalN} lenguaje={props.lenguaje}/> 
-          })}
+          )})}
         </ul>
       </div>}
     </div>
