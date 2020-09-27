@@ -83,17 +83,6 @@ export default function ListaExpresiones(props){
 
   return (
     <div id={"contendor"} onScroll={handleScroll}>
-      {props.state.checkedA == false ? 
-      <div className={classNames([{[classes.listContainer2] : props.menuEscondido == true}, classes.listContainer])}>
-        <ul id="listaIzquierda">
-          {props.chunkListGlobal.map((expresion, index)=>{
-            return (
-            <PanelExpresion {...props} key={expresion.id+"-"+index} expresion={expresion} handleClickPanel={handleClickPanel} clickHandleVista={clickHandleVista} index={index}
-            getJerarquia={props.getJerarquia} idReferencias={props.idReferencias} setIdReferencias={props.setIdReferencias} expresionSeleccionada={props.expresionSeleccionada}
-            setFlagLetraMain={props.setFlagLetraMain} setOpenModalN={props.setOpenModalN} flagDeBusqueda={props.flagDeBusqueda} idExpresion={props.idExpresion}/> 
-          )})}
-        </ul>
-      </div> :
       <div className={classNames([{[classes.listContainer2] : props.menuEscondido == true}, classes.listContainer])}>
         <ul id="listaIzquierda">
           {props.chunkList.map((expresion, index)=>{
@@ -103,7 +92,7 @@ export default function ListaExpresiones(props){
             setFlagLetraMain={props.setFlagLetraMain} setOpenModalN={props.setOpenModalN} lenguaje={props.lenguaje}/> 
           )})}
         </ul>
-      </div>}
+      </div>
     </div>
   );
 }

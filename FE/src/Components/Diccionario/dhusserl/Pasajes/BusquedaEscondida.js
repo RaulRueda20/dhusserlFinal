@@ -18,7 +18,7 @@ import Hidden from '@material-ui/core/Hidden';
 import { withStyles } from '@material-ui/styles';
 
 //LanguageChanges
-import {busquedas, toolTipIdiomaDeLaLista, distincionMayusyMinus, BusquedaGeneral, busquedaPorLetra} from '../../../../js/Language';
+import {busquedas, toolTipIdiomaDeLaLista, distincionMayusyMinus, letraNoCoincide} from '../../../../js/Language';
 
 //Other request
 import {webService} from '../../../../js/webServices';
@@ -48,10 +48,6 @@ function BusquedaEscondida(props){
     const global = React.useContext(sesionStore);
     const [insensitiveCase,setInsensitiveCase]=React.useState(false);
 
-    const handleSwitch=name=>event=>{
-        props.setState({...props.state, [name]:event.target.checked});
-    }
-
     const clickChangeLanguageEsVP=()=>{
         props.setLanguage("es");
     }
@@ -64,71 +60,18 @@ function BusquedaEscondida(props){
         setInsensitiveCase(!insensitiveCase)
     }
 
-    const fixReferencias = (referencias) => {
-        var expresiones=[]
-        var posicActual = -1
-        var expreActual = ""
-        var i = 0
-        while (i<referencias.length){
-            if (expreActual != referencias[i].term_de){
-                posicActual++
-                expreActual = referencias[i].term_de
-                expresiones.push({
-                    expresion : referencias[i].term_de,
-                    traduccion : referencias[i].term_es,
-                    index_de: referencias[i].index_de,
-                    index_es: referencias[i].index_es,
-                    id: referencias[i].term_id,
-                    referencias : [],
-                })
-                expresiones[posicActual].referencias.push({
-                    referencia_original : referencias[i].ref_def_de,
-                    referencia_traduccion: referencias[i].ref_def_es,
-                    refid : referencias[i].ref_id,
-                })
-                i++
-            }else{
-                expresiones[posicActual].referencias.push({
-                    ref_def_de : referencias[i].ref_def_de,
-                    ref_def_es : referencias[i].ref_def_es,
-                    refid : referencias[i].ref_id,
-                })
-            i++
-            // expresiones
-          }
-        }
-        console.log("expresiones",expresiones)
-        return expresiones
-    }
-
-    const ChunkB = (expresiones) =>{
-        props.setChunkListGlobal(expresiones.slice(0,50))
-    }
-
     const handleChangeBusquedaPasajes = (event) => {
         event.preventDefault()
         if(props.busqueda!=""){
-            if(props.state.checkedA == false){
-                var stringCaracteres = props.busqueda.replace(/(?!\w|\s)./g, '')
-                var stringNumeros = props.busqueda.replace(/([0-9])./g, '')
-                if(props.busqueda.length<2){
-                    props.setModalDebusquedas(true)
-                }else if(stringCaracteres.length<2){
-                    props.setModalCaracteresInvalidos(true)
-                }else if(stringNumeros.length<2){
-                    props.setModalNumeros(true)
-                }else if(props.busqueda.length>2){
-                    props.setLoading(true)
-                    var servicebe = "/referencias/busquedaExpresion"
-                    webService(servicebe, "POST", {parametro:props.busqueda,case:insensitiveCase}, global.sesion, (data) => {
-                        ChunkB(data.data.response)
-                        var expresiones = data.data.response
-                        props.setExpresionesGlobales(expresiones)
-                        props.setLoading(false)
-                        props.setFlagDeBusqueda(true)
-                    })
-                }
-            }else{
+            var stringCaracteres = props.busqueda.replace(/(?!\w|\s)./g, '')
+            var stringNumeros = props.busqueda.replace(/([0-9])./g, '')
+            if(props.busqueda.length<2){
+                props.setModalDebusquedas(true)
+            }else if(stringCaracteres.length<2){
+                props.setModalCaracteresInvalidos(true)
+            }else if(stringNumeros.length<2){
+                props.setModalNumeros(true)
+            }else if(props.busqueda.length>2){
                 var letra = props.busqueda.slice(0,1)
                 var letraCapital = letra.toUpperCase()
                 if(letra == letraCapital){
@@ -203,14 +146,13 @@ function BusquedaEscondida(props){
                     </Grid>
                 </Hidden>
                 <Grid item xs={2} sm={3} md={2} lg={2} className={classes.switchPasaje}>
-                    <Tooltip title={props.state.checkedA ? busquedaPorLetra(props.lang) : BusquedaGeneral(props.lang)}>
-                        <Switch
-                            checked={props.state.checkedA}
-                            onChange={handleSwitch("checkedA")}
-                            value="checkedA"
-                            inputProps={{'aria-label': 'checkbox with default color'}}
-                            size="small"
-                        />
+                    <Tooltip title={distincionMayusyMinus(props.lang)}>
+                        <IconButton onClick={handleInsensitiveCase} className={classNames([{"caseSeleccionado" : insensitiveCase == true}, "case"])}>
+                            <Icon path={mdiFormatLetterCase}
+                            title="User Profile"
+                            size={1}
+                            />
+                        </IconButton>
                     </Tooltip>
                 </Grid>
                 <Grid item xs={2} sm={2} md={1} lg={1}>

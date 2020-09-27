@@ -16,7 +16,7 @@ export default function ListaIzquierdaExpresiones(props){
     var expresionClickeada=event.currentTarget.id.split("-")[0];
     var posicionExpresion=event.currentTarget.id.split("-")[1]
     var expresionesReferencias=props.expresiones[posicionExpresion];
-    /*if(localStore.getObjects("referenciasConsultadas")==false){
+    if(localStore.getObjects("referenciasConsultadas")==false){
       var referenciasConsultadas=[];
       referenciasConsultadas.push(expresionesReferencias)
       localStore.setObjects("referenciasConsultadas",referenciasConsultadas)
@@ -24,7 +24,7 @@ export default function ListaIzquierdaExpresiones(props){
       var store=localStore.getObjects("referenciasConsultadas")
       store.push(expresionesReferencias)
       localStore.setObjects("referenciasConsultadas",store)
-    }*/
+    }
     var nuevasVisitadas = global.ultimasVisitadas
     nuevasVisitadas.push(expresionesReferencias)
     global.setUltimasVisitadas(nuevasVisitadas)
@@ -79,17 +79,6 @@ export default function ListaIzquierdaExpresiones(props){
 
   return (
     <div className="listaIzquierda" onScroll={handleScroll}>
-      {props.state.checkedA == false ?
-        <ul id="listaIzquierda">
-          {props.chunkListGlobal.map((expresion, index)=>{
-            return(
-            <PanelExpresionIzquierdo {...props} key={expresion.id+"-"+index} expresion={expresion} handleClickPanel={handleClickPanel} clickHandleVista={clickHandleVista} index={index}
-            getJerarquia={props.getJerarquia} idReferencias={props.idReferencias} setIdReferencias={props.setIdReferencias} expresionSeleccionada={props.expresionSeleccionada} 
-            setFlagLetraMain={props.setFlagLetraMain} idExpresion={props.idExpresion} idDeLaReferencia={props.idDeLaReferencia} 
-            /> 
-          )})}
-        </ul>
-      :
         <ul id="listaIzquierda">
         {props.chunkList.map((expresion, index)=>{
           return(<PanelExpresionIzquierdo {...props} key={expresion.id+"-"+index} expresion={expresion} handleClickPanel={handleClickPanel} clickHandleVista={clickHandleVista} index={index}
@@ -98,7 +87,6 @@ export default function ListaIzquierdaExpresiones(props){
           />
           )})}
         </ul> 
-      } 
     </div>
   )
 }

@@ -45,7 +45,6 @@ function Expresion(props){
   const [expanded2, setExpanded2] = React.useState(false);
   const [expanded3, setExpanded3] = React.useState(true);
   const [openModal, setOpenModal] = React.useState(false);
-  const [state, setState]=React.useState({checkedA:true});
   const [busqueda, setBusqueda] = React.useState("");
   const [menuEscondido,setMenuEscondido]=React.useState(false);
   const [modalDeBusquedas,setModalDebusquedas]=React.useState(false);
@@ -98,26 +97,10 @@ function Expresion(props){
   }
   
   React.useEffect(()=>{
-    /*if(global.sesion == null){
-
-    }*/
-    /*if (global.sesion == null && localStore.getObjects('sesion')){
-      console.log("Sesion!!", global)
-      var service = "/login/usuario"
-      var params = JSON.stringify({'userId' : localStore.getObjects("sesion").user , 'password' : localStore.getObjects("sesion").password})
-      loginService(service, "POST", params, global.sesion, (data) => {
-        if(data.data.error){
-          setSnackbar({open:true,variant:"error",message:'Su sesión se ha cerrado, por favor inicie nuevamente.'})
-        }else{
-          global.setSesion(data.data.response);
-        }
-      })
-    }*/
     setLoading(true)
     if(document.getElementById("listaIzquierda").firstChild != null) document.getElementById("listaIzquierda").firstChild.scrollIntoView()
     var service = "/expresiones/" + language + "/" + props.letraMain
     webService(service, "GET", {}, global.sesion, (data) => {
-      //console.log("data", data.data.response)
       setExpresiones(fixReferencias(data.data.response))
       setChunkList(fixReferencias(data.data.response).slice(0,50))
       if(!flagDeBusqueda){
@@ -132,13 +115,9 @@ function Expresion(props){
       setOpenModal(true)
       localStore.setObjects("bienvenida",true)
     }
-    if(state.checkedA==true){
-      setChunkListGlobal([])
-    }
-  }, [props.letraMain, language, flagDeBusqueda, props.flagLetraMain, flagDeBusqueda, state])
+  }, [props.letraMain, language, flagDeBusqueda, props.flagLetraMain, flagDeBusqueda])
 
   function getJerarquia(event){
-    console.log("evento", event.currentTarget.id)
     setExpresionSeleccionada({id: event.currentTarget.id.split("/")[0], expresion:event.currentTarget.id.split("/")[1]})
     setExpanded1(true)
     setExpanded2(true)
@@ -157,18 +136,18 @@ function Expresion(props){
       <Grid container>
         <Grid item xs={12} >
             <ListaLetras letraMain={props.letraMain} setLetraMain={props.setLetraMain} flagLetraMain={props.flagLetraMain} setFlagLetraMain={props.setFlagLetraMain}
-            setState={setState} state={state} flagDeBusqueda={flagDeBusqueda} chunkListGlobal={chunkListGlobal} setChunkListGlobal={setChunkListGlobal} setChunkList={setChunkList} 
+            flagDeBusqueda={flagDeBusqueda} chunkListGlobal={chunkListGlobal} setChunkListGlobal={setChunkListGlobal} setChunkList={setChunkList} 
             language={language}/>
         </Grid>
         <Grid item xs={2} sm={1} md={1} xl={1} align="center" style={{borderRight:"1px rgb(240, 240, 240) solid"}}>
-            <LetraIndice letraMain={props.letraMain} state={state}/>
-            <BanderaButon language={language} setLanguage={setLanguage} lang={props.lang} state={state}/>
+            <LetraIndice letraMain={props.letraMain}/>
+            <BanderaButon language={language} setLanguage={setLanguage} lang={props.lang}/>
         </Grid>
          <Grid item xs={10} sm={8} md={8} xl={8} aling='center' >
             <ListaExpresiones match={props.match} expresiones={expresiones} setExpresiones={setExpresiones} idExpresion={idExpresion} 
             setIdExpresion={setIdExpresion} language={props.language} setLanguage={props.setLanguage} 
             expresionSeleccionada={expresionSeleccionada} setExpresionSeleccionada={setExpresionSeleccionada}
-            getJerarquia={getJerarquia} menuEscondido={menuEscondido} state={state} expresionesGlobales={expresionesGlobales}
+            getJerarquia={getJerarquia} menuEscondido={menuEscondido} expresionesGlobales={expresionesGlobales}
             setFlagLetraMain={props.setFlagLetraMain} setOpenModalN={setOpenModalN} flagDeBusqueda={flagDeBusqueda} letraMain={props.letraMain}
             chunkList={chunkList} chunkListGlobal={chunkListGlobal} setChunkList={setChunkList} setChunkListGlobal={setChunkListGlobal}
             lenguaje={language}
@@ -188,7 +167,7 @@ function Expresion(props){
         </Hidden> 
         <Grid item xs={12} sm={3} md={3} lg={3} className={classNames([{"menuAbajoEscondido" : menuEscondido==true}, "bordoDelMenuDerecho"])}>
           <Hidden xsDown> 
-            <Busqueda expresiones={expresiones} setExpresiones={setExpresiones} lang={props.lang} state={state} setState={setState}
+            <Busqueda expresiones={expresiones} setExpresiones={setExpresiones} lang={props.lang}
             busqueda={busqueda} setBusqueda={setBusqueda} setLoading={setLoading} expresionesGlobales={expresionesGlobales} 
             setExpresionesGlobales={setExpresionesGlobales} setModalDebusquedas={setModalDebusquedas} 
             setModalCaracteresInvalidos={setModalCaracteresInvalidos} setModalNumeros={setModalNumeros} setFlagDeBusqueda={setFlagDeBusqueda}
@@ -204,7 +183,7 @@ function Expresion(props){
               />
           </Hidden>
           <Hidden smUp>
-            <BusquedaAbajo expresiones={expresiones} setExpresiones={setExpresiones} lang={props.lang} state={state} setState={setState}
+            <BusquedaAbajo expresiones={expresiones} setExpresiones={setExpresiones} lang={props.lang} 
             busqueda={busqueda} setBusqueda={setBusqueda} expresionesGlobales={expresionesGlobales} 
             setExpresionesGlobales={setExpresionesGlobales} setModalDebusquedas={setModalDebusquedas} 
             setModalCaracteresInvalidos={setModalCaracteresInvalidos} setModalNumeros={setModalNumeros}

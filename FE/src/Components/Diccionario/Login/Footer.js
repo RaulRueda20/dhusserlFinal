@@ -12,7 +12,7 @@ const styles = {
   footerBody: {
     bottom: "0px",
     width: "100%",
-    marginTop: "85vh !important"
+    //marginTop: "85vh !important"
   }
 }
 

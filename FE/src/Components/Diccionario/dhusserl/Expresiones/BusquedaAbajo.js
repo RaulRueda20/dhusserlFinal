@@ -23,7 +23,7 @@ import { sesionStore } from '../../../../sesionStore';
 import classNames from 'classnames';
 
 //Language
-import {busquedas, distincionMayusyMinus, BusquedaGeneral, busquedaPorLetra} from '../../../../js/Language';
+import {busquedas, distincionMayusyMinus, letraNoCoincide} from '../../../../js/Language';
 
 
 const styles = {
@@ -88,48 +88,37 @@ function BusquedaAbajo(props){
     const handleChangeBusquedaExpresiones = (event) => {
         event.preventDefault()
         if(props.busqueda!=""){
-            if(props.state.checkedA == false){  
-                var stringCaracteres = props.busqueda.replace(/(?!\w|\s)./g, '')
-                var stringNumeros = props.busqueda.replace(/([0-9])./g, '')
-                if(props.busqueda.length<2){
-                  props.setModalDebusquedas(true)
-                }else if(stringCaracteres.length<2){
-                  props.setModalCaracteresInvalidos(true)
-                }else if(stringNumeros.length<2){
-                  props.setModalNumeros(true)
-                }else if(props.busqueda.length>2){
-                  props.setLoading(true)
-                  var servicebe = "/referencias/busquedaExpresion"
-                  webService(servicebe, "POST", {parametro:props.busqueda,case:insensitiveCase}, global.sesion, (data) => {
-                    ChunkB(data.data.response)
-                    var expresiones = data.data.response
-                    props.setExpresionesGlobales(fixReferencias(expresiones))
-                    props.setLoading(false)
-                    props.setFlagDeBusqueda(true)
-                  })
-                }
-            }else{
+            var stringCaracteres = props.busqueda.replace(/(?!\w|\s)./g, '')
+            var stringNumeros = props.busqueda.replace(/([0-9])./g, '')
+            if(props.busqueda.length<2){
+                props.setModalDebusquedas(true)
+            }else if(stringCaracteres.length<2){
+                props.setModalCaracteresInvalidos(true)
+            }else if(stringNumeros.length<2){
+                props.setModalNumeros(true)
+            }else if(props.busqueda.length>2){
+                props.setLoading(true)
                 var letra = props.busqueda.slice(0,1)
                 var letraCapital = letra.toUpperCase()
                 if(letra == letraCapital){
-                  var servicebl = "/referencias/busquedaExpresionPorLetra"+"/"+props.letraMain+"/"+props.language
-                  webService(servicebl, "POST", {parametro:props.busqueda,case:insensitiveCase}, global.sesion, (data) => {
-                    if(props.letraMain == letraCapital){
-                      ChunkC(data.data.response)
-                    }else{
-                      setSnack({open : true, text: "La primera letra de la busqueda no coincide con la letra del indice"})
-                    }
-                  })
+                    var servicebl = "/referencias/busquedaExpresionPorLetra"+"/"+props.letraMain+"/"+props.language
+                    webService(servicebl, "POST", {parametro:props.busqueda,case:insensitiveCase}, global.sesion, (data) => {
+                        if(props.letraMain == letraCapital){
+                            ChunkC(data.data.response)
+                         }else{
+                            setSnack({open : true, text: letraNoCoincide(props.lang)})
+                        }
+                    })
                 }else{
-                  var letraCapital = letra.toUpperCase()
-                  var servicebl = "/referencias/busquedaExpresionPorLetra"+"/"+props.letraMain+"/"+props.language
-                  webService(servicebl, "POST", {parametro:props.busqueda,case:insensitiveCase}, global.sesion, (data) => {
-                    if(props.letraMain == letraCapital){
-                      ChunkC(data.data.response)
-                    }else{
-                      setSnack({open : true, text: "La primera letra de la busqueda no coincide con la letra del indice"})
-                    }
-                  })
+                    var letraCapital = letra.toUpperCase()
+                    var servicebl = "/referencias/busquedaExpresionPorLetra"+"/"+props.letraMain+"/"+props.language
+                    webService(servicebl, "POST", {parametro:props.busqueda,case:insensitiveCase}, global.sesion, (data) => {
+                        if(props.letraMain == letraCapital){
+                            ChunkC(data.data.response)
+                        }else{
+                            setSnack({open : true, text: letraNoCoincide(props.lang)})
+                        }
+                    })
                 }
             }
         }else{
@@ -154,18 +143,6 @@ function BusquedaAbajo(props){
                     <Input
                     onChange={event => props.setBusqueda(event.target.value)}
                     id="input-with-icon-adornment"
-                    startAdornment={
-                    <InputAdornment position="end">
-                        <Tooltip title={distincionMayusyMinus(props.lang)}>
-                            <IconButton onClick={handleInsensitiveCase} className={classNames([{"caseSeleccionado" : insensitiveCase == true}, "case"])}>
-                                <Icon path={mdiFormatLetterCase}
-                                title="User Profile"
-                                size={1}
-                                />
-                            </IconButton>
-                        </Tooltip>
-                    </InputAdornment>
-                    }  
                     endAdornment={
                     <InputAdornment position="start">
                         <IconButton type="submit" className="lupita">
@@ -177,15 +154,14 @@ function BusquedaAbajo(props){
                 </FormControl>  
                 </Grid>
                 <Grid item xs={2} className={classes.switchPasaje}>
-                <Tooltip title={props.state.checkedA ? busquedaPorLetra(props.lang) : BusquedaGeneral(props.lang)}>
-                    <Switch
-                        checked={props.state.checkedA}
-                        onChange={handleSwitch("checkedA")}
-                        value="checkedA"
-                        inputProps={{'aria-label': 'checkbox with default color'}}
-                        size="small"
-                    />
-                </Tooltip>
+                    <Tooltip title={distincionMayusyMinus(props.lang)}>
+                        <IconButton onClick={handleInsensitiveCase} className={classNames([{"caseSeleccionado" : insensitiveCase == true}, "case"])}>
+                            <Icon path={mdiFormatLetterCase}
+                            title="User Profile"
+                            size={1}
+                            />
+                        </IconButton>
+                    </Tooltip>
                 </Grid>
             </Grid>
         </form>

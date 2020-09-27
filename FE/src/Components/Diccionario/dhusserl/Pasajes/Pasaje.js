@@ -43,7 +43,6 @@ function Pasaje(props){
   const [panelIzquierdo,setPanelIzquierdo]=React.useState(false);
   const [panelDerecho, setPanelDerecho]=React.useState(false);
   const [busqueda, setBusqueda] = React.useState("");
-  const [state, setState]=React.useState({checkedA:true});
   const [openHidden, setOpenHidden]=React.useState(false);
   const [loading, setLoading]=React.useState(false);
   const [posicionReferenciasConsultadas,setPosicionReferenciasConsultadas]=React.useState("");
@@ -162,10 +161,7 @@ function Pasaje(props){
         document.getElementById("VP" + props.idExpresion).scrollIntoView()
       }
     }, 1000)
-    if(state.checkedA==true){
-      setChunkListGlobal([])
-    }
-  }, [props.letraMain, props.language, props.match.params.expresion, props.match.params.id, props.flagLetraMain, expresionesGlobales, state])
+  }, [props.letraMain, props.language, props.match.params.expresion, props.match.params.id, props.flagLetraMain])
 
   return(
     <div>
@@ -192,20 +188,20 @@ function Pasaje(props){
        </Hidden>
        <Grid container>
          <Grid item xs={12}>
-           <ListaLetras letraMain={props.letraMain} setLetraMain={props.setLetraMain} setFlagLetraMain={props.setFlagLetraMain} flagLetraMain={props.flagLetraMain} setState={setState} state={state} language={props.language} 
+           <ListaLetras letraMain={props.letraMain} setLetraMain={props.setLetraMain} setFlagLetraMain={props.setFlagLetraMain} flagLetraMain={props.flagLetraMain} language={props.language} 
            setChunkListGlobal={setChunkListGlobal} setChunkList={setChunkList}/>
          </Grid>
          <Grid item xs={12} sm={3} md={3} lg={3} className={classNames([{"panelIzquierdoEscondido" : panelIzquierdo==true}])}>
            <Hidden xsDown>
              <BusquedaVP expresiones={expresiones} setExpresiones={setExpresiones} lang={props.lang} setIdExpresion={setIdExpresion}
              language={props.language} setLanguage={props.setLanguage} busqueda={busqueda} setBusqueda={setBusqueda} setFlagDeBusqueda={setFlagDeBusqueda}
-              state={state} setState={setState} setExpresionesGlobales={setExpresionesGlobales} setModalDebusquedas={setModalDebusquedas} 
+             setExpresionesGlobales={setExpresionesGlobales} setModalDebusquedas={setModalDebusquedas} 
              setModalCaracteresInvalidos={setModalCaracteresInvalidos} setModalNumeros={setModalNumeros} setLoading={setLoading} expresionesGlobales={expresionesGlobales}
              setChunkListGlobal={setChunkListGlobal} setChunkList={setChunkList} letraMain={props.letraMain} flagLetraMain={props.flagLetraMain}/>  
              <ListaIzquierdaExpresion {...props} expresiones={expresiones} setExpresiones={setExpresiones} idExpresion={idExpresion} 
                setIdExpresion={setIdExpresion} language={props.language} setLanguage={props.setLanguage} referenciaSeleccionada={referenciaSeleccionada}
                setReferenciaSeleccionada={setReferenciaSeleccionada} setExpanded1={setExpanded1} setExpanded2={setExpanded2} match={props.match} setFlagLetraMain={props.setFlagLetraMain}
-               setPosicionReferenciasConsultadas={setPosicionReferenciasConsultadas} expresionesGlobales={expresionesGlobales} state={state} chunkList={chunkList}
+               setPosicionReferenciasConsultadas={setPosicionReferenciasConsultadas} expresionesGlobales={expresionesGlobales} chunkList={chunkList}
                chunkListGlobal={chunkListGlobal} setChunkList={setChunkList} setChunkListGlobal={setChunkListGlobal} letraMain={props.letraMain} idDeLaReferencia={props.match.params.id}
               />
            </Hidden>
@@ -213,7 +209,7 @@ function Pasaje(props){
              <div>
                <BusquedaEscondida expresiones={expresiones} setExpresiones={setExpresiones} lang={props.lang} 
                 language={props.language} setLanguage={props.setLanguage} busqueda={busqueda} setBusqueda={setBusqueda}
-                state={state} setState={setState} openHidden={openHidden} setOpenHidden={setOpenHidden} 
+                openHidden={openHidden} setOpenHidden={setOpenHidden} 
                 setExpresionesGlobales={setExpresionesGlobales} setModalDebusquedas={setModalDebusquedas} 
                 setModalCaracteresInvalidos={setModalCaracteresInvalidos} setModalNumeros={setModalNumeros} setLoading={setLoading}
                 setChunkListGlobal={setChunkListGlobal} setChunkList={setChunkList}/>

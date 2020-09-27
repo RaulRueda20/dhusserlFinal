@@ -17,7 +17,7 @@ import { mdiFormatLetterCase } from '@mdi/js';
 import { withStyles } from '@material-ui/styles';
 
 //LanguageChanges
-import {busquedas, toolTipIdiomaDeLaLista, distincionMayusyMinus, BusquedaGeneral, busquedaPorLetra} from '../../../../js/Language';
+import {busquedas, toolTipIdiomaDeLaLista, distincionMayusyMinus, letraNoCoincide} from '../../../../js/Language';
 
 //Other request
 import {webService} from '../../../../js/webServices';
@@ -48,10 +48,6 @@ function BusquedaVP(props){
     const [insensitiveCase,setInsensitiveCase]=React.useState(false);
     const [snack, setSnack] = React.useState({open : false, text : ""});
 
-    const handleSwitch=name=>event=>{
-        props.setState({...props.state, [name]:event.target.checked});
-    }
-
     const clickChangeLanguageEsVP=()=>{
         props.setLanguage("es");
     }
@@ -64,10 +60,6 @@ function BusquedaVP(props){
         setInsensitiveCase(!insensitiveCase)
     }
 
-    const ChunkB = (expresiones) =>{
-        props.setChunkListGlobal(expresiones.slice(0,50))
-    }
-
     const ChunkC = (expresiones) =>{
         console.log("expresiones",expresiones)
         props.setChunkList(expresiones)
@@ -76,27 +68,15 @@ function BusquedaVP(props){
     const handleChangeBusquedaPasajes = (event) => {
         event.preventDefault()
         if(props.busqueda!=""){
-            if(props.state.checkedA == false){
-                var stringCaracteres = props.busqueda.replace(/(?!\w|\s)./g, '')
-                var stringNumeros = props.busqueda.replace(/([0-9])./g, '')
-                if(props.busqueda.length<2){
-                    props.setModalDebusquedas(true)
-                }else if(stringCaracteres.length<2){
-                    props.setModalCaracteresInvalidos(true)
-                }else if(stringNumeros.length<2){
-                    props.setModalNumeros(true)
-                }else if(props.busqueda.length>2){
-                    props.setLoading(true)
-                    var servicebe = "/referencias/busquedaExpresion"
-                    webService(servicebe, "POST", {parametro:props.busqueda,case:insensitiveCase}, global.sesion, (data) => {
-                        ChunkB(data.data.response)
-                        var expresiones = data.data.response
-                        props.setExpresionesGlobales(expresiones)
-                        props.setLoading(false)
-                        props.setFlagDeBusqueda(true)
-                    })
-                }
-            }else{
+            var stringCaracteres = props.busqueda.replace(/(?!\w|\s)./g, '')
+            var stringNumeros = props.busqueda.replace(/([0-9])./g, '')
+            if(props.busqueda.length<2){
+                props.setModalDebusquedas(true)
+            }else if(stringCaracteres.length<2){
+                props.setModalCaracteresInvalidos(true)
+            }else if(stringNumeros.length<2){
+                props.setModalNumeros(true)
+            }else if(props.busqueda.length>2){
                 var letra = props.busqueda.slice(0,1)
                 var letraCapital = letra.toUpperCase()
                 if(letra == letraCapital){
@@ -106,7 +86,7 @@ function BusquedaVP(props){
                         console.log("Mayuscula",data.data.response)
                         ChunkC(data.data.response)
                     }else{
-                        setSnack({open : true, text: "La primera letra de la busqueda no coincide con la letra del indice"})
+                        setSnack({open : true, text: letraNoCoincide(props.lang)})
                     }
                     })
                 }else{
@@ -117,14 +97,14 @@ function BusquedaVP(props){
                         console.log(data.data.response)
                         ChunkC(data.data.response)
                     }else{
-                        setSnack({open : true, text: "La primera letra de la busqueda no coincide con la letra del indice"})
+                        setSnack({open : true, text: letraNoCoincide(props.lang)})
                         }
                     })
                 }
             }
+            
         }else{
-            //props.setChunkList(props.expresiones.slice(0,50))
-            console.log("Ay caramba!!")
+            props.setChunkList(props.expresiones.slice(0,50))
         }
     }
 
@@ -144,18 +124,6 @@ function BusquedaVP(props){
                             onChange={event => props.setBusqueda(event.target.value)}
                             fullWidth
                             id="input-with-icon-adornment"
-                            startAdornment={
-                                <InputAdornment position="end">
-                                    <Tooltip title="Activar para distinguir entre mayusculas y minusculas">
-                                        <IconButton onClick={handleInsensitiveCase} className={classNames([{"caseSeleccionado" : insensitiveCase == true}, "case"])}>
-                                            <Icon path={mdiFormatLetterCase}
-                                            title="User Profile"
-                                            size={1}
-                                            />
-                                        </IconButton>
-                                    </Tooltip>
-                                </InputAdornment>
-                            }
                             endAdornment={
                                 <InputAdornment position="start">
                                     <IconButton type="submit" className="lupita">
@@ -167,14 +135,13 @@ function BusquedaVP(props){
                     </FormControl>
                 </Grid>
                 <Grid item xs={3} lg={2} className={classes.switchPasaje}>
-                    <Tooltip title={props.state.checkedA ? busquedaPorLetra(props.lang) : BusquedaGeneral(props.lang)}>
-                        <Switch
-                            checked={props.state.checkedA}
-                            onChange={handleSwitch("checkedA")}
-                            value="checkedA"
-                            inputProps={{'aria-label': 'checkbox with default color'}}
-                            size="small"
-                        />
+                    <Tooltip title={distincionMayusyMinus(props.lang)}>
+                        <IconButton onClick={handleInsensitiveCase} className={classNames([{"caseSeleccionado" : insensitiveCase == true}, "case"])}>
+                            <Icon path={mdiFormatLetterCase}
+                            title="User Profile"
+                            size={1}
+                            />
+                        </IconButton>
                     </Tooltip>
                 </Grid>
                 <Grid item xs={2} lg={1}>

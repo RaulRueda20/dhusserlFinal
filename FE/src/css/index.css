@@ -671,7 +671,7 @@ hr{
 }
 
 .caseSeleccionado{
-  opacity: 1;
+  color: #FF0000 !important;
 }
 
 .resaltador{

@@ -34,9 +34,7 @@ function BanderaButon(props){
 
   return(
       <div>
-          {props.state.checkedA == false ? null
-          :
-          props.language == 'es' ?
+          {props.language == 'es' ?
             <Tooltip title={toolTipIdiomaDeLaLista(props.lang)}>
               <Button size="small" className={classes.imagenesBandera} onClick={clickChangeLanguageAl}><img className="banderaIzquierda" src={al}/></Button>
             </Tooltip>

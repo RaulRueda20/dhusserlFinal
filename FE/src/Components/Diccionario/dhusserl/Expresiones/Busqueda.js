@@ -23,7 +23,7 @@ import { sesionStore } from '../../../../sesionStore';
 import classNames from 'classnames';
 
 //Language
-import {busquedas, distincionMayusyMinus, BusquedaGeneral, busquedaPorLetra} from '../../../../js/Language';
+import {busquedas, distincionMayusyMinus, letraNoCoincide} from '../../../../js/Language';
 
 const styles = {
   contenedor:{
@@ -51,7 +51,6 @@ function Busqueda(props){
   const handleChangeBusquedaExpresiones = (event) => {
     event.preventDefault()
     if(props.busqueda != ""){
-      if(props.state.checkedA == false){
         var stringCaracteres = props.busqueda.replace(/(?!\w|\s)./g, '')
         var stringNumeros = props.busqueda.replace(/([0-9])./g, '')
         if(props.busqueda.length<2){
@@ -62,42 +61,35 @@ function Busqueda(props){
           props.setModalNumeros(true)
         }else if(props.busqueda.length>2){
           props.setLoading(true)
-          var servicebe = "/referencias/busquedaExpresion"
-          webService(servicebe, "POST", {parametro:props.busqueda,case:insensitiveCase}, global.sesion, (data) => {
-            ChunkB(data.data.response)
-            props.setExpresionesGlobales(data.data.response)
-            props.setLoading(false)
-            props.setFlagDeBusqueda(true)
-          })
-        }
-      }else{
-        var letra = props.busqueda.slice(0,1)
-        var letraCapital = letra.toUpperCase()
-        if(letra == letraCapital){
-          var servicebl = "/referencias/busquedaExpresionPorLetra"+"/"+props.letraMain+"/"+props.language
-          console.log("servicebl", servicebl)
-          webService(servicebl, "POST", {parametro:props.busqueda,case:insensitiveCase}, global.sesion, (data) => {
-            if(props.letraMain == letraCapital){
-              console.log("data", data.data.response)
-              ChunkC(data.data.response)
-            }else{
-              setSnack({open : true, text: "La primera letra de la busqueda no coincide con la letra del indice"})
-            }
-          })
-        }else{
+          var letra = props.busqueda.slice(0,1)
           var letraCapital = letra.toUpperCase()
-          var servicebl = "/referencias/busquedaExpresionPorLetra"+"/"+props.letraMain+"/"+props.language
-          console.log("servicebl", servicebl)
-          webService(servicebl, "POST", {parametro:props.busqueda,case:insensitiveCase}, global.sesion, (data) => {
-            console.log("data",data.data.response)
-            if(props.letraMain == letraCapital){
-              ChunkC(data.data.response)
-            }else{
-              setSnack({open : true, text: "La primera letra de la busqueda no coincide con la letra del indice"})
-            }
-          })
+          if(letra == letraCapital){
+            var servicebl = "/referencias/busquedaExpresionPorLetra"+"/"+props.letraMain+"/"+props.language
+            console.log("servicebl", servicebl)
+            webService(servicebl, "POST", {parametro:props.busqueda,case:insensitiveCase}, global.sesion, (data) => {
+              if(props.letraMain == letraCapital){
+                console.log("data", data.data.response)
+                ChunkC(data.data.response)
+             }else{
+                setSnack({open : true, text: letraNoCoincide(props.lang)})
+              }
+            })
+            props.setLoading(false)
+          }else{
+            var letraCapital = letra.toUpperCase()
+            var servicebl = "/referencias/busquedaExpresionPorLetra"+"/"+props.letraMain+"/"+props.language
+            console.log("servicebl", servicebl)
+            webService(servicebl, "POST", {parametro:props.busqueda,case:insensitiveCase}, global.sesion, (data) => {
+              console.log("data",data.data.response)
+              if(props.letraMain == letraCapital){
+               ChunkC(data.data.response)
+              }else{
+                setSnack({open : true, text: letraNoCoincide(props.lang)})
+              }
+            })
+            props.setLoading(false)
+          }
         }
-      }
     }else{
       props.setChunkList(props.expresiones.slice(0,50))
     }
@@ -135,7 +127,7 @@ function Busqueda(props){
           </FormControl>  
         </Grid>
         <Grid item xs={2} className={classes.switch}>
-          <Tooltip title="Activar para distinguir entre mayusculas y minusculas">
+          <Tooltip title={distincionMayusyMinus(props.lang)}>
             <IconButton onClick={handleInsensitiveCase} className={classNames([{"caseSeleccionado" : insensitiveCase == true}, "case"])}>
               <Icon path={mdiFormatLetterCase}
               title="User Profile"

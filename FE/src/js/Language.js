@@ -686,15 +686,15 @@ const busquedas= lang => {
 const distincionMayusyMinus= lang => {
   switch (lang) {
     case "es":
-      return "Distincion entre mayúsculas/minúsculas"
+      return "Activar para distinguir entre mayúsculas y minúsculas"
     case "en":
-      return "Distinction between upper / lower case"
+      return "Activate to be case sensitive"
     case "fr":
-      return "Distinction entre majuscules et minuscules"
+      return "Activer pour distinguer les majuscules et les minuscules"
     case "al":
-      return "Unterscheidung zwischen Groß- und Kleinschreibung"
+      return "Aktivieren, um zwischen Gross- und Kleinschreibung zu unterscheiden"
     case "ca":
-      return "Distinció entre majúscules / minúscules"
+      return "Pestanya pour distinguer els Majúscules et els minuscules"
   }
 }
 
@@ -1238,6 +1238,21 @@ const marcarConsultadas = lang => {
   }
 }
 
+const letraNoCoincide = lang => {
+  switch (lang) {
+    case "es":
+      return "La primera letra de la búsqueda no coincide con la letra del índice"
+    case "en":
+      return "The first letter of the search does not match the index letter"
+    case "fr":
+      return "La première lettre de la recherche ne correspond pas à la lettre de l’index"
+    case "al":
+      return "Der erste Buchstabe der Suche stimmt nicht mit dem Buschstabe des Indexes überein"
+    case "ca":
+      return "La primera lletra de la cerca no coincideix amb la lletra de l'índex"
+  }
+}
+
 export {tituloDiccionario, ingresar, subtituloDiccionario, inicio, email, contra, olvidoDeContra, registrarse, 
   registrado, aqui, Footer1, Footer2, Footer3, registro, nombre, apellido, escuela, puesto, pais, comprobacionContra,
   modalRecuperacionContra,modalIngresarCorreo, exitoBody, correoInvalido, correoNoEncontrado, aceptarAlert, menuDiccionario,
@@ -1248,5 +1263,5 @@ export {tituloDiccionario, ingresar, subtituloDiccionario, inicio, email, contra
   bienvenido, bienvenidaModal, descargarConsulta, seGeneraArchivo, conReferencias, descargarEn, idiomaAl, idiomaEs, pasajeSeleccionadoOTodos,
   pasajeSeleccionado, todosLosPasajes, tipoDeArchivos, texto, tituloNulos, mensajeNulos, tituloBusqueda, mensajeBusqueda, tituloNumeros,
   mensajeNumeros, tituloCaracteres, mensajeCaracteres, tooltipPaginador, resultadoBusqueda, abrirListaTooltip, cerrarListaTooltip, noContienePasajes,
-  numeroDePasajes, pasajeSingular, descargarConsultadas, marcarConsultadas
+  numeroDePasajes, pasajeSingular, descargarConsultadas, marcarConsultadas, letraNoCoincide
 }
