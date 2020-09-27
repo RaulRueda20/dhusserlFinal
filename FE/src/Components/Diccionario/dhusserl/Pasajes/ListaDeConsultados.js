@@ -13,10 +13,14 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import Checkbox from '@material-ui/core/Checkbox';
 import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
+import { Typography } from '@material-ui/core';
 
+//Other req
 import * as localStore from '../../../../js/localStore';
 import { sesionStore } from '../../../../sesionStore';
-import { Typography } from '@material-ui/core';
+
+//Language
+import {marcarConsultadas} from '../../../../js/Language';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -113,7 +117,7 @@ function ListaDeConsultados(props){
                     inputProps={{ 'aria-label': 'Todas las expresiones consultadas' }}
                     />
                     }
-                    title={"Marcar todas las expresiones consultadas"}
+                    title={marcarConsultadas(props.lang)}
                 />
             <Divider />
             <List component="div" role="list" className={classes.divLista}>

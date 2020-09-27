@@ -10,6 +10,7 @@ import IconButton from '@material-ui/core/IconButton';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 
+
 //Components
 import ListaLetras from './ListaLetras';
 import LetraIndice from './LetraIndice';
@@ -137,6 +138,7 @@ function Expresion(props){
   }, [props.letraMain, language, flagDeBusqueda, props.flagLetraMain, flagDeBusqueda, state])
 
   function getJerarquia(event){
+    console.log("evento", event.currentTarget.id)
     setExpresionSeleccionada({id: event.currentTarget.id.split("/")[0], expresion:event.currentTarget.id.split("/")[1]})
     setExpanded1(true)
     setExpanded2(true)

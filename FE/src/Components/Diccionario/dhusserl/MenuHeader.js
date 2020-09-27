@@ -16,32 +16,34 @@ import PageviewIcon from '@material-ui/icons/Pageview';
 
 import {menuDiccionario, menuAcercaDe, menuGuia, menuSalir, toolTipMenuPrincipal, busquedas} from '../../../js/Language';
 
-class MenuHeader extends React.Component{
-  state = { anchorEl : null  }
+import { sesionStore } from '../../../sesionStore';
 
-  setMenu = (event) => {
-    this.setState({anchorEl: event.currentTarget})
+function MenuHeader(props){
+  const global = React.useContext(sesionStore);
+  const [state, setState] = React.useState({ anchorEl : null})
+
+  const handleMenu = (event) => {
+    setState({anchorEl: event.currentTarget})
   }
 
-  closeMenu = () =>{
-    this.setState({anchorEl:null})
+  const closeMenu = () =>{
+    setState({anchorEl:null})
   }
 
-  exitMain = () =>{
+  const exitMain = () =>{
     localStorage.removeItem("sesion")
-    document.getElementById("toLogin").click()
+    console.log(props)
+    props.history.push("/diccionario/login")
+    global.setSesion(null)
   }
 
-  render(){
-    const {anchorEl} = this.state
-    const {match} = this.props
     return(
       <div>
-        <Tooltip title={toolTipMenuPrincipal(this.props.lang)}>
+        <Tooltip title={toolTipMenuPrincipal(props.lang)}>
           <IconButton
             aria-haspopup="true"
-            aria-owns={anchorEl ? 'menuheader': undefined}
-            onClick={this.setMenu} size="small"
+            aria-owns={state.anchorEl ? 'menuheader': undefined}
+            onClick={handleMenu} size="small"
             className="iconosIluminados"
           >
             <MenuIcon fontSize="large"/>
@@ -49,54 +51,52 @@ class MenuHeader extends React.Component{
         </Tooltip>
         <Menu
           id="menuheader"
-          anchorEl={anchorEl}
+          anchorEl={state.anchorEl}
           keepMounted
-          onClose={this.closeMenu}
-          open={Boolean(anchorEl)}
+          onClose={closeMenu}
+          open={Boolean(state.anchorEl)}
         >
-          <Link to={`${match.url}/diccionario`}>
-            <MenuItem onClick={this.closeMenu}>
+          <Link to={`${props.match.url}/diccionario`}>
+            <MenuItem onClick={closeMenu}>
               <ListItemIcon>
                 <Book />
               </ListItemIcon>
-              <ListItemText primary={menuDiccionario(this.props.lang)}/>
+              <ListItemText primary={menuDiccionario(props.lang)}/>
             </MenuItem>
           </Link>
-          <Link to={`${match.url}/busquedas`}>
-            <MenuItem onClick={this.closeMenu}>
+          <Link to={`${props.match.url}/busquedas`}>
+            <MenuItem onClick={closeMenu}>
               <ListItemIcon>
                 <PageviewIcon />
               </ListItemIcon>
-              <ListItemText primary={busquedas(this.props.lang)}/>
+              <ListItemText primary={busquedas(props.lang)}/>
             </MenuItem>
           </Link>
-          <Link to={`${match.url}/acercade`}>
-            <MenuItem onClick={this.closeMenu}>
+          <Link to={`${props.match.url}/acercade`}>
+            <MenuItem onClick={closeMenu}>
               <ListItemIcon>
                 <Description />
               </ListItemIcon>
-              <ListItemText primary={menuAcercaDe(this.props.lang)}/>
+              <ListItemText primary={menuAcercaDe(props.lang)}/>
             </MenuItem>
           </Link>
-          <Link to={`${match.url}/guia`}>
-            <MenuItem onClick={this.closeMenu}>
+          <Link to={`${props.match.url}/guia`}>
+            <MenuItem onClick={closeMenu}>
               <ListItemIcon>
                 <Info />
               </ListItemIcon>
-              <ListItemText primary={menuGuia(this.props.lang)}/>
+              <ListItemText primary={menuGuia(props.lang)}/>
             </MenuItem>
           </Link>
-          <MenuItem onClick={this.exitMain}>
+          <MenuItem onClick={exitMain}>
             <ListItemIcon>
               <Exit />
             </ListItemIcon>
-            <ListItemText primary={menuSalir(this.props.lang)}/>
+            <ListItemText primary={menuSalir(props.lang)}/>
           </MenuItem>
         </Menu>
-        <Link id="toLogin" to="/"/>
       </div>
     )
   }
-}
 
-export default (MenuHeader);
+export default MenuHeader;

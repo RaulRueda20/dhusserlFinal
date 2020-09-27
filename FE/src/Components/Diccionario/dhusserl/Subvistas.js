@@ -11,10 +11,10 @@ import Pasaje from './Pasajes/Pasaje';
 import ModuloBusquedas from './Busquedas/moduloBusquedas'
 import Acercade from './AcercaDe/Acercade';
 import Guia from './Guia/Guia';
-import { sesionStore } from '../../../sesionStore';
 
 //Other req
 import * as localStore from '../../../js/localStore';
+import { sesionStore } from '../../../sesionStore';
 
 export default function Subvistas({match, lang, setLang, history}){
     const global = React.useContext(sesionStore);
@@ -24,11 +24,12 @@ export default function Subvistas({match, lang, setLang, history}){
 
     React.useEffect(()=>{
         if(global.sesion == null) history.push("/diccionario/login")
+        console.log("match.url", match.url)
     }, [true])
 
     return(
         <div>
-            <HeaderMain match={match} lang={lang} setLang={setLang}/>
+            <HeaderMain match={match} lang={lang} setLang={setLang} history={history}/>
             <Switch>
                 <Route path={`${match.url}/expresiones`} render={(props) => <Expresion {...props} lang={lang} setLang={setLang} language={language} setLanguage={setLanguage} letraMain={letraMain} setLetraMain={setLetraMain} flagLetraMain={flagLetraMain} setFlagLetraMain={setFlagLetraMain}/>}/>
                 <Route path={`${match.url}/pasaje/:expresion/:id`} render={(props) => <Pasaje {...props} lang={lang} setLang={setLang} language={language} setLanguage={setLanguage} letraMain={letraMain} setLetraMain={setLetraMain} flagLetraMain={flagLetraMain} setFlagLetraMain={setFlagLetraMain}/>}/>

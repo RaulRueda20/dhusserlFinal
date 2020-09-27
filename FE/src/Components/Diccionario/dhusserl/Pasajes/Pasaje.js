@@ -118,7 +118,6 @@ function Pasaje(props){
   }
   
   React.useEffect(()=>{
-    console.log("chunkList", chunkList)
     setLoading(true)
     var idDeExpresion=props.match.params.expresion;
     var idDeLaReferencia=props.match.params.id ? props.match.params.id : false;
@@ -202,13 +201,13 @@ function Pasaje(props){
              language={props.language} setLanguage={props.setLanguage} busqueda={busqueda} setBusqueda={setBusqueda} setFlagDeBusqueda={setFlagDeBusqueda}
               state={state} setState={setState} setExpresionesGlobales={setExpresionesGlobales} setModalDebusquedas={setModalDebusquedas} 
              setModalCaracteresInvalidos={setModalCaracteresInvalidos} setModalNumeros={setModalNumeros} setLoading={setLoading} expresionesGlobales={expresionesGlobales}
-             setChunkListGlobal={setChunkListGlobal} setChunkList={setChunkList} letraMain={props.letraMain} flagLetraMain={props.flagLetraMain}/>
+             setChunkListGlobal={setChunkListGlobal} setChunkList={setChunkList} letraMain={props.letraMain} flagLetraMain={props.flagLetraMain}/>  
              <ListaIzquierdaExpresion {...props} expresiones={expresiones} setExpresiones={setExpresiones} idExpresion={idExpresion} 
                setIdExpresion={setIdExpresion} language={props.language} setLanguage={props.setLanguage} referenciaSeleccionada={referenciaSeleccionada}
                setReferenciaSeleccionada={setReferenciaSeleccionada} setExpanded1={setExpanded1} setExpanded2={setExpanded2} match={props.match} setFlagLetraMain={props.setFlagLetraMain}
                setPosicionReferenciasConsultadas={setPosicionReferenciasConsultadas} expresionesGlobales={expresionesGlobales} state={state} chunkList={chunkList}
                chunkListGlobal={chunkListGlobal} setChunkList={setChunkList} setChunkListGlobal={setChunkListGlobal} letraMain={props.letraMain} idDeLaReferencia={props.match.params.id}
-               />
+              />
            </Hidden>
            {openHidden == true ?
              <div>

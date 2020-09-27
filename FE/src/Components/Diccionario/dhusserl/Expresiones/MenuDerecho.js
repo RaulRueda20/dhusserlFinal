@@ -170,7 +170,7 @@ function MenuDerecho(props){
             <ul className="ulDelMenuDerechoVerTambien">
               {listaVerTambien.map((expresion,index)=>{
                 return <li key={expresion.id+"-"+index}>
-                  <Link to={`${props.match.path.slice(0,20)}/pasaje/${expresion.id}`} onClick={(event)=>handleFlagLetraMain(eventevent)}>
+                  <Link to={`${props.match.path.slice(0,20)}/pasaje/${expresion.id}`} onClick={(event)=>handleFlagLetraMain(event)}>
                     <Typography className={"consultaDePasajes"} variant="h6" id={expresion.id+"/"+index}>{expresion.expresion + "  //  " + expresion.traduccion + "  --  " + expresion.id}</Typography>
                   </Link>
                 </li>
@@ -188,7 +188,7 @@ function MenuDerecho(props){
             <ul className="ulDelMenuDerechoReferenciasConsultadas">
               {referenciasConsultadasVista.map((consultas,index)=>{
                 return(
-                  <Link to={`${props.match.path.slice(0,20)}/pasaje/${consultas.id}/${consultas.referencias[0].refid}`} onClick={()=>handleFlagLetraMain()}  key={consultas.referencias[0].refid+"-"+index}>
+                  <Link to={`${props.match.path.slice(0,20)}/pasaje/${consultas.id}/${consultas.referencias[0].refid}`} onClick={(event)=>handleFlagLetraMain(event)}  key={consultas.referencias[0].refid+"-"+index}>
                     <li className="bordeDeConsultas" key={consultas.referencias[0].refid+"-"+index}>
                         <Typography className="consultaDePasajes" variant="h6" id={consultas.id+"/"+index}>{consultas.expresion + "  :  " + consultas.referencias[0].referencia_original + "/" + consultas.referencias[0].referencia_traduccion}</Typography>
                     </li>

@@ -35,7 +35,7 @@ function HeaderMain(props){
       <AppBar position="static" color="primary" className="headerMain">
         <Toolbar variant="dense">
           <Grid item xs={2} sm={1} md={1} xl={1} className={classes.menu}>
-            <MenuHeader match={props.match} lang={props.lang} setLang={props.setLang} setLogged={props.setLogged}/>
+            <MenuHeader history={props.history} match={props.match} lang={props.lang} setLang={props.setLang} setLogged={props.setLogged}/>
           </Grid>
           <Grid item xs={8} sm={10} md={10} xl={10} align="center">
             <Typography variant="h2" className={classes.titulo}>

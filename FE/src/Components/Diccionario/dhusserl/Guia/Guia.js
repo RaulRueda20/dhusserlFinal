@@ -3,6 +3,7 @@ import React from 'react'
 
 // Components
 import LinearProgress from '@material-ui/core/LinearProgress';
+import Link from '@material-ui/core/Link';
 
 // Other reqs
 import {webService} from '../../../../js/webServices';
@@ -44,7 +45,7 @@ function Guia(props){
         <div>
             <div className="guia" dangerouslySetInnerHTML={renderizadoGuia()}></div>
             <LinearProgress className={classNames([{"hidden" : !loading}, "loadingBar"])}/>
-            {/* <Link id="toLogin" to="/"/> */}
+            <Link id="toLogin" to="/"/>
         </div>
     )
 }

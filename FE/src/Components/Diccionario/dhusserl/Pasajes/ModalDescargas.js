@@ -258,7 +258,7 @@ function ModalDescargas(props){
                             <Typography>{descargarConsultadas(props.lang)}</Typography>
                         </Grid>
                     <Grid item xs={12}>
-                        <ListaDeConsultados checked={checked} setChecked={setChecked}/>
+                        <ListaDeConsultados checked={checked} setChecked={setChecked} lang={props.lang}/>
                     </Grid>
                 </Grid>
                 <Divider className="divisor"/>

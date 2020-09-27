@@ -54,9 +54,10 @@ export default function PanelExpresionIzquierdo(props){
         var idReferenciaConsultada = props.expresion.id
         var refIdReferenciaConsultada = event.currentTarget.id.split("/")[0]
         var service = "/referencias/obtieneReferenciasIdRefId/"+ idReferenciaConsultada + "/" + refIdReferenciaConsultada
+        console.log("service",service)
         webService(service, "GET", {}, global.sesion, data => {
             var referencias = fixReferenciasConsultadas(data.data.response)
-            /*if(localStore.getObjects("referenciasConsultadas")==false){
+            if(localStore.getObjects("referenciasConsultadas")==false){
                 var referenciasConsultadas = []
                 referenciasConsultadas.push(referencias)
                 localStore.setObjects("referenciasConsultadas",referenciasConsultadas)
@@ -64,7 +65,7 @@ export default function PanelExpresionIzquierdo(props){
                 var store = localStore.getObjects("referenciasConsultadas")
                 store.push(referencias)
                 localStore.setObjects("referenciasConsultadas",store)
-            }*/
+            }
             var nuevasVisitadas = global.ultimasVisitadas
             nuevasVisitadas.push(referencias)
             global.setUltimasVisitadas(nuevasVisitadas)
@@ -88,7 +89,7 @@ export default function PanelExpresionIzquierdo(props){
             id={"VP"+props.expresion.id} value={props.expresion.id}
         >
             <Grid container justify="center" alignItems="center">
-                <Grid item xs={10} id={props.expresion.id+"-"+props.index} onClick={props.clickHandleVista}>
+                <Grid item xs={10} id={props.expresion.id+"-"+props.index} onClick={(event)=>props.clickHandleVista(event)}>
                     <Link to={`${props.match.path.slice(0,20)}/pasaje/${props.expresion.id}/${props.expresion.referencias[0].refid}`}>
                         <p className="Renglones" dangerouslySetInnerHTML={htmlPrettyE()}/>
                     </Link>

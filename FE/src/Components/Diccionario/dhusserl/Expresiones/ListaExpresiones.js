@@ -48,7 +48,7 @@ export default function ListaExpresiones(props){
     }else{
       var expresionesReferencias=props.expresionesGlobales[[event.currentTarget.id]]
     }
-    /*if(localStore.getObjects("referenciasConsultadas")==false){
+    if(localStore.getObjects("referenciasConsultadas")==false){
       var referenciasConsultadas=[];
       referenciasConsultadas.push(expresionesReferencias)
       localStore.setObjects("referenciasConsultadas",referenciasConsultadas)
@@ -56,7 +56,7 @@ export default function ListaExpresiones(props){
       var store=localStore.getObjects("referenciasConsultadas")
       store.push(expresionesReferencias)
       localStore.setObjects("referenciasConsultadas",store)
-    }*/
+    }
     var nuevasVisitadas = global.ultimasVisitadas
     nuevasVisitadas.push(expresionesReferencias)
     global.setUltimasVisitadas(nuevasVisitadas)

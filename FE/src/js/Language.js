@@ -100,30 +100,30 @@ const contra= lang => {
 const olvidoDeContra= lang => {
   switch (lang) {
     case "es":
-      return "¿Olvido su contraseña?"
+      return "¿Olvido su contraseña? puede recuperarla"
     case "en":
-      return "Forgot your password?"
+      return "Forgot your password? you can retrieve it"
     case "fr":
-      return "Mot de passe oublié?"
+      return "Vous avez oublié votre mot de passe? vous pouvez le récupérer "
     case "al":
-      return "Passwort vergessen?"
+      return "Haben Sie Ihr Passwort vergessen? Sie können es abrufen"
     case "ca":
-      return "Has oblidat la teva contrasenya?"
+      return "Heu oblidat la contrasenya? pot recuperar-la"
   }
 }
 
 const registrarse= lang => {
   switch (lang) {
     case "es":
-      return "Si no está registrado, registrarse"
+      return "Si no está registrado, puede registrarse"
     case "en":
-      return "Not yet registered? Please sign up"
+      return "Not yet registered? you can register"
     case "fr":
-      return "Pas encore enregistré? Inscrivez vous s'il vous plait"
+      return "Pas encore enregistré? vous pouvez vous inscrire"
     case "al":
-      return "Noch nicht registriert? Bitte registrieren"
+      return "Noch nicht registriert? können Sie sich registrieren"
     case "ca":
-      return "Encara no està registrat? Registreu-vos"
+      return "Encara no està registrat? pot registrar-se"
   }
 }
 
@@ -587,9 +587,9 @@ const toolTipMenuIdiomas= lang => {
     case "fr":
       return "Menu des langues"
     case "al":
-      return "Menü Spranchen"
+      return "Sprachen-Menü"
     case "ca":
-      return "Menú idiomes"
+      return "Menú d'Idiomes"
   }
 }
 
@@ -643,35 +643,35 @@ const descarga= lang => {
     case "es":
       return "Descargar consulta"
     case "en":
-      return "Lookup Download"
+      return "Consultation Download"
     case "fr":
-      return "Consultation télécharger"
+      return "Télécharger la Consultation"
     case "al":
-      return "Suche Herunterladen"
+      return "Konsultation Herunterladen"
     case "ca":
-      return "Cerca de descàrrega"
+      return "Descarregar Consulta"
   }
 }
 
 const idiomaConsultas= lang => {
   switch (lang) {
     case "es":
-      return "Idioma de consultas"
+      return "Idioma del texto"
     case "en":
-      return "Query Language"
+      return "Language of the text"
     case "fr":
-      return "Langage de requête"
+      return "Langue du texte"
     case "al":
-      return "Abfragesprache"
+      return "Sprache des Textes"
     case "ca":
-      return "Idioma de consultes"
+      return "Llenguatge de el text"
   }
 }
 
 const busquedas= lang => {
   switch (lang) {
     case "es":
-      return "Busquedas"
+      return "Búsqueda"
     case "en":
       return "Search"
     case "fr":
@@ -823,13 +823,13 @@ const descargarConsulta = lang => {
     case "es":
       return "Descargar Consulta"
     case "en":
-      return "Lookup Download"
+      return "Télécharger la Consultation"
     case "fr":
       return "Consultation télécharger"
     case "al":
-      return "Suche Herunterladen"
+      return "Konsultation Herunterladen"
     case "ca":
-      return "Cerca de descàrrega"
+      return "Descarregar Consulta"
   }
 }
 
@@ -842,7 +842,7 @@ const seGeneraArchivo = lang => {
     case "fr":
       return "Un fichier avec les spécifications suivantes est généré"
     case "al":
-      return "Eine Datei mit den folgenden Spezifikationen wird generiert"
+      return "Eine Datei mit den folgenden Spezifikationen wird erzeugt"
     case "ca":
       return "Es genera un arxiu amb les següents especificacions"
   }
@@ -857,9 +857,9 @@ const conReferencias = lang => {
     case "fr":
       return "Avec des références?"
     case "al":
-      return "Mit Referenzen?"
+      return "Mit Hinweise?"
     case "ca":
-      return "Amb referències?"
+      return "¿Amb referències?"
   }
 }
 
@@ -870,9 +870,9 @@ const descargarEn = lang => {
     case "en":
       return "Download Passage In:"
     case "fr":
-      return "Télécharger Passage In:"
+      return "Télécharger le Passage En:"
     case "al":
-      return "Passage In herunterladen:"
+      return "Textauszug Herunterladen Auf:"
     case "ca":
       return "Descarregar Passatge En:"
   }
@@ -904,22 +904,22 @@ const idiomaEs = lang => {
     case "al":
       return "Spanisch"
     case "ca":
-      return "Espanyol"
+      return "Castellà"
   }
 }
 
 const pasajeSeleccionadoOTodos = lang => {
   switch (lang) {
     case "es":
-      return "Descargar Pasaje Seleccionado o Todos los Pasajes:"
+      return "Descargar Pasaje Seleccionado o Todos los Pasajes de la Expresión:"
     case "en":
-      return "Download Selected Passage or All Passages:"
+      return "Download Selected Passage or All Passages of the Expression:"
     case "fr":
-      return "Télécharger le passage sélectionné ou tous les passages:"
+      return "Téléchargez le Passage Sélectionné ou Tous les Passages de l’Expression:"
     case "al":
-      return "Download der ausgewählten Passage oder aller Passagen:"
+      return "Ausgewählte Textauszug oder alle Textauszüge des Ausdrucks Herunterladen:"
     case "ca":
-      return "Descarregar Passatge Seleccionat o Tots els Passatges:"
+      return "Descarregar el Passatge Seleccionat o Tots els Passatges de l’Expressió:"
   }
 }
 
@@ -932,7 +932,7 @@ const pasajeSeleccionado = lang => {
     case "fr":
       return "Passage sélectionné"
     case "al":
-      return "Ausgewählte Passage"
+      return "Ausgewählte Textauszug"
     case "ca":
       return "Passatge Seleccionat"
   }
@@ -947,7 +947,7 @@ const todosLosPasajes = lang => {
     case "fr":
       return "Tous les passages"
     case "al":
-      return "Alle Passagen"
+      return "Alle Textauszügen"
     case "ca":
       return "Tots els Passatges"
   }
@@ -1181,13 +1181,13 @@ const noContienePasajes = lang => {
 const numeroDePasajes = lang => {
   switch (lang) {
     case "es":
-      return "Pasajes en total."
+      return "pasajes en total."
     case "en":
-      return "passages."
+      return "passages in all."
     case "fr":
       return "passages au total."
     case "al":
-      return "pasajesen"
+      return "Textauszugen insgesamt."
     case "ca":
       return "passatges en total."
   }
@@ -1196,13 +1196,13 @@ const numeroDePasajes = lang => {
 const pasajeSingular = lang => {
   switch (lang) {
     case "es":
-      return "Pasaje en total."
+      return "pasaje en total."
     case "en":
-      return "passage."
+      return "passage in all."
     case "fr":
       return "passage au total."
     case "al":
-      return "pasajeen"
+      return "Textauszug insgesamt."
     case "ca":
       return "passatge en total."
   }
@@ -1211,15 +1211,30 @@ const pasajeSingular = lang => {
 const descargarConsultadas = lang => {
   switch (lang) {
     case "es":
-      return "Descargar expresiones consultadas."
+      return "Incluir las expresiones consultadas"
     case "en":
-      return "Download consulted expressions."
+      return "Include the looked up expressions"
     case "fr":
-      return "Télécharger les expressions consultées."
+      return "Inclure les expressions consultées"
     case "al":
-      return "Konsultieren Sie konsultierte Ausdrücke"
+      return "Schliessen die konsultierten Ausdrücke ein"
     case "ca":
-      return "Descarregar expressions consultades."
+      return "Incloure les expressions consultades"
+  }
+}
+
+const marcarConsultadas = lang => {
+  switch (lang) {
+    case "es":
+      return "Marcar todas las expresiones consultadas"
+    case "en":
+      return "Mark all expressions consulted"
+    case "fr":
+      return "Inclure les expressions consultées"
+    case "al":
+      return "Alle konsultierten Ausdrücke markieren"
+    case "ca":
+      return "Incloure les expressions consultades"
   }
 }
 
@@ -1233,5 +1248,5 @@ export {tituloDiccionario, ingresar, subtituloDiccionario, inicio, email, contra
   bienvenido, bienvenidaModal, descargarConsulta, seGeneraArchivo, conReferencias, descargarEn, idiomaAl, idiomaEs, pasajeSeleccionadoOTodos,
   pasajeSeleccionado, todosLosPasajes, tipoDeArchivos, texto, tituloNulos, mensajeNulos, tituloBusqueda, mensajeBusqueda, tituloNumeros,
   mensajeNumeros, tituloCaracteres, mensajeCaracteres, tooltipPaginador, resultadoBusqueda, abrirListaTooltip, cerrarListaTooltip, noContienePasajes,
-  numeroDePasajes, pasajeSingular, descargarConsultadas
+  numeroDePasajes, pasajeSingular, descargarConsultadas, marcarConsultadas
 }

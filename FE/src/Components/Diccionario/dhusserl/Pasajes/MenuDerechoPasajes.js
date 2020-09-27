@@ -70,7 +70,6 @@ function MenuDerechoPasajes(props){
   const emptyPasaje = {clave:"", epretty:"", expresion_original:"", expresion_traduccion:"", orden:"", pasaje_original: "", pasaje_traduccion:"",ref_original:"", ref_traduccion:"", refid:"", tpretty:""}
 
   React.useEffect(()=>{
-    console.log("global.ultimasVisitadas",global.ultimasVisitadas)
     setTimeout(() => {
       if(document.getElementById("VP" + props.idExpresion) != null){
         document.getElementById("VP" + props.idExpresion).scrollIntoView()
@@ -202,7 +201,7 @@ function MenuDerechoPasajes(props){
           <ExpansionPanelDetails className="panelDeDetalleReferenciasConsultadas">
             <ul className="ulDelMenuDerechoReferenciasConsultadas">
               {referenciasConsultadasVista.map((consultas,index)=>(
-                  <Link key={"link" + index} to={`/diccionario/husserl/pasaje/${consultas.id}/${consultas.referencias[0].refid}`} onClick={()=>handleFlagLetraMain()}>
+                  <Link key={"link" + index} to={`/diccionario/husserl/pasaje/${consultas.id}/${consultas.referencias[0].refid}`} onClick={(event)=>handleFlagLetraMain(event)}>
                     <li className="bordeDeConsultas" key={consultas.expresion+"-"+index} >
                       <Typography className={"consultaDePasajes"} variant="h6" id={consultas.id+"/"+index}>{consultas.expresion + "  :  " + consultas.referencias[0].referencia_original + "/" + consultas.referencias[0].referencia_traduccion}</Typography>
                     </li>

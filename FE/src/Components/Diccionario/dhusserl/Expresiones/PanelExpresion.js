@@ -108,7 +108,7 @@ export default function PanelExpresion(props){
                     }
                     </Grid>
                     <Grid item xs={1}>
-                        <div id={props.expresion.id + "/" + props.expresion.expresion} onClick={props.getJerarquia}>
+                        <div id={props.expresion.id + "/" + props.expresion.expresion} onClick={(event)=>props.getJerarquia(event)}>
                             <Tooltip title="Jerarquía">
                                 <Icon className="iconosIluminados">
                                     <Jerarquia/>
@@ -124,7 +124,7 @@ export default function PanelExpresion(props){
                                 props.expresion.referencias.map((referencia,index) =>(
                                 <li className="referencia" key={referencia+"/"+index}>
                                     <Typography variant="h6" className={classNames([{"remarcadoDeReferencias" : referencia.orden==1}])}>
-                                        <Link to={referencia.refid==null ? null : `${props.match.path.slice(0,20)}/pasaje/${props.expresion.id}/${referencia.refid}`} className="consultaDePasajes" id={referencia.refid+"/"+index} onClick={guardadoDePasajes}>
+                                        <Link to={referencia.refid==null ? null : `${props.match.path.slice(0,20)}/pasaje/${props.expresion.id}/${referencia.refid}`} className="consultaDePasajes" id={referencia.refid+"/"+index} onClick={(event)=>guardadoDePasajes(event)}>
                                             {referencia.refid + "  :  " + referencia.referencia_original + "/" + referencia.referencia_traduccion}
                                         </Link>
                                     </Typography>

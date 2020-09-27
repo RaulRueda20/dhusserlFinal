@@ -124,18 +124,6 @@ function Busqueda(props){
             <Input
             onChange={event => props.setBusqueda(event.target.value)}
             id="input-with-icon-adornment"
-            startAdornment={
-              <InputAdornment position="end">
-                <Tooltip title="Activar para distinguir entre mayusculas y minusculas">
-                    <IconButton onClick={handleInsensitiveCase} className={classNames([{"caseSeleccionado" : insensitiveCase == true}, "case"])}>
-                        <Icon path={mdiFormatLetterCase}
-                        title="User Profile"
-                        size={1}
-                        />
-                    </IconButton>
-                </Tooltip>
-              </InputAdornment>
-            }  
             endAdornment={
               <InputAdornment position="start">
                 <IconButton type="submit" className="lupita">
@@ -147,14 +135,13 @@ function Busqueda(props){
           </FormControl>  
         </Grid>
         <Grid item xs={2} className={classes.switch}>
-          <Tooltip title={props.state.checkedA ? busquedaPorLetra(props.lang) : BusquedaGeneral(props.lang)}>
-            <Switch
-                checked={props.state.checkedA}
-                onChange={handleSwitch("checkedA")}
-                value="checkedA"
-                inputProps={{'aria-label': 'checkbox with default color'}}
-                size="small"
-            />
+          <Tooltip title="Activar para distinguir entre mayusculas y minusculas">
+            <IconButton onClick={handleInsensitiveCase} className={classNames([{"caseSeleccionado" : insensitiveCase == true}, "case"])}>
+              <Icon path={mdiFormatLetterCase}
+              title="User Profile"
+              size={1}
+              />
+            </IconButton>
           </Tooltip>
         </Grid>
       </Grid>
