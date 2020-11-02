@@ -14,6 +14,7 @@ import Alerts from '../Alerts';
 
 import {loginService} from '../../../js/webServices';
 import * as localStore from '../../../js/localStore';
+import { languageStore } from '../../../stores/languageStore';
 
 const stylesReg = {
   TextField1:{
@@ -40,6 +41,7 @@ var setStore = (user, pass) => {
 
 function RegistroForm(props){
   const { classes }=props;
+  const globalLanguage = React.useContext(languageStore);
   const [nuevoNombre,setNuevoNombre]=React.useState("");
   const [nuevoApellido, setNuevoApellido]=React.useState("");
   const [nuevaEscuela,setNuevaEscuela]=React.useState("");
@@ -93,12 +95,12 @@ function RegistroForm(props){
   return (
     <form onSubmit={onFormSubmit} className={classes.divDelForm}>
       <Typography variant="h3" align="center" gutterBottom >
-        {registro(props.lang)}
+        {registro(globalLanguage.lang)}
       </Typography>
       <Grid className="gridsF" container direction="column" alignItems="center" spacing={2}>
         <Grid item xs={12} sm={8} lg={7} className="grids">
           <TextField
-            label={nombre(props.lang)}
+            label={nombre(globalLanguage.lang)}
             id="custom-css-outlined-input"
             margin="normal"
             value={nuevoNombre}
@@ -108,7 +110,7 @@ function RegistroForm(props){
         </Grid>
         <Grid item xs={12} sm={8} lg={7} className="grids">
           <TextField
-            label={apellido(props.lang)}
+            label={apellido(globalLanguage.lang)}
             id="custom-css-outlined-input"
             value={nuevoApellido}
             onChange={e => setNuevoApellido(e.target.value)}
@@ -117,7 +119,7 @@ function RegistroForm(props){
         </Grid>
         <Grid item xs={12} sm={8} lg={7} className="grids">
           <TextField
-            label={escuela(props.lang)}
+            label={escuela(globalLanguage.lang)}
             id="custom-css-outlined-input"
             value={nuevaEscuela}
             onChange={e =>setNuevaEscuela(e.target.value)}
@@ -135,7 +137,7 @@ function RegistroForm(props){
         </Grid>
         <Grid item xs={12} sm={8} lg={7} className="grids">
           <TextField
-            label={pais(props.lang)}
+            label={pais(globalLanguage.lang)}
             id="custom-css-outlined-input"
             value={nuevoPais}
             onChange={e => setNuevoPais(e.target.value)}
@@ -144,7 +146,7 @@ function RegistroForm(props){
         </Grid>
         <Grid item xs={12} sm={8} lg={7} className="grids">
           <TextField
-            label={email(props.lang)}
+            label={email(globalLanguage.lang)}
             id="custom-css-outlined-input"
             value={nuevoCorreo}
             onChange={e => setNuevoCorreo(e.target.value)}
@@ -154,7 +156,7 @@ function RegistroForm(props){
         </Grid>
         <Grid item xs={12} sm={8} lg={7} className="grids">
           <TextField
-            label={contra(props.lang)}
+            label={contra(globalLanguage.lang)}
             id="custom-css-outlined-input"
             value={nuevoPassword}
             onChange={e => setNuevoPassword(e.target.value)}
@@ -164,7 +166,7 @@ function RegistroForm(props){
         </Grid>
         <Grid item xs={12} sm={8} lg={7} className="grids">
           <TextField
-            label={comprobacionContra(props.lang)}
+            label={comprobacionContra(globalLanguage.lang)}
             id="custom-css-outlined-input"
             value={repassword}
             onChange={e => setRepassword(e.target.value)}
@@ -181,7 +183,7 @@ function RegistroForm(props){
                 className={classes.boton}
                 type="submit"
               >
-                {ingresar(props.lang)}
+                {ingresar(globalLanguage.lang)}
               </Button>
             </Grid>
           </Grid>
@@ -189,7 +191,7 @@ function RegistroForm(props){
 
         <Grid item xs={12} sm={8} lg={7}>
           <Typography variant = "h4">
-            {registrado(props.lang)} <a className="links" onClick={() =>props.setLogin(true)}> {aqui(props.lang)} </a>
+            {registrado(globalLanguage.lang)} <a className="links" onClick={() =>props.setLogin(true)}> {aqui(globalLanguage.lang)} </a>
           </Typography>
         </Grid>
       </Grid>

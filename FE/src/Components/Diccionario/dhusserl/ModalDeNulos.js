@@ -13,6 +13,7 @@ import { withStyles } from '@material-ui/styles';
 
 //Language
 import {tituloNulos, mensajeNulos} from '../../../js/Language';
+import { languageStore } from '../../../stores/languageStore';
 
 const modalNul={
     modalinN:{
@@ -40,6 +41,7 @@ const modalNul={
 
 function ModalDeNulos(props){
     const {classes}=props;
+    const globalLanguage = React.useContext(languageStore);
 
     function clickHandleCloseModal(){
         props.setOpenModalN(false)
@@ -55,7 +57,7 @@ function ModalDeNulos(props){
                 <Grid container alignContent="center" alignItems="center">
                     <Grid item xs={11}>
                         <Typography variant="h4">
-                            {tituloNulos(props.lang)}
+                            {tituloNulos(globalLanguage.lang)}
                         </Typography>
                     </Grid>
                     <Grid item xs={1}>
@@ -69,7 +71,7 @@ function ModalDeNulos(props){
                     <Divider/>
                     <Grid item xs={12} className={classes.gridDelTypo}>
                         <Typography variant="h5">
-                            {mensajeNulos(props.lang)}
+                            {mensajeNulos(globalLanguage.lang)}
                         </Typography>
                     </Grid>
                 </Grid>

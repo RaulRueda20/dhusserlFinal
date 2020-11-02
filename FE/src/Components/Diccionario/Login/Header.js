@@ -8,6 +8,7 @@ import Divider from "@material-ui/core/Divider"
 import {tituloDiccionario, subtituloDiccionario} from '../../../js/Language';
 
 import MenuIdioma from '../MenuIdioma'
+import { languageStore } from '../../../stores/languageStore';
 
 const stylesHed = {
   subtitulo1:{
@@ -23,17 +24,18 @@ const stylesHed = {
 
 function Header(props){
   const { classes } = props;
+  const globalLanguage = React.useContext(languageStore);
 
   return(
     <div>
       <Grid className={classNames("grids", classes.grids)} container justify="center">
         <Grid item xs={11}  align="center">
           <Typography variant="h1" align="center">
-            {tituloDiccionario(props.lang)}
+            {tituloDiccionario(globalLanguage.lang)}
           </Typography>
         </Grid>
         <Grid item xs={1} className={classes.menuIdiomas}>
-          <MenuIdioma lang={props.lang} setLang={props.setLang}/>
+          <MenuIdioma lang={globalLanguage.lang} setLang={globalLanguage.setLang}/>
         </Grid>
       </Grid>
       <br/>
@@ -41,7 +43,7 @@ function Header(props){
       <Grid container>
         <Grid item xs={11}  align="center">
           <Typography variant="h4" align="center">
-          {subtituloDiccionario(props.lang)}
+          {subtituloDiccionario(globalLanguage.lang)}
           </Typography>
         </Grid>
       </Grid>

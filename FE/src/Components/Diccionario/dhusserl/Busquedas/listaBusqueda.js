@@ -13,8 +13,10 @@ import classNames from 'classnames';
 
 //Language
 import {resultadoBusqueda,cerrarListaTooltip} from '../../../../js/Language';
+import { languageStore } from '../../../../stores/languageStore';
 
 function ListaBusqueda(props){
+    const globalLanguage = React.useContext(languageStore);
 
     function clickCambioIdBuscado(event){
         props.setIdPasaje(event.currentTarget.id.split("-")[0])
@@ -27,10 +29,10 @@ function ListaBusqueda(props){
     return(
         <Grid container justify="center" alignItems="center">
             <Grid item xs={11}>
-                <Typography variant="h3" className="tituloResultados">{resultadoBusqueda(props.lang)}</Typography>
+                <Typography variant="h3" className="tituloResultados">{resultadoBusqueda(globalLanguage.lang)}</Typography>
             </Grid>
             <Grid item xs={1}>
-                <Tooltip title={cerrarListaTooltip(props.lang)}>
+                <Tooltip title={cerrarListaTooltip(globalLanguage.lang)}>
                     <IconButton onClick={props.abrirLista}>
                         <ArrowBackIosIcon/>
                     </IconButton>

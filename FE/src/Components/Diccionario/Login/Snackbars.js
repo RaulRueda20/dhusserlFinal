@@ -7,6 +7,7 @@ import SnackbarContent from '@material-ui/core/SnackbarContent';
 import {amber, green} from '@material-ui/core/colors';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/styles';
+import { languageStore } from '../../../stores/languageStore';
 
 const iconoVariante={
     success: CheckCircleIcon,
@@ -39,6 +40,7 @@ const useStyle1=makeStyles(theme=>({
 
 function EnvoltorioDeSnack(props){
     const classes = useStyle1();
+    const globalLanguage = React.useContext(languageStore);
     const {className, message, onClose, variant, ...other}=props;
     const Icon = iconoVariante[variant]
 

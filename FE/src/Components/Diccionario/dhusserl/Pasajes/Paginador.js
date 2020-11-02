@@ -12,9 +12,10 @@ import { Typography } from '@material-ui/core';
 
 //Language
 import {numeroDePasajes, pasajeSingular} from '../../../../js/Language';
-
+import { languageStore } from '../../../../stores/languageStore';
 
 function Pasaje(props){
+  const globalLanguage = React.useContext(languageStore);
   const [casillas, setCasillas] = React.useState([]);
   const [referencias, setReferencias] = React.useState([]);
   const [posicion, setPosicion] = React.useState(0)
@@ -118,7 +119,7 @@ function Pasaje(props){
           <Link to={posicion >= referencias.length -1 ? "#" : `${props.match.path.slice(0,20)}/pasaje/${props.expresionId}/${referencias[posicion+1].refid}`} onClick={handleForward}><span className="botonPaginador"><Next fontSize="small"/></span></Link>
           <Link to={posicion == referencias.length - 1 ? "#" : `${props.match.path.slice(0,20)}/pasaje/${props.expresionId}/${referencias[referencias.length -1].refid}`}><span className="botonPaginador"><LastPage fontSize="small"/></span></Link>
       </div> : null}
-      <Typography variant="h5">{referencias.length} {referencias.length > 1 ? numeroDePasajes(props.lang) : pasajeSingular(props.lang)} </Typography>
+      <Typography variant="h5">{referencias.length} {referencias.length > 1 ? numeroDePasajes(globalLanguage.lang) : pasajeSingular(globalLanguage.lang)} </Typography>
     </div>
   )
 }

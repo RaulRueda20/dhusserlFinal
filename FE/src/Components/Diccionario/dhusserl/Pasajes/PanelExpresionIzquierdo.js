@@ -13,7 +13,7 @@ import classNames from 'classnames';
 // Other req
 import {webService} from '../../../../js/webServices';
 import * as localStore from '../../../../js/localStore';
-import { sesionStore } from '../../../../sesionStore';
+import { sesionStore } from '../../../../stores/sesionStore';
 import '../../../../css/expresiones.css';
 
 export default function PanelExpresionIzquierdo(props){
@@ -110,7 +110,6 @@ export default function PanelExpresionIzquierdo(props){
                     <ul key={props.expresion.id} id={"referencias"+props.expresion.id} className="ulDelPanelDeExpresiones">
                         {props.expresion.referencias[0].refid == null ? "No hay ninguna referencia para esta expresión. Ver por favor la lista de expresiones derivadas." : 
                             props.expresion.referencias.map((referencia,index) =>{
-                              
                             return(
                             <li className="referencia" id={"panel" + index} >
                                 <Grid container justify="center" alignItems="center">

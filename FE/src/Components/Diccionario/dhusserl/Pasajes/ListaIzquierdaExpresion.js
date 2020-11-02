@@ -6,7 +6,7 @@ import PanelExpresionIzquierdo from './PanelExpresionIzquierdo';
 
 //Other req
 import * as localStore from '../../../../js/localStore';
-import { sesionStore } from '../../../../sesionStore';
+import { sesionStore } from '../../../../stores/sesionStore';
 
 export default function ListaIzquierdaExpresiones(props){
   const [panelesAbiertos,setPanelesAbiertos] = React.useState([]);
@@ -67,7 +67,7 @@ export default function ListaIzquierdaExpresiones(props){
       }
     }, 5000)
 
-  },[props.idExpresion, props.expresionesGlobales, props.expresiones, props.language])
+  },[props.idExpresion, props.expresionesGlobales, props.expresiones])
 
   const handleScroll = e => {
     var element = e.target
@@ -83,7 +83,7 @@ export default function ListaIzquierdaExpresiones(props){
         {props.chunkList.map((expresion, index)=>{
           return(<PanelExpresionIzquierdo {...props} key={expresion.id+"-"+index} expresion={expresion} handleClickPanel={handleClickPanel} clickHandleVista={clickHandleVista} index={index}
           getJerarquia={props.getJerarquia} idReferencias={props.idReferencias} setIdReferencias={props.setIdReferencias} idExpresion={props.idExpresion} open={props.idExpresion == expresion.id}
-          match={props.match} setFlagLetraMain={props.setFlagLetraMain} idExpresion={props.idExpresion} idDeLaReferencia={props.idDeLaReferencia} lenguaje={props.language}
+          match={props.match} idExpresion={props.idExpresion} idDeLaReferencia={props.idDeLaReferencia} 
           />
           )})}
         </ul> 

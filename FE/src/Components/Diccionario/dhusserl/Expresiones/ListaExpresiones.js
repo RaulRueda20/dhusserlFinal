@@ -11,7 +11,7 @@ import PanelExpresion from './PanelExpresion';
 
 //Other req
 import * as localStore from '../../../../js/localStore';
-import { sesionStore } from '../../../../sesionStore';
+import { sesionStore } from '../../../../stores/sesionStore';
 
 const useStyles = makeStyles(theme => ({
   listContainer:{
@@ -89,7 +89,7 @@ export default function ListaExpresiones(props){
             return(
             <PanelExpresion match={props.match} key={expresion.id+"-"+index} expresion={expresion} handleClickPanel={handleClickPanel} clickHandleVista={clickHandleVista} index={index}
             getJerarquia={props.getJerarquia} idReferencias={props.idReferencias} setIdReferencias={props.setIdReferencias} expresionSeleccionada={props.expresionSeleccionada}
-            setFlagLetraMain={props.setFlagLetraMain} setOpenModalN={props.setOpenModalN} lenguaje={props.lenguaje}/> 
+            setOpenModalN={props.setOpenModalN}/> 
           )})}
         </ul>
       </div>

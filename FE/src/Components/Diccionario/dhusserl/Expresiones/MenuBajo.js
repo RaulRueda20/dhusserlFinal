@@ -12,7 +12,9 @@ import {menuDerechoJerarquia, menuDerechoJerarquiaDerivadaDe, menuDerechoJerarqu
 
 import {webService} from '../../../../js/webServices';
 import * as localStore from '../../../../js/localStore';
-import { sesionStore } from '../../../../sesionStore';
+import { sesionStore } from '../../../../stores/sesionStore';
+import { languageStore } from '../../../../stores/languageStore';
+import { letraStore } from '../../../../stores/letraStore';
 
 import ListaPadresBajo from './ListaPadresBajo';
 import ListaHijosBajo from './ListaHijosBajo';
@@ -55,6 +57,8 @@ expanded: {minHeight: "0px !important", height: "48px", alignItems: "center"},
 
 function MenuBajo(props){
     const global = React.useContext(sesionStore);
+    const globalLanguage = React.useContext(languageStore);
+    const globalLetra = React.useContext(letraStore);
     const [referenciasConsultadasVista, setReferenciasConsultadasVista]=React.useState([])
     const [listaVerTambien,setListaVerTambien]=React.useState([]);
     const [hijos,setHijos]=React.useState([]);
@@ -70,10 +74,10 @@ function MenuBajo(props){
             var service = "/vertambien/" + props.idExpresion
             webService(service, "GET", {}, global.sesion, data => {
                 setListaVerTambien(data.data.response)
-                webService(("/expresiones/"+props.language+"/hijosList/"+props.idExpresion),"GET", {}, global.sesion, (data) =>{
+                webService(("/expresiones/"+globalLanguage.langLista+"/hijosList/"+props.idExpresion),"GET", {}, global.sesion, (data) =>{
                     setHijos(data.data.response)
                 })
-                webService(("/expresiones/"+props.language+"/abuelosList/"+props.idExpresion), "GET", {}, global.sesion, (data2) =>{
+                webService(("/expresiones/"+globalLanguage.langLista+"/abuelosList/"+props.idExpresion), "GET", {}, global.sesion, (data2) =>{
                     setPadres(data2.data.response)
                 })
             })
@@ -102,7 +106,7 @@ function MenuBajo(props){
       }
 
     function handleFlagLetraMain(event){
-        props.setFlagLetraMain(false)
+        globalLetra.setLetraFlag(false)
         var idExpresion = event.target.id.split("/")[0]
         var service = "/referencias/obtieneReferencias/" + idExpresion
         webService(service, "GET", {}, global.sesion, data => {
@@ -126,16 +130,15 @@ function MenuBajo(props){
         <div className="contenedorMenuBajo" xs={12}>
             <ExpansionPanel square expanded={props.expanded1} onChange={()=>props.setExpanded1(!props.expanded1)} className="panelPrincipal">
             <ExpansionPanelSummary aria-controls="panel1d-content" id="panel1d-header">
-                <Typography>{menuDerechoJerarquia(props.lang)}</Typography>
+                <Typography>{menuDerechoJerarquia(globalLanguage.lang)}</Typography>
             </ExpansionPanelSummary>
             <ExpansionPanelDetails className="panelDeDetallePadres">
             <Typography variant="caption" className="tagsMenuDerecho">
-            {menuDerechoJerarquiaDerivadaDe(props.lang)}
+            {menuDerechoJerarquiaDerivadaDe(globalLanguage.lang)}
             </Typography>
             <ul className="ulDelMenuDerechoPadres" key={padres.refid}>
                 {padres.map((padre,index)=>(
-                    <ListaPadresBajo {...props} padre={padre} index={index} language={props.language} lang={props.lang} key={padre.id+'-'+index} letraMain={props.letraMain} 
-                    setLetraMain={props.setLetraMain} setFlagLetraMain={props.setFlagLetraMain}/>
+                    <ListaPadresBajo {...props} padre={padre} index={index} key={padre.id+'-'+index}/>
                 ))}
             </ul>
             </ExpansionPanelDetails>
@@ -153,7 +156,7 @@ function MenuBajo(props){
             <Typography variant="caption" className="tagsMenuDerecho">{menuDerechoJerarquiaExpresionesDerivadas(props.lang)}</Typography>
             <ul className="ulDelMenuDerechoHijos"  key={hijos.refid}> 
                 {hijos.map((hijo,index)=>(
-                 <ListaHijosBajo {...props} hijo={hijo} index={index} language={props.language} lang={props.lang} key={hijo.id+'-'+index} letraMain={props.letraMain} 
+                 <ListaHijosBajo {...props} hijo={hijo} index={index} key={hijo.id+'-'+index} letraMain={props.letraMain} 
                  setLetraMain={props.setLetraMain} setFlagLetraMain={props.setFlagLetraMain}/>
                 ))}
             </ul>
@@ -162,7 +165,7 @@ function MenuBajo(props){
             {listaVerTambien != "" ? 
             <ExpansionPanel square expanded={props.expanded2} onChange={()=>props.setExpanded2(!props.expanded2)} className="panelPrincipal">
           <ExpansionPanelSummary aria-controls="panel2d-content" id="panel2d-header">
-            <Typography>{menuDerechoVerTambien(props.lang)}</Typography>
+            <Typography>{menuDerechoVerTambien(globalLanguage.lang)}</Typography>
           </ExpansionPanelSummary>
             <ExpansionPanelDetails className="panelDeDetalleVerTambien">
                 <ul className="ulDelMenuDerechoVerTambien">
@@ -180,13 +183,13 @@ function MenuBajo(props){
             }
             <ExpansionPanel square expanded={props.expanded3} onChange={()=>props.setExpanded3(!props.expanded3)} className="panelPrincipal">
             <ExpansionPanelSummary aria-controls="panel3d-content" id="panel3d-header">
-            <Typography>{menuDerechoReferenciasConsultadas(props.lang)}</Typography>
+            <Typography>{menuDerechoReferenciasConsultadas(globalLanguage.lang)}</Typography>
             </ExpansionPanelSummary>
             <ExpansionPanelDetails className="panelDeDetalleReferenciasConsultadas">
                 <ul className="ulDelMenuDerechoReferenciasConsultadas">
                 {referenciasConsultadasVista.map((consultas,index)=>(
                     <li className="bordeDeConsultas" key={consultas.referencias[0].refid+"-"+index}>
-                        <Link key={"link" + index} to={`/husserl/pasaje/${consultas.id}/${consultas.referencias[0].refid}`} onClick={()=>handleFlagLetraMain()}>
+                        <Link key={"link" + index} to={`/husserl/pasaje/${consultas.id}/${consultas.referencias[0].refid}`} onClick={(event)=>handleFlagLetraMain(event)}>
                             <Typography className={"consultaDePasajes"} variant="h6" id={consultas.id+"/"+index}>{consultas.expresion + "  //  " + consultas.traduccion + "  --  " + consultas.referencias[0].refid}</Typography>
                         </Link>
                     </li>

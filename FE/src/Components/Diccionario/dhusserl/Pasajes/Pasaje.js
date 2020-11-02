@@ -26,15 +26,18 @@ import ModalCaracterInvalido from '../ModalCaracterInvalido';
 import ModalNumeros from '../ModalNumeros'
 
 // Other req
-import { sesionStore } from '../../../../sesionStore';
+import { sesionStore } from '../../../../stores/sesionStore';
 import {webService} from '../../../../js/webServices';
+import { languageStore } from '../../../../stores/languageStore';
+import { letraStore } from '../../../../stores/letraStore';
 
 function Pasaje(props){
   const global = React.useContext(sesionStore);
+  const globalLanguage = React.useContext(languageStore);
+  const globalLetra = React.useContext(letraStore);
   const [expresiones, setExpresiones] = React.useState([]);
   const [expresionesGlobales, setExpresionesGlobales] = React.useState([]);
   const [idExpresion, setIdExpresion] = React.useState('');
-  const [languageP,setLanguageP] = React.useState("al");
   const [referenciaSeleccionada, setReferenciaSeleccionada]=React.useState(null);
   const [expanded1, setExpanded1] = React.useState(false);
   const [expanded2, setExpanded2] = React.useState(false);
@@ -120,7 +123,7 @@ function Pasaje(props){
     setLoading(true)
     var idDeExpresion=props.match.params.expresion;
     var idDeLaReferencia=props.match.params.id ? props.match.params.id : false;
-    var service = "/expresiones/" + props.language + "/" + props.letraMain;
+    var service = "/expresiones/" + globalLanguage.langLista + "/" + globalLetra.letra;
     if(pasajeService != service){
       setPasajeService(service)
       webService(service, "GET", {}, global.sesion, (dataE) => {
@@ -144,13 +147,13 @@ function Pasaje(props){
       setExpanded1(true)
       setExpanded2(true)
       if(data.data.response[0]==null){
-        props.setLetraMain(props.letraMain)
+        globalLetra.setLetra(globalLetra.letra)
         setOpenModalN(true)
         setReferenciaSeleccionada(null)
-      }else if(props.letraMain != data.data.response[0].index_de.replace(/ /g,'')){
-        if(!props.flagLetraMain){
-        props.setLetraMain(data.data.response[0].index_de.replace(/ /g,''))
-        props.setFlagLetraMain(true)
+      }else if(globalLetra.letra != data.data.response[0].index_de.replace(/ /g,'')){
+        if(!globalLetra.letraFlag){
+          globalLetra.setLetra(data.data.response[0].index_de.replace(/ /g,''))
+          globalLetra.setLetraFlag(true)
         }
       }
     })
@@ -161,7 +164,7 @@ function Pasaje(props){
         document.getElementById("VP" + props.idExpresion).scrollIntoView()
       }
     }, 1000)
-  }, [props.letraMain, props.language, props.match.params.expresion, props.match.params.id, props.flagLetraMain])
+  }, [globalLetra.letra, globalLanguage.langLista, props.match.params.expresion, props.match.params.id, globalLetra.letraFlag])
 
   return(
     <div>
@@ -188,74 +191,71 @@ function Pasaje(props){
        </Hidden>
        <Grid container>
          <Grid item xs={12}>
-           <ListaLetras letraMain={props.letraMain} setLetraMain={props.setLetraMain} setFlagLetraMain={props.setFlagLetraMain} flagLetraMain={props.flagLetraMain} language={props.language} 
+           <ListaLetras  
            setChunkListGlobal={setChunkListGlobal} setChunkList={setChunkList}/>
          </Grid>
          <Grid item xs={12} sm={3} md={3} lg={3} className={classNames([{"panelIzquierdoEscondido" : panelIzquierdo==true}])}>
            <Hidden xsDown>
-             <BusquedaVP expresiones={expresiones} setExpresiones={setExpresiones} lang={props.lang} setIdExpresion={setIdExpresion}
-             language={props.language} setLanguage={props.setLanguage} busqueda={busqueda} setBusqueda={setBusqueda} setFlagDeBusqueda={setFlagDeBusqueda}
+             <BusquedaVP expresiones={expresiones} setExpresiones={setExpresiones} setIdExpresion={setIdExpresion}
+             busqueda={busqueda} setBusqueda={setBusqueda} setFlagDeBusqueda={setFlagDeBusqueda}
              setExpresionesGlobales={setExpresionesGlobales} setModalDebusquedas={setModalDebusquedas} 
              setModalCaracteresInvalidos={setModalCaracteresInvalidos} setModalNumeros={setModalNumeros} setLoading={setLoading} expresionesGlobales={expresionesGlobales}
-             setChunkListGlobal={setChunkListGlobal} setChunkList={setChunkList} letraMain={props.letraMain} flagLetraMain={props.flagLetraMain}/>  
+             setChunkListGlobal={setChunkListGlobal} setChunkList={setChunkList}/>  
              <ListaIzquierdaExpresion {...props} expresiones={expresiones} setExpresiones={setExpresiones} idExpresion={idExpresion} 
-               setIdExpresion={setIdExpresion} language={props.language} setLanguage={props.setLanguage} referenciaSeleccionada={referenciaSeleccionada}
-               setReferenciaSeleccionada={setReferenciaSeleccionada} setExpanded1={setExpanded1} setExpanded2={setExpanded2} match={props.match} setFlagLetraMain={props.setFlagLetraMain}
+               setIdExpresion={setIdExpresion} referenciaSeleccionada={referenciaSeleccionada}
+               setReferenciaSeleccionada={setReferenciaSeleccionada} setExpanded1={setExpanded1} setExpanded2={setExpanded2} match={props.match} 
                setPosicionReferenciasConsultadas={setPosicionReferenciasConsultadas} expresionesGlobales={expresionesGlobales} chunkList={chunkList}
-               chunkListGlobal={chunkListGlobal} setChunkList={setChunkList} setChunkListGlobal={setChunkListGlobal} letraMain={props.letraMain} idDeLaReferencia={props.match.params.id}
+               chunkListGlobal={chunkListGlobal} setChunkList={setChunkList} setChunkListGlobal={setChunkListGlobal} idDeLaReferencia={props.match.params.id}
               />
            </Hidden>
            {openHidden == true ?
              <div>
-               <BusquedaEscondida expresiones={expresiones} setExpresiones={setExpresiones} lang={props.lang} 
-                language={props.language} setLanguage={props.setLanguage} busqueda={busqueda} setBusqueda={setBusqueda}
+               <BusquedaEscondida expresiones={expresiones} setExpresiones={setExpresiones} busqueda={busqueda} setBusqueda={setBusqueda}
                 openHidden={openHidden} setOpenHidden={setOpenHidden} 
                 setExpresionesGlobales={setExpresionesGlobales} setModalDebusquedas={setModalDebusquedas} 
                 setModalCaracteresInvalidos={setModalCaracteresInvalidos} setModalNumeros={setModalNumeros} setLoading={setLoading}
                 setChunkListGlobal={setChunkListGlobal} setChunkList={setChunkList}/>
                <ListaEscondida {...props} expresiones={expresiones} setExpresiones={setExpresiones} idExpresion={idExpresion} 
-               setIdExpresion={setIdExpresion} language={props.language} setLanguage={props.setLanguage} referenciaSeleccionada={referenciaSeleccionada}
-               setReferenciaSeleccionada={setReferenciaSeleccionada} setExpanded1={setExpanded1} setExpanded2={setExpanded2} state={state} setFlagLetraMain={props.setFlagLetraMain}
-               expresionesGlobales={expresionesGlobales}  chunkList={chunkList} chunkListGlobal={chunkListGlobal}/>/>
+               setIdExpresion={setIdExpresion} referenciaSeleccionada={referenciaSeleccionada}
+               setReferenciaSeleccionada={setReferenciaSeleccionada} setExpanded1={setExpanded1} setExpanded2={setExpanded2} state={state}
+               expresionesGlobales={expresionesGlobales}  chunkList={chunkList} chunkListGlobal={chunkListGlobal}/>
              </div>
               : null
            }
          </Grid>
          <Grid item xs={12} sm={6} md={panelDerecho ? panelIzquierdo ? 12 : 9 : 6 && panelIzquierdo ? 9 : 6} lg={panelDerecho ? panelIzquierdo ? 12 : 9 : 6 && panelIzquierdo ? 9 : 6}
          className={classNames([{"contenidoPasajes" : openHidden==true}])}>
-             <ContenidoPasaje referencias={referencias}  referenciaSeleccionada={referenciaSeleccionada} languageP={languageP} setLanguageP={setLanguageP}
-             idExpresion={idExpresion} lang={props.lang} match={props.match} panelDerecho={panelDerecho} panelIzquierdo={panelIzquierdo} 
-             lang={props.lang} openHidden={openHidden} setOpenHidden={setOpenHidden} 
+             <ContenidoPasaje referencias={referencias}  referenciaSeleccionada={referenciaSeleccionada}
+             idExpresion={idExpresion} match={props.match} panelDerecho={panelDerecho} panelIzquierdo={panelIzquierdo} 
+             openHidden={openHidden} setOpenHidden={setOpenHidden} 
              />
              {referenciaSeleccionada == null ? null 
              : 
-             <Paginador {...props} lang={props.lang} referencias={referencias} referenciaSeleccionada={referenciaSeleccionada} expresionId={props.match.params.expresion} />}
+             <Paginador {...props} referencias={referencias} referenciaSeleccionada={referenciaSeleccionada} expresionId={props.match.params.expresion} />}
          </Grid>
          <Grid item sm={3} md={3} lg={3} className={classNames([{"panelDerechoEscondido" : panelDerecho==true}, "bordoDelMenuDerecho"])}>
            <Hidden xsDown>
-             <MenuDerechoPasajes {...props} idExpresion={idExpresion} language={props.language}
+             <MenuDerechoPasajes {...props} idExpresion={idExpresion}
              expresiones={expresiones} expanded1={expanded1} setExpanded1={setExpanded1} 
              expanded2={expanded2} setExpanded2={setExpanded2} expanded3={expanded3} setExpanded3={setExpanded3}
-             lang={props.lang} referenciaSeleccionada={referenciaSeleccionada} letraMain={props.letraMain} setLetraMain={props.setLetraMain}
-             setFlagLetraMain={props.setFlagLetraMain} posicionReferenciasConsultadas={posicionReferenciasConsultadas}
+             referenciaSeleccionada={referenciaSeleccionada} posicionReferenciasConsultadas={posicionReferenciasConsultadas}
              />
            </Hidden>
          </Grid>
          {openHidden == true ? 
            <Grid item xs={12} className="menuPasajeEscondido">
-             <MenuEscondido {...props} idExpresion={idExpresion} language={props.language}
+             <MenuEscondido {...props} idExpresion={idExpresion} 
              expresiones={expresiones} expanded1={expanded1} setExpanded1={setExpanded1} 
              expanded2={expanded2} setExpanded2={setExpanded2} expanded3={expanded3} setExpanded3={setExpanded3}
-             lang={props.lang} referenciaSeleccionada={referenciaSeleccionada} setFlagLetraMain={props.setFlagLetraMain}
-             />
+             referenciaSeleccionada={referenciaSeleccionada}/>
            </Grid>
            :null
          }
        </Grid>
        <LinearProgress className={classNames([{"hidden" : !loading}, "loadingBar"])}/>
-       <ModalDeBusqueda modalDeBusquedas={modalDeBusquedas} setModalDebusquedas={setModalDebusquedas} lang={props.lang}/>
-       <ModalCaracterInvalido modalCaracteresIvalidos={modalCaracteresIvalidos} setModalCaracteresInvalidos={setModalCaracteresInvalidos} lang={props.lang}/>
-       <ModalNumeros modalNumeros={modalNumeros} setModalNumeros={setModalNumeros} lang={props.lang}/>
+       <ModalDeBusqueda modalDeBusquedas={modalDeBusquedas} setModalDebusquedas={setModalDebusquedas} />
+       <ModalCaracterInvalido modalCaracteresIvalidos={modalCaracteresIvalidos} setModalCaracteresInvalidos={setModalCaracteresInvalidos}/>
+       <ModalNumeros modalNumeros={modalNumeros} setModalNumeros={setModalNumeros}/>
     </div>
   )
 }

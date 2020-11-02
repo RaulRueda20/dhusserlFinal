@@ -17,7 +17,8 @@ import classNames from 'classnames';
 // Other req
 import {webService} from '../../../../js/webServices';
 import * as localStore from '../../../../js/localStore';
-import { sesionStore } from '../../../../sesionStore';
+import { sesionStore } from '../../../../stores/sesionStore';
+import { letraStore } from '../../../../stores/letraStore';
 
 // CSS
 import '../../../../css/expresiones.css';
@@ -25,6 +26,7 @@ import '../../../../css/expresiones.css';
 export default function PanelExpresion(props){
     const [open, setOpen] = React.useState(false);
     const global = React.useContext(sesionStore);
+    const globalLetra = React.useContext(letraStore);
 
     function fixReferenciasConsultadas(expresion){
         var referencia = {
@@ -66,7 +68,7 @@ export default function PanelExpresion(props){
             nuevasVisitadas.push(referencias)
             global.setUltimasVisitadas(nuevasVisitadas)
         })
-        props.setFlagLetraMain(true)
+        globalLetra.setLetraFlag(true)
     }
 
     function handleModal(){
@@ -94,7 +96,6 @@ export default function PanelExpresion(props){
                     <Grid item xs={10} id={props.index} onClick={props.clickHandleVista}>
                         <Link to={props.expresion.referencias[0].refid==null ? "#" :`${props.match.path.slice(0,20)}/pasaje/${props.expresion.id}/${props.expresion.referencias[0].refid}`} onClick={handleModal}>
                             <span className="Renglones" style={{}} dangerouslySetInnerHTML={htmlPrettyE()}/>
-                            {/* {props.lenguaje == "al" ? <span className="Renglones" style={{}} dangerouslySetInnerHTML={htmlPrettyE()}/> : <span className="Renglones" style={{}} dangerouslySetInnerHTML={htmlPrettyT()}/>} */}
                         </Link>
                     </Grid>
                     <Grid item id={props.expresion.id} xs={1} onClick={()=>setOpen(!open)}>

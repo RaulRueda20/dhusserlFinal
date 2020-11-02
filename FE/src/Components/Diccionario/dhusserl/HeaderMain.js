@@ -9,6 +9,7 @@ import MenuHeader from './MenuHeader';
 import MenuIdioma from '../MenuIdioma'
 
 import {tituloDiccionario} from '../../../js/Language';
+import { languageStore } from '../../../stores/languageStore';
 
 const useStyles = makeStyles(theme => ({
   titulo:{
@@ -28,22 +29,27 @@ const useStyles = makeStyles(theme => ({
 
 function HeaderMain(props){
   const classes = useStyles();
+  const globalLanguage = React.useContext(languageStore);
   const theme = useTheme();
+
+  React.useEffect(()=>{
+    console.log("props", props)
+  },[true])
 
   return(
     <Grid container direction="row" justify="center" className="grids">
       <AppBar position="static" color="primary" className="headerMain">
         <Toolbar variant="dense">
           <Grid item xs={2} sm={1} md={1} xl={1} className={classes.menu}>
-            <MenuHeader history={props.history} match={props.match} lang={props.lang} setLang={props.setLang} setLogged={props.setLogged}/>
+            <MenuHeader history={props.history} match={props.match} setLogged={props.setLogged}/>
           </Grid>
           <Grid item xs={8} sm={10} md={10} xl={10} align="center">
             <Typography variant="h2" className={classes.titulo}>
-              {tituloDiccionario(props.lang)}
+              {tituloDiccionario(globalLanguage.lang)}
             </Typography>
           </Grid>
           <Grid item xs={2} sm={1} md={1} xl={1} className={classes.idiomas}>
-            <MenuIdioma lang={props.lang} setLang={props.setLang}/>
+            <MenuIdioma/>
           </Grid>
         </Toolbar>
       </AppBar>

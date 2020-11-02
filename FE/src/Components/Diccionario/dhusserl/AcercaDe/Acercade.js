@@ -8,10 +8,12 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import {webService} from '../../../../js/webServices';
 import classNames from 'classnames';
 import * as localStore from '../../../../js/localStore';
-import { sesionStore } from '../../../../sesionStore';
+import { sesionStore } from '../../../../stores/sesionStore';
+import { languageStore } from '../../../../stores/languageStore';
 
 function Acercade(props){
     const global = React.useContext(sesionStore);
+    const globalLanguage = React.useContext(languageStore);
     const [acercade, setAcercade] = React.useState("");
     const [loading, setLoading]=React.useState(false);
 
@@ -25,7 +27,7 @@ function Acercade(props){
     }, [])
 
     function renderizadoDeAcercaDe(){
-        switch(props.lang){
+        switch(globalLanguage.lang){
             case "es":
                 return {__html: acercade.contenido}
             case "ca":

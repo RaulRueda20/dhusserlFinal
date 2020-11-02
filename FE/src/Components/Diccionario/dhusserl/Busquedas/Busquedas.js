@@ -17,7 +17,8 @@ import { mdiFormatLetterCase } from '@mdi/js';
 
 //Other request
 import {webService} from '../../../../js/webServices';
-import { sesionStore } from '../../../../sesionStore';
+import { sesionStore } from '../../../../stores/sesionStore';
+import { languageStore } from '../../../../stores/languageStore';
 import classNames from 'classnames';
 
 //Language
@@ -36,6 +37,7 @@ const search={
 function Busquedas(props){
     const {classes}=props;
     const global = React.useContext(sesionStore);
+    const globalLanguage = React.useContext(languageStore);
     const [loading, setLoading]=React.useState(false);
     const [insensitiveCase,setInsensitiveCase]=React.useState(false)
 
@@ -110,13 +112,13 @@ function Busquedas(props){
             <Grid container>
                 <Grid item xs={10}>
                     <FormControl className={classes.buscador} >
-                        <InputLabel htmlFor="input-with-icon-adornment">{busquedas(props.lang)}</InputLabel>
+                        <InputLabel htmlFor="input-with-icon-adornment">{busquedas(globalLanguage.lang)}</InputLabel>
                         <Input
                         id="input-with-icon-adornment"
                         onChange={event => props.setBusqueda(event.target.value)}
                         startAdornment={
                             <InputAdornment position="end">
-                                <Tooltip title={distincionMayusyMinus(props.lang)}>
+                                <Tooltip title={distincionMayusyMinus(globalLanguage.lang)}>
                                     <IconButton onClick={handleInsensitiveCase} className={classNames([{"caseSeleccionado" : insensitiveCase == true}, "case"])}>
                                         <Icon path={mdiFormatLetterCase}
                                         title="User Profile"

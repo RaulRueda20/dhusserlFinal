@@ -19,7 +19,9 @@ import ListaHijosExpresion from './ListaHijosExpresion';
 import {menuDerechoJerarquia, menuDerechoJerarquiaDerivadaDe, menuDerechoJerarquiaExpresion, menuDerechoJerarquiaExpresionesDerivadas, menuDerechoVerTambien, menuDerechoReferenciasConsultadas} from '../../../../js/Language';
 import {webService} from '../../../../js/webServices';
 import * as localStore from '../../../../js/localStore';
-import { sesionStore } from '../../../../sesionStore';
+import { sesionStore } from '../../../../stores/sesionStore';
+import { languageStore } from '../../../../stores/languageStore';
+import { letraStore } from '../../../../stores/letraStore';
 
 const ExpansionPanel = withStyles({
   root: {
@@ -59,6 +61,8 @@ const ExpansionPanelSummary = withStyles({
 
 function MenuDerecho(props){
   const global = React.useContext(sesionStore);
+  const globalLanguage = React.useContext(languageStore);
+  const globalLetra = React.useContext(letraStore);
   const [referenciasConsultadasVista, setReferenciasConsultadasVista]=React.useState([])
   const [listaVerTambien,setListaVerTambien]=React.useState([]);
   const [hijos,setHijos]=React.useState([]);
@@ -74,10 +78,10 @@ function MenuDerecho(props){
       var service = "/vertambien/" + props.expresionSeleccionada.id
       webService(service, "GET", {}, global.sesion, data => {
         setListaVerTambien(data.data.response)
-        webService(("/expresiones/"+props.language+"/hijosList/"+props.expresionSeleccionada.id),"GET", {}, global.sesion, (data) => {
+        webService(("/expresiones/"+globalLanguage.langLista+"/hijosList/"+props.expresionSeleccionada.id),"GET", {}, global.sesion, (data) => {
           setHijos(data.data.response)
         })
-        webService(("/expresiones/"+props.language+"/abuelosList/"+props.expresionSeleccionada.id), "GET", {}, global.sesion, (data2) =>{
+        webService(("/expresiones/"+globalLanguage.langLista+"/abuelosList/"+props.expresionSeleccionada.id), "GET", {}, global.sesion, (data2) =>{
           setPadres(data2.data.response)
         })
       })
@@ -106,7 +110,7 @@ function MenuDerecho(props){
   }
 
   function handleFlagLetraMain(event){
-    props.setFlagLetraMain(false)
+    globalLetra.setLetraFlag(false)
     var idExpresion = event.target.id.split("/")[0]
     var service = "/referencias/obtieneReferencias/" + idExpresion
     webService(service, "GET", {}, global.sesion, data => {
@@ -132,20 +136,20 @@ function MenuDerecho(props){
     <div className="contenedorMenuDerecho">
         <ExpansionPanel square expanded={props.expanded1} onChange={()=>props.setExpanded1(!props.expanded1)} className="panelPrincipal">
           <ExpansionPanelSummary aria-controls="panel1d-content" id="panel1d-header">
-            <Typography>{menuDerechoJerarquia(props.lang)}</Typography>
+            <Typography>{menuDerechoJerarquia(globalLanguage.lang)}</Typography>
           </ExpansionPanelSummary>
         <ExpansionPanelDetails className="panelDeDetallePadres">
           <Typography variant="caption" className="tagsMenuDerecho">
-          {menuDerechoJerarquiaDerivadaDe(props.lang)}
+          {menuDerechoJerarquiaDerivadaDe(globalLanguage.lang)}
           </Typography>
           <ul className="ulDelMenuDerechoPadres" key={padres.refid}>
             {padres.map((padre,index)=>
-              <ListaPadresExpresion {...props} padre={padre} index={index} language={props.language} lang={props.lang} key={padre.id+'-'+index} setFlagLetraMain={props.setFlagLetraMain}/>
+              <ListaPadresExpresion {...props} padre={padre} index={index} key={padre.id+'-'+index}/>
             )}
           </ul>
         </ExpansionPanelDetails>
         <ExpansionPanelDetails className="panelDeDetalleExpresion">
-          <Typography variant="caption" className="tagsMenuDerecho">{menuDerechoJerarquiaExpresion(props.lang)}</Typography>
+          <Typography variant="caption" className="tagsMenuDerecho">{menuDerechoJerarquiaExpresion(globalLanguage.lang)}</Typography>
           <ul className="ulDelMenuDerechoExpresion">
             <li>
               <Typography variant="h6" className="consultaDePasajes">{props.expresionSeleccionada.expresion}</Typography>
@@ -153,10 +157,10 @@ function MenuDerecho(props){
           </ul>
         </ExpansionPanelDetails>
         <ExpansionPanelDetails className={classNames([{"panelDeDetalleHijos" : listaVerTambien != "" }, "panelDeDetalleHijosLibres"])}>
-          <Typography variant="caption" className="tagsMenuDerecho">{menuDerechoJerarquiaExpresionesDerivadas(props.lang)}</Typography>
+          <Typography variant="caption" className="tagsMenuDerecho">{menuDerechoJerarquiaExpresionesDerivadas(globalLanguage.lang)}</Typography>
           <ul className={classNames([{"ulDelMenuDerechoHijos" : listaVerTambien != "" }, "ulDelMenuDerechoHijosLibres"])}  key={hijos.refid}> 
             {hijos.map((hijo,index)=>(
-              <ListaHijosExpresion {...props} hijo={hijo} index={index} language={props.language} lang={props.lang} key={hijo.id+"-"+index} setFlagLetraMain={props.setFlagLetraMain}/>
+              <ListaHijosExpresion {...props} hijo={hijo} index={index} key={hijo.id+"-"+index}/>
             ))}
           </ul>
         </ExpansionPanelDetails>
@@ -164,7 +168,7 @@ function MenuDerecho(props){
         {listaVerTambien != "" ? 
             <ExpansionPanel square expanded={props.expanded2} onChange={()=>props.setExpanded2(!props.expanded2)} className="panelPrincipal">
           <ExpansionPanelSummary aria-controls="panel2d-content" id="panel2d-header">
-            <Typography>{menuDerechoVerTambien(props.lang)}</Typography>
+            <Typography>{menuDerechoVerTambien(globalLanguage.lang)}</Typography>
           </ExpansionPanelSummary>
           <ExpansionPanelDetails className="panelDeDetalleVerTambien">
             <ul className="ulDelMenuDerechoVerTambien">
@@ -182,7 +186,7 @@ function MenuDerecho(props){
         }
         <ExpansionPanel square expanded={props.expanded3} onChange={()=>props.setExpanded3(!props.expanded3)} className="panelPrincipal">
         <ExpansionPanelSummary aria-controls="panel3d-content" id="panel3d-header">
-          <Typography>{menuDerechoReferenciasConsultadas(props.lang)}</Typography>
+          <Typography>{menuDerechoReferenciasConsultadas(globalLanguage.lang)}</Typography>
         </ExpansionPanelSummary>
           <ExpansionPanelDetails className="panelDeDetalleReferenciasConsultadas">
             <ul className="ulDelMenuDerechoReferenciasConsultadas">

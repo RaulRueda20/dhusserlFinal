@@ -59,13 +59,12 @@ function ContenidoPasaje(props){
       </Grid>
       <Grid container>
         <Grid item xs={12}>
-          <PasajesRenderizados referenciaSeleccionada={props.referenciaSeleccionada} languageP={props.languageP} setLanguageP={props.setLanguageP} lang={props.lang}
+          <PasajesRenderizados referenciaSeleccionada={props.referenciaSeleccionada} 
           cerrado={props.panelIzquierdo || props.panelDerecho} idDelURL={props.idDelURL} clickHandleDescargas={clickHandleDescargas}
           />
         </Grid>
       </Grid>
-      <ModalDescargas openDescargas={openDescargas} setOpenDescargas={setOpenDescargas} idExpresion={props.idExpresion} 
-      lang={props.lang} match={props.match} language={props.language}/> 
+      <ModalDescargas openDescargas={openDescargas} setOpenDescargas={setOpenDescargas} idExpresion={props.idExpresion}/> 
     </div>
   )
 }

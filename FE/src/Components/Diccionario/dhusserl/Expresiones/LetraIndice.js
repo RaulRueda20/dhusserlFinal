@@ -2,6 +2,8 @@ import React from 'react'
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/styles';
 
+import { letraStore } from '../../../../stores/letraStore';
+
 const letra = {
     correccionesDeLetraIndice:{
         paddingTop:"15px",
@@ -12,11 +14,12 @@ const letra = {
 
 function LetraIndice(props){
     const {classes}=props;
+    const globalLetra = React.useContext(letraStore);
 
     return(
         <div>
             <Typography className={classes.correccionesDeLetraIndice}>
-                {props.letraMain}
+                {globalLetra.letra}
             </Typography>
         </div>
     )

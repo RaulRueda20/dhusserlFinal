@@ -5,7 +5,6 @@ import React from 'react';
 import IconButton from '@material-ui/core/IconButton';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import Tooltip from '@material-ui/core/Tooltip';
 
@@ -14,7 +13,7 @@ import BanderaPasajes from './BanderaPasajes';
 
 //Other req
 import {descarga, noContienePasajes} from '../../../../js/Language';
-import { compose } from '@material-ui/system';
+import { languageStore } from '../../../../stores/languageStore';
 
 const useStyles = makeStyles(theme => ({
     gridTituloPasaje:{
@@ -47,6 +46,7 @@ const useStyles = makeStyles(theme => ({
 
 function PasajesRenderizados(props){
     const classes = useStyles();
+    const globalLanguage = React.useContext(languageStore);
     const theme = useTheme();
     const [pasajeRenderizado, setPasajeRenderizado] = React.useState({
         "original" : "",
@@ -69,14 +69,14 @@ function PasajesRenderizados(props){
             setTpretty(props.referenciaSeleccionada.tpretty)
         }else{
             setPasajeRenderizado({
-                original : noContienePasajes(props.lang),
-                traduccion : noContienePasajes(props.lang) 
+                original : noContienePasajes(globalLanguage.lang),
+                traduccion : noContienePasajes(globalLanguage.lang) 
             })
         }
 
         var nombreExpresion =  props.referenciaSeleccionada != null ? props.referenciaSeleccionada : emptyPasaje
         setTituloPasaje(nombreExpresion)
-    }, [props.referenciaSeleccionada, props.lang, epretty])
+    }, [props.referenciaSeleccionada, globalLanguage.lang, epretty])
 
     function resaltarBusqueda(string,separador){
         var split = string.split(separador)
@@ -107,7 +107,7 @@ function PasajesRenderizados(props){
             <Grid container>
                 <Grid container xs={6}>
                     <Grid item xs={2} sm={2} md={1} lg={1} className={classes.botonDescargas}>
-                    <Tooltip title={descarga(props.lang)}>
+                    <Tooltip title={descarga(globalLanguage.lang)}>
                         <IconButton size="small" className="iconosIluminados" onClick={props.clickHandleDescargas}>
                         <GetAppIcon fontSize="large"/>
                         </IconButton>
@@ -130,7 +130,7 @@ function PasajesRenderizados(props){
                 <Grid container>
                     <Grid containerxs={12}>
                         <Grid item xs={2} sm={2} md={1} lg={1} className={classes.botonDescargas}>
-                        <Tooltip title={descarga(props.lang)}>
+                        <Tooltip title={descarga(globalLanguage.lang)}>
                             <IconButton size="small" className="iconosIluminados" onClick={props.clickHandleDescargas}>
                             <GetAppIcon fontSize="large"/>
                             </IconButton>
@@ -141,7 +141,7 @@ function PasajesRenderizados(props){
                         <div className="Titulopretty" dangerouslySetInnerHTML={htmlPrettyE()}></div>
                     </Grid>
                     <Grid item xs={2} sm={2} md={1} lg={1} className={classes.bandera}>
-                        <BanderaPasajes languageP={props.languageP} setLanguageP={props.setLanguageP} lang={props.lang}/>
+                        <BanderaPasajes/>
                     </Grid>
                     <Grid item xs={12} className="pasajesRenderizados"><div id={"pasajes"} dangerouslySetInnerHTML={htmlPasajeOriginal()}></div></Grid>
                 </Grid> 
@@ -149,7 +149,7 @@ function PasajesRenderizados(props){
                 <Grid container>
                     <Grid containerxs={12}>
                         <Grid item xs={2} sm={2} md={1} lg={1} className={classes.botonDescargas}>
-                        <Tooltip title={descarga(props.lang)}>
+                        <Tooltip title={descarga(globalLanguage.lang)}>
                             <IconButton size="small" className="iconosIluminados" onClick={props.clickHandleDescargas}>
                             <GetAppIcon fontSize="large"/>
                             </IconButton>
@@ -160,7 +160,7 @@ function PasajesRenderizados(props){
                         <div className="Titulopretty" dangerouslySetInnerHTML={htmlPrettyT()}></div>
                     </Grid>
                     <Grid item xs={2} sm={2} md={1} lg={1} className={classes.bandera}>
-                        <BanderaPasajes languageP={props.languageP} setLanguageP={props.setLanguageP} lang={props.lang}/>
+                        <BanderaPasajes/>
                     </Grid>
                     <Grid item xs={12} className="pasajesRenderizados"><div id={"pasajes"} dangerouslySetInnerHTML={htmlPasajeTraduccion()}></div></Grid>
                 </Grid>

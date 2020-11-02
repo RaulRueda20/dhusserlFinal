@@ -14,7 +14,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 // Other req
 import {webService} from '../../../../js/webServices';
 import * as localStore from '../../../../js/localStore';
-import { sesionStore } from '../../../../sesionStore';
+import { sesionStore } from '../../../../stores/sesionStore';
+import { letraStore } from '../../../../stores/letraStore';
 
 //Language
 import {noDerivaDe, noContieneExpresionesDerivadas, menuDerechoJerarquiaDerivadaDe, menuDerechoJerarquiaExpresionesDerivadas} from '../../../../js/Language';
@@ -23,6 +24,7 @@ const ITEM_HEIGHT = 48;
 
 function ListaHijosPasajes(props){
     const global = React.useContext(sesionStore);
+    const globalLetra = React.useContext(letraStore);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
     const [padreDeHijos,setPadreDeHijos]=React.useState([]);
@@ -65,7 +67,7 @@ function ListaHijosPasajes(props){
     }
 
     function handleFlagLetraMain(){
-        props.setFlagLetraMain(false)
+        globalLetra.setLetraFlag(false)
         setTimeout(() => {
             if(document.getElementById("VP" + props.idExpresion) != null){
               document.getElementById("VP" + props.idExpresion).scrollIntoView()
@@ -95,7 +97,7 @@ function ListaHijosPasajes(props){
             <li key={props.hijo.refid+"-"+props.index}>
                 <Grid container alignItems="center">
                     <Grid item xs={8}>
-                        <Link to={`${props.match.path.slice(0,20)}/pasaje/${props.hijo.hijo}`} onClick={()=>handleFlagLetraMain()}>
+                        <Link to={`${props.match.path.slice(0,20)}/pasaje/${props.hijo.hijo}`} onClick={(event)=>handleFlagLetraMain(event)}>
                             <Typography id={props.hijo.hijo+"/"+props.index} variant="h6" className="consultaDePasajes">{props.hijo.expresion}</Typography>
                         </Link>
                     </Grid>
@@ -121,7 +123,7 @@ function ListaHijosPasajes(props){
                     <Divider/>
                     {padreDeHijos.length < 1 ?  <MenuItem>{noDerivaDe(props.lang)}</MenuItem> : padreDeHijos.map((padresHijo,index)=>
                         <MenuItem onClick={handleCloseExpresionesDerivadas} key={padresHijo.id + "-" + index}>
-                            <Link to={`${props.match.path.slice(0,20)}/pasaje/${padresHijo.padre}`} onClick={()=>handleFlagLetraMain()}>
+                            <Link to={`${props.match.path.slice(0,20)}/pasaje/${padresHijo.padre}`} onClick={(event)=>handleFlagLetraMain(event)}>
                                 <Typography id={padresHijo.padre+"/"+index}>{padresHijo.expresion}</Typography>
                             </Link>
                         </MenuItem>
@@ -131,7 +133,7 @@ function ListaHijosPasajes(props){
                     <Divider/>
                     {hijosDeHijos.length < 1 ? <MenuItem>{noContieneExpresionesDerivadas(props.lang)}</MenuItem>: hijosDeHijos.map((hijosHijo,index)=>
                         <MenuItem onClick={handleCloseExpresionesDerivadas} key={hijosHijo.id + "-" + index}>
-                            <Link to={`${props.match.path.slice(0,20)}/pasaje/${hijosHijo.hijo}`} onClick={()=>handleFlagLetraMain()}>
+                            <Link to={`${props.match.path.slice(0,20)}/pasaje/${hijosHijo.hijo}`} onClick={(event)=>handleFlagLetraMain(event)}>
                                 <Typography id={hijosHijo.hijo+"/"+index}>{hijosHijo.expresion}</Typography>
                             </Link>
                         </MenuItem>

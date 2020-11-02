@@ -14,7 +14,9 @@ import MenuItem from '@material-ui/core/MenuItem';
 // Other req
 import {webService} from '../../../../js/webServices';
 import * as localStore from '../../../../js/localStore';
-import { sesionStore } from '../../../../sesionStore';
+import { sesionStore } from '../../../../stores/sesionStore';
+import { languageStore } from '../../../../stores/languageStore';
+import { letraStore } from '../../../../stores/letraStore';
 
 //Language
 import {noDerivaDe, noContieneExpresionesDerivadas, menuDerechoJerarquiaDerivadaDe, menuDerechoJerarquiaExpresionesDerivadas} from '../../../../js/Language';
@@ -23,6 +25,8 @@ const ITEM_HEIGHT = 48;
 
 function ListaHijosEscondido(props){
     const global = React.useContext(sesionStore);
+    const globalLanguage = React.useContext(languageStore);
+    const globalLetra = React.useContext(letraStore);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
     const [padreDeHijos,setPadreDeHijos]=React.useState([]);
@@ -31,11 +35,11 @@ function ListaHijosEscondido(props){
     const handleClickExpresionesDerivadas = event =>{
         setAnchorEl(event.currentTarget)
         var hid = event.currentTarget.id.split("hijo")[1]
-        webService(("/expresiones/"+props.language+"/abuelosList/"+hid),"GET", {}, global.sesion, (data2) => {
+        webService(("/expresiones/"+globalLanguage.langLista+"/abuelosList/"+hid),"GET", {}, global.sesion, (data2) => {
           setPadreDeHijos(data2.data.response)
           console.log("idPa",data2.data.response)
         })
-        webService(("/expresiones/"+props.language+"/hijosList/"+hid),"GET", {}, global.sesion, (data) => {
+        webService(("/expresiones/"+globalLanguage.langLista+"/hijosList/"+hid),"GET", {}, global.sesion, (data) => {
           setHijosDeHijos(data.data.response)
         })
     }
@@ -65,8 +69,8 @@ function ListaHijosEscondido(props){
         return referencia
     }
 
-    function handleFlagLetraMain(){
-        props.setFlagLetraMain(false)
+    function handleFlagLetraMain(event){
+        globalLetra.setLetraFlag(false)
         setTimeout(() => {
             if(document.getElementById("VP" + props.idExpresion) != null){
               document.getElementById("VP" + props.idExpresion).scrollIntoView()
@@ -96,7 +100,7 @@ function ListaHijosEscondido(props){
             <li key={props.hijo.refid+"-"+props.index}>
                 <Grid container alignItems="center">
                     <Grid item xs={8}>
-                        <Link to={`${props.match.path.slice(0,20)}/pasaje/${props.hijo.hijo}`} onClick={()=>handleFlagLetraMain()}>
+                        <Link to={`${props.match.path.slice(0,20)}/pasaje/${props.hijo.hijo}`} onClick={(event)=>handleFlagLetraMain(event)}>
                             <Typography id={props.hijo.hijo+"/"+props.index} variant="h6" className="consultaDePasajes">{props.hijo.expresion}</Typography>
                         </Link>
                     </Grid>
@@ -118,21 +122,21 @@ function ListaHijosEscondido(props){
                         },
                     }}
                     >
-                    <MenuItem><b>{menuDerechoJerarquiaDerivadaDe(props.lang)}</b></MenuItem>
+                    <MenuItem><b>{menuDerechoJerarquiaDerivadaDe(globalLanguage.lang)}</b></MenuItem>
                     <Divider/>
-                    {padreDeHijos.length < 1 ?  <MenuItem>{noDerivaDe(props.lang)}</MenuItem> : padreDeHijos.map((padresHijo,index)=>
+                    {padreDeHijos.length < 1 ?  <MenuItem>{noDerivaDe(globalLanguage.lang)}</MenuItem> : padreDeHijos.map((padresHijo,index)=>
                         <MenuItem onClick={handleCloseExpresionesDerivadas} key={padresHijo.id + "-" + index}>
-                            <Link to={`${props.match.path.slice(0,20)}/pasaje/${padresHijo.padre}`} onClick={()=>handleFlagLetraMain()}>
+                            <Link to={`${props.match.path.slice(0,20)}/pasaje/${padresHijo.padre}`} onClick={(event)=>handleFlagLetraMain(event)}>
                                 <Typography id={padresHijo.padre+"/"+index}>{padresHijo.expresion}</Typography>
                             </Link>
                         </MenuItem>
                     )}
                     <Divider/>
-                    <MenuItem><b>{menuDerechoJerarquiaExpresionesDerivadas(props.lang)}</b></MenuItem>
+                    <MenuItem><b>{menuDerechoJerarquiaExpresionesDerivadas(globalLanguage.lang)}</b></MenuItem>
                     <Divider/>
-                    {hijosDeHijos.length < 1 ? <MenuItem>{noContieneExpresionesDerivadas(props.lang)}</MenuItem>: hijosDeHijos.map((hijosHijo,index)=>
+                    {hijosDeHijos.length < 1 ? <MenuItem>{noContieneExpresionesDerivadas(globalLanguage.lang)}</MenuItem>: hijosDeHijos.map((hijosHijo,index)=>
                         <MenuItem onClick={handleCloseExpresionesDerivadas} key={hijosHijo.id + "-" + index}>
-                            <Link to={`${props.match.path.slice(0,20)}/pasaje/${hijosHijo.hijo}`} onClick={()=>handleFlagLetraMain()}>
+                            <Link to={`${props.match.path.slice(0,20)}/pasaje/${hijosHijo.hijo}`} onClick={(event)=>handleFlagLetraMain(event)}>
                                 <Typography id={hijosHijo.hijo+"/"+index}>{hijosHijo.expresion}</Typography>
                             </Link>
                         </MenuItem>

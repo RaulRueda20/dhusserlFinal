@@ -17,6 +17,7 @@ import ResultadoBusquedaReferencia from './resultadoBusquedaPorReferencia';
 
 //Language
 import {abrirListaTooltip} from '../../../../js/Language';
+import { languageStore } from '../../../../stores/languageStore';
 
 const moduloBusqueda={
     gridSelectorBusqueda:{
@@ -32,6 +33,7 @@ const moduloBusqueda={
 
 function ModuloBusquedas(props){
     const {classes}=props;
+    const globalLanguage = React.useContext(languageStore);
     const [expresionesEncontradas,setExpresionesEncontradas]=React.useState([]);
     const [tipoBusqueda,setTipoBusqueda]=React.useState("Expresion");
     const [tipoBusquedaRealizada,setTipoBusquedaRealizada]=React.useState("");
@@ -47,17 +49,17 @@ function ModuloBusquedas(props){
     return(
         <Grid container>
             <Grid item xs={12} sm={8}>
-                <Busquedas lang={props.lang} expresionesEncontradas={expresionesEncontradas} setExpresionesEncontradas={setExpresionesEncontradas} posicionPasaje={posicionPasaje} 
+                <Busquedas expresionesEncontradas={expresionesEncontradas} setExpresionesEncontradas={setExpresionesEncontradas} posicionPasaje={posicionPasaje} 
                 setPosicionPasaje={setPosicionPasaje} tipoBusqueda={tipoBusqueda} setTipoBusquedaRealizada={setTipoBusquedaRealizada} busqueda={busqueda} setBusqueda={setBusqueda}/>
             </Grid>
             <Grid item xs={12} sm={4} className={classes.gridSelectorBusqueda}>
-                <SelectorBusqueda lang={props.lang} tipoBusqueda={tipoBusqueda} setTipoBusqueda={setTipoBusqueda}/>
+                <SelectorBusqueda tipoBusqueda={tipoBusqueda} setTipoBusqueda={setTipoBusqueda}/>
             </Grid>
             {
                 expresionesEncontradas.length < 1 ? null :
                 <Grid item xs={abierto ? 8 : 1} sm={abierto ? 6 : 1} md={abierto ? 4 : 1} className={classes.botonLista}>
                     { !abierto ? 
-                    <Tooltip title={abrirListaTooltip(props.lang)}>
+                    <Tooltip title={abrirListaTooltip(globalLanguage.lang)}>
                         <IconButton onClick={abrirLista}>
                             <MenuIcon/>
                         </IconButton>
@@ -65,7 +67,6 @@ function ModuloBusquedas(props){
                     <ListaBusqueda expresionesEncontradas={expresionesEncontradas} posicionPasaje={posicionPasaje} 
                         setPosicionPasaje={setPosicionPasaje} tipoBusqueda={tipoBusquedaRealizada} idPasaje={idPasaje} 
                         setIdPasaje={setIdPasaje} abrirLista={abrirLista} expresionSeleccionada={expresionesEncontradas[posicionPasaje]}
-                        lang={props.lang}
                     />}
                 </Grid>
             }

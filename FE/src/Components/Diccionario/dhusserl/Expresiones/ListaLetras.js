@@ -11,7 +11,9 @@ import { Typography } from '@material-ui/core';
 //Other req
 import classNames from 'classnames';
 import {webService} from '../../../../js/webServices';
-import { sesionStore } from '../../../../sesionStore';
+import { sesionStore } from '../../../../stores/sesionStore';
+import { languageStore } from '../../../../stores/languageStore';
+import { letraStore } from '../../../../stores/letraStore';
 
 const styleList = {
   lista:{
@@ -35,6 +37,8 @@ const letras = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
 function ListaLetras (props){
   const { classes }= props;
   const global = React.useContext(sesionStore);
+  const globalLanguage = React.useContext(languageStore);
+  const globalLetra = React.useContext(letraStore);
 
   const fixReferencias = (referencias) => {
     var expresiones=[]
@@ -77,15 +81,14 @@ function ListaLetras (props){
   }
 
   const handleChangeLetraMain = (event) => {
-    console.log("de Pasajes",props.language)
-    props.setLetraMain(event.target.innerText)
+    globalLetra.setLetra(event.target.innerText)
     if(props.state.checkedA==false){
       props.setState({checkedA:true})
     }
-    if(!props.flagLetraMain){
-      props.setFlagLetraMain(true)
+    if(!globalLetra.letraFlag){
+      globalLetra.setLetraFlag(true)
     }
-    var service = "/expresiones/" + props.language + "/" + props.letraMain
+    var service = "/expresiones/" + globalLanguage.langLista + "/" + globalLetra.letra
     webService(service, "GET", {}, global.sesion, (data) => {
       props.setChunkList(fixReferencias(data.data.response).slice(0,50))
       if(!props.flagDeBusqueda){
@@ -104,7 +107,7 @@ function ListaLetras (props){
             alignItems="center"
           >
             {letras.map(letra =>(
-              <Grid item xs={1} md key={letra} className={classNames({"selected" : props.letraMain == letra})}>
+              <Grid item xs={1} md key={letra} className={classNames({"selected" : globalLetra.letra == letra})}>
                 <ListItem className={classes.listaItem} button onClick={handleChangeLetraMain} id={letra}>
                   <Typography variant="h6" align="center">{letra}</Typography>
                 </ListItem> 

@@ -13,6 +13,7 @@ import { withStyles } from '@material-ui/styles';
 
 //Language
 import {tituloBusqueda, mensajeBusqueda} from '../../../js/Language';
+import { languageStore } from '../../../stores/languageStore';
 
 const modalBusqueda={
     modalinb:{
@@ -40,6 +41,7 @@ const modalBusqueda={
 
 function ModalDeBusqueda(props){
     const {classes}=props;
+    const globalLanguage = React.useContext(languageStore);
 
     function clickHandleCloseModal(){
         props.setModalDebusquedas(false)
@@ -55,7 +57,7 @@ function ModalDeBusqueda(props){
                 <Grid container alignContent="center" alignItems="center">
                     <Grid item xs={11}>
                         <Typography variant="h4">
-                            {tituloBusqueda(props.lang)}
+                            {tituloBusqueda(globalLanguage.lang)}
                         </Typography>
                     </Grid>
                     <Grid item xs={1}>
@@ -69,7 +71,7 @@ function ModalDeBusqueda(props){
                     <Divider/>
                     <Grid item xs={12} className={classes.gridDelTypo}>
                         <Typography variant="h5">
-                            {mensajeBusqueda(props.lang)}
+                            {mensajeBusqueda(globalLanguage.lang)}
                         </Typography>
                     </Grid>
                 </Grid>

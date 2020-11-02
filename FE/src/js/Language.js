@@ -1,1267 +1,1396 @@
-// import React from 'react';
-//
-// const textBot = this.context === 'español' ? 'Ingresar' : 'ingles' ? 'Submit' : 'frances' ? 'Entrer' : 'aleman' ? 'Enter' : 'catalan' : 'Entrar'
-//
-// export {textBot};
-import * as localStore from '../js/localStore';
-
-const tituloDiccionario = lang => {
+const tituloDiccionario = (lang) => {
   // const lang = localStore.getItem("lang")
-  switch(lang){
+  switch (lang) {
     case "es":
-      return "DICCIONARIO HUSSERL"
+      return "DICCIONARIO HUSSERL";
     case "en":
-      return "HUSSERL DICTIONARY"
+      return "HUSSERL DICTIONARY";
     case "fr":
-      return "DICTIONNAIRE HUSSERL"
+      return "DICTIONNAIRE HUSSERL";
     case "al":
-      return "HUSSERL WÖRTERBUCH"
+      return "HUSSERL WÖRTERBUCH";
     case "ca":
-      return "DICCIONARI HUSSERL"
+      return "DICCIONARI HUSSERL";
   }
-}
+};
 
-const ingresar= lang => {
+const ingresar = (lang) => {
   // const lang = localStore.getItem("lang")
-  switch(lang){
+  switch (lang) {
+    case "es":
+      return "Ingresar";
+    case "en":
+      return "Submit";
+    case "fr":
+      return "Entrer";
+    case "al":
+      return "Eintreten";
+    case "ca":
+      return "Entrar";
+  }
+};
+
+const subtituloDiccionario = (lang) => {
+  switch (lang) {
+    case "es":
+      return "Léxico bilingüe (alemán y español) de expresiones definidas a partir de las obras de Edmund Husserl (1859-1938)";
+    case "en":
+      return "Bilingual (German and Spanish) Lexicon of Expressions Defined on the Basis of the Works by Edmund Husserl (1859-1938)";
+    case "fr":
+      return "Lexique bilingue (allemand et espagnol) des expressions définies à partir des œuvres d'Edmund Husserl (1859-1938)";
+    case "al":
+      return "Zweisprachiges (deutsch und spanisch) Lexikon von Ausdrücke definierte auf der Grundlage der Werke von Edmund Husserl (1859-1938)";
+    case "ca":
+      return "Lèxic bilingüe (alemany i espanyol) d'expressions definides sobre la base de les obres d'Edmund Husserl (1859-1938)";
+  }
+};
+
+const inicio = (lang) => {
+  switch (lang) {
+    case "es":
+      return "INICIO";
+    case "en":
+      return "START";
+    case "fr":
+      return "DÉBUT";
+    case "al":
+      return "EINTRITT";
+    case "ca":
+      return "INICI";
+  }
+};
+
+const email = (lang) => {
+  switch (lang) {
     case "es":
-      return "Ingresar"
+      return "Correo Electrónico";
     case "en":
-      return "Submit"
+      return "Email Address";
     case "fr":
-      return "Entrer"
+      return "Adresse électronique";
     case "al":
-      return "Eintreten"
+      return "E-Mail Adresse";
     case "ca":
-      return "Entrar"
+      return "Correu electrònic";
   }
-}
+};
 
-const subtituloDiccionario= lang => {
+const contra = (lang) => {
   switch (lang) {
     case "es":
-      return "Léxico bilingüe (alemán y español) de expresiones definidas a partir de las obras de Edmund Husserl (1859-1938)"
+      return "Contraseña";
     case "en":
-      return "German-Spanish Lexicon of Expressions from Works by Edmund Husserl (1859-1938)"
+      return "Password";
     case "fr":
-      return "Lexique germano-espagnol des expressions d'oeuvres de Edmund Husserl (1859-1938)"
+      return "Mot de passe";
     case "al":
-      return "Deutsch-spanisches Lexikon husserlscher Ausdrücke. Edmund Husserl (1859-1938)"
+      return "Passwort";
     case "ca":
-      return "Lèxic alemany-espanyol de les expressions de les obres d'Edmund Husserl (1859-1938)"
+      return "Contrasenya";
   }
-}
+};
 
-const inicio= lang => {
+const olvidoDeContra = (lang) => {
   switch (lang) {
     case "es":
-      return "INICIO"
+      return "Olvidó su contraseña? Puede recuperarla";
     case "en":
-      return "START"
+      return "Forgot your password? You can retrieve it";
     case "fr":
-      return "DÉBUT"
+      return "Vous avez oublié votre mot de passe? Vous pouvez le récupérer ";
     case "al":
-      return "EINTRITT"
+      return "Haben Sie Ihr Passwort vergessen? Sie können es abrufen";
     case "ca":
-      return "Començar"
+      return "Heu oblidat la contrasenya? Pot recuperar-la";
   }
-}
+};
 
-const email= lang => {
+const registrarse = (lang) => {
   switch (lang) {
     case "es":
-      return "Correo Electrónico"
+      return "Si no está registrado, puede registrarse";
     case "en":
-      return "Email Address"
+      return "Not yet registered? You can register";
     case "fr":
-      return "Adresse électronique"
+      return "Pas encore enregistré? Vous pouvez vous inscrire";
     case "al":
-      return "E-Mail Adresse"
+      return "Nicht registriert? Sie können es hier abrufen.";
     case "ca":
-      return "Correu electrònic"
+      return "Encara no està registrat? Pot registrar-se";
   }
-}
+};
 
-const contra= lang => {
+const aqui = (lang) => {
   switch (lang) {
     case "es":
-      return "Contraseña"
+      return "aquí.";
     case "en":
-      return "Password"
+      return "here.";
     case "fr":
-      return "Mot de passe"
+      return "ici.";
     case "al":
-      return "Passwort"
+      return "hier.";
     case "ca":
-      return "Contrasenya"
+      return "aquí";
   }
-}
+};
 
-const olvidoDeContra= lang => {
+const Footer1 = (lang) => {
   switch (lang) {
     case "es":
-      return "¿Olvido su contraseña? puede recuperarla"
+      return "El proyecto del Diccionario Husserl es desarrollado por Antonio Zirión Quijano en el ";
     case "en":
-      return "Forgot your password? you can retrieve it"
+      return "The Husserl Dictionary is a project developed by Antonio Zirión Quijano at the ";
     case "fr":
-      return "Vous avez oublié votre mot de passe? vous pouvez le récupérer "
+      return "Le projet du Dictionnaire Husserl est développé par Antonio Zirión Quijano à l'";
     case "al":
-      return "Haben Sie Ihr Passwort vergessen? Sie können es abrufen"
+      return "Das Husserl Wörterbuch Projekt wird von Antonio Zirión Quijano am ";
     case "ca":
-      return "Heu oblidat la contrasenya? pot recuperar-la"
+      return "El Diccionari Husserl és un projecte desenvolupat per Antonio Zirión Quijano ";
   }
-}
+};
 
-const registrarse= lang => {
+const Footer2 = (lang) => {
   switch (lang) {
     case "es":
-      return "Si no está registrado, puede registrarse"
+      return " de la ";
     case "en":
-      return "Not yet registered? you can register"
+      return "of ";
     case "fr":
-      return "Pas encore enregistré? vous pouvez vous inscrire"
+      return "de l'";
     case "al":
-      return "Noch nicht registriert? können Sie sich registrieren"
+      return "der ";
     case "ca":
-      return "Encara no està registrat? pot registrar-se"
+      return "de ";
   }
-}
+};
 
-const aqui= lang => {
+const FooterAl = (lang) => {
   switch (lang) {
     case "es":
-      return "aquí."
+      return "";
     case "en":
-      return "here."
+      return "";
     case "fr":
-      return "ici."
+      return "";
     case "al":
-      return "hier."
+      return "entwickelt.";
     case "ca":
-      return "aquí"
+      return "";
   }
-}
+};
 
-const Footer1= lang => {
+const Footer3 = (lang) => {
   switch (lang) {
     case "es":
-      return "El proyecto del Diccionario Husserl es desarrollado por Antonio Zirión Quijano en el "
+      return "© Antonio Zirión Quijano, 2018. Derechos reservados conforme a la ley.";
     case "en":
-      return "The Husserl Dictionary is a project developed by Antonio Zirión Quijano at the"
+      return "© Antonio Zirión Quijano, 2018. All Rights reserved.";
     case "fr":
-      return "Antonio Zirión Quijano, 2018. Tous les droits sont réservés."
+      return "© Antonio Zirión Quijano, 2018. Tous les droits sont réservés.";
     case "al":
-      return "Das Husserl Wörterbuch Projekt ist entwickelt von Antonio Zirión Quijano im"
+      return "© Antonio Zirión Quijano, 2018. Alle Rechte vorbehalten";
     case "ca":
-      return "El Diccionari Husserl és un projecte desenvolupat per Antonio Zirión Quijano a la Universitat Autònoma de Barcelona"
+      return "© Antonio Zirión Quijano, 2018. Tots els drets reservats.";
   }
-}
+};
 
-const Footer2= lang => {
+const registro = (lang) => {
   switch (lang) {
     case "es":
-      return " en la "
+      return "REGISTRO";
     case "en":
-      return "of"
+      return "REGISTER";
     case "fr":
-      return "de"
+      return "INSCRIPTION";
     case "al":
-      return "von"
+      return "REGISTRIERUNG";
     case "ca":
-      return "de"
+      return "REGISTRAR-SE";
   }
-}
+};
 
-const Footer3= lang => {
+const registrado = (lang) => {
   switch (lang) {
     case "es":
-      return "© Antonio Zirión Quijano, 2018. Derechos reservados conforme a la ley."
+      return "¿Ya está registrado?, ingrese ";
     case "en":
-      return "© Antonio Zirión Quijano, 2018. All Rights reserved."
+      return "Already registered?";
     case "fr":
-      return "© Antonio Zirión Quijano, 2018. Tous les droits sont réservés."
+      return "Déjà enregistré?";
     case "al":
-      return "© Antonio Zirión Quijano, 2018. Alle Rechte vorbehalten"
+      return "Schon registriert? Anmelden";
     case "ca":
-      return "© Antonio Zirión Quijano, 2018. Tots els drets reservats."
+      return "Ja registrat?";
   }
-}
+};
 
-const registro= lang => {
+const nombre = (lang) => {
   switch (lang) {
     case "es":
-      return "REGISTRO"
+      return "Nombre";
     case "en":
-      return "REGISTER"
+      return "Name";
     case "fr":
-      return "INSCRIPTION"
+      return "Prénom";
     case "al":
-      return "REGISTRIERUNG"
+      return "Vorname";
     case "ca":
-      return "REGISTRAR-SE"
+      return "Nom";
   }
-}
+};
 
-const registrado= lang => {
+const apellido = (lang) => {
   switch (lang) {
     case "es":
-      return "¿Ya está registrado?, ingrese "
+      return "Apellidos";
     case "en":
-      return "Already registered?"
+      return "Last Name";
     case "fr":
-      return "Déjà enregistré?"
+      return "Nom de famille";
     case "al":
-      return "Schon registriert? Anmelden"
+      return "Nachname(n)";
     case "ca":
-      return "Ja registrat?"
+      return "Cognom";
   }
-}
+};
 
-const nombre= lang => {
+const escuela = (lang) => {
   switch (lang) {
     case "es":
-      return "Nombre"
+      return "Institución / Escuela";
     case "en":
-      return "Name"
+      return "Institution or School";
     case "fr":
-      return "Prénom"
+      return "Institution ou école";
     case "al":
-      return "Vorname"
+      return "Institution oder Schule";
     case "ca":
-      return "Nom"
+      return "Institució o escola";
   }
-}
+};
 
-const apellido= lang => {
+const puesto = (lang) => {
   switch (lang) {
     case "es":
-      return "Apellidos"
+      return "Grado Académico / Puesto";
     case "en":
-      return "Last Name"
+      return "Academic Degree or Position";
     case "fr":
-      return "Nom de famille"
+      return "Diplôme universitaire ou poste";
     case "al":
-      return "Nachname(n)"
+      return "Akademischer Grad oder Platz";
     case "ca":
-      return "Cognom"
+      return "Titulació acadèmica o càrrec";
   }
-}
+};
 
-const escuela= lang => {
+const pais = (lang) => {
   switch (lang) {
     case "es":
-      return "Institución / Escuela"
+      return "País";
     case "en":
-      return "Institution or School"
+      return "Country";
     case "fr":
-      return "Institution ou école"
+      return "Pays";
     case "al":
-      return "Institution oder Schule"
+      return "Land";
     case "ca":
-      return "Institució o escola"
+      return "País";
   }
-}
+};
 
-const puesto= lang => {
+const comprobacionContra = (lang) => {
   switch (lang) {
     case "es":
-      return "Grado Académico / Puesto"
+      return "Comprobación de la contraseña";
     case "en":
-      return "Academic Degree or Position"
+      return "Password Confirmation";
     case "fr":
-      return "Diplôme universitaire ou poste"
+      return "Confirmation mot de passe";
     case "al":
-      return "Akademischer Grad oder Platz"
+      return "Passwort Bestätigung";
     case "ca":
-      return "Titulació acadèmica o càrrec"
+      return "Comprovació de la contrasenya";
   }
-}
+};
 
-const pais= lang => {
+const modalRecuperacionContra = (lang) => {
   switch (lang) {
     case "es":
-      return "País"
+      return "Recuperar Contraseña";
     case "en":
-      return "Country"
+      return "Password retrieval";
     case "fr":
-      return "Pays"
+      return "Récupération de mot de passe";
     case "al":
-      return "Land"
+      return "Passwort zurückbekommen";
     case "ca":
-      return "País"
+      return "Recuperació de la contrasenya";
   }
-}
+};
 
-const comprobacionContra = lang => {
+const modalIngresarCorreo = (lang) => {
   switch (lang) {
     case "es":
-      return "Comprobación de la contraseña"
+      return "Para recuperar su contraseña, es necesario que ingrese su correo electrónico:";
     case "en":
-      return "Password Confirmation"
+      return "To retrieve your password, please write your email adress:";
     case "fr":
-      return "Confirmation mot de passe"
+      return "Pour récupérer votre mot de passe, entrez votre email:";
     case "al":
-      return "Passwort Bestätigung"
+      return "Um sein Passwort zurück zu bekommen, bitte seine E-Mail-Adresse anmelden:";
     case "ca":
-      return "Comprovació de la contrasenya"
+      return "Per recuperar la vostra contrasenya, escriviu la vostra adreça de correu electrònic:";
   }
-}
+};
 
-const modalRecuperacionContra= lang => {
+const exitoBody = (lang) => {
   switch (lang) {
     case "es":
-      return "Recuperar Contraseña"
+      return "Se ha enviado una liga a su correo electrónico para reestablecer su contraseña.";
     case "en":
-      return "Password retrieval"
+      return "A link has been sent to your email to reset your password.";
     case "fr":
-      return "Récupération de mot de passe"
+      return "Un lien a été envoyé a votre adresse email pour réinitialiser votre mot de passe.";
     case "al":
-      return "Passwort zurückbekommen"
+      return "Es wurde eine E-mail gesendet, um Ihr Passwort zurückzusetzen";
     case "ca":
-      return "Recuperació de la contrasenya"
+      return "S'ha enviat una lliga al seu correu electrònic per restablir la seva contrasenya.";
   }
-}
+};
 
-const modalIngresarCorreo= lang => {
+const correoInvalido = (lang) => {
   switch (lang) {
     case "es":
-      return "Para recuperar su contraseña, es necesario que ingrese su correo electrónico:"
+      return "Correo electrónico o contraseña invalido";
     case "en":
-      return "To retrieve your password, please write your email adress:"
+      return "Invalid email or password";
     case "fr":
-      return "Pour récupérer votre mot de passe, entrez votre email:"
+      return "Email ou mont de passe invalide";
     case "al":
-      return "Um sein Passwort zurück zu bekommen, bitte seine E-Mail-Adresse anmelden:"
+      return "Ungültige E-Mail-Adresse oder ungültiges Passwort";
     case "ca":
-      return "Per recuperar la vostra contrasenya, escriviu la vostra adreça de correu electrònic:"
+      return "Correu electrònic o contrasenya invàlid";
   }
-}
+};
 
-const exitoBody= lang => {
+const correoNoEncontrado = (lang) => {
   switch (lang) {
     case "es":
-      return "Se ha enviado una liga a su correo electrónico para reestablecer su contraseña."
+      return "Correo electrónico no encontrado";
     case "en":
-      return "A link has been sent to your email to reset your password."
+      return "Email not found";
     case "fr":
-      return "Un lien a été envoyé a votre adresse email pour réinitialiser votre mot de passe."
+      return "Email non trouvé";
     case "al":
-      return "Es wurde eine E-mail gesendet, um Ihr Passwort zurückzusetzen"
+      return "E-Mail nitch gefunden";
     case "ca":
-      return "S'ha enviat una lliga al seu correu electrònic per restablir la seva contrasenya."
+      return "Correu electrònic trobat";
   }
-}
+};
 
-const correoInvalido= lang => {
+const aceptarAlert = (lang) => {
   switch (lang) {
     case "es":
-      return "Correo electrónico o contraseña invalido"
+      return "Aceptar";
     case "en":
-      return "Invalid email or password"
+      return "Accept";
     case "fr":
-      return "Email ou mont de passe invalide"
+      return "Acceptez";
     case "al":
-      return "Ungültige E-Mail-Adresse oder ungültiges Passwort"
+      return "Akzeptieren";
     case "ca":
-      return "Correu electrònic o contrasenya invàlid"
+      return "Acceptar";
   }
-}
+};
 
-const correoNoEncontrado= lang => {
+const menuDiccionario = (lang) => {
   switch (lang) {
     case "es":
-      return "Correo electrónico no encontrado"
+      return "Diccionario";
     case "en":
-      return "Email not found"
+      return "Dictionary";
     case "fr":
-      return "Email non trouvé"
+      return "Dictionnaire";
     case "al":
-      return "E-Mail nitch gefunden"
+      return "Wörterbuch";
     case "ca":
-      return "Correu electrònic trobat"
+      return "Diccionari";
   }
-}
+};
 
-const aceptarAlert= lang => {
+const menuAcercaDe = (lang) => {
   switch (lang) {
     case "es":
-      return "Aceptar"
+      return "Acerca del Diccionario";
     case "en":
-      return "Accept"
+      return "About the Dictionary";
     case "fr":
-      return "Acceptez"
+      return "A propos du dictionnaire";
     case "al":
-      return "Akzeptieren"
+      return "Über das Wörterbuch";
     case "ca":
-      return "Acceptar"
+      return "Sobre el Diccionari";
   }
-}
+};
 
-const menuDiccionario= lang => {
+const menuGuia = (lang) => {
   switch (lang) {
     case "es":
-      return "Diccionario"
+      return "Guía de uso";
     case "en":
-      return "Dictionary"
+      return "Usage guide";
     case "fr":
-      return "Dictionnaire"
+      return "Guide d'utilisation";
     case "al":
-      return "Wörterbuch"
+      return "Gebrauchsanweisung";
     case "ca":
-      return "Diccionari"
+      return "Guia d'ús";
   }
-}
+};
 
-const menuAcercaDe= lang => {
+const menuSalir = (lang) => {
   switch (lang) {
     case "es":
-      return "Acerca del Diccionario"
+      return "Salir";
     case "en":
-      return "About the Dictionary"
+      return "Exit";
     case "fr":
-      return "A propos du dictionnaire"
+      return "Sortie";
     case "al":
-      return "Über das Wörterbuch"
+      return "Logout";
     case "ca":
-      return "Sobre el Diccionari"
+      return "Sortir";
   }
-}
+};
 
-const menuGuia= lang => {
+const menuDerechoJerarquia = (lang) => {
   switch (lang) {
     case "es":
-      return "Guía de uso"
+      return "Jerarquía";
     case "en":
-      return "Usage guide"
+      return "Hierarchy";
     case "fr":
-      return "Guide d'utilisation"
+      return "Hiérarchie";
     case "al":
-      return "Gebrauchsanweisung"
+      return "Rangordnung";
     case "ca":
-      return "Guia d'ús"
+      return "Jerarquia";
   }
-}
+};
 
-const menuSalir= lang => {
+const menuDerechoJerarquiaDerivadaDe = (lang) => {
   switch (lang) {
     case "es":
-      return "Salir"
+      return "Derivada de:";
     case "en":
-      return "Exit"
+      return "Derived from:";
     case "fr":
-      return "Sortie"
+      return "Dérivé de:";
     case "al":
-      return "Logout"
+      return "Abgeleitet von:";
     case "ca":
-      return "Sortir"
+      return "Deriva de:";
   }
-}
+};
 
-const menuDerechoJerarquia= lang => {
+const menuDerechoJerarquiaExpresion = (lang) => {
   switch (lang) {
     case "es":
-      return "Jerarquía"
+      return "Expresión:";
     case "en":
-      return "Hierarchy"
+      return "Expression:";
     case "fr":
-      return "Hiérarchie"
+      return "Expression:";
     case "al":
-      return "Rangordnung"
+      return "Ausdruck:";
     case "ca":
-      return "Jerarquia"
+      return "Expressió:";
   }
-}
+};
 
-const menuDerechoJerarquiaDerivadaDe= lang => {
+const menuDerechoJerarquiaExpresionesDerivadas = (lang) => {
   switch (lang) {
     case "es":
-      return "Derivada de:"
+      return "Expresiones derivadas:";
     case "en":
-      return "Derived from:"
+      return "Derived Expressions:";
     case "fr":
-      return "Dérivé de:"
+      return "Expresions Dérivées:";
     case "al":
-      return "Abgeleitet von:"
+      return "Ableitungsausdrücke:";
     case "ca":
-      return "Deriva de:"
+      return "Expressions derivades:";
   }
-}
+};
 
-const menuDerechoJerarquiaExpresion= lang => {
+const menuDerechoVerTambien = (lang) => {
   switch (lang) {
     case "es":
-      return "Expresión:"
+      return "Ver también";
     case "en":
-      return "Expression:"
+      return "See also";
     case "fr":
-      return "Expression:"
+      return "Voir aussi";
     case "al":
-      return "Ausdruck:"
+      return "Siehe auch";
     case "ca":
-      return "Expressió:"
+      return "Veure també";
   }
-}
+};
 
-const menuDerechoJerarquiaExpresionesDerivadas= lang => {
+const menuDerechoReferenciasConsultadas = (lang) => {
   switch (lang) {
     case "es":
-      return "Expresiones derivadas:"
+      return "Referencias consultadas";
     case "en":
-      return "Derived Expressions:"
+      return "Looked-up References";
     case "fr":
-      return "Expresions Dérivées:"
+      return "Références consultées";
     case "al":
-      return "Ableitungsausdrücke:"
+      return "Nachgeschlagene Hinweise";
     case "ca":
-      return "Expressions derivades:"
+      return "Referències buscada";
   }
-}
+};
 
-const menuDerechoVerTambien= lang => {
+const busquedaPorLetra = (lang) => {
   switch (lang) {
     case "es":
-      return "Ver también"
+      return "Busqueda por letra";
     case "en":
-      return "See also"
+      return "Search by letter";
     case "fr":
-      return "Siehe auch"
+      return "Recherche par lettre";
     case "al":
-      return "Voir aussi"
+      return "Suche nach Buchstabe";
     case "ca":
-      return "Veure també"
+      return "Cerca per lletra";
   }
-}
+};
 
+const toolTipMenuPrincipal = (lang) => {
+  switch (lang) {
+    case "es":
+      return "Menú principal";
+    case "en":
+      return "Main menu";
+    case "fr":
+      return "Menu principal";
+    case "al":
+      return "Hauptmenü";
+    case "ca":
+      return "Menú principal";
+  }
+};
 
-const menuDerechoReferenciasConsultadas= lang => {
+const toolTipMenuIdiomas = (lang) => {
   switch (lang) {
     case "es":
-      return "Referencias consultadas"
+      return "Menú idiomas";
     case "en":
-      return "Looked-up References"
+      return "Languages menu";
     case "fr":
-      return "Références consultées"
+      return "Menu des langues";
     case "al":
-      return "Nachgeschlagene Hinweise"
+      return "Sprachen-Menü";
     case "ca":
-      return "Referències buscada"
+      return "Menú d'Idiomes";
   }
-}
+};
 
-const busquedaPorLetra= lang => {
+const toolTipIdiomaDeLaLista = (lang) => {
   switch (lang) {
     case "es":
-      return "Busqueda por letra"
+      return "Idioma de la lista";
     case "en":
-      return "Search by letter"
+      return "Language of the list";
     case "fr":
-      return "Recherche par lettre"
+      return "Langue de la liste";
     case "al":
-      return "Suche nach Buchstabe"
+      return "Sprache der Liste";
     case "ca":
-      return "Cerca per lletra"
+      return "Idioma de la llista";
   }
-}
+};
 
-const toolTipMenuPrincipal= lang => {
+const cintilla = (lang) => {
   switch (lang) {
     case "es":
-      return "Menú principal"
+      return "¡Advertencia! Los pasajes en español de Ideas I están en proceso de sustitución: la versión de José Gaos (1962) se reemplaza por la versión de Zirión (2013). Ver los detalles en la";
     case "en":
-      return "Main menu"
+      return "The spanish passages of Ideas I are in a process of substitution: the version of José Gaos (1962) is replaced by the version of Zirión (2013). See the details in the";
     case "fr":
-      return "Menu principal"
+      return "Les passages en espagnol d'Idées I sont en train d'être substitués: la version de José Gaos (1962) est remplacée par la version de Zirión (2013). Voir les détails dans le";
     case "al":
-      return "Hauptmenü"
+      return "Die spanische Passagenvon Ideen I sind in Ersetzungsprozess: die Übersetzung von José Gaos (1962) wird ersetzt mit der Übersetzung von Zirión (2013). Siehe die Einzelheiten im";
     case "ca":
-      return "Menú principal"
+      return "Els passatges espanyols d'Idees I es troben en un procés de substitució: la versió de José Gaos (1962) és substituïda per la versió de Zirión (2013). Vegeu els detalls al document";
   }
-}
+};
 
-const toolTipMenuIdiomas= lang => {
+const guia = (lang) => {
   switch (lang) {
     case "es":
-      return "Menú idiomas"
+      return "Guía";
     case "en":
-      return "Languages menu"
+      return "Guide";
     case "fr":
-      return "Menu des langues"
+      return "Guide";
     case "al":
-      return "Sprachen-Menü"
+      return "Handbuch";
     case "ca":
-      return "Menú d'Idiomes"
+      return "Guia";
   }
-}
+};
 
-const toolTipIdiomaDeLaLista= lang => {
+const descarga = (lang) => {
   switch (lang) {
     case "es":
-      return "Idioma de la lista"
+      return "Descargar consulta";
     case "en":
-      return "Language of the list"
+      return "Consultation Download";
     case "fr":
-      return "Langue de la liste"
+      return "Télécharger la Consultation";
     case "al":
-      return "Sprache der Liste"
+      return "Konsultation Herunterladen";
     case "ca":
-      return "Idioma de la llista"
+      return "Descarregar Consulta";
   }
-}
+};
 
-const cintilla= lang => {
+const idiomaConsultas = (lang) => {
   switch (lang) {
     case "es":
-      return "¡Advertencia! Los pasajes en español de Ideas I están en proceso de sustitución: la versión de José Gaos (1962) se reemplaza por la versión de Zirión (2013). Ver los detalles en la"
+      return "Idioma del texto";
     case "en":
-      return "The spanish passages of Ideas I are in a process of substitution: the version of José Gaos (1962) is replaced by the version of Zirión (2013). See the details in the"
+      return "Language of the text";
     case "fr":
-      return "Les passages en espagnol d'Idées I sont en train d'être substitués: la version de José Gaos (1962) est remplacée par la version de Zirión (2013). Voir les détails dans le"
+      return "Langue du texte";
     case "al":
-      return "Die spanische Passagenvon Ideen I sind in Ersetzungsprozess: die Übersetzung von José Gaos (1962) wird ersetzt mit der Übersetzung von Zirión (2013). Siehe die Einzelheiten im"
+      return "Sprache des Textes";
     case "ca":
-      return "Els passatges espanyols d'Idees I es troben en un procés de substitució: la versió de José Gaos (1962) és substituïda per la versió de Zirión (2013). Vegeu els detalls al document"
+      return "Llenguatge de el text";
   }
-}
+};
 
-const guia= lang => {
+const busquedas = (lang) => {
   switch (lang) {
     case "es":
-      return "Guía"
+      return "Búsqueda";
     case "en":
-      return "Guide"
+      return "Search";
     case "fr":
-      return "Guide"
+      return "Recherche";
     case "al":
-      return "Handbuch"
+      return "Suche";
     case "ca":
-      return "Guia"
+      return "Cerca";
   }
-}
+};
 
-const descarga= lang => {
+const distincionMayusyMinus = (lang) => {
   switch (lang) {
     case "es":
-      return "Descargar consulta"
+      return "Activar para distinguir entre mayúsculas y minúsculas";
     case "en":
-      return "Consultation Download"
+      return "Activate to be case sensitive";
     case "fr":
-      return "Télécharger la Consultation"
+      return "Activer pour distinguer les majuscules et les minuscules";
     case "al":
-      return "Konsultation Herunterladen"
+      return "Aktivieren, um zwischen Gross- und Kleinschreibung zu unterscheiden";
     case "ca":
-      return "Descarregar Consulta"
+      return "Activar per distingir les majúscules i les minúscules";
   }
-}
+};
 
-const idiomaConsultas= lang => {
+const BusquedaGeneral = (lang) => {
   switch (lang) {
     case "es":
-      return "Idioma del texto"
+      return "Busqueda General";
     case "en":
-      return "Language of the text"
+      return "General search";
     case "fr":
-      return "Langue du texte"
+      return "Recherche générale";
     case "al":
-      return "Sprache des Textes"
+      return "Allgemeine Suche";
     case "ca":
-      return "Llenguatge de el text"
+      return "Cerca general";
   }
-}
+};
 
-const busquedas= lang => {
+const tipoDeBusqueda = (lang) => {
   switch (lang) {
     case "es":
-      return "Búsqueda"
+      return "Tipo de búsqueda";
     case "en":
-      return "Search"
+      return "Search Type";
     case "fr":
-      return "Recherche"
+      return "Type de recherche";
     case "al":
-      return "Suche"
+      return "Suchtyp";
     case "ca":
-      return "Cerca"
+      return "Tipus de cerca";
   }
-}
+};
 
-const distincionMayusyMinus= lang => {
+const dentroExpresion = (lang) => {
   switch (lang) {
     case "es":
-      return "Activar para distinguir entre mayúsculas y minúsculas"
+      return "En el vocabulario";
     case "en":
-      return "Activate to be case sensitive"
+      return "In vocabulary";
     case "fr":
-      return "Activer pour distinguer les majuscules et les minuscules"
+      return "Dans le vocabulaire";
     case "al":
-      return "Aktivieren, um zwischen Gross- und Kleinschreibung zu unterscheiden"
+      return "Im Wortschatz";
     case "ca":
-      return "Pestanya pour distinguer els Majúscules et els minuscules"
+      return "En el vocabulari";
   }
-}
+};
 
-const BusquedaGeneral= lang => {
+const dentroReferencia = (lang) => {
   switch (lang) {
     case "es":
-      return "Busqueda General"
+      return "En los pasajes";
     case "en":
-      return "General search"
+      return "In the textual passages";
     case "fr":
-      return "Recherche générale"
+      return "Dans les passages";
     case "al":
-      return "Allgemeine Suche"
+      return "In der Textauszüge";
     case "ca":
-      return "Cerca general"
+      return "En els passatges";
   }
-}
+};
 
-const tipoDeBusqueda= lang => {
+const noDerivaDe = (lang) => {
   switch (lang) {
     case "es":
-      return "Tipo de busqueda"
+      return "No deriva de ninguna expresión";
     case "en":
-      return "Search Type"
+      return "It does not derive from any expression";
     case "fr":
-      return "Type de recherche"
+      return "Il ne dérive d'aucune expression";
     case "al":
-      return "Suchtyp"
+      return "Sie leitet sich nicht aus irgendeinem Ausdruck ab";
     case "ca":
-      return "Tipus de cerca"
+      return "No deriva de cap expressió";
   }
-}
+};
 
-const dentroExpresion= lang => {
+const noContieneExpresionesDerivadas = (lang) => {
   switch (lang) {
     case "es":
-      return "Dentro de Expresion"
+      return "No contiene ninguna expresión derivada.";
     case "en":
-      return "Within expression"
+      return "It does not contain any derived expression.";
     case "fr":
-      return "Dans l'expression"
+      return "Il ne contient aucune expression dérivée.";
     case "al":
-      return "Im Ausdruck"
+      return "Es enthält keinen abgeleiteten Ausdruck.";
     case "ca":
-      return "Dins d'expressió"
+      return "No conté cap expressió derivada.";
   }
-}
+};
 
-const dentroReferencia= lang => {
+const bienvenido = (lang) => {
   switch (lang) {
     case "es":
-      return "Dentro de Referencia"
+      return "Bienvenido";
     case "en":
-      return "Within reference"
+      return "Welcome";
     case "fr":
-      return "Dans la référence"
+      return "Bienvenue";
     case "al":
-      return "Innerhalb der Referenz"
+      return "Herzlich willkommen";
     case "ca":
-      return "Dins de referència"
+      return "Benvingut";
   }
-}
+};
 
-const noDerivaDe= lang => {
+const bienvenidaModal = (lang) => {
   switch (lang) {
     case "es":
-      return "No deriva de ninguna expresión"
+      return "Si esta es tu primera vez que utiliza el diccionario, será conveniente que visite nuestra guía.";
     case "en":
-      return "It does not derive from any expression"
+      return "If this is your first time using the dictionary, you should visit our guide.";
     case "fr":
-      return "Il ne dérive d'aucune expression"
+      return "Si vous utilisez le dictionnaire pour la première fois, vous devriez consulter notre guide.";
     case "al":
-      return "Sie leitet sich nicht aus irgendeinem Ausdruck ab"
+      return "Wenn Sie das Wörterbuch zum ersten Mal verwenden, sollten Sie unseren Leitfaden besuchen.";
     case "ca":
-      return "No deriva de cap expressió"
+      return "Si aquesta és la teva primera vegada que utilitza el diccionari, serà convenient que visiti la nostra guia.";
   }
-}
+};
 
-const noContieneExpresionesDerivadas= lang => {
+const descargarConsulta = (lang) => {
   switch (lang) {
     case "es":
-      return "No contiene ninguna expresión derivada."
+      return "Descargar Consulta";
     case "en":
-      return "It does not contain any derived expression."
+      return "Consultation Download";
     case "fr":
-      return "Il ne contient aucune expression dérivée."
+      return "Télécharger la Consultation";
     case "al":
-      return "Es enthält keinen abgeleiteten Ausdruck."
+      return "Konsultation Herunterladen";
     case "ca":
-      return "No conté cap expressió derivada."
+      return "Descarregar Consulta";
   }
-}
+};
 
-const bienvenido= lang => {
+const seGeneraArchivo = (lang) => {
   switch (lang) {
     case "es":
-      return "Bienvenido"
+      return "Se genera un archivo con las siguientes especificaciones";
     case "en":
-      return "Welcome"
+      return "A file with the following specifications is generated";
     case "fr":
-      return "Bienvenue"
+      return "Un fichier avec les spécifications suivantes est généré";
     case "al":
-      return "Herzlich willkommen"
+      return "Eine Datei mit den folgenden Spezifikationen wird erzeugt";
     case "ca":
-      return "Benvingut"
+      return "Es genera un arxiu amb les següents especificacions";
   }
-}
+};
 
-const bienvenidaModal= lang => {
+const conReferencias = (lang) => {
   switch (lang) {
     case "es":
-      return "Si esta es tu primera vez que utiliza el diccionario, será conveniente que visite nuestra guía."
+      return "¿Con referencias?";
     case "en":
-      return "If this is your first time using the dictionary, you should visit our guide."
+      return "With references?";
     case "fr":
-      return "Si vous utilisez le dictionnaire pour la première fois, vous devriez consulter notre guide."
+      return "Avec des références?";
     case "al":
-      return "Wenn Sie das Wörterbuch zum ersten Mal verwenden, sollten Sie unseren Leitfaden besuchen."
+      return "Mit Hinweise?";
     case "ca":
-      return "Si aquesta és la teva primera vegada que utilitza el diccionari, serà convenient que visiti la nostra guia."
+      return "¿Amb referències?";
   }
-}
+};
 
-const descargarConsulta = lang => {
+const descargarEn = (lang) => {
   switch (lang) {
     case "es":
-      return "Descargar Consulta"
+      return "Descargar Pasaje En:";
     case "en":
-      return "Télécharger la Consultation"
+      return "Download Passage In:";
     case "fr":
-      return "Consultation télécharger"
+      return "Télécharger le Passage En:";
     case "al":
-      return "Konsultation Herunterladen"
+      return "Textauszug Herunterladen Auf:";
     case "ca":
-      return "Descarregar Consulta"
+      return "Descarregar Passatge En:";
   }
-}
+};
 
-const seGeneraArchivo = lang => {
+const idiomaAl = (lang) => {
   switch (lang) {
     case "es":
-      return "Se genera un archivo con las siguientes especificaciones"
+      return "Alemán";
     case "en":
-      return "A file with the following specifications is generated"
+      return "German";
     case "fr":
-      return "Un fichier avec les spécifications suivantes est généré"
+      return "Allemand";
     case "al":
-      return "Eine Datei mit den folgenden Spezifikationen wird erzeugt"
+      return "Deutsch";
     case "ca":
-      return "Es genera un arxiu amb les següents especificacions"
+      return "Alemany";
   }
-}
+};
 
-const conReferencias = lang => {
+const idiomaEs = (lang) => {
   switch (lang) {
     case "es":
-      return "¿Con referencias?"
+      return "Español";
     case "en":
-      return "With references?"
+      return "Spanish";
     case "fr":
-      return "Avec des références?"
+      return "Espagnol";
     case "al":
-      return "Mit Hinweise?"
+      return "Spanisch";
     case "ca":
-      return "¿Amb referències?"
+      return "Castellà";
   }
-}
+};
 
-const descargarEn = lang => {
+const pasajeSeleccionadoOTodos = (lang) => {
   switch (lang) {
     case "es":
-      return "Descargar Pasaje En:"
+      return "Descargar Pasaje Seleccionado o Todos los Pasajes de la Expresión:";
     case "en":
-      return "Download Passage In:"
+      return "Download Selected Passage or All Passages of the Expression:";
     case "fr":
-      return "Télécharger le Passage En:"
+      return "Téléchargez le Passage Sélectionné ou Tous les Passages de l’Expression:";
     case "al":
-      return "Textauszug Herunterladen Auf:"
+      return "Ausgewählte Textauszug oder alle Textauszüge des Ausdrucks Herunterladen:";
     case "ca":
-      return "Descarregar Passatge En:"
+      return "Descarregar el Passatge Seleccionat o Tots els Passatges de l’Expressió:";
   }
-}
+};
 
-const idiomaAl = lang => {
+const pasajeSeleccionado = (lang) => {
   switch (lang) {
     case "es":
-      return "Alemán"
+      return "Pasaje seleccionado";
     case "en":
-      return "German"
+      return "Selected Passage";
     case "fr":
-      return "Allemand"
+      return "Passage sélectionné";
     case "al":
-      return "Deutsch"
+      return "Ausgewählte Textauszug";
     case "ca":
-      return "Alemany"
+      return "Passatge Seleccionat";
   }
-}
+};
 
-const idiomaEs = lang => {
+const todosLosPasajes = (lang) => {
   switch (lang) {
     case "es":
-      return "Español"
+      return "Todos los pasajes";
     case "en":
-      return "Spanish"
+      return "All the Passages";
     case "fr":
-      return "Espagnol"
+      return "Tous les passages";
     case "al":
-      return "Spanisch"
+      return "Alle Textauszügen";
     case "ca":
-      return "Castellà"
+      return "Tots els Passatges";
   }
-}
+};
 
-const pasajeSeleccionadoOTodos = lang => {
+const tipoDeArchivos = (lang) => {
   switch (lang) {
     case "es":
-      return "Descargar Pasaje Seleccionado o Todos los Pasajes de la Expresión:"
+      return "Tipo de archivo";
     case "en":
-      return "Download Selected Passage or All Passages of the Expression:"
+      return "Type of file";
     case "fr":
-      return "Téléchargez le Passage Sélectionné ou Tous les Passages de l’Expression:"
+      return "Type de fichier";
     case "al":
-      return "Ausgewählte Textauszug oder alle Textauszüge des Ausdrucks Herunterladen:"
+      return "Dateityp";
     case "ca":
-      return "Descarregar el Passatge Seleccionat o Tots els Passatges de l’Expressió:"
+      return "Tipus d'arxiu";
   }
-}
+};
 
-const pasajeSeleccionado = lang => {
+const texto = (lang) => {
   switch (lang) {
     case "es":
-      return "Pasaje seleccionado"
+      return "Texto";
     case "en":
-      return "Selected Passage"
+      return "Text";
     case "fr":
-      return "Passage sélectionné"
+      return "Texte";
     case "al":
-      return "Ausgewählte Textauszug"
+      return "Text";
     case "ca":
-      return "Passatge Seleccionat"
+      return "Text";
   }
-}
+};
 
-const todosLosPasajes = lang => {
+const tituloNulos = (lang) => {
   switch (lang) {
     case "es":
-      return "Todos los pasajes"
+      return "No contiene pasajes";
     case "en":
-      return "All the Passages"
+      return "It does not contain passages";
     case "fr":
-      return "Tous les passages"
+      return "Il ne contient pas de passages";
     case "al":
-      return "Alle Textauszügen"
+      return "Es enthält keine Passagen";
     case "ca":
-      return "Tots els Passatges"
+      return "No conté passatges";
   }
-}
+};
 
-const tipoDeArchivos = lang => {
+const mensajeNulos = (lang) => {
   switch (lang) {
     case "es":
-      return "Tipo de archivo"
+      return "No hay ninguna referencia para esta expresión. Ver por favor la lista de expresiones derivadas.";
     case "en":
-      return "Type of file"
+      return "There is no reference for this expression. Please see the list of derived expressions.";
     case "fr":
-      return "Type de fichier"
+      return "Il n'y a aucune référence pour cette expression. Veuillez consulter la liste des expressions dérivées.";
     case "al":
-      return "Dateityp"
+      return "Es gibt keine Referenz für diesen Ausdruck. Bitte beachten Sie die Liste der abgeleiteten Ausdrücke.";
     case "ca":
-      return "Tipus d'arxiu"
+      return "No hi ha cap referència per a aquesta expressió. Veure per favor la llista d'expressions derivades.";
   }
-}
+};
 
-const texto = lang => {
+const tituloBusqueda = (lang) => {
   switch (lang) {
     case "es":
-      return "Texto"
+      return "La busqueda es muy pequeña.";
     case "en":
-      return "Text"
+      return "The search is very small.";
     case "fr":
-      return "Texte"
+      return "La recherche est très petite.";
     case "al":
-      return "Text"
+      return "Die Suche ist sehr klein.";
     case "ca":
-      return "Text"
+      return "La recerca és molt petita.";
   }
-}
+};
 
-const tituloNulos = lang => {
+const mensajeBusqueda = (lang) => {
   switch (lang) {
     case "es":
-      return "No contiene pasajes"
+      return "Favor de hacer una busqueda más especifíca.";
     case "en":
-      return "It does not contain passages"
+      return "Please do a more specific search.";
     case "fr":
-      return "Il ne contient pas de passages"
+      return "Veuillez effectuer une recherche plus spécifique.";
     case "al":
-      return "Es enthält keine Passagen"
+      return "Bitte führen Sie eine genauere Suche durch.";
     case "ca":
-      return "No conté passatges"
+      return "Favor de fer una cerca més especifíca.";
   }
-}
+};
 
-const mensajeNulos = lang => {
+const tituloNumeros = (lang) => {
   switch (lang) {
     case "es":
-      return "No hay ninguna referencia para esta expresión. Ver por favor la lista de expresiones derivadas."
+      return "Números Invalidos.";
     case "en":
-      return "There is no reference for this expression. Please see the list of derived expressions."
+      return "Invalid Numbers.";
     case "fr":
-      return "Il n'y a aucune référence pour cette expression. Veuillez consulter la liste des expressions dérivées."
+      return "Numéros invalides.";
     case "al":
-      return "Es gibt keine Referenz für diesen Ausdruck. Bitte beachten Sie die Liste der abgeleiteten Ausdrücke."
+      return "Ungültige Nummern.";
     case "ca":
-      return "No hi ha cap referència per a aquesta expressió. Veure per favor la llista d'expressions derivades."
+      return "números Invalidos.";
   }
-}
+};
 
-const tituloBusqueda = lang => {
+const mensajeNumeros = (lang) => {
   switch (lang) {
     case "es":
-      return "La busqueda es muy pequeña."
+      return "El buscador no acepta números, solo letras. Favor de hacer una busqueda más especifíca.";
     case "en":
-      return "The search is very small."
+      return "The search engine does not accept numbers, only letters. Please do a more specific search.";
     case "fr":
-      return "La recherche est très petite."
+      return "Le moteur de recherche n'accepte pas les chiffres, seulement les lettres. Veuillez effectuer une recherche plus spécifique.";
     case "al":
-      return "Die Suche ist sehr klein."
+      return "Die Suchmaschine akzeptiert keine Zahlen, nur Buchstaben. Bitte führen Sie eine genauere Suche durch.";
     case "ca":
-      return "La recerca és molt petita."
+      return "El cercador no accepta nombres, només lletres. Favor de fer una cerca més especifíca.";
   }
-}
+};
 
-const mensajeBusqueda = lang => {
+const tituloCaracteres = (lang) => {
   switch (lang) {
     case "es":
-      return "Favor de hacer una busqueda más especifíca."
+      return "Carácteres Invalidos.";
     case "en":
-      return "Please do a more specific search."
+      return "Invalid characters.";
     case "fr":
-      return "Veuillez effectuer une recherche plus spécifique."
+      return "Caractères non valides.";
     case "al":
-      return "Bitte führen Sie eine genauere Suche durch."
+      return "Ungültige Zeichen";
     case "ca":
-      return "Favor de fer una cerca més especifíca."
+      return "Caràcters Invalidos.";
   }
-}
+};
 
-const tituloNumeros = lang => {
+const mensajeCaracteres = (lang) => {
   switch (lang) {
     case "es":
-      return "Números Invalidos."
+      return "No se toman en cuenta los carácteres, solo las letras. Favor de hacer una busqueda más especifíca.";
     case "en":
-      return "Invalid Numbers."
+      return "Characters are not taken into account, only letters. Please do a more specific search.";
     case "fr":
-      return "Numéros invalides."
+      return "Les caractères ne sont pas pris en compte, seules les lettres. Veuillez effectuer une recherche plus spécifique.";
     case "al":
-      return "Ungültige Nummern."
+      return "Zeichen werden nicht berücksichtigt, nur Buchstaben. Bitte führen Sie eine genauere Suche durch.";
     case "ca":
-      return "números Invalidos."
+      return "No es tenen en compte els caràcters, només les lletres. Favor de fer una cerca més especifíca.";
   }
-}
+};
 
-const mensajeNumeros = lang => {
+const tooltipPaginador = (lang) => {
   switch (lang) {
     case "es":
-      return "El buscador no acepta números, solo letras. Favor de hacer una busqueda más especifíca."
+      return "No hay más pasajes.";
     case "en":
-      return "The search engine does not accept numbers, only letters. Please do a more specific search."
+      return "There are no more passages.";
     case "fr":
-      return "Le moteur de recherche n'accepte pas les chiffres, seulement les lettres. Veuillez effectuer une recherche plus spécifique."
+      return "Il n'y a plus de passages.";
     case "al":
-      return "Die Suchmaschine akzeptiert keine Zahlen, nur Buchstaben. Bitte führen Sie eine genauere Suche durch."
+      return "Es gibt keine Passagen mehr.";
     case "ca":
-      return "El cercador no accepta nombres, només lletres. Favor de fer una cerca més especifíca."
+      return "No hi ha més passatges.";
   }
-}
+};
 
-const tituloCaracteres = lang => {
+const resultadoBusqueda = (lang) => {
   switch (lang) {
     case "es":
-      return "Carácteres Invalidos."
+      return "Resultado de búsqueda";
     case "en":
-      return "Invalid characters."
+      return "Search result";
     case "fr":
-      return "Caractères non valides."
+      return "Résultat de la recherche";
     case "al":
-      return "Ungültige Zeichen"
+      return "Suchergebnis schliessen";
     case "ca":
-      return "Caràcters Invalidos."
+      return "Resultat de cerca";
   }
-}
+};
 
-const mensajeCaracteres = lang => {
+const abrirListaTooltip = (lang) => {
   switch (lang) {
     case "es":
-      return "No se toman en cuenta los carácteres, solo las letras. Favor de hacer una busqueda más especifíca."
+      return "Abrir lista de búsqueda";
     case "en":
-      return "Characters are not taken into account, only letters. Please do a more specific search."
+      return "Open search list";
     case "fr":
-      return "Les caractères ne sont pas pris en compte, seules les lettres. Veuillez effectuer une recherche plus spécifique."
+      return "Ouvrir la liste de recherche";
     case "al":
-      return "Zeichen werden nicht berücksichtigt, nur Buchstaben. Bitte führen Sie eine genauere Suche durch."
+      return "Suchliste öffnen";
     case "ca":
-      return "No es tenen en compte els caràcters, només les lletres. Favor de fer una cerca més especifíca."
+      return "Obrir llista de cerca";
   }
-}
+};
 
-const tooltipPaginador = lang => {
+const cerrarListaTooltip = (lang) => {
   switch (lang) {
     case "es":
-      return "No hay más pasajes."
+      return "Cerrar lista de búsqueda";
     case "en":
-      return "There are no more passages."
+      return "Close search list";
     case "fr":
-      return "Il n'y a plus de passages."
+      return "Fermer la liste de recherche";
     case "al":
-      return "Es gibt keine Passagen mehr."
+      return "Suchliste schließen";
     case "ca":
-      return "No hi ha més passatges."
+      return "Tancar llista de cerca";
   }
-}
+};
 
-const resultadoBusqueda = lang => {
+const noContienePasajes = (lang) => {
   switch (lang) {
     case "es":
-      return "Resultado de busqueda."
+      return "No hay ninguna referencia para esta expresión. Ver por favor la lista de expresiones derivadas.";
     case "en":
-      return "Search result."
+      return "There is no reference for this expression. Please see the list of derived expressions.";
     case "fr":
-      return "Résultat de la recherche."
+      return "Il n'y a aucune référence pour cette expression. Veuillez consulter la liste des expressions dérivées.";
     case "al":
-      return "Suchergebnis."
+      return "Es gibt keine Referenz für diesen Ausdruck. Bitte beachten Sie die Liste der abgeleiteten Ausdrücke.";
     case "ca":
-      return "Resultat de cerca."
+      return "No hi ha cap referència per a aquesta expressió. Veure per favor la llista d'expressions derivades.";
   }
-}
+};
 
-const abrirListaTooltip = lang => {
+const numeroDePasajes = (lang) => {
   switch (lang) {
     case "es":
-      return "Abrir lista de busqueda."
+      return "pasajes en total.";
     case "en":
-      return "Open search list."
+      return "passages in all.";
     case "fr":
-      return "Ouvrez la liste de recherche."
+      return "passages au total.";
     case "al":
-      return "Suchliste öffnen."
+      return "Textauszugen insgesamt.";
     case "ca":
-      return "Obrir llista de cerca."
+      return "passatges en total.";
   }
-}
+};
 
-const cerrarListaTooltip = lang => {
+const pasajeSingular = (lang) => {
   switch (lang) {
     case "es":
-      return "Cerrar lista de busqueda."
+      return "pasaje en total.";
     case "en":
-      return "Close search list."
+      return "passage in all.";
     case "fr":
-      return "Fermer la liste de recherche."
+      return "passage au total.";
     case "al":
-      return "Suchliste schließen."
+      return "Textauszug insgesamt.";
     case "ca":
-      return "Tancar llista de cerca."
+      return "passatge en total.";
   }
-}
+};
 
-const noContienePasajes = lang => {
+const descargarConsultadas = (lang) => {
   switch (lang) {
     case "es":
-      return "No hay ninguna referencia para esta expresión. Ver por favor la lista de expresiones derivadas."
+      return "Incluir las expresiones consultadas";
     case "en":
-      return "There is no reference for this expression. Please see the list of derived expressions."
+      return "Include the looked up expressions";
     case "fr":
-      return "Il n'y a aucune référence pour cette expression. Veuillez consulter la liste des expressions dérivées."
+      return "Inclure les expressions consultées";
     case "al":
-      return "Es gibt keine Referenz für diesen Ausdruck. Bitte beachten Sie die Liste der abgeleiteten Ausdrücke."
+      return "Schliessen die konsultierten Ausdrücke ein";
     case "ca":
-      return "No hi ha cap referència per a aquesta expressió. Veure per favor la llista d'expressions derivades."
+      return "Incloure les expressions consultades";
   }
-}
+};
 
-const numeroDePasajes = lang => {
+const marcarConsultadas = (lang) => {
   switch (lang) {
     case "es":
-      return "pasajes en total."
+      return "Marcar todas las expresiones consultadas";
     case "en":
-      return "passages in all."
+      return "Mark all expressions consulted";
     case "fr":
-      return "passages au total."
+      return "Marquer toutes les expressions consultées";
     case "al":
-      return "Textauszugen insgesamt."
+      return "Alle konsultierten Ausdrücke markieren";
     case "ca":
-      return "passatges en total."
+      return "Marca totes les expressions consultades";
   }
-}
+};
 
-const pasajeSingular = lang => {
+const letraNoCoincide = (lang) => {
   switch (lang) {
     case "es":
-      return "pasaje en total."
+      return "La primera letra de la búsqueda no coincide con la letra del índice";
     case "en":
-      return "passage in all."
+      return "The first letter of the search does not match the index letter";
     case "fr":
-      return "passage au total."
+      return "La première lettre de la recherche ne correspond pas à la lettre de l’index";
     case "al":
-      return "Textauszug insgesamt."
+      return "Der erste Buchstabe der Suche stimmt nicht mit dem Buschstabe des Indexes überein";
     case "ca":
-      return "passatge en total."
+      return "La primera lletra de la cerca no coincideix amb la lletra de l'índex";
   }
-}
+};
 
-const descargarConsultadas = lang => {
+const InstitutoF = (lang) => {
   switch (lang) {
     case "es":
-      return "Incluir las expresiones consultadas"
+      return "Instituto de Investigaciones Filosóficas";
     case "en":
-      return "Include the looked up expressions"
+      return "Instituto de Investigaciones Filosóficas";
     case "fr":
-      return "Inclure les expressions consultées"
+      return "Instituto de Investigaciones Filosóficas";
     case "al":
-      return "Schliessen die konsultierten Ausdrücke ein"
+      return "Instituto de Investigaciones Filosóficas";
     case "ca":
-      return "Incloure les expressions consultades"
+      return "l'Institut d'Investigacions Filosòfiques";
   }
-}
+};
 
-const marcarConsultadas = lang => {
+const UNAM = (lang) => {
   switch (lang) {
     case "es":
-      return "Marcar todas las expresiones consultadas"
+      return "Universidad Nacional Autónoma de México.";
     case "en":
-      return "Mark all expressions consulted"
+      return "Universidad Nacional Autónoma de México.";
     case "fr":
-      return "Inclure les expressions consultées"
+      return "Universidad Nacional Autónoma de México.";
     case "al":
-      return "Alle konsultierten Ausdrücke markieren"
+      return "Universidad Nacional Autónoma de México";
     case "ca":
-      return "Incloure les expressions consultades"
+      return "Universitat Nacional Autònoma de Mèxic.";
   }
-}
+};
 
-const letraNoCoincide = lang => {
+const expresionesAsociadas = (lang) => {
   switch (lang) {
     case "es":
-      return "La primera letra de la búsqueda no coincide con la letra del índice"
+      return "Expresiones Asociadas al Pasaje";
     case "en":
-      return "The first letter of the search does not match the index letter"
+      return "Mit dem Textauszug verbundene Ausdrücke";
     case "fr":
-      return "La première lettre de la recherche ne correspond pas à la lettre de l’index"
+      return "Expressions linked to the passage";
     case "al":
-      return "Der erste Buchstabe der Suche stimmt nicht mit dem Buschstabe des Indexes überein"
+      return "Expressions liées au passage";
     case "ca":
-      return "La primera lletra de la cerca no coincideix amb la lletra de l'índex"
+      return "Expressions associades a el passatge";
   }
-}
+};
 
-export {tituloDiccionario, ingresar, subtituloDiccionario, inicio, email, contra, olvidoDeContra, registrarse, 
-  registrado, aqui, Footer1, Footer2, Footer3, registro, nombre, apellido, escuela, puesto, pais, comprobacionContra,
-  modalRecuperacionContra,modalIngresarCorreo, exitoBody, correoInvalido, correoNoEncontrado, aceptarAlert, menuDiccionario,
-  menuAcercaDe, menuGuia, menuSalir, menuDerechoJerarquia, menuDerechoJerarquiaDerivadaDe, menuDerechoJerarquiaExpresion, 
-  menuDerechoJerarquiaExpresionesDerivadas, menuDerechoReferenciasConsultadas, menuDerechoVerTambien, busquedaPorLetra,
-  toolTipMenuPrincipal, toolTipMenuIdiomas, toolTipIdiomaDeLaLista, cintilla, guia, descarga, idiomaConsultas, busquedas,
-  distincionMayusyMinus, BusquedaGeneral, tipoDeBusqueda, dentroExpresion, dentroReferencia, noDerivaDe, noContieneExpresionesDerivadas,
-  bienvenido, bienvenidaModal, descargarConsulta, seGeneraArchivo, conReferencias, descargarEn, idiomaAl, idiomaEs, pasajeSeleccionadoOTodos,
-  pasajeSeleccionado, todosLosPasajes, tipoDeArchivos, texto, tituloNulos, mensajeNulos, tituloBusqueda, mensajeBusqueda, tituloNumeros,
-  mensajeNumeros, tituloCaracteres, mensajeCaracteres, tooltipPaginador, resultadoBusqueda, abrirListaTooltip, cerrarListaTooltip, noContienePasajes,
-  numeroDePasajes, pasajeSingular, descargarConsultadas, marcarConsultadas, letraNoCoincide
-}
+export {
+  tituloDiccionario,
+  ingresar,
+  subtituloDiccionario,
+  inicio,
+  email,
+  contra,
+  olvidoDeContra,
+  registrarse,
+  registrado,
+  aqui,
+  Footer1,
+  Footer2,
+  Footer3,
+  registro,
+  nombre,
+  apellido,
+  escuela,
+  puesto,
+  pais,
+  comprobacionContra,
+  modalRecuperacionContra,
+  modalIngresarCorreo,
+  exitoBody,
+  correoInvalido,
+  correoNoEncontrado,
+  aceptarAlert,
+  menuDiccionario,
+  menuAcercaDe,
+  menuGuia,
+  menuSalir,
+  menuDerechoJerarquia,
+  menuDerechoJerarquiaDerivadaDe,
+  menuDerechoJerarquiaExpresion,
+  menuDerechoJerarquiaExpresionesDerivadas,
+  menuDerechoReferenciasConsultadas,
+  menuDerechoVerTambien,
+  busquedaPorLetra,
+  toolTipMenuPrincipal,
+  toolTipMenuIdiomas,
+  toolTipIdiomaDeLaLista,
+  cintilla,
+  guia,
+  descarga,
+  idiomaConsultas,
+  busquedas,
+  distincionMayusyMinus,
+  BusquedaGeneral,
+  tipoDeBusqueda,
+  dentroExpresion,
+  dentroReferencia,
+  noDerivaDe,
+  noContieneExpresionesDerivadas,
+  bienvenido,
+  bienvenidaModal,
+  descargarConsulta,
+  seGeneraArchivo,
+  conReferencias,
+  descargarEn,
+  idiomaAl,
+  idiomaEs,
+  pasajeSeleccionadoOTodos,
+  pasajeSeleccionado,
+  todosLosPasajes,
+  tipoDeArchivos,
+  texto,
+  tituloNulos,
+  mensajeNulos,
+  tituloBusqueda,
+  mensajeBusqueda,
+  tituloNumeros,
+  mensajeNumeros,
+  tituloCaracteres,
+  mensajeCaracteres,
+  tooltipPaginador,
+  resultadoBusqueda,
+  abrirListaTooltip,
+  cerrarListaTooltip,
+  noContienePasajes,
+  numeroDePasajes,
+  pasajeSingular,
+  descargarConsultadas,
+  marcarConsultadas,
+  letraNoCoincide,
+  FooterAl,
+  InstitutoF,
+  UNAM,
+  expresionesAsociadas,
+};

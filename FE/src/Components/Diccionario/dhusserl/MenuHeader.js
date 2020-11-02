@@ -16,10 +16,12 @@ import PageviewIcon from '@material-ui/icons/Pageview';
 
 import {menuDiccionario, menuAcercaDe, menuGuia, menuSalir, toolTipMenuPrincipal, busquedas} from '../../../js/Language';
 
-import { sesionStore } from '../../../sesionStore';
+import { sesionStore } from '../../../stores/sesionStore';
+import { languageStore } from '../../../stores/languageStore';
 
 function MenuHeader(props){
   const global = React.useContext(sesionStore);
+  const globalLanguage = React.useContext(languageStore);
   const [state, setState] = React.useState({ anchorEl : null})
 
   const handleMenu = (event) => {
@@ -39,7 +41,7 @@ function MenuHeader(props){
 
     return(
       <div>
-        <Tooltip title={toolTipMenuPrincipal(props.lang)}>
+        <Tooltip title={toolTipMenuPrincipal(globalLanguage.lang)}>
           <IconButton
             aria-haspopup="true"
             aria-owns={state.anchorEl ? 'menuheader': undefined}
@@ -61,7 +63,7 @@ function MenuHeader(props){
               <ListItemIcon>
                 <Book />
               </ListItemIcon>
-              <ListItemText primary={menuDiccionario(props.lang)}/>
+              <ListItemText primary={menuDiccionario(globalLanguage.lang)}/>
             </MenuItem>
           </Link>
           <Link to={`${props.match.url}/busquedas`}>
@@ -69,7 +71,7 @@ function MenuHeader(props){
               <ListItemIcon>
                 <PageviewIcon />
               </ListItemIcon>
-              <ListItemText primary={busquedas(props.lang)}/>
+              <ListItemText primary={busquedas(globalLanguage.lang)}/>
             </MenuItem>
           </Link>
           <Link to={`${props.match.url}/acercade`}>
@@ -77,7 +79,7 @@ function MenuHeader(props){
               <ListItemIcon>
                 <Description />
               </ListItemIcon>
-              <ListItemText primary={menuAcercaDe(props.lang)}/>
+              <ListItemText primary={menuAcercaDe(globalLanguage.lang)}/>
             </MenuItem>
           </Link>
           <Link to={`${props.match.url}/guia`}>
@@ -85,14 +87,14 @@ function MenuHeader(props){
               <ListItemIcon>
                 <Info />
               </ListItemIcon>
-              <ListItemText primary={menuGuia(props.lang)}/>
+              <ListItemText primary={menuGuia(globalLanguage.lang)}/>
             </MenuItem>
           </Link>
           <MenuItem onClick={exitMain}>
             <ListItemIcon>
               <Exit />
             </ListItemIcon>
-            <ListItemText primary={menuSalir(props.lang)}/>
+            <ListItemText primary={menuSalir(globalLanguage.lang)}/>
           </MenuItem>
         </Menu>
       </div>

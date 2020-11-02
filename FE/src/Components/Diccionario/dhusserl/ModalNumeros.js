@@ -13,6 +13,7 @@ import { withStyles } from '@material-ui/styles';
 
 //Language
 import {tituloNumeros, mensajeNumeros} from '../../../js/Language';
+import { languageStore } from '../../../stores/languageStore';
 
 const modalNumeros={
     modalinb:{
@@ -40,6 +41,7 @@ const modalNumeros={
 
 function ModalNumeros(props){
     const {classes}=props;
+    const globalLanguage = React.useContext(languageStore);
 
     function clickHandleCloseModal(){
         props.setModalNumeros(false)
@@ -55,7 +57,7 @@ function ModalNumeros(props){
                 <Grid container alignContent="center" alignItems="center">
                     <Grid item xs={11}>
                         <Typography variant="h4">
-                            {tituloNumeros(props.lang)}
+                            {tituloNumeros(globalLanguage.lang)}
                         </Typography>
                     </Grid>
                     <Grid item xs={1}>
@@ -69,7 +71,7 @@ function ModalNumeros(props){
                     <Divider/>
                     <Grid item xs={12} className={classes.gridDelTypo}>
                         <Typography variant="h5">
-                            {mensajeNumeros(props.lang)}
+                            {mensajeNumeros(globalLanguage.lang)}
                         </Typography>
                     </Grid>
                 </Grid>

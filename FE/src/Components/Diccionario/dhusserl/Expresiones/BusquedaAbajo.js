@@ -19,8 +19,10 @@ import { withStyles } from '@material-ui/styles';
 //Other req
 import '../../../../css/expresiones.css';
 import {webService} from '../../../../js/webServices';
-import { sesionStore } from '../../../../sesionStore';
+import { sesionStore } from '../../../../stores/sesionStore';
 import classNames from 'classnames';
+import { languageStore } from '../../../../stores/languageStore';
+import { letraStore } from '../../../../stores/letraStore';
 
 //Language
 import {busquedas, distincionMayusyMinus, letraNoCoincide} from '../../../../js/Language';
@@ -43,47 +45,9 @@ const styles = {
 function BusquedaAbajo(props){
     const {classes}=props;
     const global = React.useContext(sesionStore);
+    const globalLanguage = React.useContext(languageStore);
+    const globalLetra = React.useContext(letraStore);
     const [insensitiveCase,setInsensitiveCase]=React.useState(false);
-
-    const fixReferencias = (referencias) => {
-        var expresiones=[]
-        var posicActual = -1
-        var expreActual = ""
-        var i = 0
-        while (i<referencias.length){
-            if (expreActual != referencias[i].term_de){
-                posicActual++
-                expreActual = referencias[i].term_de
-                expresiones.push({
-                    expresion : referencias[i].term_de,
-                    traduccion : referencias[i].term_es,
-                    index_de: referencias[i].index_de,
-                    index_es: referencias[i].index_es,
-                    id: referencias[i].term_id,
-                    referencias : [],
-                })
-                expresiones[posicActual].referencias.push({
-                    referencia_original : referencias[i].ref_def_de,
-                    referencia_traduccion: referencias[i].ref_def_es,
-                    refid : referencias[i].ref_id,
-                })
-                i++
-            }else{
-                expresiones[posicActual].referencias.push({
-                    ref_def_de : referencias[i].ref_def_de,
-                    ref_def_es : referencias[i].ref_def_es,
-                    refid : referencias[i].ref_id,
-                })
-            i++
-            // expresiones
-            }
-        }
-        return expresiones
-    }
-
-    const ChunkB = (expresiones) =>{
-        props.setChunkListGlobal(expresiones.slice(0,50))
-    }
     
     const handleChangeBusquedaExpresiones = (event) => {
         event.preventDefault()
@@ -101,22 +65,22 @@ function BusquedaAbajo(props){
                 var letra = props.busqueda.slice(0,1)
                 var letraCapital = letra.toUpperCase()
                 if(letra == letraCapital){
-                    var servicebl = "/referencias/busquedaExpresionPorLetra"+"/"+props.letraMain+"/"+props.language
+                    var servicebl = "/referencias/busquedaExpresionPorLetra"+"/"+globalLetra.letra+"/"+ globalLanguage.langLista
                     webService(servicebl, "POST", {parametro:props.busqueda,case:insensitiveCase}, global.sesion, (data) => {
-                        if(props.letraMain == letraCapital){
+                        if(globalLetra.letra == letraCapital){
                             ChunkC(data.data.response)
                          }else{
-                            setSnack({open : true, text: letraNoCoincide(props.lang)})
+                            setSnack({open : true, text: letraNoCoincide(globalLanguage.lang)})
                         }
                     })
                 }else{
                     var letraCapital = letra.toUpperCase()
-                    var servicebl = "/referencias/busquedaExpresionPorLetra"+"/"+props.letraMain+"/"+props.language
+                    var servicebl = "/referencias/busquedaExpresionPorLetra"+"/"+globalLetra.letra+"/"+ globalLanguage.langLista
                     webService(servicebl, "POST", {parametro:props.busqueda,case:insensitiveCase}, global.sesion, (data) => {
-                        if(props.letraMain == letraCapital){
+                        if(globalLetra.letra == letraCapital){
                             ChunkC(data.data.response)
                         }else{
-                            setSnack({open : true, text: letraNoCoincide(props.lang)})
+                            setSnack({open : true, text: letraNoCoincide(globalLanguage.lang)})
                         }
                     })
                 }
@@ -128,10 +92,6 @@ function BusquedaAbajo(props){
 
     function handleInsensitiveCase(){
         setInsensitiveCase(!insensitiveCase)
-    }
-
-    const handleSwitch=name=>event=>{
-        props.setState({...props.state, [name]:event.target.checked});
     }
 
     return(
@@ -154,7 +114,7 @@ function BusquedaAbajo(props){
                 </FormControl>  
                 </Grid>
                 <Grid item xs={2} className={classes.switchPasaje}>
-                    <Tooltip title={distincionMayusyMinus(props.lang)}>
+                    <Tooltip title={distincionMayusyMinus(globalLanguage.lang)}>
                         <IconButton onClick={handleInsensitiveCase} className={classNames([{"caseSeleccionado" : insensitiveCase == true}, "case"])}>
                             <Icon path={mdiFormatLetterCase}
                             title="User Profile"

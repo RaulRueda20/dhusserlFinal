@@ -22,7 +22,8 @@ import ListaDeConsultados from './ListaDeConsultados';
 
 // Other req
 import {webService} from '../../../../js/webServices';
-import { sesionStore } from '../../../../sesionStore';
+import { sesionStore } from '../../../../stores/sesionStore';
+import { languageStore } from '../../../../stores/languageStore';
 
 //Language
 import {descargarConsulta, seGeneraArchivo, menuDerechoJerarquia, conReferencias, descargarEn, idiomaAl, idiomaEs, pasajeSeleccionadoOTodos, pasajeSeleccionado, todosLosPasajes, tipoDeArchivos, texto, descargarConsultadas} from '../../../../js/Language';
@@ -49,6 +50,7 @@ const modalDescargas={
 
 function ModalDescargas(props){
     const global = React.useContext(sesionStore);
+    const globalLanguage = React.useContext(languageStore);
     const {classes}=props;
     const [checkedA,setCheckedA] =React.useState(false);
     const [checkedB,setCheckedB] =React.useState(false);
@@ -94,7 +96,7 @@ function ModalDescargas(props){
             if(value=='texto'){
                 var serviceR = "/reporte/reporteGeneralTxt/" + props.idExpresion + "?expresion_aleman=1&expresion_espaniol=1&referencia_aleman=1\
                 &referencia_espaniol=1&pasaje_aleman=" + opciones[4] + "&pasaje_espaniol=" + opciones[5] +
-                "&hierarchy=" + opciones[6] + "&lang=" + props.lang + "&refid=" + props.match.params.id
+                "&hierarchy=" + opciones[6] + "&lang=" + globalLanguage.lang + "&refid=" + props.match.params.id
                 webService(serviceR, "GET", {}, global.sesion, (data) => {
                     document.getElementById("toDownloadDiv").innerHTML = "<a href='/files/"+data.data.response+".txt' id='fileToDownload' download></a>"
                     document.getElementById("fileToDownload").click()
@@ -105,19 +107,19 @@ function ModalDescargas(props){
                         var id = checked[i].split("/")[1]
                         var serviceR = "/reporte/reporteText/" + id + "?expresion_aleman=1&expresion_espaniol=1&referencia_aleman=1\
                         &referencia_espaniol=1&pasaje_aleman=" + opciones[4] + "&pasaje_espaniol=" + opciones[5] +
-                        "&hierarchy=" + opciones[6] + "&lang=" + props.lang + "&refid=" + refid
+                        "&hierarchy=" + opciones[6] + "&lang=" + globalLanguage.lang + "&refid=" + refid
                         webService(serviceR, "GET", {}, global.sesion, (data) => {
                             document.getElementById("toDownloadDiv").innerHTML = "<a href='/files/"+data.data.response+".txt' id='fileToDownload' download></a>"
                             document.getElementById("fileToDownload").click()
                         })
                     }
                 }else{ 
-                    setSnackbar({open:true,variant:"error",message:correoInvalido(props.lang)})
+                    setSnackbar({open:true,variant:"error",message:correoInvalido(globalLanguage.lang)})
 		}
             }else{
                 var serviceR = "/reporte/reporteGeneralpdf/" + props.idExpresion + "?expresion_aleman=1&expresion_espaniol=1&referencia_aleman=1\
                 &referencia_espaniol=1&pasaje_aleman=" + opciones[4] + "&pasaje_espaniol=" + opciones[5] +
-                "&hierarchy=" + opciones[6] + "&lang=" + props.lang + "&refid=" + props.match.params.id
+                "&hierarchy=" + opciones[6] + "&lang=" + globalLanguage.lang + "&refid=" + props.match.params.id
                 webService(serviceR, "GET", {}, global.sesion,(data) => {
                     document.getElementById("toDownloadDiv").innerHTML = "<a href='/files/"+data.data.response+".pdf' id='fileToDownload' download></a>"
                     document.getElementById("fileToDownload").click()
@@ -128,7 +130,7 @@ function ModalDescargas(props){
                         var id = checked[i].split("/")[1]
                        var serviceR = "/reporte/reportepdf/" + id + "?expresion_aleman=1&expresion_espaniol=1&referencia_aleman=1\
                         &referencia_espaniol=1&pasaje_aleman=" + opciones[4] + "&pasaje_espaniol=" + opciones[5] +
-                        "&hierarchy=" + opciones[6] + "&lang=" + props.lang + "&refid=" + refid
+                        "&hierarchy=" + opciones[6] + "&lang=" + globalLanguage.lang + "&refid=" + refid
                         webService(serviceR, "GET", {}, (data) => {
                             document.getElementById("toDownloadDiv").innerHTML = "<a href='/files/"+data.data.response+".pdf' id='fileToDownload' download></a>"
                             document.getElementById("fileToDownload").click()
@@ -140,7 +142,7 @@ function ModalDescargas(props){
             if(value != 'texto'){
                 var serviceR = "/reporte/reportepdf/" + props.idExpresion + "?expresion_aleman=1&expresion_espaniol=1&referencia_aleman=1\
                 &referencia_espaniol=1&pasaje_aleman=" + opciones[4] + "&pasaje_espaniol=" + opciones[5] +
-                "&hierarchy=" + opciones[6] + "&lang=" + props.lang + "&refid=" + props.match.params.id
+                "&hierarchy=" + opciones[6] + "&lang=" + globalLanguage.lang + "&refid=" + props.match.params.id
                 webService(serviceR, "GET", {}, global.sesion, (data) => {
                     document.getElementById("toDownloadDiv").innerHTML = "<a href='/files/"+data.data.response+".pdf' id='fileToDownload' download></a>"
                     document.getElementById("fileToDownload").click()
@@ -148,7 +150,7 @@ function ModalDescargas(props){
             }else{
                 var serviceR = "/reporte/reporteText/" + props.idExpresion + "?expresion_aleman=1&expresion_espaniol=1&referencia_aleman=1\
                 &referencia_espaniol=1&pasaje_aleman=" + opciones[4] + "&pasaje_espaniol=" + opciones[5] +
-                "&hierarchy=" + opciones[6] + "&lang=" + props.lang + "&refid=" + props.match.params.id
+                "&hierarchy=" + opciones[6] + "&lang=" + globalLanguage.lang + "&refid=" + props.match.params.id
                 webService(serviceR, "GET", {}, global.sesion, (data) => {
                     document.getElementById("toDownloadDiv").innerHTML = "<a href='/files/"+data.data.response+".txt' id='fileToDownload' download></a>"
                     document.getElementById("fileToDownload").click()
@@ -168,7 +170,7 @@ function ModalDescargas(props){
             <div id="toDownloadDiv" hidden/>
                 <Grid container justify="center" alignItems="center" alignContent="center">
                     <Grid item xs={11}>
-                        <Typography variant="h4">{descargarConsulta(props.lang)}</Typography>
+                        <Typography variant="h4">{descargarConsulta(globalLanguage.lang)}</Typography>
                     </Grid>
                     <Grid item xs={1}>
                         <IconButton
@@ -183,10 +185,10 @@ function ModalDescargas(props){
                 <FormGroup>
                     <Grid container>
                         <Grid item xs={12}>
-                            <Typography>{seGeneraArchivo(props.lang)}</Typography>
+                            <Typography>{seGeneraArchivo(globalLanguage.lang)}</Typography>
                         </Grid>
                         <Grid item xs={12}>
-                            <Typography>{menuDerechoJerarquia(props.lan)}</Typography>
+                            <Typography>{menuDerechoJerarquia(globalLanguage.lang)}</Typography>
                         </Grid>
                         <Grid item xs={12}>
                             <FormControlLabel control={
@@ -196,11 +198,11 @@ function ModalDescargas(props){
                                     value="checkedA"
                                 />
                                 }
-                                label={conReferencias(props.lang)}
+                                label={conReferencias(globalLanguage.lang)}
                             />
                         </Grid>
                         <Grid item xs={12}>
-                            <Typography>{descargarEn(props.lang)}</Typography>
+                            <Typography>{descargarEn(globalLanguage.lang)}</Typography>
                         </Grid>
                         <Grid item xs={6}>
                             <FormControlLabel control={
@@ -210,7 +212,7 @@ function ModalDescargas(props){
                                     value="checkedB"
                                 />
                                 }
-                                label={idiomaAl(props.lang)}
+                                label={idiomaAl(globalLanguage.lang)}
                             />
                         </Grid>
                         <Grid item xs={6}>
@@ -221,30 +223,30 @@ function ModalDescargas(props){
                                     value="checkedC"
                                 />
                                 }
-                                label={idiomaEs(props.lang)}
+                                label={idiomaEs(globalLanguage.lang)}
                             />
                         </Grid>
                         <Grid item xs={12}>
-                            <Typography>{pasajeSeleccionadoOTodos(props.lang)}</Typography>
+                            <Typography>{pasajeSeleccionadoOTodos(globalLanguage.lang)}</Typography>
                         </Grid>
-                        <RadioGroup aria-label={pasajeSeleccionadoOTodos(props.lang)} name="Pasaje seleccionado" value={descargarPasajeSolo} onChange={pasajeSeleccionadoRadio}>
+                        <RadioGroup aria-label={pasajeSeleccionadoOTodos(globalLanguage.lang)} name="Pasaje seleccionado" value={descargarPasajeSolo} onChange={pasajeSeleccionadoRadio}>
                             <Grid item xs={12}>
                                 <Grid container>
                                     <Grid item xs={6}>
-                                        <FormControlLabel control={<Radio/>} value="seleccionado" label={pasajeSeleccionado(props.lang)}/>
+                                        <FormControlLabel control={<Radio/>} value="seleccionado" label={pasajeSeleccionado(globalLanguage.lang)}/>
                                     </Grid>
                                     <Grid item xs={6}>
-                                        <FormControlLabel control={<Radio/>} value="todos" label={todosLosPasajes(props.lang)}/>
+                                        <FormControlLabel control={<Radio/>} value="todos" label={todosLosPasajes(globalLanguage.lang)}/>
                                     </Grid>
                                 </Grid>
                             </Grid>
                         </RadioGroup>
                         <Grid item xs={12}>
-                            <Typography>{tipoDeArchivos(props.lang)}</Typography>
+                            <Typography>{tipoDeArchivos(globalLanguage.lang)}</Typography>
                         </Grid>
-                        <RadioGroup aria-label={tipoDeArchivos(props.lang)} name="Tipo de archivo" value={value} onChange={handleChangeRadio}>
+                        <RadioGroup aria-label={tipoDeArchivos(globalLanguage.lang)} name="Tipo de archivo" value={value} onChange={handleChangeRadio}>
                             <Grid item xs={6}>
-                                <FormControlLabel control={<Radio/>} value="texto" label={texto(props.lang)}/>
+                                <FormControlLabel control={<Radio/>} value="texto" label={texto(globalLanguage.lang)}/>
                             </Grid>
                             <Grid item xs={6}>
                                 <FormControlLabel control={<Radio/>} value="PDF" label="PDF"/>
@@ -255,10 +257,10 @@ function ModalDescargas(props){
                 <Divider className="divisor"/>
                 <Grid container >
                         <Grid item xs={12} className={classes.tituloConsultados}>
-                            <Typography>{descargarConsultadas(props.lang)}</Typography>
+                            <Typography>{descargarConsultadas(globalLanguage.lang)}</Typography>
                         </Grid>
                     <Grid item xs={12}>
-                        <ListaDeConsultados checked={checked} setChecked={setChecked} lang={props.lang}/>
+                        <ListaDeConsultados checked={checked} setChecked={setChecked}/>
                     </Grid>
                 </Grid>
                 <Divider className="divisor"/>
@@ -269,7 +271,7 @@ function ModalDescargas(props){
                             type="submit"
                             onClick={clickHandleDescarga}
                         >
-                            {descargarConsulta(props.lang)}
+                            {descargarConsulta(globalLanguage.lang)}
                         </Button>
                     </Grid>
                 </Grid>

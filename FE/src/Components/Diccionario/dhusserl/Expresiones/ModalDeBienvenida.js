@@ -10,6 +10,7 @@ import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/styles';
 
 import {bienvenido, bienvenidaModal, aceptarAlert} from '../../../../js/Language';
+import { languageStore } from '../../../../stores/languageStore';
 
 const modalBienvenida={
     modalinB:{
@@ -38,6 +39,7 @@ const modalBienvenida={
 
 function ModalDeBienvenida(props){
     const {classes}=props;
+    const globalLanguage = React.useContext(languageStore);
 
     function clickHandleCloseModal(){
         props.setOpenModal(false)
@@ -53,7 +55,7 @@ function ModalDeBienvenida(props){
                 <Grid container>
                     <Grid item xs={11}>
                         <Typography variant="h4">
-                            {bienvenido(props.lang)}
+                            {bienvenido(globalLanguage.lang)}
                         </Typography>
                     </Grid>
                     <Grid item xs={1}>
@@ -67,7 +69,7 @@ function ModalDeBienvenida(props){
                     <Divider/>
                     <Grid item xs={12} className={classes.gridDelTypo}>
                         <Typography variant="h5">
-                            {bienvenidaModal(props.lang)}
+                            {bienvenidaModal(globalLanguage.lang)}
                         </Typography>
                     </Grid>
                     <Divider/>
@@ -79,7 +81,7 @@ function ModalDeBienvenida(props){
                         className={classes.botonAceptar}
                         onClick={clickHandleCloseModal}
                         >
-                            {aceptarAlert(props.lang)}
+                            {aceptarAlert(globalLanguage.lang)}
                         </Button>
                     </Grid>
                 </Grid>

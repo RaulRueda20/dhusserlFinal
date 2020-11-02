@@ -14,13 +14,11 @@ import Guia from './Guia/Guia';
 
 //Other req
 import * as localStore from '../../../js/localStore';
-import { sesionStore } from '../../../sesionStore';
+import { sesionStore } from '../../../stores/sesionStore';
+import { letraProvider as LetraProvider} from '../../../stores/letraStore';
 
-export default function Subvistas({match, lang, setLang, history}){
+export default function Subvistas({match, history}){
     const global = React.useContext(sesionStore);
-    const [language,setLanguage] = React.useState("al");
-    const [letraMain, setLetraMain] = React.useState("A");
-    const [flagLetraMain, setFlagLetraMain]=React.useState(false);
 
     React.useEffect(()=>{
         if(global.sesion == null) history.push("/diccionario/login")
@@ -29,18 +27,20 @@ export default function Subvistas({match, lang, setLang, history}){
 
     return(
         <div>
-            <HeaderMain match={match} lang={lang} setLang={setLang} history={history}/>
-            <Switch>
-                <Route path={`${match.url}/expresiones`} render={(props) => <Expresion {...props} lang={lang} setLang={setLang} language={language} setLanguage={setLanguage} letraMain={letraMain} setLetraMain={setLetraMain} flagLetraMain={flagLetraMain} setFlagLetraMain={setFlagLetraMain}/>}/>
-                <Route path={`${match.url}/pasaje/:expresion/:id`} render={(props) => <Pasaje {...props} lang={lang} setLang={setLang} language={language} setLanguage={setLanguage} letraMain={letraMain} setLetraMain={setLetraMain} flagLetraMain={flagLetraMain} setFlagLetraMain={setFlagLetraMain}/>}/>
-                <Route path={`${match.url}/pasaje/:expresion`} render={(props) => <Pasaje {...props} lang={lang} setLang={setLang} language={language} setLanguage={setLanguage} letraMain={letraMain} setLetraMain={setLetraMain} flagLetraMain={flagLetraMain} setFlagLetraMain={setFlagLetraMain}/>}/>
-                <Route path={`${match.url}/busquedas`} render={(props) => <ModuloBusquedas {...props} lang={lang} setLang={setLang}/>}/>
-                -<Route path={`${match.url}/acercade`} render={(props) => <Acercade {...props} lang={lang} setLang={setLang}/>}/>
-                <Route path={`${match.url}/guia`} render={(props) => <Guia {...props} lang={lang} setLang={setLang}/>}/>
-                <Route path={`${match.url}/`}>
-                    <Redirect to={`${match.url}/expresiones`} />
-                </Route>
-            </Switch>
+            <HeaderMain match={match} history={history}/>
+            <LetraProvider>
+                <Switch>
+                    <Route path={`${match.url}/expresiones`} render={(props) => <Expresion {...props} />}/>
+                    <Route path={`${match.url}/pasaje/:expresion/:id`} render={(props) => <Pasaje {...props}/>}/>
+                    <Route path={`${match.url}/pasaje/:expresion`} render={(props) => <Pasaje {...props}/>}/>
+                    <Route path={`${match.url}/busquedas`} render={(props) => <ModuloBusquedas {...props}/>}/>
+                    -<Route path={`${match.url}/acercade`} render={(props) => <Acercade {...props}/>}/>
+                    <Route path={`${match.url}/guia`} render={(props) => <Guia {...props}/>}/>
+                    <Route path={`${match.url}/`}>
+                        <Redirect to={`${match.url}/expresiones`} />
+                    </Route>
+                </Switch>
+            </LetraProvider>
         </div>
     )
 }

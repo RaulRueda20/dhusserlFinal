@@ -59,10 +59,6 @@ theme.typography.h6={
 
 function RutaAdministrador(props){
 
-    // React.useEffect(()=>{
-    //     console.log(props.match)
-    // })
-
     return(
         <MuiThemeProvider theme={theme}>
             <Switch>

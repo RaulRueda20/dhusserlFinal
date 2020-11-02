@@ -19,11 +19,13 @@ import Snackbar from '@material-ui/core/Snackbar';
 //Other req
 import '../../../../css/expresiones.css';
 import {webService} from '../../../../js/webServices';
-import { sesionStore } from '../../../../sesionStore';
+import { sesionStore } from '../../../../stores/sesionStore';
 import classNames from 'classnames';
 
 //Language
 import {busquedas, distincionMayusyMinus, letraNoCoincide} from '../../../../js/Language';
+import { languageStore } from '../../../../stores/languageStore';
+import { letraStore } from '../../../../stores/letraStore';
 
 const styles = {
   contenedor:{
@@ -37,6 +39,8 @@ const styles = {
 function Busqueda(props){
   const {classes}=props;
   const global = React.useContext(sesionStore);
+  const globalLanguage = React.useContext(languageStore);
+  const globalLetra = React.useContext(letraStore);
   const [insensitiveCase,setInsensitiveCase]=React.useState(false);
   const [snack, setSnack] = React.useState({open : false, text : ""});
 
@@ -64,27 +68,27 @@ function Busqueda(props){
           var letra = props.busqueda.slice(0,1)
           var letraCapital = letra.toUpperCase()
           if(letra == letraCapital){
-            var servicebl = "/referencias/busquedaExpresionPorLetra"+"/"+props.letraMain+"/"+props.language
+            var servicebl = "/referencias/busquedaExpresionPorLetra"+"/"+globalLetra.letra+"/"+globalLanguage.langLista
             console.log("servicebl", servicebl)
             webService(servicebl, "POST", {parametro:props.busqueda,case:insensitiveCase}, global.sesion, (data) => {
-              if(props.letraMain == letraCapital){
+              if(globalLetra.letra == letraCapital){
                 console.log("data", data.data.response)
                 ChunkC(data.data.response)
              }else{
-                setSnack({open : true, text: letraNoCoincide(props.lang)})
+                setSnack({open : true, text: letraNoCoincide(globalLanguage.lang)})
               }
             })
             props.setLoading(false)
           }else{
             var letraCapital = letra.toUpperCase()
-            var servicebl = "/referencias/busquedaExpresionPorLetra"+"/"+props.letraMain+"/"+props.language
+            var servicebl = "/referencias/busquedaExpresionPorLetra"+"/"+globalLetra.letra+"/"+globalLanguage.langLista
             console.log("servicebl", servicebl)
             webService(servicebl, "POST", {parametro:props.busqueda,case:insensitiveCase}, global.sesion, (data) => {
               console.log("data",data.data.response)
-              if(props.letraMain == letraCapital){
+              if(globalLetra.letra == letraCapital){
                ChunkC(data.data.response)
               }else{
-                setSnack({open : true, text: letraNoCoincide(props.lang)})
+                setSnack({open : true, text: letraNoCoincide(globalLanguage.lang)})
               }
             })
             props.setLoading(false)
@@ -112,7 +116,7 @@ function Busqueda(props){
       <Grid container className={classes.contenedor}>
         <Grid item xs={10}>
           <FormControl className="busquedaEnExpresiones">
-            <InputLabel htmlFor="input-with-icon-adornment">{busquedas(props.lang)}</InputLabel>
+            <InputLabel htmlFor="input-with-icon-adornment">{busquedas(globalLanguage.lang)}</InputLabel>
             <Input
             onChange={event => props.setBusqueda(event.target.value)}
             id="input-with-icon-adornment"
@@ -127,7 +131,7 @@ function Busqueda(props){
           </FormControl>  
         </Grid>
         <Grid item xs={2} className={classes.switch}>
-          <Tooltip title={distincionMayusyMinus(props.lang)}>
+          <Tooltip title={distincionMayusyMinus(globalLanguage.lang)}>
             <IconButton onClick={handleInsensitiveCase} className={classNames([{"caseSeleccionado" : insensitiveCase == true}, "case"])}>
               <Icon path={mdiFormatLetterCase}
               title="User Profile"

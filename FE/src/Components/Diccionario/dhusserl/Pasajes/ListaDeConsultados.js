@@ -17,7 +17,8 @@ import { Typography } from '@material-ui/core';
 
 //Other req
 import * as localStore from '../../../../js/localStore';
-import { sesionStore } from '../../../../sesionStore';
+import { sesionStore } from '../../../../stores/sesionStore';
+import { languageStore } from '../../../../stores/languageStore';
 
 //Language
 import {marcarConsultadas} from '../../../../js/Language';
@@ -47,6 +48,7 @@ const useStyles = makeStyles(theme => ({
 function ListaDeConsultados(props){
     const classes = useStyles();
     const global = React.useContext(sesionStore);
+    const globalLanguage = React.useContext(languageStore);
     const [listaC, setListaC] = React.useState([]);
 
     function fixListaC(lista){
@@ -117,7 +119,7 @@ function ListaDeConsultados(props){
                     inputProps={{ 'aria-label': 'Todas las expresiones consultadas' }}
                     />
                     }
-                    title={marcarConsultadas(props.lang)}
+                    title={marcarConsultadas(globalLanguage.lang)}
                 />
             <Divider />
             <List component="div" role="list" className={classes.divLista}>

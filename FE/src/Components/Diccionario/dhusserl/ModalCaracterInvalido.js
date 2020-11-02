@@ -13,6 +13,7 @@ import { withStyles } from '@material-ui/styles';
 
 //Language
 import {tituloCaracteres, mensajeCaracteres} from '../../../js/Language';
+import { languageStore } from '../../../stores/languageStore';
 
 const modalInvalido={
     modalinb:{
@@ -40,6 +41,7 @@ const modalInvalido={
 
 function ModalCaracterInvalido(props){
     const {classes}=props;
+    const globalLanguage = React.useContext(languageStore);
 
     function clickHandleCloseModal(){
         props.setModalCaracteresInvalidos(false)
@@ -55,7 +57,7 @@ function ModalCaracterInvalido(props){
                 <Grid container alignContent="center" alignItems="center">
                     <Grid item xs={11}>
                         <Typography variant="h4">
-                            {tituloCaracteres(props.lang)}
+                            {tituloCaracteres(globalLanguage.lang)}
                         </Typography>
                     </Grid>
                     <Grid item xs={1}>
@@ -69,7 +71,7 @@ function ModalCaracterInvalido(props){
                     <Divider/>
                     <Grid item xs={12} className={classes.gridDelTypo}>
                         <Typography variant="h5">
-                            {mensajeCaracteres(props.lang)}
+                            {mensajeCaracteres(globalLanguage.lang)}
                         </Typography>
                     </Grid>
                 </Grid>

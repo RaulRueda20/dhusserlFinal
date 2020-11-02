@@ -14,6 +14,7 @@ import ca from "../../Imagenes/catalan.png";
 import al from "../../Imagenes/germany.png";
 
 import {toolTipMenuIdiomas} from '../../js/Language';
+import { languageStore } from '../../stores/languageStore';
 
 const banderas = {
   botonesBan:{
@@ -49,6 +50,7 @@ const useStyles = makeStyles(theme => ({
 
 function MenuIdioma(props){
   const classes = useStyles();
+  const globalLanguage = React.useContext(languageStore);
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   function handleClick(event) {
@@ -61,7 +63,7 @@ function MenuIdioma(props){
 
   return(
       <div className="menuIdiomas">
-        <Tooltip title={toolTipMenuIdiomas(props.lang)}>
+        <Tooltip title={toolTipMenuIdiomas(globalLanguage.lang)}>
           <IconButton
             aria-haspopup="true"
             aria-owns={anchorEl ? 'simple-menu': undefined}
@@ -80,19 +82,19 @@ function MenuIdioma(props){
           open={Boolean(anchorEl)}
         >
           <MenuItem onClick={handleClose} className="menuSimple">
-            <Fab className={classes.botonesBan} onClick={()=>props.setLang("al")}><img className="banderas" src={al}/></Fab>
+            <Fab className={classes.botonesBan} onClick={()=>globalLanguage.setLang("al")}><img className="banderas" src={al}/></Fab>
           </MenuItem>
           <MenuItem onClick={handleClose} className="menuSimple">
-            <Fab className={classes.botonesBan} onClick={()=>props.setLang("es")}><img className="banderas" src={es}/></Fab>
+            <Fab className={classes.botonesBan} onClick={()=>globalLanguage.setLang("es")}><img className="banderas" src={es}/></Fab>
           </MenuItem>
           <MenuItem onClick={handleClose} className="menuSimple">
-            <Fab className={classes.botonesBan} onClick={()=>props.setLang("en")}><img className="banderas" src={en}/></Fab>
+            <Fab className={classes.botonesBan} onClick={()=>globalLanguage.setLang("en")}><img className="banderas" src={en}/></Fab>
           </MenuItem>
           <MenuItem onClick={handleClose} className="menuSimple">
-            <Fab className={classes.botonesBan} onClick={()=>props.setLang("fr")}><img className="banderas" src={fr}/></Fab>
+            <Fab className={classes.botonesBan} onClick={()=>globalLanguage.setLang("fr")}><img className="banderas" src={fr}/></Fab>
           </MenuItem>
           <MenuItem onClick={handleClose} className="menuSimple">
-            <Fab className={classes.botonesBan} onClick={()=>props.setLang("ca")}><img className="banderas" src={ca}/></Fab>
+            <Fab className={classes.botonesBan} onClick={()=>globalLanguage.setLang("ca")}><img className="banderas" src={ca}/></Fab>
           </MenuItem>
         </Menu>
     </div>

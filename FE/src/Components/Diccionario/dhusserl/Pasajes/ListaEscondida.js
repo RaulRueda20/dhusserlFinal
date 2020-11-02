@@ -6,7 +6,7 @@ import PanelExpresionIzquierdo from './PanelExpresionIzquierdo';
 
 //Elements
 import * as localStore from '../../../../js/localStore';
-import { sesionStore } from '../../../../sesionStore';
+import { sesionStore } from '../../../../stores/sesionStore';
 
 function ListaEscondida(props){
   const [panelesAbiertos,setPanelesAbiertos] = React.useState([]);
@@ -56,22 +56,12 @@ function ListaEscondida(props){
 
   return (
       <div className="listaIzquierdaEscondida">
-        {props.state.checkedA == false ?
-          <ul>
-            {props.chunkListGlobal.map((expresion, index)=>(
-              <PanelExpresionIzquierdo {...props} key={expresion.id+"-"+index} expresion={expresion} handleClickPanel={handleClickPanel} clickHandleVista={clickHandleVista} index={index}
-              getJerarquia={props.getJerarquia} idReferencias={props.idReferencias} setIdReferencias={props.setIdReferencias} expresionSeleccionada={props.expresionSeleccionada} 
-              setFlagLetraMain={props.setFlagLetraMain} idExpresion={props.idExpresion}/> 
-            ))}
-          </ul>
-        :
-          <ul key={props.expresiones.id}>
+        <ul key={props.expresiones.id}>
           {props.chunkList.map((expresion, index)=>(
             <PanelExpresionIzquierdo {...props} key={expresion.id+"-"+index} expresion={expresion} handleClickPanel={handleClickPanel} clickHandleVista={clickHandleVista} index={index}
-            getJerarquia={props.getJerarquia} idReferencias={props.idReferencias} setIdReferencias={props.setIdReferencias} idExpresion={props.idExpresion} setFlagLetraMain={props.setFlagLetraMain} idExpresion={props.idExpresion}/>
-            ))}
-          </ul>  
-      }
+            getJerarquia={props.getJerarquia} idReferencias={props.idReferencias} setIdReferencias={props.setIdReferencias} idExpresion={props.idExpresion} idExpresion={props.idExpresion}/>
+          ))}
+        </ul>  
     </div>
   )
 }

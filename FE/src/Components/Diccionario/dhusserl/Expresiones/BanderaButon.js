@@ -7,6 +7,7 @@ import es from "../../../../Imagenes/spain.png";
 import al from "../../../../Imagenes/germany.png";
 
 import {toolTipIdiomaDeLaLista} from '../../../../js/Language';
+import { languageStore } from '../../../../stores/languageStore';
 
 const bandIn = {
   imagenesBandera:{
@@ -21,25 +22,24 @@ const bandIn = {
 
 function BanderaButon(props){
   const {classes} = props;
-
-  var idioma = props.setLanguage
+  const globalLanguage = React.useContext(languageStore);
 
   const clickChangeLanguageEs=()=>{
-    idioma("es");
+    globalLanguage.setLangLista("es");
   }
 
   const clickChangeLanguageAl=()=>{
-    idioma("al");
+    globalLanguage.setLangLista("al");
   }
 
   return(
       <div>
           {props.language == 'es' ?
-            <Tooltip title={toolTipIdiomaDeLaLista(props.lang)}>
+            <Tooltip title={toolTipIdiomaDeLaLista(globalLanguage.lang)}>
               <Button size="small" className={classes.imagenesBandera} onClick={clickChangeLanguageAl}><img className="banderaIzquierda" src={al}/></Button>
             </Tooltip>
             :
-            <Tooltip title={toolTipIdiomaDeLaLista(props.lang)}> 
+            <Tooltip title={toolTipIdiomaDeLaLista(globalLanguage.lang)}> 
               <Button size="small" className={classes.imagenesBandera} onClick={clickChangeLanguageEs}><img className="banderaIzquierda" src={es}/></Button>
             </Tooltip>
           }

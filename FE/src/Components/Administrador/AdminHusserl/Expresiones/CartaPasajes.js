@@ -37,7 +37,6 @@ function CartaPasajes(props){
   const {classes}=props;
 
   const deleteP = () => {
-    console.log(props.pasaje.refid)
     props.setPasajeToDelete(props.pasaje.refid)
     props.deletePasaje(props.pasaje.refid)
   }

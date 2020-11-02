@@ -10,6 +10,7 @@ import { withStyles } from '@material-ui/styles';
 
 //Language
 import {tipoDeBusqueda, dentroExpresion, dentroReferencia} from '../../../../js/Language';
+import { languageStore } from '../../../../stores/languageStore';
 
 const seleccion={
     selector:{
@@ -19,6 +20,7 @@ const seleccion={
 
 function SelectorBusqueda(props){
     const {classes}=props;
+    const globalLanguage = React.useContext(languageStore);
 
     function handleChange(event){
         props.setTipoBusqueda(event.target.value)
@@ -26,17 +28,17 @@ function SelectorBusqueda(props){
 
     return(
         <FormControl className={classes.selector} fullWidth>
-            <InputLabel htmlFor="Busquedas">{tipoDeBusqueda(props.lang)}</InputLabel>
+            <InputLabel htmlFor="Busquedas">{tipoDeBusqueda(globalLanguage.lang)}</InputLabel>
             <Select
                 fullWidth
                 value={props.tipoBusqueda}
                 onChange={handleChange}
             >
                 <MenuItem value="Expresion">
-                    {dentroExpresion(props.lang)}
+                    {dentroExpresion(globalLanguage.lang)}
                 </MenuItem>
                 <MenuItem value="Referencia">
-                    {dentroReferencia(props.lang)}
+                    {dentroReferencia(globalLanguage.lang)}
                 </MenuItem>
             </Select>
         </FormControl>

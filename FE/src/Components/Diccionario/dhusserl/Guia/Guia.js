@@ -9,10 +9,12 @@ import Link from '@material-ui/core/Link';
 import {webService} from '../../../../js/webServices';
 import classNames from 'classnames';
 import * as localStore from '../../../../js/localStore';
-import { sesionStore } from '../../../../sesionStore';
+import { sesionStore } from '../../../../stores/sesionStore';
+import { languageStore } from '../../../../stores/languageStore';
 
 function Guia(props){
     const global = React.useContext(sesionStore);
+    const globalLanguage = React.useContext(languageStore);
     const [guia, setGuia]=React.useState("");
     const [loading, setLoading]=React.useState(false);
 
@@ -27,7 +29,7 @@ function Guia(props){
     }, [])
 
     function renderizadoGuia(){
-        switch(props.lang){
+        switch(globalLanguage.lang){
             case "es":
                 return {__html: guia.contenido}
             case "ca":

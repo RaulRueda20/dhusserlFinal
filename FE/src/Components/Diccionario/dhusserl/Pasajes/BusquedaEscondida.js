@@ -23,7 +23,9 @@ import {busquedas, toolTipIdiomaDeLaLista, distincionMayusyMinus, letraNoCoincid
 //Other request
 import {webService} from '../../../../js/webServices';
 import classNames from 'classnames';
-import { sesionStore } from '../../../../sesionStore';
+import { sesionStore } from '../../../../stores/sesionStore';
+import { languageStore } from '../../../../stores/languageStore';
+import { letraStore } from '../../../../stores/letraStore';
 
 //Imagen
 import es from "../../../../Imagenes/spain.png";
@@ -46,14 +48,16 @@ const styles={
 function BusquedaEscondida(props){
     const {classes}=props;
     const global = React.useContext(sesionStore);
+    const globalLanguage = React.useContext(languageStore);
+    const globalLetra = React.useContext(letraStore);
     const [insensitiveCase,setInsensitiveCase]=React.useState(false);
 
     const clickChangeLanguageEsVP=()=>{
-        props.setLanguage("es");
+        globalLanguage.setLangLista("es");
     }
 
     const clickChangeLanguageAlVP=()=>{
-        props.setLanguage("al");
+        globalLanguage.setLangLista("al");
     }
 
     function handleInsensitiveCase(){
@@ -75,9 +79,9 @@ function BusquedaEscondida(props){
                 var letra = props.busqueda.slice(0,1)
                 var letraCapital = letra.toUpperCase()
                 if(letra == letraCapital){
-                    var servicebl = "/referencias/busquedaExpresionPorLetra"+"/"+props.letraMain+"/"+props.language
+                    var servicebl = "/referencias/busquedaExpresionPorLetra"+"/"+globalLetra.letra+"/"+globalLanguage.langLista
                     webService(servicebl, "POST", {parametro:props.busqueda,case:insensitiveCase}, global.sesion, (data) => {
-                    if(props.letraMain == letraCapital){
+                    if(globalLetra.letra == letraCapital){
                         console.log(data.data.response)
                         ChunkC(data.data.response)
                     }else{
@@ -86,9 +90,9 @@ function BusquedaEscondida(props){
                     })
                 }else{
                     var letraCapital = letra.toUpperCase()
-                    var servicebl = "/referencias/busquedaExpresionPorLetra"+"/"+props.letraMain+"/"+props.language
+                    var servicebl = "/referencias/busquedaExpresionPorLetra"+"/"+globalLetra.letra+"/"+globalLanguage.langLista
                     webService(servicebl, "POST", {parametro:props.busqueda,case:insensitiveCase}, global.sesion, (data) => {
-                    if(props.letraMain == letraCapital){
+                    if(globalLetra.letra == letraCapital){
                         console.log(data.data.response)
                         ChunkC(data.data.response)
                     }else{
@@ -111,14 +115,14 @@ function BusquedaEscondida(props){
             <Grid container justify="center" alignItems="center" alignContent="center">
                 <Grid item xs={6} sm={7} md={9} lg={9}>
                     <FormControl className="busquedaEnExpresiones">
-                        <InputLabel htmlFor="input-with-icon-adornment">{busquedas(props.lang)}</InputLabel>
+                        <InputLabel htmlFor="input-with-icon-adornment">{busquedas(globalLanguage.lang)}</InputLabel>
                         <Input  
                             onChange={event => props.setBusqueda(event.target.value)}
                             fullWidth
                             id="input-with-icon-adornment"
                             startAdornment={
                                 <InputAdornment position="end">
-                                    <Tooltip title={distincionMayusyMinus(props.lang)}>
+                                    <Tooltip title={distincionMayusyMinus(globalLanguage.lang)}>
                                         <IconButton onClick={handleInsensitiveCase} className={classNames([{"caseSeleccionado" : insensitiveCase == true}, "case"])}>
                                             <Icon path={mdiFormatLetterCase}
                                             title="User Profile"
@@ -146,7 +150,7 @@ function BusquedaEscondida(props){
                     </Grid>
                 </Hidden>
                 <Grid item xs={2} sm={3} md={2} lg={2} className={classes.switchPasaje}>
-                    <Tooltip title={distincionMayusyMinus(props.lang)}>
+                    <Tooltip title={distincionMayusyMinus(globalLanguage.lang)}>
                         <IconButton onClick={handleInsensitiveCase} className={classNames([{"caseSeleccionado" : insensitiveCase == true}, "case"])}>
                             <Icon path={mdiFormatLetterCase}
                             title="User Profile"
@@ -156,8 +160,8 @@ function BusquedaEscondida(props){
                     </Tooltip>
                 </Grid>
                 <Grid item xs={2} sm={2} md={1} lg={1}>
-                    <Tooltip title={toolTipIdiomaDeLaLista(props.lang)}>
-                        {props.language == 'es' ?
+                    <Tooltip title={toolTipIdiomaDeLaLista(globalLanguage.lang)}>
+                        {globalLanguage.language == 'es' ?
                             <Button className={classes.imagenesBandera} onClick={clickChangeLanguageAlVP}><img className="banderaBusquedaPasajes" src={al}/></Button>
                             : <Button className={classes.imagenesBandera} onClick={clickChangeLanguageEsVP}><img className="banderaBusquedaPasajes" src={es}/></Button>
                         }                        
