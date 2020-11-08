@@ -1,18 +1,18 @@
 //React
-import React from "react";
+import React, { Suspense, lazy, useEffect, useState, Fragment, useContext }  from "react";
 
 //Elements
 import { withStyles } from "@material-ui/styles";
 
 //Components
-import LoginForm from "./LoginForm";
-import RegistroForm from "./RegistroForm";
-import Header from "./Header";
-import Footer from "./Footer";
+import { LinearProgress as Loading } from "@material-ui/core";
+const LoginForm = lazy(()=> import('./LoginForm'))
+const RegistroForm = lazy(()=> import('./RegistroForm'))
+const Header = lazy(()=> import('./Header'))
+const Footer = lazy(()=> import('./Footer'))
 
 //Other req
 import fondo from "../../../Imagenes/fondo.png";
-import * as localStore from "../../../js/localStore";
 import { sesionStore } from "../../../stores/sesionStore";
 
 const loGin = {
@@ -27,38 +27,50 @@ const loGin = {
   },
 };
 
-function LoginD(props) {
-  const [login, setLogin] = React.useState(true);
-  const { classes } = props;
-  const global = React.useContext(sesionStore);
+const LoginD = (props) => {
+  const [login, setLogin] = useState(true);
+  const { classes, history, match } = props;
+  const global = useContext(sesionStore);
+  const {state} = global
+  const {sesion} = state
 
-  React.useEffect(() => {
-    console.log("sesion", localStore.getObjects("sesion"));
-    if (global.sesion != null) {
-      props.history.push("/diccionario/husserl");
+  useEffect(() => {
+    if (sesion != null) {
+      history.push("/diccionario/husserl");
     }
-  }, [global.sesion]);
+  }, [sesion]);
 
   return (
-    <div>
+    <Fragment>
       <div className={classes.back} />
-      <Header />
+      <Suspense fallback={<Loading />}>
+        <Header />
+      </Suspense>
+      
       {login ? (
-        <LoginForm
-          history={props.history}
-          match={props.match}
+        <Suspense fallback={<Loading />}>
+          <LoginForm
+          history={history}
+          match={match}
           setLogin={setLogin}
         />
+        </Suspense>
+        
       ) : (
-        <RegistroForm
-          history={props.history}
-          match={props.match}
+        <Suspense fallback={<Loading />}>
+          <RegistroForm
+          history={history}
+          match={match}
           setLogin={setLogin}
         />
+        </Suspense>
+        
       )}
       <br />
-      <Footer />
-    </div>
+      <Suspense fallback={<Loading />}>
+        <Footer />
+      </Suspense>
+    </Fragment>
   );
 }
 

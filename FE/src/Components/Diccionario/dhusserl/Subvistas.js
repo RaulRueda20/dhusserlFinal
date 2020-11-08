@@ -13,17 +13,17 @@ import Acercade from "./AcercaDe/Acercade";
 import Guia from "./Guia/Guia";
 
 //Other req
-import * as localStore from "../../../js/localStore";
 import { sesionStore } from "../../../stores/sesionStore";
 import { letraProvider as LetraProvider } from "../../../stores/letraStore";
-import { expresionProvider as ExpresionProvider } from "../../../../stores/expresionStore";
+import { expresionProvider as ExpresionProvider } from "../../../stores/expresionStore";
 
-export default function Subvistas({ match, history }) {
+const Subvistas = ({ match, history }) => {
   const global = React.useContext(sesionStore);
+  const { state } = global
+  const { sesion } = state
 
   React.useEffect(() => {
-    if (global.sesion == null) history.push("/diccionario/login");
-    console.log("match.url", match.url);
+    if (sesion == null) history.push("/diccionario/login");
   }, [true]);
 
   return (
@@ -66,3 +66,5 @@ export default function Subvistas({ match, history }) {
     </div>
   );
 }
+
+export default Subvistas

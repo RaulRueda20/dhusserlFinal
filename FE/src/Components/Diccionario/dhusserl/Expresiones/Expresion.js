@@ -3,12 +3,8 @@ import React from "react";
 
 //Elements
 import classNames from "classnames";
-import Grid from "@material-ui/core/Grid";
-import LinearProgress from "@material-ui/core/LinearProgress";
-import Hidden from "@material-ui/core/Hidden";
-import IconButton from "@material-ui/core/IconButton";
-import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
-import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
+import { Grid, LinearProgress, Hidden, IconButton } from "@material-ui/core";
+import { KeyboardArrowUp as KeyboardArrowUpIcon, KeyboardArrowDown as KeyboardArrowDownIcon } from "@material-ui/icons"
 
 //Components
 import ListaLetras from "./ListaLetras";
@@ -27,8 +23,8 @@ import ModalNumeros from "../ModalNumeros";
 import Snackbars from "../../Login/Snackbars";
 
 //Other req
-import { Switch, Redirect, Link, Route } from "react-router-dom";
-import { webService, loginService } from "../../../../js/webServices";
+import { Link } from "react-router-dom";
+import { webService } from "../../../../js/webServices";
 import * as localStore from "../../../../js/localStore";
 import { sesionStore } from "../../../../stores/sesionStore";
 import { languageStore } from "../../../../stores/languageStore";
@@ -37,6 +33,8 @@ import { expresionStore } from "../../../../stores/expresionStore";
 
 function Expresion(props) {
   const global = React.useContext(sesionStore);
+  const { state } = global
+  const { sesion, ultimasVisitadas } = state
   const globalLanguage = React.useContext(languageStore);
   const globalLetra = React.useContext(letraStore);
   const globalExpresion = React.useContext(expresionStore);
@@ -77,7 +75,7 @@ function Expresion(props) {
         expreActual = referencias[i].expresion;
         expresiones.push({
           clave: referencias[i].clave,
-          expresion: referencias[i].expresion,
+          nombreExpresion: referencias[i].expresion,
           id: referencias[i].id,
           index_de: referencias[i].index_de,
           index_es: referencias[i].index_es,
@@ -112,8 +110,9 @@ function Expresion(props) {
       document.getElementById("listaIzquierda").firstChild.scrollIntoView();
     var service =
       "/expresiones/" + globalLanguage.langLista + "/" + globalLetra.letra;
-    webService(service, "GET", {}, global.sesion, (data) => {
-      globalExpresion.setExpresiones(fixReferencias(data.data.response));
+    webService(service, "GET", {}, sesion, (data) => {
+      console.log("data", data.data, response)
+      //globalExpresion.setExpresiones(fixReferencias(data.data.response));
       setChunkList(fixReferencias(data.data.response).slice(0, 50));
       setLoading(false);
     });
@@ -124,6 +123,7 @@ function Expresion(props) {
   }, [
     globalLetra.letra,
     globalLanguage.langLista,
+    globalExpresion.expresiones,
     flagDeBusqueda,
     flagDeBusqueda,
   ]);
@@ -175,7 +175,6 @@ function Expresion(props) {
             setExpresionSeleccionada={setExpresionSeleccionada}
             getJerarquia={getJerarquia}
             menuEscondido={menuEscondido}
-            expresionesGlobales={expresionesGlobales}
             setOpenModalN={setOpenModalN}
             flagDeBusqueda={flagDeBusqueda}
             chunkList={chunkList}
@@ -194,14 +193,14 @@ function Expresion(props) {
               <KeyboardArrowDownIcon fontSize="large" />
             </IconButton>
           ) : (
-            <IconButton
-              className="iconoArriba"
-              onClick={handleMenuEscondido}
-              size="medium"
-            >
-              <KeyboardArrowUpIcon fontSize="large" />
-            </IconButton>
-          )}
+              <IconButton
+                className="iconoArriba"
+                onClick={handleMenuEscondido}
+                size="medium"
+              >
+                <KeyboardArrowUpIcon fontSize="large" />
+              </IconButton>
+            )}
         </Hidden>
         <Grid
           item
@@ -219,8 +218,6 @@ function Expresion(props) {
               busqueda={busqueda}
               setBusqueda={setBusqueda}
               setLoading={setLoading}
-              expresionesGlobales={expresionesGlobales}
-              setExpresionesGlobales={setExpresionesGlobales}
               setModalDebusquedas={setModalDebusquedas}
               setModalCaracteresInvalidos={setModalCaracteresInvalidos}
               setModalNumeros={setModalNumeros}
@@ -230,7 +227,6 @@ function Expresion(props) {
             />
             <MenuDerecho
               {...props}
-              expresiones={expresiones}
               expresionSeleccionada={expresionSeleccionada}
               setExpresionSeleccionada={setExpresionSeleccionada}
               expanded1={expanded1}
@@ -241,15 +237,12 @@ function Expresion(props) {
               setExpanded3={setExpanded3}
               getJerarquia={getJerarquia}
               flagDeBusqueda={flagDeBusqueda}
-              expresionesGlobales={expresionesGlobales}
             />
           </Hidden>
           <Hidden smUp>
             <BusquedaAbajo
               busqueda={busqueda}
               setBusqueda={setBusqueda}
-              expresionesGlobales={expresionesGlobales}
-              setExpresionesGlobales={setExpresionesGlobales}
               setModalDebusquedas={setModalDebusquedas}
               setModalCaracteresInvalidos={setModalCaracteresInvalidos}
               setModalNumeros={setModalNumeros}
@@ -259,7 +252,6 @@ function Expresion(props) {
             />
             <MenuBajo
               {...props}
-              expresiones={expresiones}
               expresionSeleccionada={expresionSeleccionada}
               setExpresionSeleccionada={setExpresionSeleccionada}
               expanded1={expanded1}

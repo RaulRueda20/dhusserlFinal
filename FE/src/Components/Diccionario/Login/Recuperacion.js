@@ -19,66 +19,56 @@ import Footer from './Footer';
 import Snackbars from './Snackbars';
 import Header from './Header';
 
-const Recovery ={
+const Recovery = {
     back: {
-      backgroundImage: `url(${fondo})`,
-      position : "fixed",
-      zIndex : -1,
-      height : "100vh",
-      width : "100vw",
-      opacity: 0.45,
-      top: 0
+        backgroundImage: `url(${fondo})`,
+        position: "fixed",
+        zIndex: -1,
+        height: "100vh",
+        width: "100vw",
+        opacity: 0.45,
+        top: 0
     },
-    pass : {
+    pass: {
         textAlign: 'center !important',
     },
-    TextField1:{
+    TextField1: {
         justify: 'center',
-        width:"70%",
+        width: "70%",
     },
     GridPass: {
         paddingLeft: "350px",
         paddingTop: "10px"
     }
-  }
+}
 
-function Recuperacion(props){
-    const {classes}=props;
+function Recuperacion(props) {
+    const { classes } = props;
     const [nuevoPassword, setNuevoPassword] = React.useState('');
     const [confirmacion, setConfirmacion] = React.useState('');
-    const [snackbar, setSnackbar]=React.useState({open:false, variant:"", message:""});
-    const [loading, setLoading]=React.useState(false);
+    const [snackbar, setSnackbar] = React.useState({ open: false, variant: "", message: "" });
+    const [loading, setLoading] = React.useState(false);
 
-    function onFormSubmit(event){
+    function onFormSubmit(event) {
         event.preventDefault();
         setLoading(true)
-        console.log("mail",document.URL)
+        console.log("mail", document.URL)
         var url = document.URL
-        //var stringCorreo = props.match.params.email
-        //console.log("stringCorreo",props.match.url)
-        //var correo = Buffer.from(url, 'base64').toString();
-        //var service = "/updatePassword/" + correo
         var params = {
             password: nuevoPassword,
             repassword: confirmacion
         }
-        //if(params.password==""){
-            //setSnackbar({open:true, variant: error,  message: "Password Invalido, intente de nuevo por favor"})
-        //}else if(params.password != params.repassword){
-            //setSnackbar({open:true, variant: error,  message: "La confirmacion no coincide, intente de nuevo por favor"})
-        //}
-
     }
 
-    function handleClose(){
-        setSnackbar({open:false,varian:"", message:""})
+    function handleClose() {
+        setSnackbar({ open: false, varian: "", message: "" })
     }
 
-    return(
+    return (
         <div>
             <div className={classes.back} />
             <form onSubmit={onFormSubmit}>
-                <Header lang={props.lang} setLang={props.setLang}/>
+                <Header lang={props.lang} setLang={props.setLang} />
                 <Grid container>
                     <Grid item xs={12}>
                         <Typography variant="h3" className={classes.pass}>
@@ -87,10 +77,10 @@ function Recuperacion(props){
                     </Grid>
                     <Grid item xs={12} className={classes.GridPass}>
                         <TextField
-                        type = "password"
-                        className={classes.TextField1}
-                        value={nuevoPassword}
-                        onChange={e => setNuevoPassword(e.target.value)}
+                            type="password"
+                            className={classes.TextField1}
+                            value={nuevoPassword}
+                            onChange={e => setNuevoPassword(e.target.value)}
                         />
                     </Grid>
                 </Grid>
@@ -99,4 +89,4 @@ function Recuperacion(props){
     )
 }
 
-export default withStyles(Recovery) (Recuperacion);
+export default withStyles(Recovery)(Recuperacion);

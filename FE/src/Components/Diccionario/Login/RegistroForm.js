@@ -1,30 +1,22 @@
-import React from 'react';
-import classNames from 'classnames';
-import TextField from '@material-ui/core/TextField';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import LinearProgress from '@material-ui/core/LinearProgress';
+import React, { useContext, useState } from 'react';
+import { TextField, Grid, Typography, Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/styles';
 
-import {registro, nombre, apellido, escuela, puesto, pais, email, contra, comprobacionContra, ingresar, registrado, aqui} from '../../../js/Language';
+import { registro, nombre, apellido, escuela, puesto, pais, email, contra, comprobacionContra, ingresar, registrado, aqui } from '../../../js/Language';
 
-import Snackbars from './Snackbars';
-import Alerts from '../Alerts';
-
-import {loginService} from '../../../js/webServices';
+import { loginService } from '../../../js/webServices';
 import * as localStore from '../../../js/localStore';
-import { languageStore } from '../../../stores/languageStore';
+import { sesionStore } from '../../../stores/sesionStore';
 
 const stylesReg = {
-  TextField1:{
+  TextField1: {
     justify: 'center',
-    width:"100%",
+    width: "100%",
 
   },
-  TextField2:{
+  TextField2: {
     justify: 'center',
-    width:"100%",
+    width: "100%",
   },
   divDelForm: {
     paddingBottom: "15vh",
@@ -32,75 +24,68 @@ const stylesReg = {
   }
 }
 
-var setStore = (user, pass) => {
-    var newSession = {"user" : user, "password" : pass}
-    newSession['ultimasVisitadas'] = []
-    newSession["ultimaVisitada"] = "alfabeto"
-    localStore.setObjects("sesion", newSession)
-}
+const RegistroForm = (props) => {
+  const { classes, setLogin } = props;
+  const global = useContext(sesionStore);
+  const { state, dispatch } = global
+  const { lang } = state
 
-function RegistroForm(props){
-  const { classes }=props;
-  const globalLanguage = React.useContext(languageStore);
-  const [nuevoNombre,setNuevoNombre]=React.useState("");
-  const [nuevoApellido, setNuevoApellido]=React.useState("");
-  const [nuevaEscuela,setNuevaEscuela]=React.useState("");
-  const [nuevoPuesto, setNuevoPuesto]=React.useState("");
-  const [nuevoPais, setNuevoPais]=React.useState("");
-  const [nuevoCorreo, setNuevoCorreo]=React.useState("");
-  const [nuevoPassword, setNuevoPassword]=React.useState("");
-  const [repassword, setRepassword]=React.useState("");
-  const [mensajeDeAlerta, setMensajeDeAlerta]=React.useState({open:false,mensaje:"", tituloAlerta:""});
-  const [loading, setLoading]=React.useState(false);
+  const [nuevoNombre, setNuevoNombre] = useState("");
+  const [nuevoApellido, setNuevoApellido] = useState("");
+  const [nuevaEscuela, setNuevaEscuela] = useState("");
+  const [nuevoPuesto, setNuevoPuesto] = useState("");
+  const [nuevoPais, setNuevoPais] = useState("");
+  const [nuevoCorreo, setNuevoCorreo] = useState("");
+  const [nuevoPassword, setNuevoPassword] = useState("");
+  const [repassword, setRepassword] = useState("");
 
-  function onFormSubmit(event){
+  const onFormSubmit = (event) => {
     event.preventDefault();
-    setLoading(true)
-      var params = {
-      'nombre' : nuevoNombre,
-      'apellidos' : nuevoApellido,
-      'email' : nuevoCorreo,
-      'institucion' : nuevaEscuela,
-      'grado' : nuevoPuesto,
-      'pais' : nuevoPais,
-      'password' : nuevoPassword
+    dispatch({ type: 'START_LOADING' })
+    var params = {
+      'nombre': nuevoNombre,
+      'apellidos': nuevoApellido,
+      'email': nuevoCorreo,
+      'institucion': nuevaEscuela,
+      'grado': nuevoPuesto,
+      'pais': nuevoPais,
+      'password': nuevoPassword
     }
-    if(params.password == repassword){
+    if (nuevoPassword == repassword) {
       var service = "/login/registrar"
       loginService(service, "POST", JSON.stringify(params), (data) => {
-        console.log("error",data.error)
-        if(data.data.status == 200){
+        console.log("error", data.error)
+        if (data.data.status == 200) {
           var serviceh = "/login/sendRegistroEmail/" + localStore.getItem("es")
-          loginService(serviceh, "GET", {"nombre" : params.nombre,"email" : params.email,"pass" : params.password}, (data) => {
+          loginService(serviceh, "GET", { "nombre": nuevoNombre, "email": nuevoCorreo, "pass": nuevoPassword }, (data) => {
             console.log("data", JSON.parse(data.config.data))
-            setMensajeDeAlerta({mensaje : "Operación Exitosa", open : true, tituloAlerta:"Operación Concluida con Exito"})
-            setStore(params.email, params.password)
+            dispatch({ type: 'SET_ALERT', payload: { mensaje: "Operación Exitosa", open: true, tituloAlerta: "Operación Concluida con Exito" } })
+            dispatch({
+              type: "INICIAR_SESION",
+              payload: { "usuario": nuevoCorreo, "password": nuevoPassword }
+            })
           })
-        }else if(data.data.status == 501){
-          setMensajeDeAlerta({mensaje : "El correo ya se encuentra registrado", open : true, tituloAlerta:"Alerta de Error"})
-        }else if(data.data.status == 500){
-          setMensajeDeAlerta({mensaje : "Hubo Un Error El Enviar El Correo De Notificación", open : true, tituloAlerta:"Alerta de Error"})
+        } else if (data.data.status == 501) {
+          dispatch({ type: 'SET_ALERT', payload: { mensaje: "El correo ya se encuentra registrado", open: true, tituloAlerta: "Alerta de Error" } })
+        } else if (data.data.status == 500) {
+          dispatch({ type: 'SET_ALERT', payload: { mensaje: "Hubo un error al enviar el correo de notificación", open: true, tituloAlerta: "Alerta de Error" } })
         }
       })
-    }else{
-      setMensajeDeAlerta({mensaje : "El password no coincide", open : true, tituloAlerta:"Alerta de Error"})
+    } else {
+      dispatch({ type: 'SET_ALERT', payload: { mensaje: "El password no coincide", open: true, tituloAlerta: "Alerta de Error" } })
     }
-    setLoading(false)
-  }
-
-  function handleAlertClose(){
-    setMensajeDeAlerta({open:false,mensaje:mensajeDeAlerta.mensaje, tituloAlerta:mensajeDeAlerta.tituloAlerta})
+    dispatch({ type: 'STOP_LOADING' })
   }
 
   return (
     <form onSubmit={onFormSubmit} className={classes.divDelForm}>
       <Typography variant="h3" align="center" gutterBottom >
-        {registro(globalLanguage.lang)}
+        {registro(lang)}
       </Typography>
       <Grid className="gridsF" container direction="column" alignItems="center" spacing={2}>
         <Grid item xs={12} sm={8} lg={7} className="grids">
           <TextField
-            label={nombre(globalLanguage.lang)}
+            label={nombre(lang)}
             id="custom-css-outlined-input"
             margin="normal"
             value={nuevoNombre}
@@ -110,7 +95,7 @@ function RegistroForm(props){
         </Grid>
         <Grid item xs={12} sm={8} lg={7} className="grids">
           <TextField
-            label={apellido(globalLanguage.lang)}
+            label={apellido(lang)}
             id="custom-css-outlined-input"
             value={nuevoApellido}
             onChange={e => setNuevoApellido(e.target.value)}
@@ -119,16 +104,16 @@ function RegistroForm(props){
         </Grid>
         <Grid item xs={12} sm={8} lg={7} className="grids">
           <TextField
-            label={escuela(globalLanguage.lang)}
+            label={escuela(lang)}
             id="custom-css-outlined-input"
             value={nuevaEscuela}
-            onChange={e =>setNuevaEscuela(e.target.value)}
+            onChange={e => setNuevaEscuela(e.target.value)}
             className={classes.TextField2}
           />
         </Grid>
         <Grid item xs={12} sm={8} lg={7} className="grids">
           <TextField
-            label={puesto(props.lang)}
+            label={puesto(lang)}
             id="custom-css-outlined-input"
             value={nuevoPuesto}
             onChange={e => setNuevoPuesto(e.target.value)}
@@ -137,7 +122,7 @@ function RegistroForm(props){
         </Grid>
         <Grid item xs={12} sm={8} lg={7} className="grids">
           <TextField
-            label={pais(globalLanguage.lang)}
+            label={pais(lang)}
             id="custom-css-outlined-input"
             value={nuevoPais}
             onChange={e => setNuevoPais(e.target.value)}
@@ -146,32 +131,32 @@ function RegistroForm(props){
         </Grid>
         <Grid item xs={12} sm={8} lg={7} className="grids">
           <TextField
-            label={email(globalLanguage.lang)}
+            label={email(lang)}
             id="custom-css-outlined-input"
             value={nuevoCorreo}
             onChange={e => setNuevoCorreo(e.target.value)}
             className={classes.TextField2}
-            type = "email"
+            type="email"
           />
         </Grid>
         <Grid item xs={12} sm={8} lg={7} className="grids">
           <TextField
-            label={contra(globalLanguage.lang)}
+            label={contra(lang)}
             id="custom-css-outlined-input"
             value={nuevoPassword}
             onChange={e => setNuevoPassword(e.target.value)}
             className={classes.TextField2}
-            type = "password"
+            type="password"
           />
         </Grid>
         <Grid item xs={12} sm={8} lg={7} className="grids">
           <TextField
-            label={comprobacionContra(globalLanguage.lang)}
+            label={comprobacionContra(lang)}
             id="custom-css-outlined-input"
             value={repassword}
             onChange={e => setRepassword(e.target.value)}
             className={classes.TextField2}
-            type = "password"
+            type="password"
           />
         </Grid>
         <Grid item xs={12} sm={8} lg={7} className="grids">
@@ -183,20 +168,18 @@ function RegistroForm(props){
                 className={classes.boton}
                 type="submit"
               >
-                {ingresar(globalLanguage.lang)}
+                {ingresar(lang)}
               </Button>
             </Grid>
           </Grid>
         </Grid>
 
         <Grid item xs={12} sm={8} lg={7}>
-          <Typography variant = "h4">
-            {registrado(globalLanguage.lang)} <a className="links" onClick={() =>props.setLogin(true)}> {aqui(globalLanguage.lang)} </a>
+          <Typography variant="h4">
+            {registrado(lang)} <a className="links" onClick={() => setLogin(true)}> {aqui(lang)} </a>
           </Typography>
         </Grid>
       </Grid>
-      <Alerts mensaje={mensajeDeAlerta.mensaje} open={mensajeDeAlerta.open} handleClose={handleAlertClose} titulo={mensajeDeAlerta.tituloAlerta}/>
-      <LinearProgress className={classNames([{"hidden" : !loading}, "loadingBar"])}/>
     </form>
   )
 }

@@ -1,11 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import classNames from "classnames";
-import TextField from "@material-ui/core/TextField";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
-import LinearProgress from "@material-ui/core/LinearProgress";
+import { TextField, Grid, Typography, Button } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
 
 import {
@@ -19,13 +13,10 @@ import {
   correoInvalido,
 } from "../../../js/Language";
 
-import Snackbars from "./Snackbars";
 import ModalRecuperacion from "./ModalRecuperacion";
 import { loginService } from "../../../js/webServices";
 
-import * as localStore from "../../../js/localStore";
 import { sesionStore } from "../../../stores/sesionStore";
-import { languageStore } from "../../../stores/languageStore";
 
 const stylesFor = {
   TextField1: {
@@ -45,52 +36,47 @@ const stylesFor = {
   },
 };
 
-var setStore = (user, pass) => {
-  var newSession = { user: user, password: pass };
-  newSession["ultimasVisitadas"] = [];
-  newSession["ultimaVisitada"] = "alfabeto";
-  localStore.setObjects("sesion", newSession);
-};
-
 function LoginForm(props) {
-  const { classes } = props;
+  const { classes, history, setLogin } = props;
   const global = React.useContext(sesionStore);
-  const globalLanguage = React.useContext(languageStore);
+  const { dispatch, state } = global
+  const { lang, loading } = state
+
   const [correo, setCorreo] = React.useState("");
   const [password, setPassword] = React.useState("");
-  const [snackbar, setSnackbar] = React.useState({
-    open: false,
-    variant: "",
-    message: "",
-  });
-  const [loading, setLoading] = React.useState(false);
   const [recuperarContra, setRecuperarContra] = React.useState(false);
 
-  function onFormSubmit(event) {
-    console.log("entre");
+  const onFormSubmit = (event) => {
+
     event.preventDefault();
-    setLoading(true);
+    dispatch({ type: 'START_LOADING' });
+
     var service = "/login/usuario";
     var params = JSON.stringify({ userId: correo, password: password });
+
     loginService(service, "POST", params, (data) => {
       if (data.data.error) {
-        setSnackbar({
-          open: true,
-          variant: "error",
-          message: correoInvalido(globalLanguage.lang),
+        dispatch({
+          type: 'SET_SNACKBAR', payload: {
+            open: true,
+            variant: "error",
+            message: correoInvalido(lang),
+          }
         });
       } else {
-        setStore(correo, password);
         var nuevaSesion = {
           usuario: correo,
           password: password,
         };
-        //nuevaSesion['ultimasVisitadas'] = []
-        //nuevaSesion["ultimaVisitada"] = "alfabeto"
-        global.setSesion(nuevaSesion);
-        props.history.push("/husserl");
+
+        dispatch({
+          type: 'INICIAR_SESION',
+          payload: nuevaSesion
+        })
+
+        history.push("/husserl");
       }
-      setLoading(false);
+      dispatch({ type: 'STOP_LOADING' })
     });
   }
 
@@ -98,14 +84,10 @@ function LoginForm(props) {
     setRecuperarContra(true);
   }
 
-  const handleClose = (event, reason) => {
-    setSnackbar({ open: false, variant: snackbar.variant, message: "" });
-  };
-
   return (
     <div className={classes.divDelForm}>
       <Typography variant="h3" align="center" gutterBottom>
-        {inicio(globalLanguage.lang)}
+        {inicio(lang)}
       </Typography>
       <form onSubmit={onFormSubmit} style={{ marginTop: "5%" }}>
         <Grid
@@ -117,7 +99,7 @@ function LoginForm(props) {
         >
           <Grid item xs={12} sm={8} lg={7} className="grids">
             <TextField
-              label={email(globalLanguage.lang)}
+              label={email(lang)}
               id="custom-css-outlined-input"
               margin="normal"
               value={correo}
@@ -128,7 +110,7 @@ function LoginForm(props) {
           </Grid>
           <Grid item xs={12} sm={8} lg={7} className="grids">
             <TextField
-              label={contra(globalLanguage.lang)}
+              label={contra(lang)}
               id={"custom-css-outlined-input" + 1}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -140,25 +122,25 @@ function LoginForm(props) {
             <Grid container justify="flex-end" className="grids">
               <Grid item>
                 <Button variant="contained" color="primary" type="submit">
-                  {ingresar(globalLanguage.lang)}
+                  {ingresar(lang)}
                 </Button>
               </Grid>
             </Grid>
           </Grid>
           <Grid item xs={12} sm={8} lg={7}>
             <Typography variant="h4">
-              {olvidoDeContra(globalLanguage.lang)}{" "}
+              {olvidoDeContra(lang)}{" "}
               <a onClick={handleClickModal} className="links">
-                {aqui(globalLanguage.lang)}
+                {aqui(lang)}
               </a>
             </Typography>
           </Grid>
           <Grid item xs={12} sm={8} lg={7}>
             <Typography variant="h4">
-              {registrarse(globalLanguage.lang)}
-              <a onClick={() => props.setLogin(false)} className="links">
+              {registrarse(lang)}
+              <a onClick={() => setLogin(false)} className="links">
                 {" "}
-                {aqui(globalLanguage.lang)}
+                {aqui(lang)}
               </a>
             </Typography>
           </Grid>
@@ -167,20 +149,8 @@ function LoginForm(props) {
       <ModalRecuperacion
         recuperarContra={recuperarContra}
         setRecuperarContra={setRecuperarContra}
-        loading={loading}
-        setLoading={setLoading}
-        snackbar={snackbar}
-        setSnackbar={setSnackbar}
-        lang={globalLanguage.lang}
       />
-      <Snackbars
-        snackbar={snackbar}
-        handleClose={handleClose}
-        lang={globalLanguage.lang}
-      />
-      <LinearProgress
-        className={classNames([{ hidden: !loading }, "loadingBar"])}
-      />
+
     </div>
   );
 }

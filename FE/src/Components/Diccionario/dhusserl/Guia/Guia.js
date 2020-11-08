@@ -1,54 +1,43 @@
 // React
-import React from 'react'
-
-// Components
-import LinearProgress from '@material-ui/core/LinearProgress';
-import Link from '@material-ui/core/Link';
+import React, { useEffect, useContext, useState } from 'react'
 
 // Other reqs
-import {webService} from '../../../../js/webServices';
-import classNames from 'classnames';
-import * as localStore from '../../../../js/localStore';
+import { webService } from '../../../../js/webServices';
 import { sesionStore } from '../../../../stores/sesionStore';
-import { languageStore } from '../../../../stores/languageStore';
 
-function Guia(props){
-    const global = React.useContext(sesionStore);
-    const globalLanguage = React.useContext(languageStore);
-    const [guia, setGuia]=React.useState("");
-    const [loading, setLoading]=React.useState(false);
+const Guia = ({ history }) => {
+    const global = useContext(sesionStore);
+    const { state, dispatch } = global
+    const { lang, sesion } = state
+    const [guia, setGuia] = useState("");
 
-    React.useEffect(()=>{
-        //if(!localStore.getObjects("sesion")) document.getElementById("toLogin").click()
-        if(global.ultimasVisitadas) document.getElementById("toLogin").click()
-        setLoading(true)
-        webService("/manual/get", "GET", {}, global.sesion, (data) => {
-           setGuia(data.data.response[0])
+    useEffect(() => {
+        if (sesion == null) history.push("/diccionario/login");
+        dispatch({ type: 'START_LOADING' })
+        webService("/manual/get", "GET", {}, sesion, ({ data }) => {
+            const { response } = data
+            setGuia(response[0])
+            dispatch({ type: 'STOP_LOADING' })
         })
-        setLoading(false)
-    }, [])
+    }, [lang])
 
-    function renderizadoGuia(){
-        switch(globalLanguage.lang){
+    const renderizadoGuia = () => {
+        switch (lang) {
             case "es":
-                return {__html: guia.contenido}
+                return { __html: guia.contenido }
             case "ca":
-                return {__html: guia.contenido_ca}
+                return { __html: guia.contenido_ca }
             case "al":
-                return {__html: guia.contenido_de}
+                return { __html: guia.contenido_de }
             case "en":
-                return {__html: guia.contenido_en}
+                return { __html: guia.contenido_en }
             case "fr":
-                return {__html: guia.contenido_fr}
+                return { __html: guia.contenido_fr }
         }
     }
 
-    return(
-        <div>
-            <div className="guia" dangerouslySetInnerHTML={renderizadoGuia()}></div>
-            <LinearProgress className={classNames([{"hidden" : !loading}, "loadingBar"])}/>
-            <Link id="toLogin" to="/"/>
-        </div>
+    return (
+        <div className="guia" dangerouslySetInnerHTML={() => renderizadoGuia()}></div>
     )
 }
 

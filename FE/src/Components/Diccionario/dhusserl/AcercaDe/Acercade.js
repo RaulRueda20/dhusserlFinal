@@ -1,52 +1,43 @@
 // React
-import React from 'react'
-
-// Components
-import LinearProgress from '@material-ui/core/LinearProgress';
+import React, { useEffect, useContext, useState } from 'react'
 
 // Other reqs
-import {webService} from '../../../../js/webServices';
-import classNames from 'classnames';
-import * as localStore from '../../../../js/localStore';
+import { webService } from '../../../../js/webServices';
 import { sesionStore } from '../../../../stores/sesionStore';
-import { languageStore } from '../../../../stores/languageStore';
 
-function Acercade(props){
-    const global = React.useContext(sesionStore);
-    const globalLanguage = React.useContext(languageStore);
-    const [acercade, setAcercade] = React.useState("");
-    const [loading, setLoading]=React.useState(false);
+const Acercade = ({ history }) => {
+    const global = useContext(sesionStore);
+    const { state, dispatch } = global
+    const { lang, sesion } = state
+    const [acercade, setAcercade] = useState("");
 
-    React.useEffect(()=>{
-        if(global.sesion == null) document.getElementById("toLogin").click()
-        setLoading(true)
-        webService("/acerca_de/get", "GET", {}, global.sesion, (data) => {
-           setAcercade(data.data.response[0]) 
+    useEffect(() => {
+        if (sesion == null) history.push("/diccionario/login");
+        dispatch({ type: 'STOP_LOADING' })
+        webService("/acerca_de/get", "GET", {}, sesion, ({ data }) => {
+            const { response } = data
+            setAcercade(response[0])
+            dispatch({ type: 'STOP_LOADING' })
         })
-        setLoading(false)
-    }, [])
+    }, [lang])
 
-    function renderizadoDeAcercaDe(){
-        switch(globalLanguage.lang){
+    const renderizadoDeAcercaDe = () => {
+        switch (lang) {
             case "es":
-                return {__html: acercade.contenido}
+                return { __html: acercade.contenido }
             case "ca":
-                return {__html: acercade.contenido_ca}
+                return { __html: acercade.contenido_ca }
             case "al":
-                return {__html: acercade.contenido_de}
+                return { __html: acercade.contenido_de }
             case "en":
-                return {__html: acercade.contenido_en}
+                return { __html: acercade.contenido_en }
             case "fr":
-                return {__html: acercade.contenido_fr}
+                return { __html: acercade.contenido_fr }
         }
     }
 
-    return(
-        <div>
-            <div className="acercaDe" dangerouslySetInnerHTML={renderizadoDeAcercaDe()}></div>
-            <LinearProgress className={classNames([{"hidden" : !loading}, "loadingBar"])}/>
-            {/* <Link id="toLogin" to="/login"/> */}
-        </div>
+    return (
+        <div className="acercaDe" dangerouslySetInnerHTML={() => renderizadoDeAcercaDe()}></div>
     )
 }
 

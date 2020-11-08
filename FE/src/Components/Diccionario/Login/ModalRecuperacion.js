@@ -1,135 +1,122 @@
-import React from 'react';
-import Modal from '@material-ui/core/Modal';
-import Typography from '@material-ui/core/Typography';
-import Paper from '@material-ui/core/Paper';
-import Divider from "@material-ui/core/Divider"
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
+import React, { useState, useContext } from 'react';
+import { Modal, Typography, Paper, Divider, TextField, Button, Grid, IconButton } from '@material-ui/core';
 import { withStyles } from '@material-ui/styles';
-import Grid from '@material-ui/core/Grid';
 import ClearIcon from '@material-ui/icons/Clear';
-import IconButton from '@material-ui/core/IconButton';
 
-import {modalRecuperacionContra, modalIngresarCorreo, email, ingresar, exitoBody, correoNoEncontrado} from '../../../js/Language';
+import { modalRecuperacionContra, modalIngresarCorreo, email, ingresar, exitoBody, correoNoEncontrado } from '../../../js/Language';
 
-import * as localStore from '../../../js/localStore';
-import {loginService} from '../../../js/webServices';
+import { sesionStore } from '../../../stores/sesionStore'
+import { loginService } from '../../../js/webServices';
 
-const modalRecuperacion={
-    modalinR:{
+const modalRecuperacion = {
+    modalinR: {
         width: "40%",
-        maxHeight:"75vh",
+        maxHeight: "75vh",
         left: "25vw",
         top: "25.5vh",
-        position:"absolute",
+        position: "absolute",
         padding: "30px 30px",
     },
-    campoDeTexto:{
+    campoDeTexto: {
         width: "100%"
     },
-    botonClear:{
-        left:"18px",
-        bottom:"15px",
-        size:"small"
+    botonClear: {
+        left: "18px",
+        bottom: "15px",
+        size: "small"
     },
-    botonRecuperar:{
-        top:"12px"
+    botonRecuperar: {
+        top: "12px"
     },
-    gridDelBoton:{
+    gridDelBoton: {
         textAlign: "right"
     }
 }
 
-var setStore = (user, pass) => {
-    var newSession = {"user" : user, "password" : pass}
-    newSession['ultimasVisitadas'] = []
-    newSession["ultimaVisitada"] = "alfabeto"
-    localStore.setObjects("sesion", newSession)
-}
+const ModalRecuperacion = (props) => {
+    const global = useContext(sesionStore);
+    const { state } = global
+    const { lang } = state
+    const { classes, setRecuperarContra, recuperarContra } = props;
+    const [correoRecuperado, setCorreoRecuperado] = useState("")
 
-function ModalRecuperacion(props){
-    const {classes}=props;
-    const [correoRecuperado, setCorreoRecuperado]=React.useState("")
-
-    function onFormSubmit1(event){
-        console.log("entre")
+    const onFormSubmit1 = (event) => {
         event.preventDefault();
-        props.setLoading(true)
+        dispatch({ type: 'START_LOADING' })
         var email = correoRecuperado
         var service = "/login/recoverPassword/es?email=" + email
         var enconding = window.btoa(email)
         loginService(service, "GET", {}, (data) => {
             console.log("data", data)
-            props.setLoading(false)
-            if(data.status==200){
-                props.setSnackbar({open:true,variant:"success",message:exitoBody(props.lang)})
-                setStore(data.response, email.correo)
-            }else{
-                props.setSnackbar({open:true,variant:"error",message:correoNoEncontrado(props.lang)})
+            dispatch({ type: 'STOP_LOADING' })
+            if (data.status == 200) {
+                dispatch({ type: "SET_SNACKBAR", payload: { open: true, variant: "success", message: exitoBody(lang) } })
+                // dispatch({ type: 'SET_SESION', payload: { "user": nuevoCorreo, "password": nuevoPassword } })
+                // setStore(data.response, email.correo)
+            } else {
+                dispatch({ type: 'SET_SNACKBAR', payload: { open: true, variant: "error", message: correoNoEncontrado(lang) } })
             }
         })
     }
 
-    function handleClose(){
-        props.setRecuperarContra(false)
+    function handleClose() {
+        setRecuperarContra(false)
     }
 
-    return(
-        <div>
-            <Modal
+    return (
+        <Modal
             aria-labelledby="simple-modal-title"
             aria-describedby="simple-modal-description"
-            open={props.recuperarContra}
+            open={recuperarContra}
             onClose={handleClose}
-            >
-                <Paper className={classes.modalinR}>
-                    <form onSubmit={onFormSubmit1}>
-                        <Grid container>
-                            <Grid item xs={11}>
-                                <Typography variant="h4">
-                                    {modalRecuperacionContra(props.lang)}
-                                </Typography>
-                            </Grid>
-                            <Grid item xs={1}>
-                                <IconButton
+        >
+            <Paper className={classes.modalinR}>
+                <form onSubmit={onFormSubmit1}>
+                    <Grid container>
+                        <Grid item xs={11}>
+                            <Typography variant="h4">
+                                {modalRecuperacionContra(lang)}
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={1}>
+                            <IconButton
                                 aria-haspopup="true"
                                 onClick={handleClose}
                                 className={classes.botonClear}
-                                >
-                                    <ClearIcon fontSize="small"/>
-                                </IconButton>
-                            </Grid>
-                            <Grid item xs={12}>
-                                <Divider className="divisor"/>
-                                <Typography variant="h5">
-                                    {modalIngresarCorreo(props.lang)}
-                                </Typography>
-                                <TextField
-                                    label={email(props.lang)}
-                                    id="custom-css-outlined-input"
-                                    margin="normal"
-                                    value={correoRecuperado}
-                                    onChange={e => setCorreoRecuperado(e.target.value)}
-                                    type = "email"
-                                    className={classes.campoDeTexto}
-                                />
-                            </Grid>
-                            <Grid item xs={6} className={classes.gridDelBoton}>
-                                <Button
-                                    variant="contained"
-                                    color="primary"
-                                    type="submit"
-                                    size="small"
-                                    className={classes.botonRecuperar}
-                                >
-                                    {ingresar(props.lang)}
-                                </Button>
-                            </Grid>
+                            >
+                                <ClearIcon fontSize="small" />
+                            </IconButton>
                         </Grid>
-                    </form>
-                </Paper>
-            </Modal>
-        </div>
+                        <Grid item xs={12}>
+                            <Divider className="divisor" />
+                            <Typography variant="h5">
+                                {modalIngresarCorreo(lang)}
+                            </Typography>
+                            <TextField
+                                label={email(lang)}
+                                id="custom-css-outlined-input"
+                                margin="normal"
+                                value={correoRecuperado}
+                                onChange={e => setCorreoRecuperado(e.target.value)}
+                                type="email"
+                                className={classes.campoDeTexto}
+                            />
+                        </Grid>
+                        <Grid item xs={6} className={classes.gridDelBoton}>
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                type="submit"
+                                size="small"
+                                className={classes.botonRecuperar}
+                            >
+                                {ingresar(lang)}
+                            </Button>
+                        </Grid>
+                    </Grid>
+                </form>
+            </Paper>
+        </Modal>
     )
 }
 

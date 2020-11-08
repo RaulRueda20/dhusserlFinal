@@ -5,6 +5,7 @@ import React from "react";
 
 import classNames from "classnames";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
 
 //Components
 import PanelExpresion from "./PanelExpresion";
@@ -43,6 +44,10 @@ export default function ListaExpresiones(props) {
   const classes = useStyles();
   const theme = useTheme();
   const [panelesAbiertos, setPanelesAbiertos] = React.useState([]);
+
+  React.useEffect(()=>{
+    console.log("globalExpresion", globalExpresion)
+  },[true])
 
   function clickHandleVista(event) {
     if (!props.flagDeBusqueda) {
@@ -102,19 +107,19 @@ export default function ListaExpresiones(props) {
         <ul id="listaIzquierda">
           {props.chunkList.map((expresion, index) => {
             return (
-              <PanelExpresion
-                match={props.match}
-                key={expresion.id + "-" + index}
-                expresion={expresion}
-                handleClickPanel={handleClickPanel}
-                clickHandleVista={clickHandleVista}
-                index={index}
-                getJerarquia={props.getJerarquia}
-                idReferencias={props.idReferencias}
-                setIdReferencias={props.setIdReferencias}
-                expresionSeleccionada={props.expresionSeleccionada}
-                setOpenModalN={props.setOpenModalN}
-              />
+              // <PanelExpresion
+              //   match={props.match}
+              //   key={expresion.id + "-" + index}
+              //   handleClickPanel={handleClickPanel}
+              //   clickHandleVista={clickHandleVista}
+              //   index={index}
+              //   getJerarquia={props.getJerarquia}
+              //   idReferencias={props.idReferencias}
+              //   setIdReferencias={props.setIdReferencias}
+              //   expresionSeleccionada={props.expresionSeleccionada}
+              //   setOpenModalN={props.setOpenModalN}
+              // />
+              <Typography>Prueba</Typography>
             );
           })}
         </ul>

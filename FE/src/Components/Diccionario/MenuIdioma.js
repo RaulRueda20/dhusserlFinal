@@ -1,11 +1,7 @@
-import React from 'react';
-import MenuItem from '@material-ui/core/MenuItem';
-import Menu from '@material-ui/core/Menu';
-import IconButton from '@material-ui/core/IconButton';
+import React, { useState, useContext }  from "react";
+import {MenuItem, Menu, IconButton, Fab, Tooltip} from '@material-ui/core';
 import Lang from "@material-ui/icons/Language"
-import Fab from '@material-ui/core/Fab';
-import Tooltip from '@material-ui/core/Tooltip';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 
 import es from "../../Imagenes/spain.png";
 import en from "../../Imagenes/england.png";
@@ -14,23 +10,7 @@ import ca from "../../Imagenes/catalan.png";
 import al from "../../Imagenes/germany.png";
 
 import {toolTipMenuIdiomas} from '../../js/Language';
-import { languageStore } from '../../stores/languageStore';
-
-const banderas = {
-  botonesBan:{
-    width: "34px !important",
-    height: "19px !important",
-    boxShadow: "none",
-    fontSize: "null",
-    background: "transparent !important"
-  },
-  menuUl: {
-    marginLeft: "5px"
-  },
-  lang:{
-    fontSize: "2.5rem"
-  }
-}
+import { sesionStore } from '../../stores/sesionStore';
 
 const useStyles = makeStyles(theme => ({
   botonesBan:{
@@ -48,22 +28,31 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-function MenuIdioma(props){
+const MenuIdioma = (props) => {
   const classes = useStyles();
-  const globalLanguage = React.useContext(languageStore);
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const global = useContext(sesionStore);
+  const {state, dispatch} = global
+  const {lang} = state
+  const [anchorEl, setAnchorEl] = useState(null);
 
-  function handleClick(event) {
+  const handleClick = (event) => {
       setAnchorEl(event.currentTarget);
   }
 
-  function handleClose() {
+  const handleClose = () => {
     setAnchorEl(null);
+  }
+
+  const chLang = (newLang) => {
+    dispatch({
+      type: 'SET_LANG',
+      payload: newLang
+    })
   }
 
   return(
       <div className="menuIdiomas">
-        <Tooltip title={toolTipMenuIdiomas(globalLanguage.lang)}>
+        <Tooltip title={toolTipMenuIdiomas(lang)}>
           <IconButton
             aria-haspopup="true"
             aria-owns={anchorEl ? 'simple-menu': undefined}
@@ -82,19 +71,19 @@ function MenuIdioma(props){
           open={Boolean(anchorEl)}
         >
           <MenuItem onClick={handleClose} className="menuSimple">
-            <Fab className={classes.botonesBan} onClick={()=>globalLanguage.setLang("al")}><img className="banderas" src={al}/></Fab>
+            <Fab className={classes.botonesBan} onClick={()=>chLang('al')}><img className="banderas" src={al}/></Fab>
           </MenuItem>
           <MenuItem onClick={handleClose} className="menuSimple">
-            <Fab className={classes.botonesBan} onClick={()=>globalLanguage.setLang("es")}><img className="banderas" src={es}/></Fab>
+            <Fab className={classes.botonesBan} onClick={()=>chLang('es')}><img className="banderas" src={es}/></Fab>
           </MenuItem>
           <MenuItem onClick={handleClose} className="menuSimple">
-            <Fab className={classes.botonesBan} onClick={()=>globalLanguage.setLang("en")}><img className="banderas" src={en}/></Fab>
+            <Fab className={classes.botonesBan} onClick={()=>chLang('en')}><img className="banderas" src={en}/></Fab>
           </MenuItem>
           <MenuItem onClick={handleClose} className="menuSimple">
-            <Fab className={classes.botonesBan} onClick={()=>globalLanguage.setLang("fr")}><img className="banderas" src={fr}/></Fab>
+            <Fab className={classes.botonesBan} onClick={()=>chLang('fr')}><img className="banderas" src={fr}/></Fab>
           </MenuItem>
           <MenuItem onClick={handleClose} className="menuSimple">
-            <Fab className={classes.botonesBan} onClick={()=>globalLanguage.setLang("ca")}><img className="banderas" src={ca}/></Fab>
+            <Fab className={classes.botonesBan} onClick={()=>chLang('ca')}><img className="banderas" src={ca}/></Fab>
           </MenuItem>
         </Menu>
     </div>

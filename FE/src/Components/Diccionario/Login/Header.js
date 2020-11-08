@@ -1,54 +1,56 @@
-import React from 'react';
+import React, { Suspense, lazy, Fragment, useContext } from "react";
 import classNames from 'classnames';
-import Typography from '@material-ui/core/Typography';
+import { Typography, Grid, Divider, LinearProgress as Loading } from '@material-ui/core';
 import { withStyles } from '@material-ui/styles';
-import Grid from '@material-ui/core/Grid';
-import Divider from "@material-ui/core/Divider"
 
-import {tituloDiccionario, subtituloDiccionario} from '../../../js/Language';
+import { tituloDiccionario, subtituloDiccionario } from '../../../js/Language';
 
-import MenuIdioma from '../MenuIdioma'
-import { languageStore } from '../../../stores/languageStore';
+const MenuIdioma = lazy(() => import('../MenuIdioma'))
+import { sesionStore } from '../../../stores/sesionStore';
 
 const stylesHed = {
-  subtitulo1:{
+  subtitulo1: {
     marginTop: "10px",
   },
-  grids : {
+  grids: {
     margin: "5vh 0"
   },
-  menuIdiomas : {
-    textAlign : "center"
+  menuIdiomas: {
+    textAlign: "center"
   }
 }
 
-function Header(props){
+const Header = (props) => {
   const { classes } = props;
-  const globalLanguage = React.useContext(languageStore);
+  const global = useContext(sesionStore);
+  const { state } = global
+  const { lang } = state
 
-  return(
-    <div>
+  return (
+    <Fragment>
       <Grid className={classNames("grids", classes.grids)} container justify="center">
-        <Grid item xs={11}  align="center">
+        <Grid item xs={11} align="center">
           <Typography variant="h1" align="center">
-            {tituloDiccionario(globalLanguage.lang)}
+            {tituloDiccionario(lang)}
           </Typography>
         </Grid>
         <Grid item xs={1} className={classes.menuIdiomas}>
-          <MenuIdioma lang={globalLanguage.lang} setLang={globalLanguage.setLang}/>
+          <Suspense fallback={<Loading />}>
+            <MenuIdioma />
+          </Suspense>
         </Grid>
       </Grid>
-      <br/>
-      <Divider className="divisor"/>
+      <br />
+      <Divider className="divisor" />
       <Grid container>
-        <Grid item xs={11}  align="center">
+        <Grid item xs={11} align="center">
           <Typography variant="h4" align="center">
-          {subtituloDiccionario(globalLanguage.lang)}
+            {subtituloDiccionario(lang)}
           </Typography>
         </Grid>
       </Grid>
-      <br/>
-    </div>
+      <br />
+    </Fragment>
   )
 }
 
