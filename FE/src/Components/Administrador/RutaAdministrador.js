@@ -57,15 +57,16 @@ theme.typography.h6={
     fontWeight: "300"
 }
 
-function RutaAdministrador(props){
-
+const RutaAdministrador = (props) => {
+    const { match } = props
+    const { url } = match
     return(
         <MuiThemeProvider theme={theme}>
             <Switch>
-                <Route path={`${props.match.url}/husserl`} render={() => <Subvistas {...props}/>}/>
-                <Route path={`${props.match.url}/login`} render={() => <LoginA {...props}/>}/>
-                <Route exact path={`${props.match.url}/`}>
-                    <Redirect to={`${props.match.url}/login`} render={() => <LoginA {...props}/>}/>
+                <Route path={`${url}/husserl`} render={() => <Subvistas {...props}/>}/>
+                <Route path={`${url}/login`} render={() => <LoginA {...props}/>}/>
+                <Route exact path={`${url}/`}>
+                    <Redirect to={`${url}/login`} render={() => <LoginA {...props}/>}/>
                 </Route>
             </Switch>
         </MuiThemeProvider>

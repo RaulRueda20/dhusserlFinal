@@ -1,5 +1,5 @@
 //React
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 //Elements
 import Typography from '@material-ui/core/Typography';
@@ -44,18 +44,25 @@ const infoExpresiones= {
 
 function InfoExpresiones(props){
   const {classes} = props;
-  const [openAl, setOpenAl] = React.useState(false);
-  const [hijos, setHijos] = React.useState([]);
-  const [padres, setPadres] = React.useState([]);
+  const [hijos, setHijos] = useState([]);
+  const [padres, setPadres] = useState([]);
 
-  React.useEffect(()=>{
-    adminService(("/expresiones/al/abuelosList/" + props.expresionId),"GET", {}, (data) => setPadres(data.data.response))
-    adminService(("/expresiones/al/hijosList/" + props.expresionId), "GET", {}, (data) => setHijos(data.data.response))
-  }, [props.expresionId, props.reloadExpresion])
+  useEffect(()=>{
+    let service1 = "/expresiones/al/abuelosList/" + props.expresionId;
+    adminService( service1, "GET", {}, ({data}) => {
+      const { response } = data;
+      setPadres(response)
+    })
+    let service2 = "/expresiones/al/hijosList/" + props.expresionId;
+    adminService (service2, "GET", {}, ({data}) =>{
+      const { response } = data
+      setHijos(response)
+    })
+  })
 
   const paintJerarquia = (lista) => {
-    var lastString = ""
-    for(var i in lista){
+    let lastString = ""
+    for(let i in lista){
       if(i == lista.length-1)
         lastString += lista[i].expresion + "."
       else lastString += lista[i].expresion + ", "

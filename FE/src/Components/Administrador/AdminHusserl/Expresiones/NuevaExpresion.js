@@ -1,14 +1,10 @@
 //React
-import React from 'react';
+import React, { useEffect, useState,Fragment } from 'react';
 
 //Elements
 import { withStyles } from '@material-ui/styles';
-import Typography from '@material-ui/core/Typography';
-import Grid from '@material-ui/core/Grid';
+import { Typography,Grid,IconButton,Snackbar,Tooltip } from '@material-ui/core/Typography';
 import AddIcon from '@material-ui/icons/Add';
-import IconButton from '@material-ui/core/IconButton';
-import Snackbar from '@material-ui/core/Snackbar';
-import Tooltip from '@material-ui/core/Tooltip';
 
 //Components
 import ModalAgregarPasaje from './ModalAgregarPasaje';
@@ -17,7 +13,7 @@ import InfoExpresiones from './InfoExpresiones';
 import CartaPasajes from './CartaPasajes';
 
 //Other req
-import {adminService} from '../../../../js/webServices';
+import { adminService } from '../../../../js/webServices';
 
 const stylebonton = {
   contenedorPaper:{
@@ -43,19 +39,19 @@ const emptyObj = {
   tpretty: ""
 }
 
-function NuevaExpresion(props){
+const NuevaExpresion = (props) => {
   const { classes } = props;
-  const [expresion, setExpresion] = React.useState(emptyObj)
-  const [pasajes, setPasajes] = React.useState([]);
-  const [openAp, setOpenAp] = React.useState(false);
-  const [openAl, setOpenAl] = React.useState(false);
-  const [snack, setSnack] = React.useState({open : false, text : ""})
-  const [pasajeToDelete, setPasajeToDelete] = React.useState("")
-  const [reloadExpresion, setReloadExpresion] = React.useState(true);
+  const [expresion, setExpresion] = useState(emptyObj)
+  const [pasajes, setPasajes] = useState([]);
+  const [openAp, setOpenAp] = useState(false);
+  const [openAl, setOpenAl] = useState(false);
+  const [snack, setSnack] = useState({open : false, text : ""})
+  const [pasajeToDelete, setPasajeToDelete] = useState("")
+  const [reloadExpresion, setReloadExpresion] = useState(true);
 
-  React.useEffect(()=>{
+  useEffect(()=>{
     if(props.expresionSeleccionada != ""){
-      var service = "/referencias/obtieneReferenciasByTerm/" + props.expresionSeleccionada
+      let service = "/referencias/obtieneReferenciasByTerm/" + props.expresionSeleccionada
       adminService(service, "GET", {}, (expresionEncontrada) => {
         if(expresionEncontrada.data.response.length > 0){
           setExpresion(expresionEncontrada.data.response[0])
@@ -63,10 +59,6 @@ function NuevaExpresion(props){
             setPasajes(expresionEncontrada.data.response)
           else setPasajes([])
         }
-        // adminService("/referencias/obtieneReferencias/" + props.expresionSeleccionada, "GET", {}, (data) => {
-        //   console.log("pasajes", data.data.response)
-        //   setPasajes(data.data.response)
-        // })
       })
     }else{
       setExpresion(emptyObj)
@@ -75,25 +67,25 @@ function NuevaExpresion(props){
 
   }, [props.expresionSeleccionada, props.reload, reloadExpresion])
 
-  function handleClickOpenAp() {
+  const handleClickOpenAp = () => {
     setOpenAp(true);
   }
 
-  function handleCloseAp() {
+  const handleCloseAp = () => {
     setOpenAp(false);
   }
 
-  function handleClickOpenAl() {
+  const handleClickOpenAl = () => {
     setOpenAl(true);
   }
 
-  function handleCloseAl() {
+  const handleCloseAl = () => {
     setOpenAl(false);
   }
 
-  function deletePasaje(refid){
+  const deletePasaje = (refid) =>{
     var service2 = "/referencias/quitarPasaje/" + refid + "/" + expresion.id
-    adminService(service2, "DELETE", {}, (data) => {
+    adminService(service2, "DELETE", {}, () => {
       setSnack({open : true, text: "Pasaje desasociado con éxito."})
       setOpenAl(false);
       setReloadExpresion(!reloadExpresion)
@@ -101,7 +93,7 @@ function NuevaExpresion(props){
   }
 
   return (
-    <div>
+    <Fragment>
       <Snackbar
           anchorOrigin={{ vertical : "top", horizontal : "left" }}
           key={`top,left`}
@@ -144,7 +136,7 @@ function NuevaExpresion(props){
         }
       </Grid>
       <Alertas text="¿Desea deshacer la relación del pasaje con la expresión?" openAl={openAl} handleCloseAl={handleCloseAl} accept={() => deletePasaje(pasajeToDelete)}/>
-    </div>
+    </Fragment>
   )
 
 }

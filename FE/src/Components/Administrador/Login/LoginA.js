@@ -1,5 +1,5 @@
 //React
-import React from 'react';
+import React, { useEffect } from 'react';
 
 //Components
 import LoginForm from './LoginForm';
@@ -9,14 +9,14 @@ import Footer from './Footer';
 //Other req
 import * as localStore from '../../../js/localStore';
 
-function LoginA(props){
-  const {classes} = props
+const LoginA = (props) => {
+  const {history, match} = props
+  const { url } = match
 
-  React.useEffect(()=>{
+  useEffect(()=>{
     if(localStore.getObjects("admin_sesion")){
       if(localStore.getObjects("admin_sesion").email && localStore.getObjects("admin_sesion").user_password){
-        console.log("Dentro", props)
-        props.history.push(`${props.match.url}/husserl`)
+        history.push(`${url}/husserl`)
       }
     }
   }, [true])

@@ -1,11 +1,6 @@
-import React from 'react';
-import {Link} from 'react-router-dom';
+import React, { useState } from 'react';
 import classNames from 'classnames';
-import TextField from '@material-ui/core/TextField';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import LinearProgress from '@material-ui/core/LinearProgress';
+import { TextField,Grid,Typography,Button,LinearProgress } from '@material-ui/core';
 import { withStyles } from '@material-ui/styles';
 
 import Snackbars from './Snackbars';
@@ -26,46 +21,46 @@ const stylesFor = {
   }
 }
 
-var setStore = (user, pass) => {
-  var newSession = {"email" : user, "user_password" : pass}
+const setStore = (user, pass) => {
+  let newSession = {"email" : user, "user_password" : pass}
   newSession['ultimasVisitadas'] = []
   newSession["ultimaVisitada"] = "alfabeto"
   localStore.setObjects("admin_sesion", newSession)
 }
 
-function LoginForm(props){
-  const {classes}=props;
-  const [correo, setCorreo]=React.useState("");
-  const [password, setPassword]=React.useState("");
-  const [snackbar, setSnackbar]=React.useState({open:false, variant:"", message:""});
-  const [loading, setLoading]=React.useState(false);
+const LoginForm = (props) => {
+  const {classes, history, match}=props;
+  const { match } = match;
+  const [correo, setCorreo]= useState("");
+  const [password, setPassword]= useState("");
+  const [snackbar, setSnackbar]= useState({open:false, variant:"", message:""});
+  const [loading, setLoading]= useState(false);
 
-  function onFormSubmit(event){
+  const onFormSubmit = (event) =>{
     event.preventDefault();
-    var params = {"email" : correo, "user_password" : password}
+    const params = {"email" : correo, "user_password" : password}
     if(correo == "" || password == ""){
       setSnackbar({open:true,variant:"error",message:"correo o password invalidos"})
     }else if(correo && password){
       setLoading(true)
       localStore.setObjects("admin_sesion", params)
-      var service = "/login/admin?userId=" + correo + "&password=" + password
+      const service = "/login/admin?userId=" + correo + "&password=" + password
       loginService(service, "GET", params, (data) => {
         setLoading(false)
         localStorage.removeItem("admin_sesion")
         setStore(data.data.response.email, data.data.response.user_password)
-        props.history.push(`${props.match.url}/husserl`)
+        history.push(`${url}/husserl`)
       })
     }else{
       localStorage.removeItem("admin_sesion")
     }
   }
 
-  const handleClose=(event,reason)=>{
+  const handleClose=()=>{
     setSnackbar({open:false,variant:snackbar.variant,message:""})
   }
 
     return (
-
       <form className={classes.gridsF} onSubmit={onFormSubmit}>
         <br/><br/>
         <Typography variant="h4" align="center" gutterBottom >
@@ -108,7 +103,6 @@ function LoginForm(props){
         </Grid>
       <Snackbars snackbar={snackbar} handleClose={handleClose} lang={props.lang}/>
       <LinearProgress className={classNames([{"hidden" : !loading}, "loadingBar"])}/>
-      {/* <Link id="toMain" to="/main"/> */}
     </form>
   )
 };

@@ -1,18 +1,16 @@
-import React, {useState} from 'react';
+import React from 'react';
 import classNames from 'classnames';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
 
-export default function ListaExpresiones(props){
+const ListaExpresiones = (props) => {
 
-  const handleClickExpresion=(event)=>{
+  const handleClickExpresion = (event) => {
     props.setIdExpresion(event.target.value)
   }
 
   return(
     <div className="list-container">
       <ul>
-        {props.expresiones.map((expresion,index)=>(
+        {props.expresiones.map((expresion)=>(
           <li 
             className={classNames({"selected" : expresion.id === props.idExpresion}, "sideListAdmin")} 
             key={expresion.id} value={expresion.id} 
@@ -26,3 +24,5 @@ export default function ListaExpresiones(props){
     </div>
   )
 }
+
+export default ListaExpresiones

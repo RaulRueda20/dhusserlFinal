@@ -1,7 +1,5 @@
 import React from 'react';
-import ErrorIcon from '@material-ui/icons/Error';
-import WarningIcon from '@material-ui/icons/Warning';
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import { ErrorIcon,WarningIcon,CheckCircleIcon } from '@material-ui/icons/Error';
 import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
 import {amber, green} from '@material-ui/core/colors';
@@ -37,7 +35,7 @@ const useStyle1=makeStyles(theme=>({
     }
 }))
 
-function EnvoltorioDeSnack(props){
+const EnvoltorioDeSnack = (props) =>{
     const classes = useStyle1();
     const {className, message, onClose, variant, ...other}=props;
     const Icon = iconoVariante[variant]
@@ -63,24 +61,24 @@ const useStyle2 = makeStyles(theme=>({
     }
 }))
 
-export default function Snackbars(props){
+const Snackbars = (props)=> {
     const classes=useStyle2();
 
     return(
-        <div>
-            <Snackbar
-            anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "left"
-            }}
-            open={props.snackbar.open}
-            onClose={props.handleClose}
-            >
-                <EnvoltorioDeSnack
-                variant={props.snackbar.variant}
-                message={props.snackbar.message}
-                />
-            </Snackbar>
-        </div>
+        <Snackbar
+        anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "left"
+        }}
+        open={props.snackbar.open}
+        onClose={props.handleClose}
+        >
+            <EnvoltorioDeSnack
+            variant={props.snackbar.variant}
+            message={props.snackbar.message}
+            />
+        </Snackbar>
     )
 }
+
+export default Snackbars;

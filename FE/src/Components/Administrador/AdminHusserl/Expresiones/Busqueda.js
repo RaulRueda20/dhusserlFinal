@@ -1,13 +1,7 @@
 import React from 'react';
-import FormControl from '@material-ui/core/FormControl';
+import { FormControl,Input,InputLabel,InputAdornment,Tooltip,IconButton } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
-import InputAdornment from '@material-ui/core/InputAdornment';
 import { withStyles } from '@material-ui/styles';
-import Tooltip from '@material-ui/core/Tooltip';
-import Switch from '@material-ui/core/Switch';
-import IconButton from '@material-ui/core/IconButton';
 import Icon from '@mdi/react';
 import { mdiFormatLetterCase } from '@mdi/js';
 
@@ -21,7 +15,7 @@ const styles = {
   }
 }
 
-function Busqueda(props){
+const Busqueda = (props)=>{
   const { classes } = props;
   const [insensitiveCase,setInsensitiveCase]=React.useState(false);
   const [busqueda, setBusqueda] = React.useState("");
@@ -74,7 +68,7 @@ function Busqueda(props){
       })
   }
   
-  function handleInsensitiveCase(){
+  const handleInsensitiveCase = ()=>{
     setInsensitiveCase(!insensitiveCase)
   }
 

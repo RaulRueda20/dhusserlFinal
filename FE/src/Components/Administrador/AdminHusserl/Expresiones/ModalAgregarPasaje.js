@@ -1,24 +1,10 @@
 //React
-import React from 'react';
+import React, { useState,useEffect } from 'react';
 
 //Elements
-import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import Modal from '@material-ui/core/Modal';
-import Typography from '@material-ui/core/Typography';
-import Paper from '@material-ui/core/Paper';
-import Divider from "@material-ui/core/Divider";
-import Grid from '@material-ui/core/Grid';
-import ClearIcon from '@material-ui/icons/Clear';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
-import SearchIcon from '@material-ui/icons/Search';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import List from '@material-ui/core/List';
+import { Button,IconButton,Modal,Typography,Paper,Divider,Grid,Select,MenuItem,Input,InputLabel,InputAdornment,List,Snackbar  } from '@material-ui/core';
 import { withStyles } from '@material-ui/styles';
-import Snackbar from '@material-ui/core/Snackbar';
+import { ClearIcon,SearchIcon } from '@material-ui/icons';
 
 //Other req
 import '../../../../css/pasajes.css';
@@ -66,17 +52,18 @@ const modalagregar={
   }
 }
 
-function ModalAgregarPasaje(props){
+const ModalAgregarPasaje = (props) => {
   const {classes}=props;
-  const [pasajes, setPasajes] = React.useState([])
-  const [nivel, setNivel] = React.useState('1')
-  const [selectedPasajes, setSelectedPasajes] = React.useState(null);
-  const [snack, setSnack] = React.useState({open : false, text : ""})
+  const [pasajes, setPasajes] = useState([])
+  const [nivel, setNivel] = useState('1')
+  const [selectedPasajes, setSelectedPasajes] = useState(null);
+  const [snack, setSnack] = useState({open : false, text : ""})
 
-  React.useEffect(()=>{
+  useEffect(()=>{
     var service = "/referencias/lista"
-    adminService(service, "GET", {}, (data) => {
-      setPasajes(data.data.response)
+    adminService(service, "GET", {}, ({data}) => {
+      const { response } = data
+      setPasajes(response)
     })
   }, [true])
 

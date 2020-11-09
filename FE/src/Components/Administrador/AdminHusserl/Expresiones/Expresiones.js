@@ -1,6 +1,5 @@
-import React from 'react';
+import React,{ useEffect } from 'react';
 import Grid from '@material-ui/core/Grid';
-// import { withStyles } from '@material-ui/styles';
 
 import {adminService} from '../../../../js/webServices';
 
@@ -9,18 +8,19 @@ import Busqueda from './Busqueda';
 import ListaExpresiones from './ListaExpresiones';
 import NuevaExpresion from './NuevaExpresion';
 
-export default function Expresiones(props){
+const Expresiones = (props) => {
   const [expresiones, setExpresiones] = React.useState([]);
   const [letraMain, setLetraMain] = React.useState('A');
   const [idExpresion, setIdExpresion] = React.useState("");
   const [reload, setReload] = React.useState(true);
 
-  React.useEffect(()=>{
+  useEffect(()=>{
     var service = "/expresiones/todas/" + letraMain
-    adminService(service, "GET", {}, (data) => {
-      setExpresiones(data.data.response)
+    adminService(service, "GET", {}, ({data}) => {
+      const { response } = data
+      setExpresiones(response)
       if(idExpresion === '')
-        setIdExpresion(data.data.response.length > 0 ? data.data.response[0].id : "")
+        setIdExpresion(response.length > 0 ? response[0].id : "")
     })
   }, [letraMain, reload])
 
@@ -43,3 +43,5 @@ export default function Expresiones(props){
     </div>
   )
 }
+
+export default Expresiones;

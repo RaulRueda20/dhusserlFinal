@@ -1,18 +1,11 @@
 import React from 'react';
 import classNames from 'classnames';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import Grid from '@material-ui/core/Grid';
+import { List,ListItem,Grid,Typography } from '@material-ui/core/List';
 import { withStyles } from '@material-ui/styles';
-
-// import Expresiones from './Expresiones'
-import { Typography } from '@material-ui/core';
 
 const styleList = {
   lista:{
-     width:"100% !important",
-    //  maxWidth: 1160,
-    //  maxHeight: "32px"
+    width:"100% !important",
   },
   contenedorLista:{
     backgroundColor: "#5dab70",
@@ -27,16 +20,13 @@ const styleList = {
 
 const letras = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
 
-function ListaLetras (props){
+const ListaLetras = (props) => {
   const { classes }= props;
-
-  // var clean=props.emptyB
 
   const handleChangeLetraMain = (event) => {
     props.setLetraMain(event.target.innerText)
     if(props.cambioLetra==false){
       props.setCambioLetra(true)
-      // props.setValorB(clean)
     }
   };
 
