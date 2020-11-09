@@ -1,18 +1,15 @@
 // React
-import React from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 
 //Components
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
+import { Grid, Typography, Button } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
-import Button from "@material-ui/core/Button";
 
 //Other req
 import { webService } from "../../../../js/webServices";
-import * as localStore from "../../../../js/localStore";
 import { sesionStore } from "../../../../stores/sesionStore";
-import { languageStore } from "../../../../stores/languageStore";
+import { busquedaStore } from "../../../../stores/busquedaStore";
 import {
   menuDerechoJerarquia,
   menuDerechoVerTambien,
@@ -44,67 +41,76 @@ const resultadoBusqueda = {
   },
 };
 
-function ResultadoBusquedaExpresion(props) {
-  const { classes } = props;
-  const global = React.useContext(sesionStore);
-  const globalLanguage = React.useContext(languageStore);
-  const [listaVerTambien, setListaVerTambien] = React.useState([]);
-  const [pasajes, setPasajes] = React.useState({
+const ResultadoBusquedaExpresion = (props) => {
+  const { classes, match, expresionSeleccionada } = props;
+
+  const global = useContext(sesionStore);
+  const { state, dispatch } = global
+  const { sesion, ultimasVisitadas } = state
+
+  const globalBusqueda = useContext(busquedaStore);
+  const { busquedaState, attend } = globalBusqueda
+  const { idPasaje, busqueda } = busquedaState
+  const { term_id, expresion, referencias } = expresionSeleccionada
+
+  const [listaVerTambien, setListaVerTambien] = useState([]);
+  const [pasajes, setPasajes] = useState({
     original: "",
     traduccion: "",
   });
-  const [hijos, setHijos] = React.useState([]);
-  const [padres, setPadres] = React.useState([]);
-  const [lang, setLang] = React.useState("al");
+  const [hijos, setHijos] = useState([]);
+  const [padres, setPadres] = useState([]);
+  const [lang, setLang] = useState("al");
 
-  React.useEffect(() => {
-    if (props.idPasaje == "") {
-      var service = "/vertambien/" + props.expresionSeleccionada.term_id;
-      webService(service, "GET", {}, global.sesion, (data) => {
-        setListaVerTambien(data.data.response);
+  useEffect(() => {
+    if (idPasaje == "") {
+      var service = "/vertambien/" + term_id;
+      webService(service, "GET", {}, sesion, ({ data }) => {
+        const { response } = data
+        setListaVerTambien(response);
         webService(
           "/expresiones/" +
-            lang +
-            "/hijosList/" +
-            props.expresionSeleccionada.term_id,
+          lang +
+          "/hijosList/" + term_id,
           "GET",
           {},
-          global.sesion,
-          (data) => {
-            setHijos(data.data.response);
+          sesion,
+          (sons) => {
+            setHijos(sons.data.response);
           }
         );
         webService(
           "/expresiones/" +
-            lang +
-            "/abuelosList/" +
-            props.expresionSeleccionada.term_id,
+          lang +
+          "/abuelosList/" +
+          term_id,
           "GET",
           {},
-          global.sesion,
+          sesion,
           (data2) => {
             setPadres(data2.data.response);
           }
         );
       });
     } else {
-      var service = "/vertambien/" + props.idPasaje;
-      webService(service, "GET", {}, global.sesion, (data) => {
-        setListaVerTambien(data.data.response);
+      var service = "/vertambien/" + idPasaje;
+      webService(service, "GET", {}, sesion, ({ data }) => {
+        const { response } = data
+        setListaVerTambien(response);
         webService(
-          "/expresiones/" + lang + "/hijosList/" + props.idPasaje,
+          "/expresiones/" + lang + "/hijosList/" + idPasaje,
           "GET",
           {},
-          global.sesion,
-          (data) => {
-            setHijos(data.data.response);
+          sesion,
+          (sons) => {
+            setHijos(sons.data.response);
           }
         );
         webService(
-          "/expresiones/" + lang + "/abuelosList/" + props.idPasaje,
+          "/expresiones/" + lang + "/abuelosList/" + idPasaje,
           "GET",
           {},
-          global.sesion,
+          sesion,
           (data2) => {
             setPadres(data2.data.response);
           }
@@ -113,21 +119,20 @@ function ResultadoBusquedaExpresion(props) {
     }
     setPasajes({
       original: resaltarBusqueda(
-        props.expresionSeleccionada.referencias[0].ref_def_de,
-        props.busqueda
+        referencias[0].ref_def_de,
+        busqueda
       ),
       traduccion: resaltarBusqueda(
-        props.expresionSeleccionada.referencias[0].ref_def_es,
-        props.busqueda
+        referencias[0].ref_def_es,
+        busqueda
       ),
     });
-  }, [props.idPasaje, lang, props.expresionSeleccionada]);
+  }, [idPasaje, lang, props.expresionSeleccionada]);
 
-  function resaltarBusqueda(string, separador) {
-    var split = string.split(separador);
-    var Split = split.join("<span class='resaltador'>" + separador + "</span>");
-    var resultado = Split;
-    return resultado;
+  const resaltarBusqueda = (string, separador) => {
+    const split = string.split(separador);
+    const Split = split.join("<span class='resaltador'>" + separador + "</span>");
+    return Split;
   }
 
   const clickChangeLangEsVB = () => {
@@ -138,57 +143,55 @@ function ResultadoBusquedaExpresion(props) {
     setLang("al");
   };
 
-  function htmlPasajeOriginal() {
-    return { __html: pasajes.original };
+  const htmlPasajeOriginal = () => {
+    const { original } = pasajes
+    return { __html: original };
   }
 
-  function htmlPasajeTraduccion() {
-    return { __html: pasajes.traduccion };
+  const htmlPasajeTraduccion = () => {
+    const { traduccion } = pasajes
+    return { __html: traduccion };
   }
 
-  function fixReferenciasConsultadas(expresion) {
+  const fixReferenciasConsultadas = (expresion) => {
+    const { clave, expresion_original, expresion_traduccion, id, index_de, index_es, epretty, tpretty, ref_original, ref_traduccion, refid, orden } = expresion[0]
     var referencia = {
-      clave: expresion[0].clave,
-      expresion: expresion[0].expresion_original,
-      traduccion: expresion[0].expresion_traduccion,
-      id: expresion[0].id,
-      index_de: expresion[0].index_de,
-      index_es: expresion[0].index_es,
-      pretty_e: expresion[0].epretty,
-      pretty_t: expresion[0].tpretty,
+      clave: clave,
+      expresion: expresion_original,
+      traduccion: expresion_traduccion,
+      id: id,
+      index_de: index_de,
+      index_es: index_es,
+      pretty_e: epretty,
+      pretty_t: tpretty,
       referencias: [],
     };
     referencia.referencias.push({
-      referencia_original: expresion[0].ref_original,
-      referencia_traduccion: expresion[0].ref_traduccion,
-      refid: expresion[0].refid,
-      orden: expresion[0].orden,
+      referencia_original: ref_original,
+      referencia_traduccion: ref_traduccion,
+      refid: refid,
+      orden: orden,
     });
     return referencia;
   }
 
-  function consultaDePasajes() {
+  const consultaDePasajes = () => {
     setTimeout(() => {
-      if (document.getElementById("VP" + props.idExpresion) != null) {
-        document.getElementById("VP" + props.idExpresion).scrollIntoView();
+      if (document.getElementById("VP" + idExpresion) != null) {
+        document.getElementById("VP" + idExpresion).scrollIntoView();
       }
     }, 1000);
     var idExpresion = event.target.id.split("/")[0];
     var service = "/referencias/obtieneReferencias/" + idExpresion;
-    webService(service, "GET", {}, (data) => {
-      var referencias = fixReferenciasConsultadas(data.data.response);
-      /*if(localStore.getObjects("referenciasConsultadas")==false){
-                var referenciasConsultadas = []
-                referenciasConsultadas.push(referencias)
-                localStore.setObjects("referenciasConsultadas",referenciasConsultadas)
-            }else{
-                var store = localStore.getObjects("referenciasConsultadas")
-                store.push(referencias)
-                localStore.setObjects("referenciasConsultadas",store)
-            }*/
-      var nuevasVisitadas = global.ultimasVisitadas;
+    webService(service, "GET", {}, ({ data }) => {
+      const { response } = data
+      const referencias = fixReferenciasConsultadas(response);
+      let nuevasVisitadas = ultimasVisitadas;
       nuevasVisitadas.push(referencias);
-      global.setUltimasVisitadas(nuevasVisitadas);
+      dispatch({
+        type: "SET_ULTIMAS_VISITADAS",
+        payload: nuevasVisitadas
+      })
     });
   }
 
@@ -197,9 +200,9 @@ function ResultadoBusquedaExpresion(props) {
       <Grid container alignItems="center" alignContent="center">
         <Grid item md={11} xs={8}>
           <Typography variant="h2" className={classes.typosTitulos}>
-            {props.expresionSeleccionada.expresion +
+            {expresion +
               "  /  " +
-              props.expresionSeleccionada.traduccion}
+              traduccion}
           </Typography>
         </Grid>
       </Grid>
@@ -213,16 +216,16 @@ function ResultadoBusquedaExpresion(props) {
         </Grid>
         <Grid item xs={5} className="jerarquiaBusquedaIzquierda">
           <Typography variant="h5">
-            {menuDerechoJerarquia(globalLanguage.lang)}
+            {menuDerechoJerarquia(state.lang)}
           </Typography>
           <Typography variant="caption">
-            {menuDerechoJerarquiaDerivadaDe(globalLanguage.lang)}
+            {menuDerechoJerarquiaDerivadaDe(state.lang)}
           </Typography>
           <ul className="ulDeBusqueda" key={padres.id}>
             {padres.map((padre, index) => (
               <li key={padre.id + "-" + index}>
                 <Link
-                  to={`${props.match.path.slice(0, 20)}/pasaje/${padre.padre}`}
+                  to={`${match.path.slice(0, 20)}/pasaje/${padre.padre}`}
                   onClick={consultaDePasajes}
                 >
                   <Typography
@@ -237,13 +240,13 @@ function ResultadoBusquedaExpresion(props) {
             ))}
           </ul>
           <Typography variant="caption">
-            {menuDerechoJerarquiaExpresionesDerivadas(globalLanguage.lang)}
+            {menuDerechoJerarquiaExpresionesDerivadas(state.lang)}
           </Typography>
           <ul className="ulDeBusqueda" key={hijos.id}>
             {hijos.map((hijo, index) => (
               <li key={hijo.id + "-" + index}>
                 <Link
-                  to={`${props.match.path.slice(0, 20)}/pasaje/${hijo.hijo}`}
+                  to={`${match.path.slice(0, 20)}/pasaje/${hijo.hijo}`}
                   onClick={consultaDePasajes}
                 >
                   <Typography
@@ -260,13 +263,13 @@ function ResultadoBusquedaExpresion(props) {
         </Grid>
         <Grid item xs={5} className="jerarquiaBusquedaDerecha">
           <Typography variant="h5">
-            {menuDerechoVerTambien(globalLanguage.lang)}
+            {menuDerechoVerTambien(state.lang)}
           </Typography>
           <ul className="ulDeBusquedaVerTambien" key={listaVerTambien.id}>
             {listaVerTambien.map((lista, index) => (
               <li key={lista.id + "-" + index}>
                 <Link
-                  to={`${props.match.path.slice(0, 20)}/pasaje/${lista.id}`}
+                  to={`${match.path.slice(0, 20)}/pasaje/${lista.id}`}
                   onClick={consultaDePasajes}
                 >
                   <Typography
@@ -290,13 +293,13 @@ function ResultadoBusquedaExpresion(props) {
               <img className="banderaPasajes" src={al} />
             </Button>
           ) : (
-            <Button
-              className={classes.imagenesBandera}
-              onClick={clickChangeLangEsVB}
-            >
-              <img className="banderaPasajes" src={es} />
-            </Button>
-          )}
+              <Button
+                className={classes.imagenesBandera}
+                onClick={clickChangeLangEsVB}
+              >
+                <img className="banderaPasajes" src={es} />
+              </Button>
+            )}
         </Grid>
       </Grid>
     </div>

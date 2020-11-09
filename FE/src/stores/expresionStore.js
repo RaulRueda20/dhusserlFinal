@@ -1,14 +1,28 @@
-import React from "react";
+import React, { useReducer } from 'react';
 
-const expresionStore = React.createContext(null);
-const { Provider } = expresionStore;
+const expresionesStore = React.createContext(null);
+const { Provider } = expresionesStore;
 
-const expresionProvider = ({ children }) => {
-  const [expresiones, setExpresiones] = React.useState([]);
+const initialState = {
+  expresiones: []
+}
 
-  return (
-    <Provider value={{ expresiones, setExpresiones }}>{children}</Provider>
-  );
+const sesionReducer = (state, action) => {
+  const { type, payload } = action;
+
+  switch (type) {
+    case "SET_SNACKBAR":
+      return { ...state, snackbar: payload };
+    default:
+      break;
+  }
+
+}
+
+const ExpresionesProvider = ({ children }) => {
+  const [state, attend] = useReducer(sesionReducer, initialState);
+
+  return <Provider value={{ state, attend }}>{children}</Provider>;
 };
 
-export { expresionStore, expresionProvider };
+export { expresionesStore, ExpresionesProvider };

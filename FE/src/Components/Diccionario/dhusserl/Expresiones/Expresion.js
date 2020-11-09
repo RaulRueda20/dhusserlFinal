@@ -29,7 +29,6 @@ import * as localStore from "../../../../js/localStore";
 import { sesionStore } from "../../../../stores/sesionStore";
 import { languageStore } from "../../../../stores/languageStore";
 import { letraStore } from "../../../../stores/letraStore";
-import { expresionStore } from "../../../../stores/expresionStore";
 
 function Expresion(props) {
   const global = React.useContext(sesionStore);
@@ -123,7 +122,7 @@ function Expresion(props) {
   }, [
     globalLetra.letra,
     globalLanguage.langLista,
-    globalExpresion.expresiones,
+    // globalExpresion.expresiones,
     flagDeBusqueda,
     flagDeBusqueda,
   ]);

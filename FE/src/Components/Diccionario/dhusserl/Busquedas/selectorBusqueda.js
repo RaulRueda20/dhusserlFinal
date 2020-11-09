@@ -9,36 +9,43 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { withStyles } from '@material-ui/styles';
 
 //Language
-import {tipoDeBusqueda, dentroExpresion, dentroReferencia} from '../../../../js/Language';
-import { languageStore } from '../../../../stores/languageStore';
+import { tipoDeBusqueda, dentroExpresion, dentroReferencia } from '../../../../js/Language';
+import { sesionStore } from '../../../../stores/sesionStore';
+import { busquedaStore } from '../../../../stores/busquedaStore';
 
-const seleccion={
-    selector:{
-        marginTop:"30px",
+const seleccion = {
+    selector: {
+        marginTop: "30px",
     }
 }
 
-function SelectorBusqueda(props){
-    const {classes}=props;
-    const globalLanguage = React.useContext(languageStore);
+const SelectorBusqueda = (props) => {
+    const { classes } = props;
+    const global = React.useContext(sesionStore);
+    const { state } = global
+    const { lang } = state
 
-    function handleChange(event){
-        props.setTipoBusqueda(event.target.value)
+    const globalBusqueda = React.useContext(busquedaStore)
+    const { attend } = globalBusqueda
+
+    const handleChange = ({ target }) => {
+        const { value } = target
+        attend({ type: "BUSQUEDA_STATE", payload: value })
     }
 
-    return(
+    return (
         <FormControl className={classes.selector} fullWidth>
-            <InputLabel htmlFor="Busquedas">{tipoDeBusqueda(globalLanguage.lang)}</InputLabel>
+            <InputLabel htmlFor="Busquedas">{tipoDeBusqueda(lang)}</InputLabel>
             <Select
                 fullWidth
                 value={props.tipoBusqueda}
                 onChange={handleChange}
             >
                 <MenuItem value="Expresion">
-                    {dentroExpresion(globalLanguage.lang)}
+                    {dentroExpresion(lang)}
                 </MenuItem>
                 <MenuItem value="Referencia">
-                    {dentroReferencia(globalLanguage.lang)}
+                    {dentroReferencia(lang)}
                 </MenuItem>
             </Select>
         </FormControl>

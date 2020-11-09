@@ -1,5 +1,5 @@
 //React
-import React from 'react';
+import React, { useContext } from 'react';
 
 //Components
 import Grid from '@material-ui/core/Grid';
@@ -12,68 +12,92 @@ import Tooltip from '@material-ui/core/Tooltip';
 import classNames from 'classnames';
 
 //Language
-import {resultadoBusqueda,cerrarListaTooltip} from '../../../../js/Language';
-import { languageStore } from '../../../../stores/languageStore';
+import { resultadoBusqueda, cerrarListaTooltip } from '../../../../js/Language';
+import { sesionStore } from '../../../../stores/expresionStore'
+import { busquedaStore } from '../../../../stores/busquedaStore';
 
-function ListaBusqueda(props){
-    const globalLanguage = React.useContext(languageStore);
+const ListaBusqueda = (props) => {
+    const global = useContext(sesionStore);
+    const { state } = global
+    const { lang } = state
 
-    function clickCambioIdBuscado(event){
-        props.setIdPasaje(event.currentTarget.id.split("-")[0])
-        props.setPosicionPasaje(parseInt(event.currentTarget.id.split("-")[1]))
-        if(props.tipoBusqueda=="Referencia"){
-            props.setPosicionPasaje(parseInt(event.currentTarget.id.split("-")[2]))
+    const globalBusqueda = useContext(busquedaStore);
+    const { busquedaState, attend } = globalBusqueda
+    const { tipoBusqueda, posicionPasaje, expresionesEncontradas } = busquedaState
+
+    const clickCambioIdBuscado = ({ currentTarget }) => {
+        const id = { currentTarget }
+
+        if (tipoBusqueda == "Referencia") {
+            attend({
+                type: "SET_POSICION_PASAJE",
+                payload: parseInt(id.split("-")[2])
+            })
+        } else {
+            attend({
+                type: "SET_POSICION_PASAJE",
+                payload: parseInt(id.split("-")[1])
+            })
         }
+
+        attend({
+            type: "SET_ID_PASAJE",
+            payload: id.split("-")[0]
+        })
     }
 
-    return(
+    const abrirLista = () => {
+        attend({ type: 'SET_ABIERTO', payload: !abierto })
+    }
+
+    return (
         <Grid container justify="center" alignItems="center">
             <Grid item xs={11}>
-                <Typography variant="h3" className="tituloResultados">{resultadoBusqueda(globalLanguage.lang)}</Typography>
+                <Typography variant="h3" className="tituloResultados">{resultadoBusqueda(lang)}</Typography>
             </Grid>
             <Grid item xs={1}>
-                <Tooltip title={cerrarListaTooltip(globalLanguage.lang)}>
-                    <IconButton onClick={props.abrirLista}>
-                        <ArrowBackIosIcon/>
+                <Tooltip title={cerrarListaTooltip(lang)}>
+                    <IconButton onClick={abrirLista}>
+                        <ArrowBackIosIcon />
                     </IconButton>
                 </Tooltip>
             </Grid>
-            {props.tipoBusqueda=="Referencia" ?
-                <Grid item xs={12} className="contenedorBusqueda">
-                <ul className="ulBusqueda">
-                    {props.expresionesEncontradas.map((expresionEncontradaporReferencia,index)=>(
-                        <li id={expresionEncontradaporReferencia.ref_id + "-" + index}
-                            onClick={event => clickCambioIdBuscado(event)}
-                            value={expresionEncontradaporReferencia.ref_id + "-" + index}
-                            key={expresionEncontradaporReferencia.ref_id+"-"+index}
-                            className={classNames([{"pasajeSeleccionado":props.posicionPasaje==index},"liBusqueda"])}
-                        >
-                            <Typography>
-                            {expresionEncontradaporReferencia.ref_libro_de + "  /  " + expresionEncontradaporReferencia.ref_libro_es}
-                            </Typography>
-                        </li>
-                    ))}
-                </ul>
-            </Grid>:
-            <Grid container justify="center" alignItems="center">
+            {tipoBusqueda == "Referencia" ?
                 <Grid item xs={12} className="contenedorBusqueda">
                     <ul className="ulBusqueda">
-                        {props.expresionesEncontradas.map((expresionEncontradaPorExpresion,index)=>(
-                            <li
+                        {expresionesEncontradas.map((expresionEncontradaporReferencia, index) => (
+                            <li id={expresionEncontradaporReferencia.ref_id + "-" + index}
                                 onClick={event => clickCambioIdBuscado(event)}
-                                id={expresionEncontradaPorExpresion.term_id+"-"+index}
-                                value={expresionEncontradaPorExpresion.term_id+"-"+index}
-                                key={expresionEncontradaPorExpresion.term_id+"-"+index}
-                                className={classNames([{"pasajeSeleccionado":props.posicionPasaje==index},"liBusqueda"])}
+                                value={expresionEncontradaporReferencia.ref_id + "-" + index}
+                                key={expresionEncontradaporReferencia.ref_id + "-" + index}
+                                className={classNames([{ "pasajeSeleccionado": posicionPasaje == index }, "liBusqueda"])}
                             >
                                 <Typography>
-                                    {expresionEncontradaPorExpresion.expresion+"  /  "+expresionEncontradaPorExpresion.traduccion}
+                                    {expresionEncontradaporReferencia.ref_libro_de + "  /  " + expresionEncontradaporReferencia.ref_libro_es}
                                 </Typography>
                             </li>
                         ))}
                     </ul>
+                </Grid> :
+                <Grid container justify="center" alignItems="center">
+                    <Grid item xs={12} className="contenedorBusqueda">
+                        <ul className="ulBusqueda">
+                            {expresionesEncontradas.map((expresionEncontradaPorExpresion, index) => (
+                                <li
+                                    onClick={event => clickCambioIdBuscado(event)}
+                                    id={expresionEncontradaPorExpresion.term_id + "-" + index}
+                                    value={expresionEncontradaPorExpresion.term_id + "-" + index}
+                                    key={expresionEncontradaPorExpresion.term_id + "-" + index}
+                                    className={classNames([{ "pasajeSeleccionado": posicionPasaje == index }, "liBusqueda"])}
+                                >
+                                    <Typography>
+                                        {expresionEncontradaPorExpresion.expresion + "  /  " + expresionEncontradaPorExpresion.traduccion}
+                                    </Typography>
+                                </li>
+                            ))}
+                        </ul>
+                    </Grid>
                 </Grid>
-            </Grid>
             }
         </Grid>
     )

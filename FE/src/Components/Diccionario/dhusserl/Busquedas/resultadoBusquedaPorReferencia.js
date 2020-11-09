@@ -1,5 +1,5 @@
 // React
-import React from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 
 //Components
@@ -9,10 +9,9 @@ import { withStyles } from "@material-ui/styles";
 
 //Other req
 import { webService } from "../../../../js/webServices";
-import * as localStore from "../../../../js/localStore";
 import { sesionStore } from "../../../../stores/sesionStore";
-import { languageStore } from "../../../../stores/languageStore";
 import { expresionesAsociadas } from "../../../../js/Language";
+import { busquedaStore } from "../../../../stores/busquedaStore";
 
 const resultadoBusquedaRef = {
   typosTitulos: {
@@ -26,27 +25,33 @@ const resultadoBusquedaRef = {
   },
 };
 
-function ResultadoBusquedaReferencia(props) {
-  const { classes } = props;
-  const global = React.useContext(sesionStore);
-  const globalLanguage = React.useContext(languageStore);
-  const [pasajes, setPasajes] = React.useState({
+const ResultadoBusquedaReferencia = (props) => {
+  const { classes, pasajeSeleccionado } = props;
+  const global = useContext(sesionStore);
+  const { state } = global
+  const { sesion } = global
+
+  const globalBusqueda = useContext(busquedaStore);
+  const { busquedaState } = globalBusqueda
+  const { idPasaje, busqueda, posicionPasaje } = busquedaState
+
+  const [pasajes, setPasajes] = useState({
     original: "",
     traduccion: "",
   });
 
-  React.useEffect(() => {
+  useEffect(() => {
     setPasajes({
       original: resaltarBusqueda(
         props.pasajeSeleccionado.ref_original,
-        props.busqueda
+        busqueda
       ),
       traduccion: resaltarBusqueda(
         props.pasajeSeleccionado.ref_traduccion,
-        props.busqueda
+        busqueda
       ),
     });
-  }, [props.posicionPasaje]);
+  }, [posicionPasaje]);
 
   function resaltarBusqueda(string, separador) {
     var split = string.split(separador);
@@ -96,15 +101,6 @@ function ResultadoBusquedaReferencia(props) {
     var service = "/referencias/obtieneReferencias/" + idExpresion;
     webService(service, "GET", {}, global.sesion, (data) => {
       var referencias = fixReferenciasConsultadas(data.data.response);
-      /*if(localStore.getObjects("referenciasConsultadas")==false){
-                var referenciasConsultadas = []
-                referenciasConsultadas.push(referencias)
-                localStore.setObjects("referenciasConsultadas",referenciasConsultadas)
-            }else{
-                var store = localStore.getObjects("referenciasConsultadas")
-                store.push(referencias)
-                localStore.setObjects("referenciasConsultadas",store)
-            }*/
       var nuevasVisitadas = global.ultimasVisitadas;
       nuevasVisitadas.push(referencias);
       global.setUltimasVisitadas(nuevasVisitadas);
@@ -131,7 +127,7 @@ function ResultadoBusquedaReferencia(props) {
               <Link
                 to={`${props.match.path.slice(0, 20)}/pasaje/${
                   expresion.t_id
-                }/${props.pasajeSeleccionado.ref_id}`}
+                  }/${props.pasajeSeleccionado.ref_id}`}
                 onClick={consultaDePasajes}
               >
                 <Typography id={expresion.t_id + "/" + index}>

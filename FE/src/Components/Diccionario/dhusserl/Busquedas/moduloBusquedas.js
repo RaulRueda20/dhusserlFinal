@@ -1,5 +1,5 @@
 // React
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 
 //Components
 import { Grid, IconButton, Tooltip } from '@material-ui/core';
@@ -16,6 +16,7 @@ import ResultadoBusquedaReferencia from './resultadoBusquedaPorReferencia';
 //Language
 import { abrirListaTooltip } from '../../../../js/Language';
 import { sesionStore } from '../../../../stores/sesionStore';
+import { busquedaStore } from '../../../../stores/busquedaStore';
 
 const moduloBusqueda = {
     gridSelectorBusqueda: {
@@ -32,29 +33,24 @@ const moduloBusqueda = {
 const ModuloBusquedas = (props) => {
     const { classes } = props;
     const global = useContext(sesionStore);
-    const { state, dispatch } = global
+    const { state } = global
     const { lang } = state
 
-    const [expresionesEncontradas, setExpresionesEncontradas] = useState([]);
-    const [tipoBusqueda, setTipoBusqueda] = useState("Expresion");
-    const [tipoBusquedaRealizada, setTipoBusquedaRealizada] = useState("");
-    const [posicionPasaje, setPosicionPasaje] = useState(0);
-    const [idPasaje, setIdPasaje] = useState("");
-    const [abierto, setAbierto] = useState(true);
-    const [busqueda, setBusqueda] = useState("");
+    const globalBusqueda = useContext(busquedaStore);
+    const { busquedaState, attend } = globalBusqueda
+    const { expresionesEncontradas, tipoBusquedaRealizada, posicionPasaje, abierto } = busquedaState
 
-    function abrirLista() {
-        setAbierto(!abierto)
+    const abrirLista = () => {
+        attend({ type: 'SET_ABIERTO', payload: !abierto })
     }
 
     return (
         <Grid container>
             <Grid item xs={12} sm={8}>
-                <Busquedas expresionesEncontradas={expresionesEncontradas} setExpresionesEncontradas={setExpresionesEncontradas} posicionPasaje={posicionPasaje}
-                    setPosicionPasaje={setPosicionPasaje} tipoBusqueda={tipoBusqueda} setTipoBusquedaRealizada={setTipoBusquedaRealizada} busqueda={busqueda} setBusqueda={setBusqueda} />
+                <Busquedas />
             </Grid>
             <Grid item xs={12} sm={4} className={classes.gridSelectorBusqueda}>
-                <SelectorBusqueda tipoBusqueda={tipoBusqueda} setTipoBusqueda={setTipoBusqueda} />
+                <SelectorBusqueda />
             </Grid>
             {
                 expresionesEncontradas.length < 1 ? null :
@@ -65,20 +61,16 @@ const ModuloBusquedas = (props) => {
                                     <MenuIcon />
                                 </IconButton>
                             </Tooltip> :
-                            <ListaBusqueda expresionesEncontradas={expresionesEncontradas} posicionPasaje={posicionPasaje}
-                                setPosicionPasaje={setPosicionPasaje} tipoBusqueda={tipoBusquedaRealizada} idPasaje={idPasaje}
-                                setIdPasaje={setIdPasaje} abrirLista={abrirLista} expresionSeleccionada={expresionesEncontradas[posicionPasaje]}
-                            />}
+                            <ListaBusqueda />}
                     </Grid>
             }
             {
                 expresionesEncontradas.length < 1 ? null :
                     <Grid item xs={abierto ? false : 11} sm={abierto ? 6 : 11} md={abierto ? 8 : 11}>
                         {tipoBusquedaRealizada == "Referencia" ?
-                            <ResultadoBusquedaReferencia history={props.history} match={props.match} pasajeSeleccionado={expresionesEncontradas[posicionPasaje]} idPasaje={idPasaje} busqueda={busqueda} />
+                            <ResultadoBusquedaReferencia history={props.history} match={props.match} pasajeSeleccionado={expresionesEncontradas[posicionPasaje]} />
                             :
-                            <ResultadoBusquedaExpresion history={props.history} match={props.match} expresionSeleccionada={expresionesEncontradas[posicionPasaje]}
-                                idPasaje={idPasaje} setIdPasaje={setIdPasaje} abierto={abierto} setAbierto={setAbierto} busqueda={busqueda} />
+                            <ResultadoBusquedaExpresion history={props.history} match={props.match} expresionSeleccionada={expresionesEncontradas[posicionPasaje]} />
                         }
                     </Grid>
             }

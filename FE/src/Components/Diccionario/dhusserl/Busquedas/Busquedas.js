@@ -1,54 +1,51 @@
 //React
-import React from 'react';
+import React, { useState, useContext } from 'react';
 
 //Components
 import SearchIcon from '@material-ui/icons/Search';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
-import FormControl from '@material-ui/core/FormControl';
+import { Input, InputLabel, FormControl, Grid, IconButton, InputAdornment, Tooltip } from '@material-ui/core';
 import { withStyles } from '@material-ui/styles';
-import Grid from '@material-ui/core/Grid';
-import IconButton from '@material-ui/core/IconButton';
-import LinearProgress from '@material-ui/core/LinearProgress';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import Tooltip from '@material-ui/core/Tooltip';
 import Icon from '@mdi/react';
 import { mdiFormatLetterCase } from '@mdi/js';
+import { busquedaStore } from '../../../../stores/busquedaStore';
 
 //Other request
-import {webService} from '../../../../js/webServices';
+import { webService } from '../../../../js/webServices';
 import { sesionStore } from '../../../../stores/sesionStore';
-import { languageStore } from '../../../../stores/languageStore';
 import classNames from 'classnames';
 
 //Language
-import {busquedas, distincionMayusyMinus} from '../../../../js/Language';
+import { busquedas, distincionMayusyMinus } from '../../../../js/Language';
 
-const search={
-    buscador:{
-        margin:"30px 40px",
+const search = {
+    buscador: {
+        margin: "30px 40px",
         width: "93%"
     },
-    botonBuscador:{
-        marginTop:"35px"
+    botonBuscador: {
+        marginTop: "35px"
     }
 }
 
-function Busquedas(props){
-    const {classes}=props;
-    const global = React.useContext(sesionStore);
-    const globalLanguage = React.useContext(languageStore);
-    const [loading, setLoading]=React.useState(false);
-    const [insensitiveCase,setInsensitiveCase]=React.useState(false)
+const Busquedas = (props) => {
+    const { classes } = props;
+    const global = useContext(sesionStore);
+    const { state, dispatch } = global
+    const { lang, sesion } = state
+    const [insensitiveCase, setInsensitiveCase] = useState(false)
+
+    const globalBusqueda = useContext(busquedaStore);
+    const { busquedaState, attend } = globalBusqueda
+    const { tipoBusqueda, busqueda } = busquedaState
 
     const fixPasajes = (pasajes) => {
-        var pasajesArreglados = [];
-        var posicionActual = -1;
-        var pasajeActual = "";
-        var i = 0;
+        let pasajesArreglados = [];
+        let posicionActual = -1;
+        let pasajeActual = "";
+        let i = 0;
         // console.log("pasajes", pasajes.length)
-        while(i < pasajes.length){
-            if(pasajeActual != pasajes[i].ref_id){
+        while (i < pasajes.length) {
+            if (pasajeActual != pasajes[i].ref_id) {
                 posicionActual++
                 pasajeActual = pasajes[i].ref_id;
                 pasajesArreglados.push({
@@ -65,45 +62,55 @@ function Busquedas(props){
                     expresion_traduccion: pasajes[i].expresion_traduccion,
                     t_id: pasajes[i].t_id
                 })
-                i ++
-            }else{
+                i++
+            } else {
                 pasajesArreglados[posicionActual].expresiones.push({
                     orden: pasajes[i].orden,
                     expresion_original: pasajes[i].expresion_original,
                     expresion_traduccion: pasajes[i].expresion_traduccion,
                     t_id: pasajes[i].t_id
                 })
-                i ++
+                i++
             }
         }
         return pasajesArreglados
     }
 
-    const handleChangeBusqueda=(event)=>{
+    const handleChangeBusqueda = (event) => {
         event.preventDefault()
-        setLoading(true)
-        if(props.tipoBusqueda=="Referencia"){
-            var servicebr = "/expresiones/busqueda/" + insensitiveCase
-            webService(servicebr, "POST", {parametro:props.busqueda}, global.sesion, (data) => {
-                var referencias = data.data.response
-                props.setExpresionesEncontradas([])
-                props.setTipoBusquedaRealizada("Referencia")
-                props.setExpresionesEncontradas(fixPasajes(referencias))
-                setLoading(false)
+        dispatch({ type: "START_LOADING" })
+        if (tipoBusqueda == "Referencia") {
+            const servicebr = "/expresiones/busqueda/" + insensitiveCase
+            webService(servicebr, "POST", { parametro: busqueda }, sesion, ({ data }) => {
+                const { response } = data
+                attend({
+                    type: "SET_TIPO_BUSQUEDA_REALIZADA",
+                    payload: "Referencia"
+                })
+                attend({
+                    type: "SET_EXPRESIONES_ENCONTRADAS",
+                    payload: fixPasajes(response)
+                })
+                dispatch({ type: "STOP_LOADING" })
             })
-        }else{
-            var servicebe = "/referencias/busquedaExpresion"
-            webService(servicebe, "POST", {parametro:props.busqueda,case:insensitiveCase}, global.sesion, (data) => {
-                var expresiones = data.data.response
-                props.setExpresionesEncontradas([])
-                props.setTipoBusquedaRealizada("Expresion")
-                props.setExpresionesEncontradas(expresiones)
-                setLoading(false)
+        } else {
+            const servicebe = "/referencias/busquedaExpresion"
+            webService(servicebe, "POST", { parametro: busqueda, case: insensitiveCase }, sesion, ({ data }) => {
+                const { response } = data
+                attend({
+                    type: "SET_TIPO_BUSQUEDA_REALIZADA",
+                    payload: "Expresion"
+                })
+                attend({
+                    type: "SET_EXPRESIONES_ENCONTRADAS",
+                    payload: response
+                })
+                dispatch({ type: "STOP_LOADING" })
             })
         }
     }
 
-    function handleInsensitiveCase(){
+    const handleInsensitiveCase = () => {
         setInsensitiveCase(!insensitiveCase)
     }
 
@@ -112,34 +119,33 @@ function Busquedas(props){
             <Grid container>
                 <Grid item xs={10}>
                     <FormControl className={classes.buscador} >
-                        <InputLabel htmlFor="input-with-icon-adornment">{busquedas(globalLanguage.lang)}</InputLabel>
+                        <InputLabel htmlFor="input-with-icon-adornment">{busquedas(lang)}</InputLabel>
                         <Input
-                        id="input-with-icon-adornment"
-                        onChange={event => props.setBusqueda(event.target.value)}
-                        startAdornment={
-                            <InputAdornment position="end">
-                                <Tooltip title={distincionMayusyMinus(globalLanguage.lang)}>
-                                    <IconButton onClick={handleInsensitiveCase} className={classNames([{"caseSeleccionado" : insensitiveCase == true}, "case"])}>
-                                        <Icon path={mdiFormatLetterCase}
-                                        title="User Profile"
-                                        size={1}
-                                        />
+                            id="input-with-icon-adornment"
+                            onChange={event => dispatch({ type: "SET_BUSQUEDA", payload: event.target.value })}
+                            startAdornment={
+                                <InputAdornment position="end">
+                                    <Tooltip title={distincionMayusyMinus(lang)}>
+                                        <IconButton onClick={handleInsensitiveCase} className={classNames([{ "caseSeleccionado": insensitiveCase == true }, "case"])}>
+                                            <Icon path={mdiFormatLetterCase}
+                                                title="User Profile"
+                                                size={1}
+                                            />
+                                        </IconButton>
+                                    </Tooltip>
+                                </InputAdornment>
+                            }
+                            endAdornment={
+                                <InputAdornment position="end">
+                                    <IconButton type="submit">
+                                        <SearchIcon fontSize="small" />
                                     </IconButton>
-                                </Tooltip>
-                            </InputAdornment>
-                        }
-                        endAdornment={
-                            <InputAdornment position="end">
-                                <IconButton type="submit">
-                                    <SearchIcon fontSize="small"/>
-                                </IconButton>
-                            </InputAdornment>
-                        }
-                    />
+                                </InputAdornment>
+                            }
+                        />
                     </FormControl>
                 </Grid>
             </Grid>
-            <LinearProgress className={classNames([{"hidden" : !loading}, "loadingBar"])}/>
         </form>
     )
 }
