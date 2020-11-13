@@ -83,3 +83,5 @@ export default function Snackbars(props) {
     </Fragment>
   );
 }
+
+export default Snackbars;

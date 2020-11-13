@@ -14,6 +14,8 @@ import Usuarios from "./Usuarios/Usuarios";
 import * as localStore from "../../../js/localStore";
 
 const Subvistas = (props) => {
+  const { match } = props;
+  const { url } = match;
   useEffect(() => {
     if (!localStore.getObjects("admin_sesion"))
       props.history.push("/administrador/login");
@@ -23,28 +25,13 @@ const Subvistas = (props) => {
     <Fragment>
       <HeaderMain match={props.match} />
       <Switch>
-        <Route
-          path={`${props.match.url}/husserl/alfabeto`}
-          component={Expresiones}
-        />
-        <Route
-          path={`${props.match.url}/husserl/pasajes`}
-          component={Pasajes}
-        />
-        <Route
-          path={`${props.match.url}/husserl/acercade`}
-          component={Acercade}
-        />
-        <Route path={`${props.match.url}/husserl/manual`} component={Manual} />
-        <Route
-          path={`${props.match.url}/husserl/usuarios`}
-          component={Usuarios}
-        />
-        <Route exact path={`${props.match.url}/husserl/`}>
-          <Redirect
-            to={`${props.match.url}/husserl/alfabeto`}
-            component={Expresiones}
-          />
+        <Route path={`${url}/husserl/alfabeto`} component={Expresiones} />
+        <Route path={`${url}/husserl/pasajes`} component={Pasajes} />
+        <Route path={`${url}/husserl/acercade`} component={Acercade} />
+        <Route path={`${url}/husserl/manual`} component={Manual} />
+        <Route path={`${url}/husserl/usuarios`} component={Usuarios} />
+        <Route exact path={`${url}/husserl/`}>
+          <Redirect to={`${url}/husserl/alfabeto`} component={Expresiones} />
         </Route>
       </Switch>
     </Fragment>

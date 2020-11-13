@@ -81,9 +81,9 @@ const NuevaExpresion = (props) => {
     setOpenAp(false);
   };
 
-  function handleClickOpenAl() {
+  const handleClickOpenAl = () => {
     setOpenAl(true);
-  }
+  };
 
   const handleCloseAl = () => {
     setOpenAl(false);

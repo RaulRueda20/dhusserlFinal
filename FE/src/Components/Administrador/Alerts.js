@@ -9,7 +9,7 @@ import {
   Button,
 } from "@material-ui/core";
 
-const Transition = React.forwardRef(function Transition(props, ref) {
+const Transition = React.forwardRef((props, ref) => {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
