@@ -1,5 +1,5 @@
 //React
-import React from "react";
+import React, { useContext } from "react";
 
 // Elements
 
@@ -38,18 +38,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ListaExpresiones(props) {
-  const global = React.useContext(sesionStore);
-  const globalExpresion = React.useContext(expresionStore);
+const ListaExpresiones = (props) => {
+  const global = useContext(sesionStore);
+  const globalExpresion = useContext(expresionStore);
   const classes = useStyles();
   const theme = useTheme();
-  const [panelesAbiertos, setPanelesAbiertos] = React.useState([]);
+  const [panelesAbiertos, setPanelesAbiertos] = useState([]);
 
-  React.useEffect(()=>{
-    console.log("globalExpresion", globalExpresion)
-  },[true])
-
-  function clickHandleVista(event) {
+  const clickHandleVista = (event) => {
     if (!props.flagDeBusqueda) {
       var expresionesReferencias = props.expresiones[event.currentTarget.id];
     } else {
@@ -68,9 +64,9 @@ export default function ListaExpresiones(props) {
     var nuevasVisitadas = global.ultimasVisitadas;
     nuevasVisitadas.push(expresionesReferencias);
     global.setUltimasVisitadas(nuevasVisitadas);
-  }
+  };
 
-  function handleClickPanel(event) {
+  const handleClickPanel = (event) => {
     var expresionesAbiertas = panelesAbiertos;
     props.setIdExpresion(event.currentTarget.id);
     if (expresionesAbiertas.indexOf(event.currentTarget.id) > -1) {
@@ -82,7 +78,7 @@ export default function ListaExpresiones(props) {
       expresionesAbiertas.push(event.currentTarget.id);
     }
     setPanelesAbiertos(expresionesAbiertas);
-  }
+  };
 
   const handleScroll = (e) => {
     var element = e.target;
@@ -126,4 +122,6 @@ export default function ListaExpresiones(props) {
       </div>
     </div>
   );
-}
+};
+
+export default ListaExpresiones;

@@ -1,8 +1,8 @@
 //React
-import React from "react";
+import React, { useContext, Fragment } from "react";
 
 //Elements
-import { Switch, Redirect, Link, Route } from "react-router-dom";
+import { Switch, Redirect, Route } from "react-router-dom";
 
 //Components
 import HeaderMain from "./HeaderMain";
@@ -17,16 +17,16 @@ import { sesionStore } from "../../../stores/sesionStore";
 import { BusquedasProvider } from "../../../stores/busquedaStore";
 
 const Subvistas = ({ match, history }) => {
-  const global = React.useContext(sesionStore);
-  const { state } = global
-  const { sesion } = state
+  const global = useContext(sesionStore);
+  const { state } = global;
+  const { sesion } = state;
 
   React.useEffect(() => {
     if (sesion == null) history.push("/diccionario/login");
   }, [true]);
 
   return (
-    <div>
+    <Fragment>
       <HeaderMain match={match} history={history} />
       <Switch>
         <Route
@@ -43,10 +43,14 @@ const Subvistas = ({ match, history }) => {
         />
         <Route
           path={`${match.url}/busquedas`}
-          render={(props) => <BusquedasProvider><ModuloBusquedas {...props} /></BusquedasProvider>}
+          render={(props) => (
+            <BusquedasProvider>
+              <ModuloBusquedas {...props} />
+            </BusquedasProvider>
+          )}
         />
-            -
-            <Route
+        -
+        <Route
           path={`${match.url}/acercade`}
           render={(props) => <Acercade {...props} />}
         />
@@ -58,8 +62,8 @@ const Subvistas = ({ match, history }) => {
           <Redirect to={`${match.url}/expresiones`} />
         </Route>
       </Switch>
-    </div>
+    </Fragment>
   );
-}
+};
 
-export default Subvistas
+export default Subvistas;

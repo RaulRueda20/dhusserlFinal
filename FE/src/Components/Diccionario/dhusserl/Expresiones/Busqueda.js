@@ -1,20 +1,21 @@
 //React
-import React from "react";
+import React, { useContext, useState } from "react";
 
 //Components
-import SearchIcon from "@material-ui/icons/Search";
-import Input from "@material-ui/core/Input";
-import InputLabel from "@material-ui/core/InputLabel";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import FormControl from "@material-ui/core/FormControl";
-import IconButton from "@material-ui/core/IconButton";
-import Tooltip from "@material-ui/core/Tooltip";
-import Switch from "@material-ui/core/Switch";
-import Grid from "@material-ui/core/Grid";
+import {
+  Input,
+  InputLabel,
+  InputAdornment,
+  FormControl,
+  IconButton,
+  Tooltip,
+  Snackbar,
+  Grid,
+} from "@material-ui/core";
 import Icon from "@mdi/react";
 import { mdiFormatLetterCase } from "@mdi/js";
 import { withStyles } from "@material-ui/styles";
-import Snackbar from "@material-ui/core/Snackbar";
+import SearchIcon from "@material-ui/icons/Search";
 
 //Other req
 import "../../../../css/expresiones.css";
@@ -40,13 +41,13 @@ const styles = {
   },
 };
 
-function Busqueda(props) {
+const Busqueda = (props) => {
   const { classes } = props;
-  const global = React.useContext(sesionStore);
-  const globalLanguage = React.useContext(languageStore);
-  const globalLetra = React.useContext(letraStore);
-  const [insensitiveCase, setInsensitiveCase] = React.useState(false);
-  const [snack, setSnack] = React.useState({ open: false, text: "" });
+  const global = useContext(sesionStore);
+  const globalLanguage = useContext(languageStore);
+  const globalLetra = useContext(letraStore);
+  const [insensitiveCase, setInsensitiveCase] = useState(false);
+  const [snack, setSnack] = useState({ open: false, text: "" });
 
   const ChunkC = (expresiones) => {
     props.setChunkList(expresiones);
@@ -80,10 +81,10 @@ function Busqueda(props) {
             "POST",
             { parametro: props.busqueda, case: insensitiveCase },
             global.sesion,
-            (data) => {
+            ({ data }) => {
+              const { response } = data;
               if (globalLetra.letra == letraCapital) {
-                console.log("data", data.data.response);
-                ChunkC(data.data.response);
+                ChunkC(response);
               } else {
                 setSnack({
                   open: true,
@@ -107,10 +108,10 @@ function Busqueda(props) {
             "POST",
             { parametro: props.busqueda, case: insensitiveCase },
             global.sesion,
-            (data) => {
-              console.log("data", data.data.response);
+            ({ data }) => {
+              const { response } = data;
               if (globalLetra.letra == letraCapital) {
-                ChunkC(data.data.response);
+                ChunkC(response);
               } else {
                 setSnack({
                   open: true,
@@ -186,6 +187,6 @@ function Busqueda(props) {
       />
     </form>
   );
-}
+};
 
 export default withStyles(styles)(Busqueda);

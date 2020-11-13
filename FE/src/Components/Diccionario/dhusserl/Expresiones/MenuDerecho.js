@@ -1,14 +1,10 @@
 // React
-import React from 'react';
+import React, {useState,useContext,useEffect} from 'react';
 
 // Elements
 import {Link} from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
-import MuiExpansionPanel from '@material-ui/core/ExpansionPanel';
-import MuiExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import MuiExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import Divider from '@material-ui/core/Divider';
-import Typography from '@material-ui/core/Typography';
+import {MuiExpansionPanel,MuiExpansionPanelSummary,MuiExpansionPanelDetails,Typography} from '@material-ui/core/ExpansionPanel';
 import classNames from 'classnames';
 
 // Components
@@ -18,7 +14,6 @@ import ListaHijosExpresion from './ListaHijosExpresion';
 // Other req
 import {menuDerechoJerarquia, menuDerechoJerarquiaDerivadaDe, menuDerechoJerarquiaExpresion, menuDerechoJerarquiaExpresionesDerivadas, menuDerechoVerTambien, menuDerechoReferenciasConsultadas} from '../../../../js/Language';
 import {webService} from '../../../../js/webServices';
-import * as localStore from '../../../../js/localStore';
 import { sesionStore } from '../../../../stores/sesionStore';
 import { languageStore } from '../../../../stores/languageStore';
 import { letraStore } from '../../../../stores/letraStore';
@@ -59,37 +54,36 @@ const ExpansionPanelSummary = withStyles({
   expanded: {minHeight: "0px !important", height: "48px", alignItems: "center"},
 })(MuiExpansionPanelSummary);
 
-function MenuDerecho(props){
-  const global = React.useContext(sesionStore);
-  const globalLanguage = React.useContext(languageStore);
-  const globalLetra = React.useContext(letraStore);
-  const [referenciasConsultadasVista, setReferenciasConsultadasVista]=React.useState([])
-  const [listaVerTambien,setListaVerTambien]=React.useState([]);
-  const [hijos,setHijos]=React.useState([]);
-  const [padres,setPadres]=React.useState([]);
+const MenuDerecho = (props) => {
+  const global = useContext(sesionStore);
+  const globalLanguage = useContext(languageStore);
+  const globalLetra = useContext(letraStore);
+  const [referenciasConsultadasVista, setReferenciasConsultadasVista]=useState([])
+  const [listaVerTambien,setListaVerTambien]=useState([]);
+  const [hijos,setHijos]=useState([]);
+  const [padres,setPadres]=useState([]);
 
-  React.useEffect(()=>{
-    //if(localStore.getObjects("referenciasConsultadas")!=false){
-      //var store=localStore.getObjects("referenciasConsultadas")
-      //setReferenciasConsultadasVista(store)
-    //
+  useEffect(()=>{
     setReferenciasConsultadasVista(global.ultimasVisitadas)
     if (props.expresionSeleccionada.id!=""){
-      var service = "/vertambien/" + props.expresionSeleccionada.id
-      webService(service, "GET", {}, global.sesion, data => {
-        setListaVerTambien(data.data.response)
-        webService(("/expresiones/"+globalLanguage.langLista+"/hijosList/"+props.expresionSeleccionada.id),"GET", {}, global.sesion, (data) => {
-          setHijos(data.data.response)
+      let service = "/vertambien/" + props.expresionSeleccionada.id
+      webService(service, "GET", {}, global.sesion, ({data}) => {
+        const {response} = data
+        setListaVerTambien(response)
+        webService(("/expresiones/"+globalLanguage.langLista+"/hijosList/"+props.expresionSeleccionada.id),"GET", {}, global.sesion, ({data}) => {
+          const {responseH} = data
+          setHijos(responseH)
         })
-        webService(("/expresiones/"+globalLanguage.langLista+"/abuelosList/"+props.expresionSeleccionada.id), "GET", {}, global.sesion, (data2) =>{
-          setPadres(data2.data.response)
+        webService(("/expresiones/"+globalLanguage.langLista+"/abuelosList/"+props.expresionSeleccionada.id), "GET", {}, global.sesion, ({data}) =>{
+          const {responseP}
+          setPadres(responseP)
         })
       })
     }
   },[props.expresionSeleccionada])
 
-  function fixReferenciasConsultadas(expresion){
-    var referencia = {
+  const fixReferenciasConsultadas = (expresion) => {
+    let referencia = {
         clave: expresion[0].clave,
         expresion: expresion[0].expresion_original,
         traduccion: expresion[0].expresion_traduccion,
@@ -111,22 +105,21 @@ function MenuDerecho(props){
 
   function handleFlagLetraMain(event){
     globalLetra.setLetraFlag(false)
-    var idExpresion = event.target.id.split("/")[0]
-    var service = "/referencias/obtieneReferencias/" + idExpresion
-    webService(service, "GET", {}, global.sesion, data => {
-      console.log("data", data)
-      var referencias = fixReferenciasConsultadas(data.data.response)
-      console.log("referencias",referencias)
+    let idExpresion = event.target.id.split("/")[0]
+    let service = "/referencias/obtieneReferencias/" + idExpresion
+    webService(service, "GET", {}, global.sesion, ({data}) => {
+      const {response} = data
+      let referencias = fixReferenciasConsultadas(response)
       /*if(localStore.getObjects("referenciasConsultadas")==false){
-          var referenciasConsultadas = []
+          let referenciasConsultadas = []
           referenciasConsultadas.push(referencias)
           localStore.setObjects("referenciasConsultadas",referenciasConsultadas)
       }else{
-          var store = localStore.getObjects("referenciasConsultadas")
+          let store = localStore.getObjects("referenciasConsultadas")
           store.push(referencias)
           localStore.setObjects("referenciasConsultadas",store)
       }*/
-      var nuevasVisitadas = global.ultimasVisitadas
+      let nuevasVisitadas = global.ultimasVisitadas
       nuevasVisitadas.push(referencias)
       global.setUltimasVisitadas(nuevasVisitadas)
     })

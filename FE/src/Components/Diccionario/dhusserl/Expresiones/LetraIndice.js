@@ -1,28 +1,28 @@
-import React from 'react'
-import Typography from '@material-ui/core/Typography';
-import { withStyles } from '@material-ui/styles';
+import React, { useContext, Fragment } from "react";
+import Typography from "@material-ui/core/Typography";
+import { withStyles } from "@material-ui/styles";
 
-import { letraStore } from '../../../../stores/letraStore';
+import { letraStore } from "../../../../stores/letraStore";
 
 const letra = {
-    correccionesDeLetraIndice:{
-        paddingTop:"15px",
-        paddingBottom:"20px",
-        fontSize: "1.6rem"
-    }
-}
+  correccionesDeLetraIndice: {
+    paddingTop: "15px",
+    paddingBottom: "20px",
+    fontSize: "1.6rem",
+  },
+};
 
-function LetraIndice(props){
-    const {classes}=props;
-    const globalLetra = React.useContext(letraStore);
+const LetraIndice = (props) => {
+  const { classes } = props;
+  const globalLetra = useContext(letraStore);
 
-    return(
-        <div>
-            <Typography className={classes.correccionesDeLetraIndice}>
-                {globalLetra.letra}
-            </Typography>
-        </div>
-    )
-}
+  return (
+    <Fragment>
+      <Typography className={classes.correccionesDeLetraIndice}>
+        {globalLetra.letra}
+      </Typography>
+    </Fragment>
+  );
+};
 
 export default withStyles(letra)(LetraIndice);

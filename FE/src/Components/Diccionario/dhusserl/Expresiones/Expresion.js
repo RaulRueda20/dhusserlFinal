@@ -1,10 +1,13 @@
 //React
-import React from "react";
+import React, { useState, useEffect, Fragment } from "react";
 
 //Elements
 import classNames from "classnames";
 import { Grid, LinearProgress, Hidden, IconButton } from "@material-ui/core";
-import { KeyboardArrowUp as KeyboardArrowUpIcon, KeyboardArrowDown as KeyboardArrowDownIcon } from "@material-ui/icons"
+import {
+  KeyboardArrowUp as KeyboardArrowUpIcon,
+  KeyboardArrowDown as KeyboardArrowDownIcon,
+} from "@material-ui/icons";
 
 //Components
 import ListaLetras from "./ListaLetras";
@@ -30,34 +33,34 @@ import { sesionStore } from "../../../../stores/sesionStore";
 import { languageStore } from "../../../../stores/languageStore";
 import { letraStore } from "../../../../stores/letraStore";
 
-function Expresion(props) {
-  const global = React.useContext(sesionStore);
-  const { state } = global
-  const { sesion, ultimasVisitadas } = state
-  const globalLanguage = React.useContext(languageStore);
-  const globalLetra = React.useContext(letraStore);
-  const globalExpresion = React.useContext(expresionStore);
-  const [loading, setLoading] = React.useState(false);
-  const [expresionSeleccionada, setExpresionSeleccionada] = React.useState({
+const Expresion = (props) => {
+  const global = useContext(sesionStore);
+  const { state } = global;
+  const { sesion, ultimasVisitadas } = state;
+  const globalLanguage = useContext(languageStore);
+  const globalLetra = useContext(letraStore);
+  const globalExpresion = useContext(expresionStore);
+  const [loading, setLoading] = useState(false);
+  const [expresionSeleccionada, setExpresionSeleccionada] = useState({
     id: "",
     expresione: "",
   });
-  const [expanded1, setExpanded1] = React.useState(false);
-  const [expanded2, setExpanded2] = React.useState(false);
-  const [expanded3, setExpanded3] = React.useState(true);
-  const [openModal, setOpenModal] = React.useState(false);
-  const [busqueda, setBusqueda] = React.useState("");
-  const [menuEscondido, setMenuEscondido] = React.useState(false);
-  const [modalDeBusquedas, setModalDebusquedas] = React.useState(false);
-  const [modalCaracteresIvalidos, setModalCaracteresInvalidos] = React.useState(
+  const [expanded1, setExpanded1] = useState(false);
+  const [expanded2, setExpanded2] = useState(false);
+  const [expanded3, setExpanded3] = useState(true);
+  const [openModal, setOpenModal] = useState(false);
+  const [busqueda, setBusqueda] = useState("");
+  const [menuEscondido, setMenuEscondido] = useState(false);
+  const [modalDeBusquedas, setModalDebusquedas] = useState(false);
+  const [modalCaracteresIvalidos, setModalCaracteresInvalidos] = useState(
     false
   );
-  const [modalNumeros, setModalNumeros] = React.useState(false);
-  const [openModalN, setOpenModalN] = React.useState(false);
-  const [flagDeBusqueda, setFlagDeBusqueda] = React.useState(false);
-  const [chunkList, setChunkList] = React.useState([]);
-  const [chunkListGlobal, setChunkListGlobal] = React.useState([]);
-  const [snackbar, setSnackbar] = React.useState({
+  const [modalNumeros, setModalNumeros] = useState(false);
+  const [openModalN, setOpenModalN] = useState(false);
+  const [flagDeBusqueda, setFlagDeBusqueda] = useState(false);
+  const [chunkList, setChunkList] = useState([]);
+  const [chunkListGlobal, setChunkListGlobal] = useState([]);
+  const [snackbar, setSnackbar] = useState({
     open: false,
     variant: "",
     message: "",
@@ -103,16 +106,15 @@ function Expresion(props) {
     return expresiones;
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     setLoading(true);
     if (document.getElementById("listaIzquierda").firstChild != null)
       document.getElementById("listaIzquierda").firstChild.scrollIntoView();
     var service =
       "/expresiones/" + globalLanguage.langLista + "/" + globalLetra.letra;
-    webService(service, "GET", {}, sesion, (data) => {
-      console.log("data", data.data, response)
-      //globalExpresion.setExpresiones(fixReferencias(data.data.response));
-      setChunkList(fixReferencias(data.data.response).slice(0, 50));
+    webService(service, "GET", {}, sesion, ({ data }) => {
+      const { response } = data;
+      setChunkList(fixReferencias(response).slice(0, 50));
       setLoading(false);
     });
     if (localStore.getObjects("bienvenida") == false) {
@@ -122,30 +124,29 @@ function Expresion(props) {
   }, [
     globalLetra.letra,
     globalLanguage.langLista,
-    // globalExpresion.expresiones,
     flagDeBusqueda,
     flagDeBusqueda,
   ]);
 
-  function getJerarquia(event) {
+  const getJerarquia = (event) => {
     setExpresionSeleccionada({
       id: event.currentTarget.id.split("/")[0],
       expresion: event.currentTarget.id.split("/")[1],
     });
     setExpanded1(true);
     setExpanded2(true);
-  }
+  };
 
-  function handleMenuEscondido() {
+  const handleMenuEscondido = () => {
     setMenuEscondido(!menuEscondido);
-  }
+  };
 
-  const handleClose = (event, reason) => {
+  const handleClose = () => {
     setSnackbar({ open: false, variant: snackbar.variant, message: "" });
   };
 
   return (
-    <div>
+    <Fragment>
       <Grid container>
         <Grid item xs={12}>
           <ListaLetras
@@ -192,14 +193,14 @@ function Expresion(props) {
               <KeyboardArrowDownIcon fontSize="large" />
             </IconButton>
           ) : (
-              <IconButton
-                className="iconoArriba"
-                onClick={handleMenuEscondido}
-                size="medium"
-              >
-                <KeyboardArrowUpIcon fontSize="large" />
-              </IconButton>
-            )}
+            <IconButton
+              className="iconoArriba"
+              onClick={handleMenuEscondido}
+              size="medium"
+            >
+              <KeyboardArrowUpIcon fontSize="large" />
+            </IconButton>
+          )}
         </Hidden>
         <Grid
           item
@@ -283,8 +284,8 @@ function Expresion(props) {
       />
       <Link id="toLogin" to="/" />
       <Snackbars snackbar={snackbar} handleClose={handleClose} />
-    </div>
+    </Fragment>
   );
-}
+};
 
 export default Expresion;
