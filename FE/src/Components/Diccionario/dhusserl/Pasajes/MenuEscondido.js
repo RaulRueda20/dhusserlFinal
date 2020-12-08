@@ -13,8 +13,8 @@ import {
 } from '@material-ui/core'
 
 //Components
-import ListaPadresEscondidos from './ListaPadresEscondidos';
-import ListaHijosEscondido from './ListaHijosEscondido';
+import ListaPadresEscondidos from "./ListaPadresEscondidos";
+import ListaHijosEscondido from "./ListaHijosEscondido";
 
 //Other req
 import { webService } from '../../../../js/webServices';
@@ -28,16 +28,16 @@ import { menuDerechoJerarquia, menuDerechoJerarquiaDerivadaDe, menuDerechoJerarq
 
 const ExpansionPanel = withStyles({
   root: {
-    border: '1px solid rgba(0, 0, 0,.1)',
-    boxShadow: 'none',
-    '&:not(:last-child)': {
+    border: "1px solid rgba(0, 0, 0,.1)",
+    boxShadow: "none",
+    "&:not(:last-child)": {
       borderBottom: 0,
     },
-    '&:before': {
-      display: 'none',
+    "&:before": {
+      display: "none",
     },
-    '&$expanded': {
-      margin: 'auto',
+    "&$expanded": {
+      margin: "auto",
     },
   },
   expanded: { minHeight: '40px !important' },
@@ -52,12 +52,11 @@ const ExpansionPanelDetails = withStyles(theme => ({
 const ExpansionPanelSummary = withStyles({
   root: {
     backgroundColor: "rgba(0,0,0,.11) !important",
-    '&$expanded': {
-    },
+    "&$expanded": {},
   },
   content: {
-    '&$expanded': {
-      margin: '5px 0',
+    "&$expanded": {
+      margin: "5px 0",
     },
   },
   expanded: { minHeight: "0px !important", height: "48px", alignItems: "center" },
@@ -77,7 +76,7 @@ function MenuEscondido(props) {
 
   React.useEffect(() => {
     /*if(localStore.getObjects("referenciasConsultadas")!=false){
-      var referenciaConsultadaSacada = localStore.getObjects("referenciasConsultadas")
+      let referenciaConsultadaSacada = localStore.getObjects("referenciasConsultadas")
       setReferenciasConsultadasVista(referenciaConsultadaSacada)
     }*/
     setReferenciasConsultadasVista(global.ultimasVisitadas)
@@ -104,19 +103,19 @@ function MenuEscondido(props) {
     webService(service, "GET", {}, global.sesion, data => {
       var referencias = fixReferenciasConsultadas(data.data.response)
       /*if(localStore.getObjects("referenciasConsultadas")==false){
-          var referenciasConsultadas = []
+          let referenciasConsultadas = []
           referenciasConsultadas.push(referencias)
           localStore.setObjects("referenciasConsultadas",referenciasConsultadas)
       }else{
-          var store = localStore.getObjects("referenciasConsultadas")
+          let store = localStore.getObjects("referenciasConsultadas")
           store.push(referencias)
           localStore.setObjects("referenciasConsultadas",store)
       }*/
-      var nuevasVisitadas = global.ultimasVisitadas
-      nuevasVisitadas.push(referencias)
-      global.setUltimasVisitadas(nuevasVisitadas)
-    })
-  }
+      let nuevasVisitadas = global.ultimasVisitadas;
+      nuevasVisitadas.push(referencias);
+      global.setUltimasVisitadas(nuevasVisitadas);
+    });
+  };
 
   return (
     <div className="contenedorMenuDerechoEscondido">
@@ -136,10 +135,14 @@ function MenuEscondido(props) {
         </ExpansionPanelDetails>
         <Divider />
         <ExpansionPanelDetails className="panelDeDetalleExpresion">
-          <Typography variant="caption">{menuDerechoJerarquiaExpresion(globalLanguage.lang)}</Typography>
-          <ul className="ulDelMenuDerechoExpresion" >
+          <Typography variant="caption">
+            {menuDerechoJerarquiaExpresion(globalLanguage.lang)}
+          </Typography>
+          <ul className="ulDelMenuDerechoExpresion">
             <li>
-              <Typography variant="h6" className="consultaDePasajes">{nombre.expresion_original}</Typography>
+              <Typography variant="h6" className="consultaDePasajes">
+                {nombre.expresion_original}
+              </Typography>
             </li>
           </ul>
         </ExpansionPanelDetails>
@@ -189,7 +192,7 @@ function MenuEscondido(props) {
         </ExpansionPanelDetails>
       </ExpansionPanel>
     </div>
-  )
-}
+  );
+};
 
 export default MenuEscondido;

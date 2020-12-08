@@ -181,6 +181,6 @@ const Busqueda = (props) => {
       />
     </form>
   );
-}
+};
 
 export default withStyles(styles)(Busqueda);

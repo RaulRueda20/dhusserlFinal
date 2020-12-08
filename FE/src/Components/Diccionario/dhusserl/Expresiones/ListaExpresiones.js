@@ -64,7 +64,7 @@ const ListaExpresiones = ({ menuEscondido, getJerarquia, setOpenModalN, match })
       expresionesAbiertas.push(event.currentTarget.id);
     }
     setPanelesAbiertos(expresionesAbiertas);
-  }
+  };
 
   return (
     <div id={"contendor"} onScroll={handleScroll}>

@@ -86,53 +86,57 @@ const BusquedaAbajo = (props) => {
             ChunkC(expresiones.slice(0, 50));
         }
     }
-
-    const handleInsensitiveCase = () => {
-        setInsensitiveCase(!insensitiveCase)
+} else {
+    props.setChunkList(props.expresiones.slice(0, 50));
     }
+  };
 
-    return (
-        <form onSubmit={handleChangeBusquedaExpresiones} className={classes.formularioBusqueda}>
-            <Grid container className={classes.contenedor}>
-                <Grid item xs={10}>
-                    <FormControl className="busquedaEnExpresiones">
-                        <InputLabel htmlFor="input-with-icon-adornment">{busquedas(lang)}</InputLabel>
-                        <Input
-                            onChange={event => setBusqueda(event.target.value)}
-                            id="input-with-icon-adornment"
-                            endAdornment={
-                                <InputAdornment position="start">
-                                    <IconButton type="submit" className="lupita">
-                                        <SearchIcon />
-                                    </IconButton>
-                                </InputAdornment>
-                            }
-                        />
-                    </FormControl>
-                </Grid>
-                <Grid item xs={2} className={classes.switchPasaje}>
-                    <Tooltip title={distincionMayusyMinus(lang)}>
-                        <IconButton onClick={handleInsensitiveCase} className={classNames([{ "caseSeleccionado": insensitiveCase == true }, "case"])}>
-                            <Icon path={mdiFormatLetterCase}
-                                title="User Profile"
-                                size={1}
-                            />
-                        </IconButton>
-                    </Tooltip>
-                </Grid>
+const handleInsensitiveCase = () => {
+    setInsensitiveCase(!insensitiveCase)
+}
+
+return (
+    <form onSubmit={handleChangeBusquedaExpresiones} className={classes.formularioBusqueda}>
+        <Grid container className={classes.contenedor}>
+            <Grid item xs={10}>
+                <FormControl className="busquedaEnExpresiones">
+                    <InputLabel htmlFor="input-with-icon-adornment">{busquedas(lang)}</InputLabel>
+                    <Input
+                        onChange={event => setBusqueda(event.target.value)}
+                        id="input-with-icon-adornment"
+                        endAdornment={
+                            <InputAdornment position="start">
+                                <IconButton type="submit" className="lupita">
+                                    <SearchIcon />
+                                </IconButton>
+                            </InputAdornment>
+                        }
+                    />
+                </FormControl>
             </Grid>
-            <Snackbar
-                anchorOrigin={{ vertical: "top", horizontal: "left" }}
-                key={`top,left`}
-                open={snack.open}
-                onClose={handleClose}
-                ContentProps={{
-                    "aria-describedby": "message-id",
-                }}
-                message={<span id="message-id">{snack.text}</span>}
-            />
-        </form>
-    )
+            <Grid item xs={2} className={classes.switchPasaje}>
+                <Tooltip title={distincionMayusyMinus(lang)}>
+                    <IconButton onClick={handleInsensitiveCase} className={classNames([{ "caseSeleccionado": insensitiveCase == true }, "case"])}>
+                        <Icon path={mdiFormatLetterCase}
+                            title="User Profile"
+                            size={1}
+                        />
+                    </IconButton>
+                </Tooltip>
+            </Grid>
+        </Grid>
+        <Snackbar
+            anchorOrigin={{ vertical: "top", horizontal: "left" }}
+            key={`top,left`}
+            open={snack.open}
+            onClose={handleClose}
+            ContentProps={{
+                "aria-describedby": "message-id",
+            }}
+            message={<span id="message-id">{snack.text}</span>}
+        />
+    </form>
+)
 }
 
 export default withStyles(styles)(BusquedaAbajo);

@@ -4,7 +4,10 @@ import React, { useContext, useState, useEffect, Fragment } from "react";
 //Elements
 import classNames from "classnames";
 import { Grid, LinearProgress, Hidden, IconButton } from "@material-ui/core";
-import { KeyboardArrowUp as KeyboardArrowUpIcon, KeyboardArrowDown as KeyboardArrowDownIcon } from "@material-ui/icons"
+import {
+  KeyboardArrowUp as KeyboardArrowUpIcon,
+  KeyboardArrowDown as KeyboardArrowDownIcon,
+} from "@material-ui/icons";
 
 //Components
 import ListaLetras from "./ListaLetras";
@@ -139,13 +142,13 @@ const Expresion = (props) => {
     })
     setExpanded1(true);
     setExpanded2(true);
-  }
+  };
 
   const handleMenuEscondido = () => {
     setMenuEscondido(!menuEscondido);
-  }
+  };
 
-  const handleClose = (event, reason) => {
+  const handleClose = () => {
     setSnackbar({ open: false, variant: snackbar.variant, message: "" });
   };
 
@@ -270,6 +273,6 @@ const Expresion = (props) => {
       <Snackbars snackbar={snackbar} handleClose={handleClose} />
     </Fragment>
   );
-}
+};
 
 export default Expresion;

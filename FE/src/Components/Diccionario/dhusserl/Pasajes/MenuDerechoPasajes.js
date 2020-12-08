@@ -15,8 +15,8 @@ import {
 import classNames from 'classnames';
 
 // Components
-import ListaPadresPasajes from './LIstaPadresPasajes';
-import ListaHijosPasajes from './ListaHijosPasajes'
+import ListaPadresPasajes from "./LIstaPadresPasajes";
+import ListaHijosPasajes from "./ListaHijosPasajes";
 
 // Language
 import { menuDerechoJerarquia, menuDerechoJerarquiaDerivadaDe, menuDerechoJerarquiaExpresion, menuDerechoJerarquiaExpresionesDerivadas, menuDerechoVerTambien, menuDerechoReferenciasConsultadas } from '../../../../js/Language';
@@ -30,35 +30,33 @@ import { letraStore } from '../../../../stores/letraStore';
 
 const ExpansionPanel = withStyles({
   root: {
-    border: '1px solid rgba(0, 0, 0,.1)',
-    boxShadow: 'none',
-    '&:not(:last-child)': {
+    border: "1px solid rgba(0, 0, 0,.1)",
+    boxShadow: "none",
+    "&:not(:last-child)": {
       borderBottom: 0,
     },
-    '&:before': {
-      display: 'none',
+    "&:before": {
+      display: "none",
     },
-    '&$expanded': {
-      margin: 'auto',
+    "&$expanded": {
+      margin: "auto",
     },
   },
   expanded: { minHeight: '40px !important' },
 })(MuiExpansionPanel);
 
-const ExpansionPanelDetails = withStyles(theme => ({
-  root: {
-  },
+const ExpansionPanelDetails = withStyles((theme) => ({
+  root: {},
 }))(MuiExpansionPanelDetails);
 
 const ExpansionPanelSummary = withStyles({
   root: {
     backgroundColor: "rgba(0,0,0,.11) !important",
-    '&$expanded': {
-    },
+    "&$expanded": {},
   },
   content: {
-    '&$expanded': {
-      margin: '5px 0',
+    "&$expanded": {
+      margin: "5px 0",
     },
   },
   expanded: { minHeight: "0px !important", height: "48px", alignItems: "center" },
@@ -81,9 +79,9 @@ function MenuDerechoPasajes(props) {
       if (document.getElementById("VP" + props.idExpresion) != null) {
         document.getElementById("VP" + props.idExpresion).scrollIntoView()
       }
-    }, 1000)
+    }, 1000);
     /*if(localStore.getObjects("referenciasConsultadas")!=false){
-      var store=localStore.getObjects("referenciasConsultadas")
+      let store=localStore.getObjects("referenciasConsultadas")
       setReferenciasConsultadasVista(store)   
     }*/
     setReferenciasConsultadasVista(global.ultimasVisitadas)
@@ -131,20 +129,19 @@ function MenuDerechoPasajes(props) {
     webService(service, "GET", {}, global.sesion, data => {
       var referencias = fixReferenciasConsultadas(data.data.response)
       /*if(localStore.getObjects("referenciasConsultadas")==false){
-          var referenciasConsultadas = []
+          let referenciasConsultadas = []
           referenciasConsultadas.push(referencias)
           localStore.setObjects("referenciasConsultadas",referenciasConsultadas)
       }else{
-          var store = localStore.getObjects("referenciasConsultadas")
+          let store = localStore.getObjects("referenciasConsultadas")
           store.push(referencias)
           localStore.setObjects("referenciasConsultadas",store)
       }*/
-      var nuevasVisitadas = global.ultimasVisitadas
-      nuevasVisitadas.push(referencias)
-      //console.log("nuevasVisitadas", nuevasVisitadas)
-      global.setUltimasVisitadas(nuevasVisitadas)
-    })
-  }
+      let nuevasVisitadas = global.ultimasVisitadas;
+      nuevasVisitadas.push(referencias);
+      global.setUltimasVisitadas(nuevasVisitadas);
+    });
+  };
 
   return (
     <div className="contenedorMenuDerecho">
@@ -164,10 +161,18 @@ function MenuDerechoPasajes(props) {
         </ExpansionPanelDetails>
         <Divider />
         <ExpansionPanelDetails className="panelDeDetalleExpresion">
-          <Typography variant="caption">{menuDerechoJerarquiaExpresion(globalLanguage.lang)}</Typography>
-          <ul className="ulDelMenuDerechoExpresion" >
+          <Typography variant="caption">
+            {menuDerechoJerarquiaExpresion(globalLanguage.lang)}
+          </Typography>
+          <ul className="ulDelMenuDerechoExpresion">
             <li>
-              <Typography key={nombre.refid} variant="h6" className="consultaDePasajes">{nombre.expresion_original}</Typography>
+              <Typography
+                key={nombre.refid}
+                variant="h6"
+                className="consultaDePasajes"
+              >
+                {nombre.expresion_original}
+              </Typography>
             </li>
           </ul>
         </ExpansionPanelDetails>
@@ -218,7 +223,7 @@ function MenuDerechoPasajes(props) {
         </ExpansionPanelDetails>
       </ExpansionPanel>
     </div>
-  )
-}
+  );
+};
 
-export default MenuDerechoPasajes; 
+export default MenuDerechoPasajes;

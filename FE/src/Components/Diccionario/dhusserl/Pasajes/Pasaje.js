@@ -1,14 +1,11 @@
 //React
-import React from "react";
+import React, { useContext, useState, useEffect, Fragment } from "react";
 
 //Elements
-import Grid from "@material-ui/core/Grid";
-import IconButton from "@material-ui/core/IconButton";
+import { Grid, IconButton, Hidden, LinearProgress } from "@material-ui/core";
+import classNames from "classnames";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
-import classNames from "classnames";
-import Hidden from "@material-ui/core/Hidden";
-import LinearProgress from "@material-ui/core/LinearProgress";
 
 //Components
 import ListaLetras from "../Expresiones/ListaLetras";
@@ -20,7 +17,6 @@ import Paginador from "./Paginador";
 import ListaEscondida from "./ListaEscondida";
 import MenuDerechoPasajes from "./MenuDerechoPasajes";
 import MenuEscondido from "./MenuEscondido";
-import ModalDeNulos from "../ModalDeNulos";
 import ModalDeBusqueda from "../ModalDeBusqueda";
 import ModalCaracterInvalido from "../ModalCaracterInvalido";
 import ModalNumeros from "../ModalNumeros";
@@ -31,44 +27,42 @@ import { webService } from "../../../../js/webServices";
 import { languageStore } from "../../../../stores/languageStore";
 import { letraStore } from "../../../../stores/letraStore";
 
-function Pasaje(props) {
-  const global = React.useContext(sesionStore);
-  const globalLanguage = React.useContext(languageStore);
-  const globalLetra = React.useContext(letraStore);
-  const [expresiones, setExpresiones] = React.useState([]);
-  const [idExpresion, setIdExpresion] = React.useState("");
-  const [referenciaSeleccionada, setReferenciaSeleccionada] = React.useState(
-    null
-  );
-  const [expanded1, setExpanded1] = React.useState(false);
-  const [expanded2, setExpanded2] = React.useState(false);
-  const [expanded3, setExpanded3] = React.useState(true);
-  const [pasajeService, setPasajeService] = React.useState("");
-  const [panelIzquierdo, setPanelIzquierdo] = React.useState(false);
-  const [panelDerecho, setPanelDerecho] = React.useState(false);
-  const [busqueda, setBusqueda] = React.useState("");
-  const [openHidden, setOpenHidden] = React.useState(false);
-  const [loading, setLoading] = React.useState(false);
+const Pasaje = (props) => {
+  const global = useContext(sesionStore);
+  const globalLanguage = useContext(languageStore);
+  const globalLetra = useContext(letraStore);
+  const [expresiones, setExpresiones] = useState([]);
+  const [idExpresion, setIdExpresion] = useState("");
+  const [referenciaSeleccionada, setReferenciaSeleccionada] = useState(null);
+  const [expanded1, setExpanded1] = useState(false);
+  const [expanded2, setExpanded2] = useState(false);
+  const [expanded3, setExpanded3] = useState(true);
+  const [pasajeService, setPasajeService] = useState("");
+  const [panelIzquierdo, setPanelIzquierdo] = useState(false);
+  const [panelDerecho, setPanelDerecho] = useState(false);
+  const [busqueda, setBusqueda] = useState("");
+  const [openHidden, setOpenHidden] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [
     posicionReferenciasConsultadas,
     setPosicionReferenciasConsultadas,
-  ] = React.useState("");
-  const [referencias, setReferencias] = React.useState([]);
-  const [openModalN, setOpenModalN] = React.useState(false);
-  const [modalDeBusquedas, setModalDebusquedas] = React.useState(false);
-  const [modalCaracteresIvalidos, setModalCaracteresInvalidos] = React.useState(
+  ] = useState("");
+  const [referencias, setReferencias] = useState([]);
+  const [openModalN, setOpenModalN] = useState(false);
+  const [modalDeBusquedas, setModalDebusquedas] = useState(false);
+  const [modalCaracteresIvalidos, setModalCaracteresInvalidos] = useState(
     false
   );
-  const [modalNumeros, setModalNumeros] = React.useState(false);
-  const [flagDeBusqueda, setFlagDeBusqueda] = React.useState(false);
-  const [chunkList, setChunkList] = React.useState([]);
-  const [chunkListGlobal, setChunkListGlobal] = React.useState([]);
+  const [modalNumeros, setModalNumeros] = useState(false);
+  const [flagDeBusqueda, setFlagDeBusqueda] = useState(false);
+  const [chunkList, setChunkList] = useState([]);
+  const [chunkListGlobal, setChunkListGlobal] = useState([]);
 
   const fixReferencias = (referencias) => {
-    var expresiones = [];
-    var posicActual = -1;
-    var expreActual = "";
-    var i = 0;
+    let expresiones = [];
+    let posicActual = -1;
+    let expreActual = "";
+    let i = 0;
     while (i < referencias.length) {
       if (expreActual != referencias[i].expresion) {
         posicActual++;
@@ -105,68 +99,64 @@ function Pasaje(props) {
   };
 
   const findReferencias = (referencias, referenciaId) => {
-    for (var i in referencias) {
+    for (let i in referencias) {
       if (referencias[i].refid == referenciaId) {
-        var referenciaEncontrada = referencias[i];
+        let referenciaEncontrada = referencias[i];
       }
     }
     return referenciaEncontrada;
   };
 
-  function handlePanelIzquierdo() {
+  const handlePanelIzquierdo = () => {
     setPanelIzquierdo(!panelIzquierdo);
-  }
+  };
 
-  function handlePanelDerecho() {
+  const handlePanelDerecho = () => {
     setPanelDerecho(!panelDerecho);
-  }
+  };
 
-  function updateDimensions() {
+  const updateDimensions = () => {
     if (window.innerWidth > 600) {
       setOpenHidden(false);
     }
-  }
+  };
 
-  React.useEffect(() => {
+  useEffect(() => {
     setLoading(true);
-    var idDeExpresion = props.match.params.expresion;
-    var idDeLaReferencia = props.match.params.id
+    let idDeExpresion = props.match.params.expresion;
+    let idDeLaReferencia = props.match.params.id
       ? props.match.params.id
       : false;
-    var service =
+    let service =
       "/expresiones/" + globalLanguage.langLista + "/" + globalLetra.letra;
     if (pasajeService != service) {
       setPasajeService(service);
-      webService(service, "GET", {}, global.sesion, (dataE) => {
-        setExpresiones(fixReferencias(dataE.data.response));
-        setChunkList(fixReferencias(dataE.data.response).slice(0, 50));
+      webService(service, "GET", {}, global.sesion, ({ data }) => {
+        const { response } = data;
+        setExpresiones(fixReferencias(response));
+        setChunkList(fixReferencias(response).slice(0, 50));
       });
     }
-    var service = "/referencias/obtieneReferencias/" + idDeExpresion;
-    webService(service, "GET", {}, global.sesion, (data) => {
-      setReferencias(data.data.response);
+    let service = "/referencias/obtieneReferencias/" + idDeExpresion;
+    webService(service, "GET", {}, global.sesion, ({ data }) => {
+      const { response } = data;
+      setReferencias(response);
       setIdExpresion(idDeExpresion);
       if (idDeLaReferencia && idDeLaReferencia != null) {
-        setReferenciaSeleccionada(
-          findReferencias(data.data.response, idDeLaReferencia)
-        );
+        setReferenciaSeleccionada(findReferencias(response, idDeLaReferencia));
       } else {
-        setReferenciaSeleccionada(data.data.response[0]);
+        setReferenciaSeleccionada(response[0]);
       }
       setLoading(false);
       setExpanded1(true);
       setExpanded2(true);
-      if (data.data.response[0] == null) {
+      if (response[0] == null) {
         globalLetra.setLetra(globalLetra.letra);
         setOpenModalN(true);
         setReferenciaSeleccionada(null);
-      } else if (
-        globalLetra.letra != data.data.response[0].index_de.replace(/ /g, "")
-      ) {
+      } else if (globalLetra.letra != response[0].index_de.replace(/ /g, "")) {
         if (!globalLetra.letraFlag) {
-          globalLetra.setLetra(
-            data.data.response[0].index_de.replace(/ /g, "")
-          );
+          globalLetra.setLetra(response[0].index_de.replace(/ /g, ""));
           globalLetra.setLetraFlag(true);
         }
       }
@@ -187,7 +177,7 @@ function Pasaje(props) {
   ]);
 
   return (
-    <div>
+    <Fragment>
       <Hidden xsDown>
         {panelIzquierdo == false ? (
           <IconButton
@@ -415,8 +405,8 @@ function Pasaje(props) {
         modalNumeros={modalNumeros}
         setModalNumeros={setModalNumeros}
       />
-    </div>
+    </Fragment>
   );
-}
+};
 
 export default Pasaje;

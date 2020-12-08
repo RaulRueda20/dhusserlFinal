@@ -2,11 +2,8 @@
 import React, { useContext } from 'react';
 
 //Elements
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import Grid from '@material-ui/core/Grid';
-import { withStyles } from '@material-ui/styles';
-import { Typography } from '@material-ui/core';
+import { List, ListItem, Grid, Typography } from "@material-ui/core";
+import { withStyles } from "@material-ui/styles";
 
 //Other req
 import classNames from 'classnames';
@@ -27,11 +24,38 @@ const styleList = {
   },
   divListaLetras: {
     height: "31px",
-    overflowY: "scroll"
-  }
-}
+    overflowY: "scroll",
+  },
+};
 
-const letras = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
+const letras = [
+  "A",
+  "B",
+  "C",
+  "D",
+  "E",
+  "F",
+  "G",
+  "H",
+  "I",
+  "J",
+  "K",
+  "L",
+  "M",
+  "N",
+  "O",
+  "P",
+  "Q",
+  "R",
+  "S",
+  "T",
+  "U",
+  "V",
+  "W",
+  "X",
+  "Y",
+  "Z",
+];
 
 function ListaLetras(props) {
   const { classes } = props;
@@ -76,12 +100,12 @@ function ListaLetras(props) {
           referencia_traduccion: referencias[i].referencia_traduccion,
           refid: referencias[i].refid,
           orden: referencias[i].orden,
-        })
-        i++
+        });
+        i++;
       }
     }
-    return expresiones
-  }
+    return expresiones;
+  };
 
   const handleChangeLetraMain = (event) => {
     dispatch({
@@ -129,7 +153,7 @@ function ListaLetras(props) {
         </List>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default withStyles(styleList)(ListaLetras);

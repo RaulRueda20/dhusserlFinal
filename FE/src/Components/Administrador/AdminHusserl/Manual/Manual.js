@@ -1,160 +1,172 @@
 //React
-import React from 'react';
+import React, { useState, useEffect, Fragment } from "react";
 
 //Elements
-import classNames from 'classnames';
-import CKEditor from '@ckeditor/ckeditor5-react';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
-import Divider from "@material-ui/core/Divider";
-import Typography from '@material-ui/core/Typography';
-import { withStyles } from '@material-ui/styles';
-import LinearProgress from '@material-ui/core/LinearProgress';
-import Snackbar from '@material-ui/core/Snackbar';
+import classNames from "classnames";
+import CKEditor from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import {
+  Button,
+  Grid,
+  Divider,
+  Typography,
+  LinearProgress,
+  Snackbar,
+} from "@material-ui/core";
+import { withStyles } from "@material-ui/styles";
 
 //Other req
-import {adminService} from '../../../../js/webServices';
-import '../../../../css/manual.css';
+import { adminService } from "../../../../js/webServices";
+import "../../../../css/manual.css";
 
-const manual={
-  botonespañol:{
-    left:"2px"
+const manual = {
+  botonespañol: {
+    left: "2px",
   },
-  botoningles:{
-    left:"3px"
+  botoningles: {
+    left: "3px",
   },
-  botonfrances:{
-    left:"4px"
+  botonfrances: {
+    left: "4px",
   },
-  botoncatalan:{
-    left:"5px"
+  botoncatalan: {
+    left: "5px",
   },
-  acerdaDe:{
-    textAlign: "center"
+  acerdaDe: {
+    textAlign: "center",
   },
-  contenedoreditoracercade:{
-    paddingLeft:"450px",
-    paddingTop:"30px"
+  contenedoreditoracercade: {
+    paddingLeft: "450px",
+    paddingTop: "30px",
   },
-  contenedorbontonguardar:{
-    paddingLeft:"50%"
+  contenedorbontonguardar: {
+    paddingLeft: "50%",
   },
-  botonguardar:{
-    width:"calc(100% - 25px)"
+  botonguardar: {
+    width: "calc(100% - 25px)",
   },
-  editor:{
-    padding: "0px 25px"
-  }
-}
+  editor: {
+    padding: "0px 25px",
+  },
+};
 
-function Manual(props){
-  const {classes}=props;
-  const [contenidoManual, setContenidoManual]=React.useState("")
-  const [contenidoEditor, setContenidoEditor]=React.useState("")
-  const [idiomaActual, setIdiomaActual] = React.useState('D')
-  const [tituloManual, setTituloManual]=React.useState("Führer")
-  const [loading, setLoading] = React.useState(false)
-  const [snack, setSnack] = React.useState({open : false, text : ""})
-  const [reload, setReload] = React.useState(true)
+const Manual = (props) => {
+  const { classes } = props;
+  const [contenidoManual, setContenidoManual] = useState("");
+  const [contenidoEditor, setContenidoEditor] = useState("");
+  const [idiomaActual, setIdiomaActual] = useState("D");
+  const [tituloManual, setTituloManual] = useState("Führer");
+  const [loading, setLoading] = useState(false);
+  const [snack, setSnack] = useState({ open: false, text: "" });
+  const [reload, setReload] = useState(true);
 
-  React.useEffect(()=>{
-    setLoading(true)
-    var service = "/manual/get"
-    adminService(service, "GET", {}, (data) =>{
-      setContenidoManual(data.data.response[0])
-      switch(tituloManual){
+  useEffect(() => {
+    setLoading(true);
+    var service = "/manual/get";
+    adminService(service, "GET", {}, ({ data }) => {
+      const { response } = data;
+      setContenidoManual(response[0]);
+      switch (tituloManual) {
         case "Führer":
-          setContenidoEditor(data.data.response[0].contenido_de)
-          break
+          setContenidoEditor(response[0].contenido_de);
+          break;
         case "Guía":
-          setContenidoEditor(data.data.response[0].contenido)
-          break
+          setContenidoEditor(response[0].contenido);
+          break;
         case "Guide":
-          setContenidoEditor(data.data.response[0].contenido_en)
-          break
+          setContenidoEditor(response[0].contenido_en);
+          break;
         case "Guid":
-          setContenidoEditor(data.data.response[0].contenido_fr)
-          break
+          setContenidoEditor(response[0].contenido_fr);
+          break;
         case "Guia":
-          setContenidoEditor(data.data.response[0].contenido_ca)
-          break
+          setContenidoEditor(response[0].contenido_ca);
+          break;
       }
-      setLoading(false)
-    })
-  }, [reload])
+      setLoading(false);
+    });
+  }, [reload]);
 
-  const saveContent=()=>{
-    setLoading(true)
-    var service = "/manual/update" + idiomaActual
-    adminService(service, "POST", JSON.stringify({"content" : contenidoEditor}), (data) => {
-        setSnack({open : true, text: "El texto se ha guardado con éxito."})
-        setLoading(false)
-        setReload(!reload)
-    })
-  }
+  const saveContent = () => {
+    setLoading(true);
+    var service = "/manual/update" + idiomaActual;
+    adminService(
+      service,
+      "POST",
+      JSON.stringify({ content: contenidoEditor }),
+      (data) => {
+        setSnack({ open: true, text: "El texto se ha guardado con éxito." });
+        setLoading(false);
+        setReload(!reload);
+      }
+    );
+  };
 
-  const handleClickEsp=()=>{
-    setLoading(true)
+  const handleClickEsp = () => {
+    setLoading(true);
     setContenidoEditor(contenidoManual.contenido);
     setTituloManual("Guía");
-    setIdiomaActual('')
-    setLoading(false)
-  }
+    setIdiomaActual("");
+    setLoading(false);
+  };
 
-  const handleClickAl=()=>{
-    setLoading(true)
+  const handleClickAl = () => {
+    setLoading(true);
     setContenidoEditor(contenidoManual.contenido_de);
     setTituloManual("Führer");
-    setIdiomaActual('D')
-    setLoading(false)
-  }
+    setIdiomaActual("D");
+    setLoading(false);
+  };
 
-  const handleClickIn=()=>{
-    setLoading(true)
+  const handleClickIn = () => {
+    setLoading(true);
     setContenidoEditor(contenidoManual.contenido_en);
     setTituloManual("Guide");
-    setIdiomaActual('E')
-    setLoading(false)
-  }
+    setIdiomaActual("E");
+    setLoading(false);
+  };
 
-  const handleClickFr=()=>{
-    setLoading(true)
+  const handleClickFr = () => {
+    setLoading(true);
     setContenidoEditor(contenidoManual.contenido_fr);
     setTituloManual("Guid");
-    setIdiomaActual('F')
-    setLoading(false)
-  }
+    setIdiomaActual("F");
+    setLoading(false);
+  };
 
-  const handleClickCa=()=>{
-    setLoading(true)
+  const handleClickCa = () => {
+    setLoading(true);
     setContenidoEditor(contenidoManual.contenido_ca);
     setTituloManual("Guia");
-    setIdiomaActual('C')
-    setLoading(false)
-  }
+    setIdiomaActual("C");
+    setLoading(false);
+  };
 
-  return(
-    <div>
+  return (
+    <Fragment>
       <div>
         <Snackbar
-          anchorOrigin={{ vertical : "top", horizontal : "left" }}
+          anchorOrigin={{ vertical: "top", horizontal: "left" }}
           key={`top,left`}
           open={snack.open}
-          onClose={() => setSnack({open : false, text : ""})}
+          onClose={() => setSnack({ open: false, text: "" })}
           ContentProps={{
-            'aria-describedby': 'message-id',
+            "aria-describedby": "message-id",
           }}
           message={<span id="message-id">{snack.text}</span>}
         />
-        <LinearProgress className={classNames([{"hidden" : !loading}, "loadingBar"])}/>
+        <LinearProgress
+          className={classNames([{ hidden: !loading }, "loadingBar"])}
+        />
         <Grid container>
           <Grid item xs={12}>
             <Button
               variant="contained"
               size="small"
               onClick={handleClickAl}
-              className={classNames({"selectedButton" : tituloManual == 'Führer'})}
+              className={classNames({
+                selectedButton: tituloManual == "Führer",
+              })}
             >
               Aleman
             </Button>
@@ -162,7 +174,7 @@ function Manual(props){
               variant="contained"
               size="small"
               onClick={handleClickEsp}
-              className={classNames({"selectedButton" : tituloManual == 'Guía'})}
+              className={classNames({ selectedButton: tituloManual == "Guía" })}
             >
               Español
             </Button>
@@ -170,7 +182,9 @@ function Manual(props){
               variant="contained"
               size="small"
               onClick={handleClickIn}
-              className={classNames({"selectedButton" : tituloManual == 'Guide'})}
+              className={classNames({
+                selectedButton: tituloManual == "Guide",
+              })}
             >
               Inglés
             </Button>
@@ -178,7 +192,7 @@ function Manual(props){
               variant="contained"
               size="small"
               onClick={handleClickFr}
-              className={classNames({"selectedButton" : tituloManual == 'Guid'})}
+              className={classNames({ selectedButton: tituloManual == "Guid" })}
             >
               Francés
             </Button>
@@ -186,32 +200,30 @@ function Manual(props){
               variant="contained"
               size="small"
               onClick={handleClickCa}
-              className={classNames({"selectedButton" : tituloManual == 'Guia'})}
+              className={classNames({ selectedButton: tituloManual == "Guia" })}
             >
               Catalán
             </Button>
           </Grid>
         </Grid>
       </div>
-      <Divider/>
+      <Divider />
       <div className={classes.acerdaDe}>
-        <Typography variant="h3">
-          {tituloManual}
-        </Typography>
+        <Typography variant="h3">{tituloManual}</Typography>
       </div>
-      <Divider className="divisor"/>
+      <Divider className="divisor" />
       <div>
         <div className={classes.editor} id="manual">
           <CKEditor
-               editor={ ClassicEditor }
-               data={contenidoEditor}
-               onChange={ ( event, editor ) => {
-                setContenidoEditor(editor.getData())
-              } }
-           />
+            editor={ClassicEditor}
+            data={contenidoEditor}
+            onChange={(event, editor) => {
+              setContenidoEditor(editor.getData());
+            }}
+          />
         </div>
       </div>
-      <Divider className="divisor"/>
+      <Divider className="divisor" />
       <div className={classes.contenedorbontonguardar}>
         <Button
           variant="contained"
@@ -221,7 +233,7 @@ function Manual(props){
           Guardar
         </Button>
       </div>
-    </div>
-  )
-}
- export default withStyles(manual)(Manual);
+    </Fragment>
+  );
+};
+export default withStyles(manual)(Manual);

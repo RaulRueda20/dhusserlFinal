@@ -2,7 +2,7 @@
 import React, { useEffect, useContext } from "react";
 
 //Elements
-import { Switch, Redirect, Link, Route } from "react-router-dom";
+import { Switch, Redirect, Route } from "react-router-dom";
 
 //Components
 import HeaderMain from "./HeaderMain";
@@ -44,10 +44,14 @@ const Subvistas = ({ match, history }) => {
         />
         <Route
           path={`${match.url}/busquedas`}
-          render={(props) => <BusquedasProvider><ModuloBusquedas {...props} /></BusquedasProvider>}
+          render={(props) => (
+            <BusquedasProvider>
+              <ModuloBusquedas {...props} />
+            </BusquedasProvider>
+          )}
         />
-            -
-            <Route
+        -
+        <Route
           path={`${match.url}/acercade`}
           render={(props) => <Acercade {...props} />}
         />
@@ -61,6 +65,6 @@ const Subvistas = ({ match, history }) => {
       </Switch>
     </ExpresionesProvider>
   );
-}
+};
 
-export default Subvistas
+export default Subvistas;
