@@ -11,6 +11,7 @@ const initialState = {
   ultimaVisitada: [],
   lang: 'es',
   langLista: 'al',
+  letra: 'A',
   loading: false,
   alert: { open: false, mensaje: "", tituloAlerta: "" },
   snackbar: {
@@ -29,6 +30,7 @@ const sesionReducer = (state, action) => {
       var newSession = { user: usuario, password: password };
       newSession["ultimasVisitadas"] = [];
       newSession["ultimaVisitada"] = "alfabeto";
+      localStore.setObjects("ultimasVisitadas", [])
       localStore.setObjects("sesion", newSession);
       return { ...state, sesion: payload };
     case "SET_SESION":
@@ -38,6 +40,7 @@ const sesionReducer = (state, action) => {
     case "SET_LANGLISTA":
       return { ...state, langLista: payload };
     case "SET_ULTIMAS_VISITADAS":
+      localStore.setObjects("ultimasVisitadas", payload)
       return { ...state, ultimasVisitadas: payload };
     case "START_LOADING":
       return { ...state, loading: true };

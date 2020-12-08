@@ -4,15 +4,25 @@ const expresionesStore = React.createContext(null);
 const { Provider } = expresionesStore;
 
 const initialState = {
-  expresiones: []
+  expresiones: [],
+  chunk: [],
+  chunkGlobal: [],
+  expresionSeleccionada: null
 }
 
 const sesionReducer = (state, action) => {
   const { type, payload } = action;
 
   switch (type) {
-    case "SET_SNACKBAR":
-      return { ...state, snackbar: payload };
+    case "START_EXPRESIONES":
+      const { expresiones, chunk } = payload
+      return { ...state, expresiones, chunk }
+    case "SET_CHUNK":
+      return { ...state, chunk: payload }
+    case "SET_CHUNKGLOBAL":
+      return { ...state, chunkGlobal: payload }
+    case "SELECT_EXPRESION":
+      return { ...state, expresionSeleccionada: payload }
     default:
       break;
   }
@@ -20,9 +30,9 @@ const sesionReducer = (state, action) => {
 }
 
 const ExpresionesProvider = ({ children }) => {
-  const [state, attend] = useReducer(sesionReducer, initialState);
+  const [store, attend] = useReducer(sesionReducer, initialState);
 
-  return <Provider value={{ state, attend }}>{children}</Provider>;
+  return <Provider value={{ store, attend }}>{children}</Provider>;
 };
 
 export { expresionesStore, ExpresionesProvider };

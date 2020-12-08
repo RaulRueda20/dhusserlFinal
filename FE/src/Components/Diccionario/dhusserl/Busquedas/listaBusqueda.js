@@ -13,7 +13,7 @@ import classNames from 'classnames';
 
 //Language
 import { resultadoBusqueda, cerrarListaTooltip } from '../../../../js/Language';
-import { sesionStore } from '../../../../stores/expresionStore'
+import { sesionStore } from '../../../../stores/sesionStore'
 import { busquedaStore } from '../../../../stores/busquedaStore';
 
 const ListaBusqueda = (props) => {

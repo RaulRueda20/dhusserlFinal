@@ -1,25 +1,18 @@
 //React
-import React from "react";
+import React, { useContext, useState } from "react";
 
 //Components
 import SearchIcon from "@material-ui/icons/Search";
-import Input from "@material-ui/core/Input";
-import InputLabel from "@material-ui/core/InputLabel";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import FormControl from "@material-ui/core/FormControl";
-import IconButton from "@material-ui/core/IconButton";
-import Tooltip from "@material-ui/core/Tooltip";
-import Switch from "@material-ui/core/Switch";
-import Grid from "@material-ui/core/Grid";
+import { Input, InputLabel, InputAdornment, FormControl, IconButton, Tooltip, Grid, Snackbar } from "@material-ui/core";
 import Icon from "@mdi/react";
 import { mdiFormatLetterCase } from "@mdi/js";
 import { withStyles } from "@material-ui/styles";
-import Snackbar from "@material-ui/core/Snackbar";
 
 //Other req
 import "../../../../css/expresiones.css";
 import { webService } from "../../../../js/webServices";
 import { sesionStore } from "../../../../stores/sesionStore";
+import { expresionesStore } from "../../../../stores/expresionStore";
 import classNames from "classnames";
 
 //Language
@@ -28,8 +21,6 @@ import {
   distincionMayusyMinus,
   letraNoCoincide,
 } from "../../../../js/Language";
-import { languageStore } from "../../../../stores/languageStore";
-import { letraStore } from "../../../../stores/letraStore";
 
 const styles = {
   contenedor: {
@@ -40,102 +31,106 @@ const styles = {
   },
 };
 
-function Busqueda(props) {
-  const { classes } = props;
-  const global = React.useContext(sesionStore);
-  const globalLanguage = React.useContext(languageStore);
-  const globalLetra = React.useContext(letraStore);
-  const [insensitiveCase, setInsensitiveCase] = React.useState(false);
-  const [snack, setSnack] = React.useState({ open: false, text: "" });
+const Busqueda = (props) => {
+  const { classes, busqueda, setModalDebusquedas, setModalCaracteresInvalidos, setModalNumeros, setLoading, setBusqueda } = props
 
-  const ChunkC = (expresiones) => {
-    props.setChunkList(expresiones);
+  const global = useContext(sesionStore);
+  const { state } = global
+  const { sesion } = state
+
+  const globalExpresion = useContext(expresionesStore);
+  const { store, attend } = globalExpresion
+  const { letra, lang, langLista, expresiones } = store
+
+  const [insensitiveCase, setInsensitiveCase] = useState(false);
+  const [snack, setSnack] = useState({ open: false, text: "" });
+
+  const ChunkC = (e) => {
+    attend({
+      type: "SET_CHUNK",
+      payload: e
+    })
   };
 
   const handleChangeBusquedaExpresiones = (event) => {
     event.preventDefault();
-    if (props.busqueda != "") {
-      var stringCaracteres = props.busqueda.replace(/(?!\w|\s)./g, "");
-      var stringNumeros = props.busqueda.replace(/([0-9])./g, "");
-      if (props.busqueda.length < 2) {
-        props.setModalDebusquedas(true);
+    if (busqueda != "") {
+      var stringCaracteres = busqueda.replace(/(?!\w|\s)./g, "");
+      var stringNumeros = busqueda.replace(/([0-9])./g, "");
+      if (busqueda.length < 2) {
+        setModalDebusquedas(true);
       } else if (stringCaracteres.length < 2) {
-        props.setModalCaracteresInvalidos(true);
+        setModalCaracteresInvalidos(true);
       } else if (stringNumeros.length < 2) {
-        props.setModalNumeros(true);
-      } else if (props.busqueda.length > 2) {
-        props.setLoading(true);
-        var letra = props.busqueda.slice(0, 1);
+        setModalNumeros(true);
+      } else if (busqueda.length > 2) {
+        setLoading(true);
+        var letter = busqueda.slice(0, 1);
         var letraCapital = letra.toUpperCase();
-        if (letra == letraCapital) {
+        if (letter == letraCapital) {
           var servicebl =
             "/referencias/busquedaExpresionPorLetra" +
             "/" +
-            globalLetra.letra +
+            letra +
             "/" +
-            globalLanguage.langLista;
-          console.log("servicebl", servicebl);
+            langLista;
+
           webService(
             servicebl,
             "POST",
-            { parametro: props.busqueda, case: insensitiveCase },
-            global.sesion,
-            (data) => {
-              if (globalLetra.letra == letraCapital) {
-                console.log("data", data.data.response);
-                ChunkC(data.data.response);
+            { parametro: busqueda, case: insensitiveCase },
+            sesion,
+            ({ data }) => {
+              if (letra == letraCapital) {
+                ChunkC(data.response);
               } else {
                 setSnack({
                   open: true,
-                  text: letraNoCoincide(globalLanguage.lang),
+                  text: letraNoCoincide(lang),
                 });
               }
             }
           );
-          props.setLoading(false);
+
+          setLoading(false);
         } else {
-          var letraCapital = letra.toUpperCase();
+          var letraCapital = letter.toUpperCase();
           var servicebl =
             "/referencias/busquedaExpresionPorLetra" +
             "/" +
-            globalLetra.letra +
+            letra +
             "/" +
-            globalLanguage.langLista;
-          console.log("servicebl", servicebl);
+            langLista;
+
           webService(
             servicebl,
             "POST",
-            { parametro: props.busqueda, case: insensitiveCase },
-            global.sesion,
-            (data) => {
-              console.log("data", data.data.response);
-              if (globalLetra.letra == letraCapital) {
-                ChunkC(data.data.response);
+            { parametro: busqueda, case: insensitiveCase },
+            sesion,
+            ({ data }) => {
+              if (letra == letraCapital) {
+                ChunkC(data.response);
               } else {
                 setSnack({
                   open: true,
-                  text: letraNoCoincide(globalLanguage.lang),
+                  text: letraNoCoincide(lang),
                 });
               }
             }
           );
-          props.setLoading(false);
+          setLoading(false);
         }
       }
     } else {
-      props.setChunkList(props.expresiones.slice(0, 50));
+      ChunkC(expresiones.slice(0, 50));
     }
   };
 
-  function handleInsensitiveCase() {
+  const handleInsensitiveCase = () => {
     setInsensitiveCase(!insensitiveCase);
   }
 
-  const handleSwitch = (name) => (event) => {
-    props.setState({ ...props.state, [name]: event.target.checked });
-  };
-
-  function handleClose() {
+  const handleClose = () => {
     setSnack({ open: false, text: "" });
   }
 
@@ -145,10 +140,10 @@ function Busqueda(props) {
         <Grid item xs={10}>
           <FormControl className="busquedaEnExpresiones">
             <InputLabel htmlFor="input-with-icon-adornment">
-              {busquedas(globalLanguage.lang)}
+              {busquedas(lang)}
             </InputLabel>
             <Input
-              onChange={(event) => props.setBusqueda(event.target.value)}
+              onChange={({ target }) => setBusqueda(target.value)}
               id="input-with-icon-adornment"
               endAdornment={
                 <InputAdornment position="start">
@@ -161,7 +156,7 @@ function Busqueda(props) {
           </FormControl>
         </Grid>
         <Grid item xs={2} className={classes.switch}>
-          <Tooltip title={distincionMayusyMinus(globalLanguage.lang)}>
+          <Tooltip title={distincionMayusyMinus(lang)}>
             <IconButton
               onClick={handleInsensitiveCase}
               className={classNames([

@@ -1,5 +1,5 @@
 //React
-import React from "react";
+import React, { useContext, useState, useEffect, Fragment } from "react";
 
 //Elements
 import classNames from "classnames";
@@ -23,41 +23,43 @@ import ModalNumeros from "../ModalNumeros";
 import Snackbars from "../../Login/Snackbars";
 
 //Other req
-import { Link } from "react-router-dom";
 import { webService } from "../../../../js/webServices";
 import * as localStore from "../../../../js/localStore";
 import { sesionStore } from "../../../../stores/sesionStore";
-import { languageStore } from "../../../../stores/languageStore";
-import { letraStore } from "../../../../stores/letraStore";
+import { expresionesStore } from "../../../../stores/expresionStore";
 
-function Expresion(props) {
-  const global = React.useContext(sesionStore);
+const Expresion = (props) => {
+  const global = useContext(sesionStore);
   const { state } = global
-  const { sesion, ultimasVisitadas } = state
-  const globalLanguage = React.useContext(languageStore);
-  const globalLetra = React.useContext(letraStore);
-  const globalExpresion = React.useContext(expresionStore);
-  const [loading, setLoading] = React.useState(false);
-  const [expresionSeleccionada, setExpresionSeleccionada] = React.useState({
+  const { sesion, ultimasVisitadas, lang, langLista, letra } = state
+
+  const globalExpresion = useContext(expresionesStore);
+  const { store, attend } = globalExpresion
+  const { expresiones, chunk } = store
+
+  const [loading, setLoading] = useState(false);
+  const [expresionSeleccionada, setExpresionSeleccionada] = useState({
     id: "",
     expresione: "",
   });
-  const [expanded1, setExpanded1] = React.useState(false);
-  const [expanded2, setExpanded2] = React.useState(false);
-  const [expanded3, setExpanded3] = React.useState(true);
-  const [openModal, setOpenModal] = React.useState(false);
-  const [busqueda, setBusqueda] = React.useState("");
-  const [menuEscondido, setMenuEscondido] = React.useState(false);
-  const [modalDeBusquedas, setModalDebusquedas] = React.useState(false);
-  const [modalCaracteresIvalidos, setModalCaracteresInvalidos] = React.useState(
+
+  const [expanded1, setExpanded1] = useState(false);
+  const [expanded2, setExpanded2] = useState(false);
+  const [expanded3, setExpanded3] = useState(true);
+
+  const [openModal, setOpenModal] = useState(false);
+  const [busqueda, setBusqueda] = useState("");
+  const [menuEscondido, setMenuEscondido] = useState(false);
+  const [modalDeBusquedas, setModalDebusquedas] = useState(false);
+  const [modalCaracteresIvalidos, setModalCaracteresInvalidos] = useState(
     false
   );
-  const [modalNumeros, setModalNumeros] = React.useState(false);
-  const [openModalN, setOpenModalN] = React.useState(false);
-  const [flagDeBusqueda, setFlagDeBusqueda] = React.useState(false);
-  const [chunkList, setChunkList] = React.useState([]);
-  const [chunkListGlobal, setChunkListGlobal] = React.useState([]);
-  const [snackbar, setSnackbar] = React.useState({
+  const [modalNumeros, setModalNumeros] = useState(false);
+  const [openModalN, setOpenModalN] = useState(false);
+  const [flagDeBusqueda, setFlagDeBusqueda] = useState(false);
+  const [chunkList, setChunkList] = useState([]);
+  const [chunkListGlobal, setChunkListGlobal] = useState([]);
+  const [snackbar, setSnackbar] = useState({
     open: false,
     variant: "",
     message: "",
@@ -103,16 +105,19 @@ function Expresion(props) {
     return expresiones;
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     setLoading(true);
     if (document.getElementById("listaIzquierda").firstChild != null)
       document.getElementById("listaIzquierda").firstChild.scrollIntoView();
     var service =
-      "/expresiones/" + globalLanguage.langLista + "/" + globalLetra.letra;
+      "/expresiones/" + langLista + "/" + letra;
     webService(service, "GET", {}, sesion, (data) => {
-      console.log("data", data.data, response)
-      //globalExpresion.setExpresiones(fixReferencias(data.data.response));
-      setChunkList(fixReferencias(data.data.response).slice(0, 50));
+      attend({
+        type: 'START_EXPRESIONES', payload: {
+          expresiones: fixReferencias(data.data.response),
+          chunk: fixReferencias(data.data.response).slice(0, 50)
+        }
+      })
       setLoading(false);
     });
     if (localStore.getObjects("bienvenida") == false) {
@@ -120,23 +125,23 @@ function Expresion(props) {
       localStore.setObjects("bienvenida", true);
     }
   }, [
-    globalLetra.letra,
-    globalLanguage.langLista,
-    // globalExpresion.expresiones,
-    flagDeBusqueda,
-    flagDeBusqueda,
+    letra,
+    langLista
   ]);
 
-  function getJerarquia(event) {
-    setExpresionSeleccionada({
-      id: event.currentTarget.id.split("/")[0],
-      expresion: event.currentTarget.id.split("/")[1],
-    });
+  const getJerarquia = (event) => {
+    attend({
+      type: "SELECT_EXPRESION",
+      payload: {
+        id: event.currentTarget.id.split("/")[0],
+        expresion: event.currentTarget.id.split("/")[1],
+      }
+    })
     setExpanded1(true);
     setExpanded2(true);
   }
 
-  function handleMenuEscondido() {
+  const handleMenuEscondido = () => {
     setMenuEscondido(!menuEscondido);
   }
 
@@ -145,15 +150,10 @@ function Expresion(props) {
   };
 
   return (
-    <div>
+    <Fragment>
       <Grid container>
         <Grid item xs={12}>
-          <ListaLetras
-            flagDeBusqueda={flagDeBusqueda}
-            chunkListGlobal={chunkListGlobal}
-            setChunkListGlobal={setChunkListGlobal}
-            setChunkList={setChunkList}
-          />
+          <ListaLetras />
         </Grid>
         <Grid
           item
@@ -170,16 +170,9 @@ function Expresion(props) {
         <Grid item xs={10} sm={8} md={8} xl={8} aling="center">
           <ListaExpresiones
             match={props.match}
-            expresionSeleccionada={expresionSeleccionada}
-            setExpresionSeleccionada={setExpresionSeleccionada}
             getJerarquia={getJerarquia}
             menuEscondido={menuEscondido}
             setOpenModalN={setOpenModalN}
-            flagDeBusqueda={flagDeBusqueda}
-            chunkList={chunkList}
-            chunkListGlobal={chunkListGlobal}
-            setChunkList={setChunkList}
-            setChunkListGlobal={setChunkListGlobal}
           />
         </Grid>
         <Hidden smUp>
@@ -220,14 +213,9 @@ function Expresion(props) {
               setModalDebusquedas={setModalDebusquedas}
               setModalCaracteresInvalidos={setModalCaracteresInvalidos}
               setModalNumeros={setModalNumeros}
-              setFlagDeBusqueda={setFlagDeBusqueda}
-              setChunkListGlobal={setChunkListGlobal}
-              setChunkList={setChunkList}
             />
             <MenuDerecho
               {...props}
-              expresionSeleccionada={expresionSeleccionada}
-              setExpresionSeleccionada={setExpresionSeleccionada}
               expanded1={expanded1}
               setExpanded1={setExpanded1}
               expanded2={expanded2}
@@ -245,8 +233,6 @@ function Expresion(props) {
               setModalDebusquedas={setModalDebusquedas}
               setModalCaracteresInvalidos={setModalCaracteresInvalidos}
               setModalNumeros={setModalNumeros}
-              setChunkListGlobal={setChunkListGlobal}
-              setFlagDeBusqueda={setFlagDeBusqueda}
               setLoading={setLoading}
             />
             <MenuBajo
@@ -281,9 +267,8 @@ function Expresion(props) {
         modalNumeros={modalNumeros}
         setModalNumeros={setModalNumeros}
       />
-      <Link id="toLogin" to="/" />
       <Snackbars snackbar={snackbar} handleClose={handleClose} />
-    </div>
+    </Fragment>
   );
 }
 

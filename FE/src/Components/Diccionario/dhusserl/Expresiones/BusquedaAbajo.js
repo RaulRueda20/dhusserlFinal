@@ -1,129 +1,136 @@
 //React
-import React from 'react';
+import React, { useContext, useState } from 'react';
 
 //Components
-import SearchIcon from '@material-ui/icons/Search';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import FormControl from '@material-ui/core/FormControl';
-import IconButton from '@material-ui/core/IconButton';
-import Button from '@material-ui/core/Button';
-import Tooltip from '@material-ui/core/Tooltip';
-import Switch from '@material-ui/core/Switch';
-import Grid from '@material-ui/core/Grid';
+import { Search as SearchIcon } from '@material-ui/icons';
+import { Input, InputLabel, InputAdornment, FormControl, IconButton, Tooltip, Switch, Grid, Snackbar } from '@material-ui/core';
 import Icon from '@mdi/react';
 import { mdiFormatLetterCase } from '@mdi/js';
 import { withStyles } from '@material-ui/styles';
 
 //Other req
 import '../../../../css/expresiones.css';
-import {webService} from '../../../../js/webServices';
+import { webService } from '../../../../js/webServices';
 import { sesionStore } from '../../../../stores/sesionStore';
 import classNames from 'classnames';
-import { languageStore } from '../../../../stores/languageStore';
-import { letraStore } from '../../../../stores/letraStore';
 
 //Language
-import {busquedas, distincionMayusyMinus, letraNoCoincide} from '../../../../js/Language';
+import { busquedas, distincionMayusyMinus, letraNoCoincide } from '../../../../js/Language';
 
 
 const styles = {
-    contenedor:{
-      alignItems:"center !important"
+    contenedor: {
+        alignItems: "center !important"
     },
-    formularioBusqueda:{
+    formularioBusqueda: {
         marginRight: "5px",
         marginLeft: "20px",
         marginTop: "28px"
     },
-    switchPasaje:{
+    switchPasaje: {
         textAlign: "center"
     }
 }
 
-function BusquedaAbajo(props){
-    const {classes}=props;
-    const global = React.useContext(sesionStore);
-    const globalLanguage = React.useContext(languageStore);
-    const globalLetra = React.useContext(letraStore);
-    const [insensitiveCase,setInsensitiveCase]=React.useState(false);
-    
+const BusquedaAbajo = (props) => {
+    const { classes, busqueda, setModalDebusquedas, setModalCaracteresInvalidos, setModalNumeros, setLoading, setBusqueda } = props
+
+    const global = useContext(sesionStore);
+    const { state } = global
+    const { sesion } = state
+
+    const globalExpresion = useContext(expresionesStore);
+    const { store, attend } = globalExpresion
+    const { letra, lang, langLista, expresiones } = store
+
+    const [insensitiveCase, setInsensitiveCase] = useState(false);
+    const [snack, setSnack] = useState({ open: false, text: "" });
+
     const handleChangeBusquedaExpresiones = (event) => {
         event.preventDefault()
-        if(props.busqueda!=""){
-            var stringCaracteres = props.busqueda.replace(/(?!\w|\s)./g, '')
-            var stringNumeros = props.busqueda.replace(/([0-9])./g, '')
-            if(props.busqueda.length<2){
-                props.setModalDebusquedas(true)
-            }else if(stringCaracteres.length<2){
-                props.setModalCaracteresInvalidos(true)
-            }else if(stringNumeros.length<2){
-                props.setModalNumeros(true)
-            }else if(props.busqueda.length>2){
-                props.setLoading(true)
-                var letra = props.busqueda.slice(0,1)
+        if (busqueda != "") {
+            var stringCaracteres = busqueda.replace(/(?!\w|\s)./g, '')
+            var stringNumeros = busqueda.replace(/([0-9])./g, '')
+            if (busqueda.length < 2) {
+                setModalDebusquedas(true)
+            } else if (stringCaracteres.length < 2) {
+                setModalCaracteresInvalidos(true)
+            } else if (stringNumeros.length < 2) {
+                setModalNumeros(true)
+            } else if (busqueda.length > 2) {
+                setLoading(true)
+                var letra = busqueda.slice(0, 1)
                 var letraCapital = letra.toUpperCase()
-                if(letra == letraCapital){
-                    var servicebl = "/referencias/busquedaExpresionPorLetra"+"/"+globalLetra.letra+"/"+ globalLanguage.langLista
-                    webService(servicebl, "POST", {parametro:props.busqueda,case:insensitiveCase}, global.sesion, (data) => {
-                        if(globalLetra.letra == letraCapital){
+                if (letra == letraCapital) {
+                    var servicebl = "/referencias/busquedaExpresionPorLetra" + "/" + letra + "/" + langLista
+                    webService(servicebl, "POST", { parametro: busqueda, case: insensitiveCase }, sesion, (data) => {
+                        if (letra == letraCapital) {
                             ChunkC(data.data.response)
-                         }else{
-                            setSnack({open : true, text: letraNoCoincide(globalLanguage.lang)})
+                        } else {
+                            setSnack({ open: true, text: letraNoCoincide(lang) })
                         }
                     })
-                }else{
+                } else {
                     var letraCapital = letra.toUpperCase()
-                    var servicebl = "/referencias/busquedaExpresionPorLetra"+"/"+globalLetra.letra+"/"+ globalLanguage.langLista
-                    webService(servicebl, "POST", {parametro:props.busqueda,case:insensitiveCase}, global.sesion, (data) => {
-                        if(globalLetra.letra == letraCapital){
+                    var servicebl = "/referencias/busquedaExpresionPorLetra" + "/" + letra + "/" + langLista
+                    webService(servicebl, "POST", { parametro: busqueda, case: insensitiveCase }, sesion, (data) => {
+                        if (letra == letraCapital) {
                             ChunkC(data.data.response)
-                        }else{
-                            setSnack({open : true, text: letraNoCoincide(globalLanguage.lang)})
+                        } else {
+                            setSnack({ open: true, text: letraNoCoincide(lang) })
                         }
                     })
                 }
             }
-        }else{
-            props.setChunkList(props.expresiones.slice(0,50))
+        } else {
+            ChunkC(expresiones.slice(0, 50));
         }
     }
 
-    function handleInsensitiveCase(){
+    const handleInsensitiveCase = () => {
         setInsensitiveCase(!insensitiveCase)
     }
 
-    return(
+    return (
         <form onSubmit={handleChangeBusquedaExpresiones} className={classes.formularioBusqueda}>
             <Grid container className={classes.contenedor}>
                 <Grid item xs={10}>
-                <FormControl className="busquedaEnExpresiones">
-                    <InputLabel htmlFor="input-with-icon-adornment">{busquedas(props.lang)}</InputLabel>
-                    <Input
-                    onChange={event => props.setBusqueda(event.target.value)}
-                    id="input-with-icon-adornment"
-                    endAdornment={
-                    <InputAdornment position="start">
-                        <IconButton type="submit" className="lupita">
-                        <SearchIcon/>
-                        </IconButton>
-                    </InputAdornment>
-                    }
-                    />
-                </FormControl>  
+                    <FormControl className="busquedaEnExpresiones">
+                        <InputLabel htmlFor="input-with-icon-adornment">{busquedas(lang)}</InputLabel>
+                        <Input
+                            onChange={event => setBusqueda(event.target.value)}
+                            id="input-with-icon-adornment"
+                            endAdornment={
+                                <InputAdornment position="start">
+                                    <IconButton type="submit" className="lupita">
+                                        <SearchIcon />
+                                    </IconButton>
+                                </InputAdornment>
+                            }
+                        />
+                    </FormControl>
                 </Grid>
                 <Grid item xs={2} className={classes.switchPasaje}>
-                    <Tooltip title={distincionMayusyMinus(globalLanguage.lang)}>
-                        <IconButton onClick={handleInsensitiveCase} className={classNames([{"caseSeleccionado" : insensitiveCase == true}, "case"])}>
+                    <Tooltip title={distincionMayusyMinus(lang)}>
+                        <IconButton onClick={handleInsensitiveCase} className={classNames([{ "caseSeleccionado": insensitiveCase == true }, "case"])}>
                             <Icon path={mdiFormatLetterCase}
-                            title="User Profile"
-                            size={1}
+                                title="User Profile"
+                                size={1}
                             />
                         </IconButton>
                     </Tooltip>
                 </Grid>
             </Grid>
+            <Snackbar
+                anchorOrigin={{ vertical: "top", horizontal: "left" }}
+                key={`top,left`}
+                open={snack.open}
+                onClose={handleClose}
+                ContentProps={{
+                    "aria-describedby": "message-id",
+                }}
+                message={<span id="message-id">{snack.text}</span>}
+            />
         </form>
     )
 }

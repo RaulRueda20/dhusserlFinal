@@ -1,5 +1,5 @@
 //React
-import React from "react";
+import React, { useEffect, useContext } from "react";
 
 //Elements
 import { Switch, Redirect, Link, Route } from "react-router-dom";
@@ -15,18 +15,19 @@ import Guia from "./Guia/Guia";
 //Other req
 import { sesionStore } from "../../../stores/sesionStore";
 import { BusquedasProvider } from "../../../stores/busquedaStore";
+import { ExpresionesProvider } from "../../../stores/expresionStore";
 
 const Subvistas = ({ match, history }) => {
-  const global = React.useContext(sesionStore);
+  const global = useContext(sesionStore);
   const { state } = global
   const { sesion } = state
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (sesion == null) history.push("/diccionario/login");
   }, [true]);
 
   return (
-    <div>
+    <ExpresionesProvider>
       <HeaderMain match={match} history={history} />
       <Switch>
         <Route
@@ -58,7 +59,7 @@ const Subvistas = ({ match, history }) => {
           <Redirect to={`${match.url}/expresiones`} />
         </Route>
       </Switch>
-    </div>
+    </ExpresionesProvider>
   );
 }
 

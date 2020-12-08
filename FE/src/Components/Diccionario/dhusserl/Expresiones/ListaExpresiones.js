@@ -1,19 +1,13 @@
 //React
-import React from "react";
-
-// Elements
+import React, { useContext, useState } from "react";
 
 import classNames from "classnames";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core/styles";
 
 //Components
 import PanelExpresion from "./PanelExpresion";
 
-//Other req
-import * as localStore from "../../../../js/localStore";
-import { sesionStore } from "../../../../stores/sesionStore";
-import { expresionStore } from "../../../../stores/expresionStore";
+import { expresionesStore } from "../../../../stores/expresionStore";
 
 const useStyles = makeStyles((theme) => ({
   listContainer: {
@@ -38,41 +32,29 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ListaExpresiones(props) {
-  const global = React.useContext(sesionStore);
-  const globalExpresion = React.useContext(expresionStore);
+const ListaExpresiones = ({ menuEscondido, getJerarquia, setOpenModalN, match }) => {
+  const globalExpresion = useContext(expresionesStore);
+  const { store, attend } = globalExpresion
+  const { expresiones, chunk } = store
+
+  console.log(chunk)
+
   const classes = useStyles();
-  const theme = useTheme();
-  const [panelesAbiertos, setPanelesAbiertos] = React.useState([]);
+  const [panelesAbiertos, setPanelesAbiertos] = useState([]);
 
-  React.useEffect(()=>{
-    console.log("globalExpresion", globalExpresion)
-  },[true])
-
-  function clickHandleVista(event) {
-    if (!props.flagDeBusqueda) {
-      var expresionesReferencias = props.expresiones[event.currentTarget.id];
-    } else {
-      var expresionesReferencias =
-        props.expresionesGlobales[[event.currentTarget.id]];
+  const handleScroll = (e) => {
+    var element = e.target;
+    if (element.scrollHeight - element.scrollTop === element.clientHeight) {
+      attend({
+        type: "SET_CHUNK",
+        payload: expresiones.slice(0, chunk.length + 20)
+      })
     }
-    if (localStore.getObjects("referenciasConsultadas") == false) {
-      var referenciasConsultadas = [];
-      referenciasConsultadas.push(expresionesReferencias);
-      localStore.setObjects("referenciasConsultadas", referenciasConsultadas);
-    } else {
-      var store = localStore.getObjects("referenciasConsultadas");
-      store.push(expresionesReferencias);
-      localStore.setObjects("referenciasConsultadas", store);
-    }
-    var nuevasVisitadas = global.ultimasVisitadas;
-    nuevasVisitadas.push(expresionesReferencias);
-    global.setUltimasVisitadas(nuevasVisitadas);
-  }
+  };
 
-  function handleClickPanel(event) {
-    var expresionesAbiertas = panelesAbiertos;
-    props.setIdExpresion(event.currentTarget.id);
+  const handleClickPanel = (event) => {
+    let expresionesAbiertas = panelesAbiertos;
+
     if (expresionesAbiertas.indexOf(event.currentTarget.id) > -1) {
       expresionesAbiertas.splice(
         expresionesAbiertas.indexOf(event.currentTarget.id),
@@ -84,46 +66,30 @@ export default function ListaExpresiones(props) {
     setPanelesAbiertos(expresionesAbiertas);
   }
 
-  const handleScroll = (e) => {
-    var element = e.target;
-    if (element.scrollHeight - element.scrollTop === element.clientHeight) {
-      props.setChunkList(
-        props.expresiones.slice(0, props.chunkList.length + 20)
-      );
-      props.setChunkListGlobal(
-        props.expresionesGlobales.slice(0, props.chunkListGlobal.length + 20)
-      );
-    }
-  };
-
   return (
     <div id={"contendor"} onScroll={handleScroll}>
       <div
         className={classNames([
-          { [classes.listContainer2]: props.menuEscondido == true },
+          { [classes.listContainer2]: menuEscondido == true },
           classes.listContainer,
         ])}
       >
         <ul id="listaIzquierda">
-          {props.chunkList.map((expresion, index) => {
-            return (
-              // <PanelExpresion
-              //   match={props.match}
-              //   key={expresion.id + "-" + index}
-              //   handleClickPanel={handleClickPanel}
-              //   clickHandleVista={clickHandleVista}
-              //   index={index}
-              //   getJerarquia={props.getJerarquia}
-              //   idReferencias={props.idReferencias}
-              //   setIdReferencias={props.setIdReferencias}
-              //   expresionSeleccionada={props.expresionSeleccionada}
-              //   setOpenModalN={props.setOpenModalN}
-              // />
-              <Typography>Prueba</Typography>
-            );
-          })}
+          {chunk.map((expresion, index) => (
+            <PanelExpresion
+              match={match}
+              expresion={expresion}
+              key={expresion.id + "-" + index}
+              index={index}
+              handleClickPanel={handleClickPanel}
+              getJerarquia={getJerarquia}
+              setOpenModalN={setOpenModalN}
+            />
+          ))}
         </ul>
       </div>
     </div>
   );
 }
+
+export default ListaExpresiones
