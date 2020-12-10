@@ -16,8 +16,6 @@ import Jerarquia from "@material-ui/icons/DeviceHub";
 // Other req
 import { webService } from "../../../../js/webServices";
 import { sesionStore } from "../../../../stores/sesionStore";
-import { languageStore } from "../../../../stores/languageStore";
-import { letraStore } from "../../../../stores/letraStore";
 
 //Language
 import {
@@ -31,8 +29,9 @@ const ITEM_HEIGHT = 48;
 
 const ListaHijosBajo = (props) => {
   const global = useContext(sesionStore);
-  const globalLanguage = useContext(languageStore);
-  const globalLetra = useContext(letraStore);
+  const { state, dispatch } = global
+  const { langLista, lang, sesion, ultimasVisitadas } = state
+
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const [padreDeHijos, setPadreDeHijos] = useState([]);
@@ -40,24 +39,24 @@ const ListaHijosBajo = (props) => {
 
   const handleClickExpresionesDerivadas = (event) => {
     setAnchorEl(event.currentTarget);
-    let hid = event.currentTarget.id.split("hijo")[1];
+    const hid = event.currentTarget.id.split("hijo")[1];
     webService(
-      "/expresiones/" + globalLanguage.langLista + "/abuelosList/" + hid,
+      "/expresiones/" + langLista + "/abuelosList/" + hid,
       "GET",
       {},
-      global.sesion,
+      sesion,
       ({ data }) => {
-        const { responseH } = data;
+        const responseH = data.response;
         setPadreDeHijos(responseH);
       }
     );
     webService(
-      "/expresiones/" + globalLanguage.langLista + "/hijosList/" + hid,
+      "/expresiones/" + langLista + "/hijosList/" + hid,
       "GET",
       {},
-      global.sesion,
+      sesion,
       ({ data }) => {
-        const { responseP } = data;
+        const responseP = data.response;
         setHijosDeHijos(responseP);
       }
     );
@@ -89,24 +88,17 @@ const ListaHijosBajo = (props) => {
   };
 
   const handleFlagLetraMain = (event) => {
-    globalLetra.setLetraFlag(false);
-    let idExpresion = event.target.id.split("/")[0];
-    let service = "/referencias/obtieneReferencias/" + idExpresion;
-    webService(service, "GET", {}, global.sesion, ({ data }) => {
+    const idExpresion = event.target.id.split("/")[0];
+    const service = "/referencias/obtieneReferencias/" + idExpresion;
+    webService(service, "GET", {}, sesion, ({ data }) => {
       const { response } = data;
-      let referencias = fixReferenciasConsultadas(response);
-      /*if(localStore.getObjects("referenciasConsultadas")==false){
-                let referenciasConsultadas = []
-                referenciasConsultadas.push(referencias)
-                localStore.setObjects("referenciasConsultadas",referenciasConsultadas)
-            }else{
-                let store = localStore.getObjects("referenciasConsultadas")
-                store.push(referencias)
-                localStore.setObjects("referenciasConsultadas",store)
-            }*/
-      let nuevasVisitadas = global.ultimasVisitadas;
+      const referencias = fixReferenciasConsultadas(response);
+      let nuevasVisitadas = ultimasVisitadas;
       nuevasVisitadas.push(referencias);
-      global.setUltimasVisitadas(nuevasVisitadas);
+      dispatch({
+        type: "SET_ULTIMAS_VISITADAS",
+        payload: nuevasVisitadas
+      })
     });
   };
 
@@ -151,60 +143,60 @@ const ListaHijosBajo = (props) => {
             }}
           >
             <MenuItem>
-              <b>{menuDerechoJerarquiaDerivadaDe(globalLanguage.lang)}</b>
+              <b>{menuDerechoJerarquiaDerivadaDe(lang)}</b>
             </MenuItem>
             <Divider />
             {padreDeHijos.length < 1 ? (
-              <MenuItem>{noDerivaDe(globalLanguage.lang)}</MenuItem>
+              <MenuItem>{noDerivaDe(lang)}</MenuItem>
             ) : (
-              padreDeHijos.map((padresHijo, index) => (
-                <MenuItem
-                  onClick={handleCloseExpresionesDerivadas}
-                  key={padresHijo.id + "-" + index}
-                >
-                  <Link
-                    to={`${props.match.path.slice(0, 20)}/pasaje/${
-                      padresHijo.padre
-                    }`}
-                    onClick={(event) => handleFlagLetraMain(event)}
+                padreDeHijos.map((padresHijo, index) => (
+                  <MenuItem
+                    onClick={handleCloseExpresionesDerivadas}
+                    key={padresHijo.id + "-" + index}
                   >
-                    <Typography id={padresHijo.padre + "/" + index}>
-                      {padresHijo.expresion}
-                    </Typography>
-                  </Link>
-                </MenuItem>
-              ))
-            )}
+                    <Link
+                      to={`${props.match.path.slice(0, 20)}/pasaje/${
+                        padresHijo.padre
+                        }`}
+                      onClick={(event) => handleFlagLetraMain(event)}
+                    >
+                      <Typography id={padresHijo.padre + "/" + index}>
+                        {padresHijo.expresion}
+                      </Typography>
+                    </Link>
+                  </MenuItem>
+                ))
+              )}
             <Divider />
             <MenuItem>
               <b>
-                {menuDerechoJerarquiaExpresionesDerivadas(globalLanguage.lang)}
+                {menuDerechoJerarquiaExpresionesDerivadas(lang)}
               </b>
             </MenuItem>
             <Divider />
             {hijosDeHijos.length < 1 ? (
               <MenuItem>
-                {noContieneExpresionesDerivadas(globalLanguage.lang)}
+                {noContieneExpresionesDerivadas(lang)}
               </MenuItem>
             ) : (
-              hijosDeHijos.map((hijosHijo, index) => (
-                <MenuItem
-                  onClick={handleCloseExpresionesDerivadas}
-                  key={hijosHijo.id + "-" + index}
-                >
-                  <Link
-                    to={`${props.match.path.slice(0, 20)}/pasaje/${
-                      hijosHijo.hijo
-                    }`}
-                    onClick={(event) => handleFlagLetraMain(event)}
+                hijosDeHijos.map((hijosHijo, index) => (
+                  <MenuItem
+                    onClick={handleCloseExpresionesDerivadas}
+                    key={hijosHijo.id + "-" + index}
                   >
-                    <Typography id={hijosHijo.hijo + "/" + index}>
-                      {hijosHijo.expresion}
-                    </Typography>
-                  </Link>
-                </MenuItem>
-              ))
-            )}
+                    <Link
+                      to={`${props.match.path.slice(0, 20)}/pasaje/${
+                        hijosHijo.hijo
+                        }`}
+                      onClick={(event) => handleFlagLetraMain(event)}
+                    >
+                      <Typography id={hijosHijo.hijo + "/" + index}>
+                        {hijosHijo.expresion}
+                      </Typography>
+                    </Link>
+                  </MenuItem>
+                ))
+              )}
           </Menu>
         </Grid>
       </li>

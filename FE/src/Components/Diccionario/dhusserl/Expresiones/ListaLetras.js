@@ -7,9 +7,8 @@ import { withStyles } from "@material-ui/styles";
 
 //Other req
 import classNames from 'classnames';
-import { webService } from '../../../../js/webServices';
 import { sesionStore } from '../../../../stores/sesionStore';
-import { expresionesStore } from '../../../../stores/expresionStore';
+import { letras } from '../../../../js/constants';
 
 const styleList = {
   lista: {
@@ -28,108 +27,17 @@ const styleList = {
   },
 };
 
-const letras = [
-  "A",
-  "B",
-  "C",
-  "D",
-  "E",
-  "F",
-  "G",
-  "H",
-  "I",
-  "J",
-  "K",
-  "L",
-  "M",
-  "N",
-  "O",
-  "P",
-  "Q",
-  "R",
-  "S",
-  "T",
-  "U",
-  "V",
-  "W",
-  "X",
-  "Y",
-  "Z",
-];
-
-function ListaLetras(props) {
+const ListaLetras = (props) => {
   const { classes } = props;
   const global = useContext(sesionStore);
   const { state, dispatch } = global
-  const { letra, langLista } = state
-
-  const globalExpresiones = useContext(expresionesStore)
-  const { attend } = globalExpresiones
-
-
-  const fixReferencias = (referencias) => {
-    var expresiones = []
-    var posicActual = -1
-    var expreActual = ""
-    var i = 0
-    while (i < referencias.length) {
-      if (expreActual != referencias[i].expresion) {
-        posicActual++
-        expreActual = referencias[i].expresion
-        expresiones.push({
-          clave: referencias[i].clave,
-          expresion: referencias[i].expresion,
-          id: referencias[i].id,
-          index_de: referencias[i].index_de,
-          index_es: referencias[i].index_es,
-          pretty_e: referencias[i].pretty_e,
-          pretty_t: referencias[i].pretty_t,
-          referencias: [],
-          traduccion: referencias[i].traduccion
-        })
-        expresiones[posicActual].referencias.push({
-          referencia_original: referencias[i].referencia_original,
-          referencia_traduccion: referencias[i].referencia_traduccion,
-          refid: referencias[i].refid,
-          orden: referencias[i].orden,
-        })
-        i++
-      } else {
-        expresiones[posicActual].referencias.push({
-          referencia_original: referencias[i].referencia_original,
-          referencia_traduccion: referencias[i].referencia_traduccion,
-          refid: referencias[i].refid,
-          orden: referencias[i].orden,
-        });
-        i++;
-      }
-    }
-    return expresiones;
-  };
+  const { letra } = state
 
   const handleChangeLetraMain = (event) => {
+    console.log(event.target.innerText)
     dispatch({
       type: "SET_LETRA",
       payload: event.target.innerText
-    })
-    // if (props.state.checkedA == false) {
-    //   props.setState({ checkedA: true })
-    // }
-    // if (!globalLetra.letraFlag) {
-    //   globalLetra.setLetraFlag(true)
-    // }
-    var service = "/expresiones/" + langLista + "/" + letra
-    webService(service, "GET", {}, global.sesion, (data) => {
-      attend({
-        type: "SET_CHUNK",
-        payload: fixReferencias(data.data.response).slice(0, 50)
-      })
-      // if (!props.flagDeBusqueda) {
-      //   attend({
-      //     type: "SET_CHUNKGLOBAL",
-      //     payload: fixReferencias(data.data.response)
-      //   })
-      // }
     })
   };
 

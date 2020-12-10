@@ -5,10 +5,10 @@ import React from "react";
 import {
   Card,
   IconButton,
-  ClearIcon,
   Grid,
   Typography,
 } from "@material-ui/core";
+import { Clear as ClearIcon } from "@material-ui/icons"
 import { withStyles } from "@material-ui/styles";
 import Description from "@material-ui/icons/Description";
 
@@ -55,7 +55,7 @@ const CartaPasajes = (props) => {
             className={classes.closeButton}
             aria-haspopup="true"
             onClick={deleteP}
-            // onClick={()=>handleClose()}
+          // onClick={()=>handleClose()}
           >
             <ClearIcon fontSize="small" />
           </IconButton>

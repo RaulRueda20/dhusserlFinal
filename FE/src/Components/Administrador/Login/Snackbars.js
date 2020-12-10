@@ -3,9 +3,7 @@ import { Snackbar, SnackbarContent } from "@material-ui/core";
 import { amber, green } from "@material-ui/core/colors";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/styles";
-import ErrorIcon from "@material-ui/icons/Error";
-import WarningIcon from "@material-ui/icons/Warning";
-import CheckCircleIcon from "@material-ui/icons/CheckCircle";
+import { Error as ErrorIcon, Warning as WarningIcon, CheckCircle as CheckCircleIcon } from "@material-ui/icons";
 
 const iconoVariante = {
   success: CheckCircleIcon,
@@ -62,7 +60,7 @@ const useStyle2 = makeStyles((theme) => ({
   },
 }));
 
-export default function Snackbars(props) {
+const Snackbars = (props) => {
   const classes = useStyle2();
 
   return (

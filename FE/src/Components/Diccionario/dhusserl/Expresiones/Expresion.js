@@ -112,7 +112,7 @@ const Expresion = (props) => {
     setLoading(true);
     if (document.getElementById("listaIzquierda").firstChild != null)
       document.getElementById("listaIzquierda").firstChild.scrollIntoView();
-    var service =
+    const service =
       "/expresiones/" + langLista + "/" + letra;
     webService(service, "GET", {}, sesion, (data) => {
       attend({
@@ -133,6 +133,7 @@ const Expresion = (props) => {
   ]);
 
   const getJerarquia = (event) => {
+    console.log(event.currentTarget.id)
     attend({
       type: "SELECT_EXPRESION",
       payload: {
@@ -226,7 +227,6 @@ const Expresion = (props) => {
               expanded3={expanded3}
               setExpanded3={setExpanded3}
               getJerarquia={getJerarquia}
-              flagDeBusqueda={flagDeBusqueda}
             />
           </Hidden>
           <Hidden smUp>
@@ -240,8 +240,6 @@ const Expresion = (props) => {
             />
             <MenuBajo
               {...props}
-              expresionSeleccionada={expresionSeleccionada}
-              setExpresionSeleccionada={setExpresionSeleccionada}
               expanded1={expanded1}
               setExpanded1={setExpanded1}
               expanded2={expanded2}

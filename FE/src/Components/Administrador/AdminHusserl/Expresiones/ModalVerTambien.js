@@ -87,8 +87,8 @@ const ModalVerTambien = (props) => {
   useEffect(() => {
     if (props.expresion.id != null) {
       var service = "/vertambien/" + props.expresion.id;
-      adminService(service, "GET", {}, ({data}) => {
-        const { response }
+      adminService(service, "GET", {}, ({ data }) => {
+        const { response } = data
         setListaVerTambien(response);
       });
     }

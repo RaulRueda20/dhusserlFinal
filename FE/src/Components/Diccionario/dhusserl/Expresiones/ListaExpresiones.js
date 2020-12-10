@@ -37,13 +37,14 @@ const ListaExpresiones = ({ menuEscondido, getJerarquia, setOpenModalN, match })
   const { store, attend } = globalExpresion
   const { expresiones, chunk } = store
 
-  console.log(chunk)
+  // console.log(chunk)
 
   const classes = useStyles();
   const [panelesAbiertos, setPanelesAbiertos] = useState([]);
 
   const handleScroll = (e) => {
-    var element = e.target;
+    console.log(e)
+    let element = e.target;
     if (element.scrollHeight - element.scrollTop === element.clientHeight) {
       attend({
         type: "SET_CHUNK",

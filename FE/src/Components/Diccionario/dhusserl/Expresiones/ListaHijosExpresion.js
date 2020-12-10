@@ -24,14 +24,14 @@ import {
 // Other req
 import { webService } from "../../../../js/webServices";
 import { sesionStore } from "../../../../stores/sesionStore";
-import { languageStore } from "../../../../stores/languageStore";
 
 const ITEM_HEIGHT = 48;
 
 const ListaHijosExpresion = (props) => {
   const global = useContext(sesionStore);
-  const globalLanguage = useContext(languageStore);
-  const globalLetra = useContext(letraStore);
+  const { state, dispatch } = global
+  const { langLista, lang, sesion, ultimasVisitadas } = state
+
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const [padreDeHijos, setPadreDeHijos] = useState([]);
@@ -41,22 +41,22 @@ const ListaHijosExpresion = (props) => {
     setAnchorEl(event.currentTarget);
     let hid = event.currentTarget.id.split("hijo")[1];
     webService(
-      "/expresiones/" + globalLanguage.langLista + "/abuelosList/" + hid,
+      "/expresiones/" + langLista + "/abuelosList/" + hid,
       "GET",
       {},
-      global.sesion,
+      sesion,
       ({ data }) => {
-        const { responseP } = data;
+        const responseP = data.response;
         setPadreDeHijos(responseP);
       }
     );
     webService(
-      "/expresiones/" + globalLanguage.langLista + "/hijosList/" + hid,
+      "/expresiones/" + langLista + "/hijosList/" + hid,
       "GET",
       {},
-      global.sesion,
+      sesion,
       ({ data }) => {
-        const { responseH } = data;
+        const responseH = data.response;
         setHijosDeHijos(responseH);
       }
     );
@@ -88,29 +88,22 @@ const ListaHijosExpresion = (props) => {
   };
 
   const handleFlagLetraMain = (event) => {
-    globalLetra.setLetraFlag(false);
     setTimeout(() => {
       if (document.getElementById("VP" + props.idExpresion) != null) {
         document.getElementById("VP" + props.idExpresion).scrollIntoView();
       }
     }, 1000);
-    let idExpresion = event.target.id.split("/")[0];
-    let service = "/referencias/obtieneReferencias/" + idExpresion;
-    webService(service, "GET", {}, global.sesion, ({ data }) => {
+    const idExpresion = event.target.id.split("/")[0];
+    const service = "/referencias/obtieneReferencias/" + idExpresion;
+    webService(service, "GET", {}, sesion, ({ data }) => {
       const { response } = data;
-      let referencias = fixReferenciasConsultadas(response);
-      /*if(localStore.getObjects("referenciasConsultadas")==false){
-                let referenciasConsultadas = []
-                referenciasConsultadas.push(referencias)
-                localStore.setObjects("referenciasConsultadas",referenciasConsultadas)
-            }else{
-                let store = localStore.getObjects("referenciasConsultadas")
-                store.push(referencias)
-                localStore.setObjects("referenciasConsultadas",store)
-            }*/
-      let nuevasVisitadas = global.ultimasVisitadas;
+      const referencias = fixReferenciasConsultadas(response);
+      let nuevasVisitadas = ultimasVisitadas;
       nuevasVisitadas.push(referencias);
-      global.setUltimasVisitadas(nuevasVisitadas);
+      dispatch({
+        type: "SET_ULTIMAS_VISITADAS",
+        payload: nuevasVisitadas
+      })
     });
   };
 
@@ -155,34 +148,34 @@ const ListaHijosExpresion = (props) => {
             }}
           >
             <MenuItem>
-              <b>{menuDerechoJerarquiaDerivadaDe(globalLanguage.lang)}</b>
+              <b>{menuDerechoJerarquiaDerivadaDe(lang)}</b>
             </MenuItem>
             <Divider />
             {padreDeHijos.length < 1 ? (
-              <MenuItem>{noDerivaDe(globalLanguage.lang)}</MenuItem>
+              <MenuItem>{noDerivaDe(lang)}</MenuItem>
             ) : (
-              padreDeHijos.map((padresHijo, index) => (
-                <MenuItem
-                  onClick={handleCloseExpresionesDerivadas}
-                  key={padresHijo.padres + "-" + index}
-                >
-                  <Link
-                    to={`${props.match.path.slice(0, 20)}/pasaje/${
-                      padresHijo.padre
-                    }`}
-                    onClick={(event) => handleFlagLetraMain(event)}
+                padreDeHijos.map((padresHijo, index) => (
+                  <MenuItem
+                    onClick={handleCloseExpresionesDerivadas}
+                    key={padresHijo.padres + "-" + index}
                   >
-                    <Typography id={padresHijo.padre + "/" + index}>
-                      {padresHijo.expresion}
-                    </Typography>
-                  </Link>
-                </MenuItem>
-              ))
-            )}
+                    <Link
+                      to={`${props.match.path.slice(0, 20)}/pasaje/${
+                        padresHijo.padre
+                        }`}
+                      onClick={(event) => handleFlagLetraMain(event)}
+                    >
+                      <Typography id={padresHijo.padre + "/" + index}>
+                        {padresHijo.expresion}
+                      </Typography>
+                    </Link>
+                  </MenuItem>
+                ))
+              )}
             <Divider />
             <MenuItem>
               <b>
-                {menuDerechoJerarquiaExpresionesDerivadas(globalLanguage.lang)}
+                {menuDerechoJerarquiaExpresionesDerivadas(lang)}
               </b>
             </MenuItem>
             <Divider />
@@ -195,7 +188,7 @@ const ListaHijosExpresion = (props) => {
                   <Link
                     to={`${props.match.path.slice(0, 20)}/pasaje/${
                       hijosHijo.hijo
-                    }`}
+                      }`}
                     onClick={(event) => handleFlagLetraMain(event)}
                   >
                     <Typography id={hijosHijo.hijo + "/" + index}>
@@ -205,10 +198,10 @@ const ListaHijosExpresion = (props) => {
                 </MenuItem>
               ))
             ) : (
-              <MenuItem>
-                {noContieneExpresionesDerivadas(globalLanguage.lang)}
-              </MenuItem>
-            )}
+                <MenuItem>
+                  {noContieneExpresionesDerivadas(lang)}
+                </MenuItem>
+              )}
           </Menu>
         </Grid>
       </li>

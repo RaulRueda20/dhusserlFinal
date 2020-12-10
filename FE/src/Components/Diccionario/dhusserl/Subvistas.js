@@ -23,8 +23,8 @@ const Subvistas = ({ match, history }) => {
   const { sesion } = state
 
   useEffect(() => {
-    if (sesion == null) history.push("/diccionario/login");
-  }, [true]);
+    if (sesion == null) return history.push("/diccionario/login");
+  }, []);
 
   return (
     <ExpresionesProvider>

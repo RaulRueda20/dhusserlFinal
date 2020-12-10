@@ -37,6 +37,8 @@ const sesionReducer = (state, action) => {
       return { ...state, sesion: payload };
     case "SET_LANG":
       return { ...state, lang: payload };
+    case "SET_LETRA":
+      return { ...state, letra: payload };
     case "SET_LANGLISTA":
       return { ...state, langLista: payload };
     case "SET_ULTIMAS_VISITADAS":

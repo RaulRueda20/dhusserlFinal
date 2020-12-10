@@ -51,7 +51,7 @@ const ListaDeConsultados = (props) => {
 
   const fixListaC = (lista) => {
     //let lista =  localStore.getObjects("referenciasConsultadas")
-    let lista = global.ultimasVisitadas;
+    // let lista = global.ultimasVisitadas;
     let listaNueva = [];
     let listaFinal = [];
     for (let i in lista) {
@@ -158,7 +158,7 @@ const ListaDeConsultados = (props) => {
                 id={labelId}
                 primary={`${
                   value.expresion + "-" + value.referencias[0].refid
-                }`}
+                  }`}
               />
             </ListItem>
           );

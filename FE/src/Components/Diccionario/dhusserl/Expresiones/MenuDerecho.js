@@ -19,7 +19,6 @@ import ListaHijosExpresion from './ListaHijosExpresion';
 // Other req
 import { menuDerechoJerarquia, menuDerechoJerarquiaDerivadaDe, menuDerechoJerarquiaExpresion, menuDerechoJerarquiaExpresionesDerivadas, menuDerechoVerTambien, menuDerechoReferenciasConsultadas } from '../../../../js/Language';
 import { webService } from '../../../../js/webServices';
-import * as localStore from '../../../../js/localStore';
 
 import { sesionStore } from '../../../../stores/sesionStore';
 import { expresionesStore } from '../../../../stores/expresionStore';
@@ -64,11 +63,11 @@ const MenuDerecho = (props) => {
   const { expanded1, setExpanded1, expanded2, setExpanded2, expanded3, setExpanded3, match } = props
   const global = useContext(sesionStore);
   const { state, dispatch } = global
-  const { sesion, ultimasVisitadas } = state
+  const { sesion, ultimasVisitadas, lang, langLista } = state
 
   const globalExpresion = useContext(expresionesStore);
-  const { store, attend } = globalExpresion
-  const { letra, lang, langLista, expresionSeleccionada } = store
+  const { store } = globalExpresion
+  const { expresionSeleccionada } = store
 
   const [referenciasConsultadasVista, setReferenciasConsultadasVista] = useState([])
   const [listaVerTambien, setListaVerTambien] = useState([]);
@@ -78,6 +77,7 @@ const MenuDerecho = (props) => {
   useEffect(() => {
     setReferenciasConsultadasVista(ultimasVisitadas)
     if (expresionSeleccionada) {
+      console.log(expresionSeleccionada)
       let service = "/vertambien/" + expresionSeleccionada.id
       webService(service, "GET", {}, sesion, data => {
         setListaVerTambien(data.data.response)
@@ -91,7 +91,7 @@ const MenuDerecho = (props) => {
     }
   }, [expresionSeleccionada])
 
-  function fixReferenciasConsultadas(expresion) {
+  const fixReferenciasConsultadas = (expresion) => {
     let referencia = {
       clave: expresion[0].clave,
       expresion: expresion[0].expresion_original,

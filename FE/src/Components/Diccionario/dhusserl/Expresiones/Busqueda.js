@@ -6,7 +6,7 @@ import SearchIcon from "@material-ui/icons/Search";
 import { Input, InputLabel, InputAdornment, FormControl, IconButton, Tooltip, Grid, Snackbar } from "@material-ui/core";
 import Icon from "@mdi/react";
 import { mdiFormatLetterCase } from "@mdi/js";
-import { withStyles } from "@material-ui/styles";
+import { createStyles } from "@material-ui/styles";
 
 //Other req
 import "../../../../css/expresiones.css";
@@ -22,25 +22,25 @@ import {
   letraNoCoincide,
 } from "../../../../js/Language";
 
-const styles = {
+const useStyles = createStyles(() => ({
   contenedor: {
     alignItems: "center !important",
   },
   switch: {
     textAlign: "center",
   },
-};
+}))
 
 const Busqueda = (props) => {
-  const { classes, busqueda, setModalDebusquedas, setModalCaracteresInvalidos, setModalNumeros, setLoading, setBusqueda } = props
-
+  const { busqueda, setModalDebusquedas, setModalCaracteresInvalidos, setModalNumeros, setLoading, setBusqueda } = props
+  const classes = useStyles()
   const global = useContext(sesionStore);
   const { state } = global
-  const { sesion } = state
+  const { letra, lang, langLista, sesion } = state
 
   const globalExpresion = useContext(expresionesStore);
   const { store, attend } = globalExpresion
-  const { letra, lang, langLista, expresiones } = store
+  const { expresiones } = store
 
   const [insensitiveCase, setInsensitiveCase] = useState(false);
   const [snack, setSnack] = useState({ open: false, text: "" });
@@ -183,4 +183,4 @@ const Busqueda = (props) => {
   );
 };
 
-export default withStyles(styles)(Busqueda);
+export default Busqueda;

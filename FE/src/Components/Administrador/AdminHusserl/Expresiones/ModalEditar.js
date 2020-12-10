@@ -10,9 +10,9 @@ import {
   Paper,
   Grid,
   Tooltip,
-  SwipeableViews,
   Snackbar,
 } from "@material-ui/core";
+import SwipeableViews from 'react-swipeable-views'
 import ClearIcon from "@material-ui/icons/Clear";
 import Create from "@material-ui/icons/Create";
 import { withStyles } from "@material-ui/styles";

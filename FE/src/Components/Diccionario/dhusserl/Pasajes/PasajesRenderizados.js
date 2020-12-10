@@ -2,7 +2,7 @@
 import React, { useState, useContext, Fragment } from "react";
 
 //Elements
-import { IconButton, Grid, Tooltip } from "@material-ui/core/IconButton";
+import { IconButton, Grid, Tooltip } from "@material-ui/core";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import GetAppIcon from "@material-ui/icons/GetApp";
 
@@ -217,51 +217,51 @@ const PasajesRenderizados = (props) => {
           </Grid>
         </Grid>
       ) : (
-        <Grid container>
-          <Grid containerxs={12}>
-            <Grid
-              item
-              xs={2}
-              sm={2}
-              md={1}
-              lg={1}
-              className={classes.botonDescargas}
-            >
-              <Tooltip title={descarga(globalLanguage.lang)}>
-                <IconButton
-                  size="small"
-                  className="iconosIluminados"
-                  onClick={props.clickHandleDescargas}
+            <Grid container>
+              <Grid containerxs={12}>
+                <Grid
+                  item
+                  xs={2}
+                  sm={2}
+                  md={1}
+                  lg={1}
+                  className={classes.botonDescargas}
                 >
-                  <GetAppIcon fontSize="large" />
-                </IconButton>
-              </Tooltip>
+                  <Tooltip title={descarga(globalLanguage.lang)}>
+                    <IconButton
+                      size="small"
+                      className="iconosIluminados"
+                      onClick={props.clickHandleDescargas}
+                    >
+                      <GetAppIcon fontSize="large" />
+                    </IconButton>
+                  </Tooltip>
+                </Grid>
+              </Grid>
+              <Grid
+                item
+                xs={8}
+                sm={8}
+                md={10}
+                lg={10}
+                className={classes.gridTituloPasaje}
+              >
+                <div
+                  className="Titulopretty"
+                  dangerouslySetInnerHTML={htmlPrettyT()}
+                ></div>
+              </Grid>
+              <Grid item xs={2} sm={2} md={1} lg={1} className={classes.bandera}>
+                <BanderaPasajes />
+              </Grid>
+              <Grid item xs={12} className="pasajesRenderizados">
+                <div
+                  id={"pasajes"}
+                  dangerouslySetInnerHTML={htmlPasajeTraduccion()}
+                ></div>
+              </Grid>
             </Grid>
-          </Grid>
-          <Grid
-            item
-            xs={8}
-            sm={8}
-            md={10}
-            lg={10}
-            className={classes.gridTituloPasaje}
-          >
-            <div
-              className="Titulopretty"
-              dangerouslySetInnerHTML={htmlPrettyT()}
-            ></div>
-          </Grid>
-          <Grid item xs={2} sm={2} md={1} lg={1} className={classes.bandera}>
-            <BanderaPasajes />
-          </Grid>
-          <Grid item xs={12} className="pasajesRenderizados">
-            <div
-              id={"pasajes"}
-              dangerouslySetInnerHTML={htmlPasajeTraduccion()}
-            ></div>
-          </Grid>
-        </Grid>
-      )}
+          )}
     </Fragment>
   );
 };

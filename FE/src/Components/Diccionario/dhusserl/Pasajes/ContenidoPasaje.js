@@ -2,7 +2,7 @@
 import React, { useState, Fragment } from "react";
 
 //Elements
-import { IconButton, Grid } from "@material-ui/core/IconButton";
+import { IconButton, Grid } from "@material-ui/core";
 import SwapHorizIcon from "@material-ui/icons/SwapHoriz";
 import Hidden from "@material-ui/core/Hidden";
 import { makeStyles, useTheme } from "@material-ui/core/styles";

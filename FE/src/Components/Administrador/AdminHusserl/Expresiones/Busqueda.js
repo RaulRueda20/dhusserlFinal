@@ -13,6 +13,7 @@ import { mdiFormatLetterCase } from "@mdi/js";
 
 import "../../../../css/expresiones.css";
 import classNames from "classnames";
+import { withStyles } from "@material-ui/styles"
 import { webService } from "../../../../js/webServices";
 
 const styles = {

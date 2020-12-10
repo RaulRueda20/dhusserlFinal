@@ -6,7 +6,7 @@ import es from "../../../../Imagenes/spain.png";
 import al from "../../../../Imagenes/germany.png";
 
 import { toolTipIdiomaDeLaLista } from "../../../../js/Language";
-import { languageStore } from "../../../../stores/languageStore";
+import { sesionStore } from "../../../../stores/sesionStore";
 
 const bandIn = {
   imagenesBandera: {
@@ -21,20 +21,22 @@ const bandIn = {
 
 const BanderaButon = (props) => {
   const { classes } = props;
-  const globalLanguage = useContext(languageStore);
+  const global = useContext(sesionStore);
+  const { state, dispatch } = global
+  const { langLista, lang } = state
 
   const clickChangeLanguageEs = () => {
-    globalLanguage.setLangLista("es");
+    dispatch({ type: "SET_LANGLISTA", payload: "es" })
   };
 
   const clickChangeLanguageAl = () => {
-    globalLanguage.setLangLista("al");
+    dispatch({ type: "SET_LANGLISTA", payload: "al" })
   };
 
   return (
     <Fragment>
-      {props.language == "es" ? (
-        <Tooltip title={toolTipIdiomaDeLaLista(globalLanguage.lang)}>
+      {langLista == "es" ? (
+        <Tooltip title={toolTipIdiomaDeLaLista(lang)}>
           <Button
             size="small"
             className={classes.imagenesBandera}
@@ -44,16 +46,16 @@ const BanderaButon = (props) => {
           </Button>
         </Tooltip>
       ) : (
-        <Tooltip title={toolTipIdiomaDeLaLista(globalLanguage.lang)}>
-          <Button
-            size="small"
-            className={classes.imagenesBandera}
-            onClick={clickChangeLanguageEs}
-          >
-            <img className="banderaIzquierda" src={es} />
-          </Button>
-        </Tooltip>
-      )}
+          <Tooltip title={toolTipIdiomaDeLaLista(lang)}>
+            <Button
+              size="small"
+              className={classes.imagenesBandera}
+              onClick={clickChangeLanguageEs}
+            >
+              <img className="banderaIzquierda" src={es} />
+            </Button>
+          </Tooltip>
+        )}
     </Fragment>
   );
 };

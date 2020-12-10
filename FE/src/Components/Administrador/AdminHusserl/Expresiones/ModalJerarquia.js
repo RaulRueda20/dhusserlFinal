@@ -8,7 +8,7 @@ import {
   Paper,
   Grid,
   Tooltip,
-} from "@material-ui/core/IconButton";
+} from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
 import ClearIcon from "@material-ui/icons/Clear";
 import Jerarquia from "@material-ui/icons/DeviceHub";
@@ -128,14 +128,14 @@ const ModalJerarquia = (props) => {
               setReload={props.setReload}
             />
           ) : (
-            <ModalJerarquiaHijos
-              expresionSeleccionada={props.expresionSeleccionada}
-              hijos={props.hijos}
-              expresiones={props.expresiones}
-              reload={props.reload}
-              setReload={props.setReload}
-            />
-          )}
+              <ModalJerarquiaHijos
+                expresionSeleccionada={props.expresionSeleccionada}
+                hijos={props.hijos}
+                expresiones={props.expresiones}
+                reload={props.reload}
+                setReload={props.setReload}
+              />
+            )}
         </Paper>
       </Modal>
     </Fragment>

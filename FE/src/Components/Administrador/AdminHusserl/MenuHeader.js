@@ -15,9 +15,9 @@ import {
   Description,
   Help,
   Info,
-  Exit,
+  ExitToApp as Exit,
   People,
-  MenuIcon,
+  Menu as MenuIcon,
 } from "@material-ui/icons";
 
 const MenuHeader = () => {

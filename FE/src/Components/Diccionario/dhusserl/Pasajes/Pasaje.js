@@ -127,8 +127,7 @@ const Pasaje = (props) => {
     let idDeLaReferencia = props.match.params.id
       ? props.match.params.id
       : false;
-    let service =
-      "/expresiones/" + globalLanguage.langLista + "/" + globalLetra.letra;
+    let service = "/expresiones/" + globalLanguage.langLista + "/" + globalLetra.letra;
     if (pasajeService != service) {
       setPasajeService(service);
       webService(service, "GET", {}, global.sesion, ({ data }) => {
@@ -137,7 +136,7 @@ const Pasaje = (props) => {
         setChunkList(fixReferencias(response).slice(0, 50));
       });
     }
-    let service = "/referencias/obtieneReferencias/" + idDeExpresion;
+    service = "/referencias/obtieneReferencias/" + idDeExpresion;
     webService(service, "GET", {}, global.sesion, ({ data }) => {
       const { response } = data;
       setReferencias(response);
@@ -188,16 +187,16 @@ const Pasaje = (props) => {
             <ArrowBackIosIcon size="small" className="iconosIluminados" />
           </IconButton>
         ) : (
-          <IconButton
-            className={classNames([
-              { botonIzquierdoEscondido: panelIzquierdo == true },
-            ])}
-            onClick={handlePanelIzquierdo}
-            size="small"
-          >
-            <ArrowForwardIosIcon size="small" className="iconosIluminados" />
-          </IconButton>
-        )}
+            <IconButton
+              className={classNames([
+                { botonIzquierdoEscondido: panelIzquierdo == true },
+              ])}
+              onClick={handlePanelIzquierdo}
+              size="small"
+            >
+              <ArrowForwardIosIcon size="small" className="iconosIluminados" />
+            </IconButton>
+          )}
         {panelDerecho == false ? (
           <IconButton
             className="IconoDerecho"
@@ -207,16 +206,16 @@ const Pasaje = (props) => {
             <ArrowForwardIosIcon size="small" className="iconosIluminados" />
           </IconButton>
         ) : (
-          <IconButton
-            className={classNames([
-              { botonDerechoEscondido: panelDerecho == true },
-            ])}
-            onClick={handlePanelDerecho}
-            size="small"
-          >
-            <ArrowBackIosIcon size="small" className="iconosIluminados" />
-          </IconButton>
-        )}
+            <IconButton
+              className={classNames([
+                { botonDerechoEscondido: panelDerecho == true },
+              ])}
+              onClick={handlePanelDerecho}
+              size="small"
+            >
+              <ArrowBackIosIcon size="small" className="iconosIluminados" />
+            </IconButton>
+          )}
       </Hidden>
       <Grid container>
         <Grid item xs={12}>
@@ -314,8 +313,8 @@ const Pasaje = (props) => {
                 ? 12
                 : 9
               : 6 && panelIzquierdo
-              ? 9
-              : 6
+                ? 9
+                : 6
           }
           lg={
             panelDerecho
@@ -323,8 +322,8 @@ const Pasaje = (props) => {
                 ? 12
                 : 9
               : 6 && panelIzquierdo
-              ? 9
-              : 6
+                ? 9
+                : 6
           }
           className={classNames([{ contenidoPasajes: openHidden == true }])}
         >

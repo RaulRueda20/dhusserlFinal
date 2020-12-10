@@ -4,11 +4,10 @@ const serverUrl = "http://localhost:1938/api/v1.0";
 //const serverUrl = "https://" + window.location.host + "/api/v1.0"
 
 const webService = (service, method, params, sesion, next) => {
-  // var serverUsername = localStore.getObjects("sesion").user
-  // var serverPassword = localStore.getObjects("sesion").password
-  console.log(sesion)
-  var serverUsername = sesion?.usuario ?? localStore.getObjects("sesion").user;
-  var serverPassword = sesion?.password ?? localStore.getObjects("sesion").password;
+  var serverUsername = localStore.getObjects("sesion").user
+  var serverPassword = localStore.getObjects("sesion").password
+  // var serverUsername = sesion?.usuario ?? localStore.getObjects("sesion").user;
+  // var serverPassword = sesion?.password ?? localStore.getObjects("sesion").password;
   var auth = "Basic " + btoa(serverUsername + ":" + serverPassword);
   axios({
     method: method,
