@@ -1,5 +1,5 @@
 // React
-import React from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 // Elements
@@ -24,9 +24,6 @@ import { menuDerechoJerarquia, menuDerechoJerarquiaDerivadaDe, menuDerechoJerarq
 // Other req
 import { webService } from '../../../../js/webServices';
 import { sesionStore } from '../../../../stores/sesionStore';
-import * as localStore from '../../../../js/localStore';
-import { languageStore } from '../../../../stores/languageStore';
-import { letraStore } from '../../../../stores/letraStore';
 
 const ExpansionPanel = withStyles({
   root: {
@@ -62,46 +59,43 @@ const ExpansionPanelSummary = withStyles({
   expanded: { minHeight: "0px !important", height: "48px", alignItems: "center" },
 })(MuiExpansionPanelSummary);
 
-function MenuDerechoPasajes(props) {
-  const global = React.useContext(sesionStore);
-  const globalLanguage = React.useContext(languageStore);
-  const globalLetra = React.useContext(letraStore);
-  const [referenciasConsultadasVista, setReferenciasConsultadasVista] = React.useState([])
-  const [listaVerTambien, setListaVerTambien] = React.useState([]);
-  const [hijos, setHijos] = React.useState([]);
-  const [padres, setPadres] = React.useState([]);
-  const [nombre, setNombre] = React.useState("")
+const MenuDerechoPasajes = (props) => {
+  const global = useContext(sesionStore);
+  const { state, dispatch } = global
+  const { lang, langLista, sesion, letra, ultimasVisitadas } = state
+
+  const [referenciasConsultadasVista, setReferenciasConsultadasVista] = useState([])
+  const [listaVerTambien, setListaVerTambien] = useState([]);
+  const [hijos, setHijos] = useState([]);
+  const [padres, setPadres] = useState([]);
+  const [nombre, setNombre] = useState("")
 
   const emptyPasaje = { clave: "", epretty: "", expresion_original: "", expresion_traduccion: "", orden: "", pasaje_original: "", pasaje_traduccion: "", ref_original: "", ref_traduccion: "", refid: "", tpretty: "" }
 
-  React.useEffect(() => {
+  useEffect(() => {
     setTimeout(() => {
       if (document.getElementById("VP" + props.idExpresion) != null) {
         document.getElementById("VP" + props.idExpresion).scrollIntoView()
       }
     }, 1000);
-    /*if(localStore.getObjects("referenciasConsultadas")!=false){
-      let store=localStore.getObjects("referenciasConsultadas")
-      setReferenciasConsultadasVista(store)   
-    }*/
-    setReferenciasConsultadasVista(global.ultimasVisitadas)
+    setReferenciasConsultadasVista(ultimasVisitadas)
     if (props.idExpresion != "") {
       var service = "/vertambien/" + props.idExpresion
-      webService(service, "GET", {}, global.sesion, data => {
+      webService(service, "GET", {}, sesion, data => {
         setListaVerTambien(data.data.response)
-        webService(("/expresiones/" + globalLanguage.langLista + "/hijosList/" + props.idExpresion), "GET", {}, global.sesion, (data) => {
+        webService(("/expresiones/" + langLista + "/hijosList/" + props.idExpresion), "GET", {}, sesion, (data) => {
           setHijos(data.data.response)
         })
-        webService(("/expresiones/" + globalLanguage.langLista + "/abuelosList/" + props.idExpresion), "GET", {}, global.sesion, (data2) => {
+        webService(("/expresiones/" + langLista + "/abuelosList/" + props.idExpresion), "GET", {}, sesion, (data2) => {
           setPadres(data2.data.response)
         })
       })
     }
     var expresion_original = props.referenciaSeleccionada != null ? props.referenciaSeleccionada : emptyPasaje
     setNombre(expresion_original)
-  }, [props.idExpresion, props.referenciaSeleccionada, globalLetra.letra])
+  }, [props.idExpresion, props.referenciaSeleccionada, letra])
 
-  function fixReferenciasConsultadas(expresion) {
+  const fixReferenciasConsultadas = (expresion) => {
     var referencia = {
       clave: expresion[0].clave,
       expresion: expresion[0].expresion_original,
@@ -122,24 +116,15 @@ function MenuDerechoPasajes(props) {
     return referencia
   }
 
-  function handleFlagLetraMain(event) {
-    globalLetra.setLetraFlag(false)
+  const handleFlagLetraMain = (event) => {
+    setLetraFlag(false)
     var idExpresion = event.target.id.split("/")[0]
     var service = "/referencias/obtieneReferencias/" + idExpresion
-    webService(service, "GET", {}, global.sesion, data => {
+    webService(service, "GET", {}, sesion, data => {
       var referencias = fixReferenciasConsultadas(data.data.response)
-      /*if(localStore.getObjects("referenciasConsultadas")==false){
-          let referenciasConsultadas = []
-          referenciasConsultadas.push(referencias)
-          localStore.setObjects("referenciasConsultadas",referenciasConsultadas)
-      }else{
-          let store = localStore.getObjects("referenciasConsultadas")
-          store.push(referencias)
-          localStore.setObjects("referenciasConsultadas",store)
-      }*/
-      let nuevasVisitadas = global.ultimasVisitadas;
+      let nuevasVisitadas = ultimasVisitadas;
       nuevasVisitadas.push(referencias);
-      global.setUltimasVisitadas(nuevasVisitadas);
+      setUltimasVisitadas(nuevasVisitadas);
     });
   };
 
@@ -147,11 +132,11 @@ function MenuDerechoPasajes(props) {
     <div className="contenedorMenuDerecho">
       <ExpansionPanel square expanded={props.expanded1} onChange={() => props.setExpanded1(!props.expanded1)} className="panelPrincipal">
         <ExpansionPanelSummary aria-controls="panel1d-content" id="panel1d-header">
-          <Typography>{menuDerechoJerarquia(globalLanguage.lang)}</Typography>
+          <Typography>{menuDerechoJerarquia(lang)}</Typography>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails className="panelDeDetallePadres">
           <Typography variant="caption">
-            {menuDerechoJerarquiaDerivadaDe(globalLanguage.lang)}
+            {menuDerechoJerarquiaDerivadaDe(lang)}
           </Typography>
           <ul className="ulDelMenuDerechoPadres" key={padres.refid}>
             {padres.map((padre, index) => (
@@ -162,7 +147,7 @@ function MenuDerechoPasajes(props) {
         <Divider />
         <ExpansionPanelDetails className="panelDeDetalleExpresion">
           <Typography variant="caption">
-            {menuDerechoJerarquiaExpresion(globalLanguage.lang)}
+            {menuDerechoJerarquiaExpresion(lang)}
           </Typography>
           <ul className="ulDelMenuDerechoExpresion">
             <li>
@@ -178,7 +163,7 @@ function MenuDerechoPasajes(props) {
         </ExpansionPanelDetails>
         <Divider />
         <ExpansionPanelDetails className={classNames([{ "panelDeDetalleHijos": listaVerTambien != "" }, "panelDeDetalleHijosLibres"])}>
-          <Typography variant="caption">{menuDerechoJerarquiaExpresionesDerivadas(globalLanguage.lang)}</Typography>
+          <Typography variant="caption">{menuDerechoJerarquiaExpresionesDerivadas(lang)}</Typography>
           <ul className="ulDelMenuDerechoHijos" className={classNames([{ "ulDelMenuDerechoHijos": listaVerTambien != "" }, "ulDelMenuDerechoHijosLibres"])} key={hijos.refid}>
             {hijos.map((hijo, index) => (
               <ListaHijosPasajes {...props} hijo={hijo} index={index} key={hijo.id + "-" + index} />
@@ -189,7 +174,7 @@ function MenuDerechoPasajes(props) {
       {listaVerTambien != "" ?
         <ExpansionPanel square expanded={props.expanded2} onChange={() => props.setExpanded2(!props.expanded2)} className="panelPrincipal">
           <ExpansionPanelSummary aria-controls="panel2d-content" id="panel2d-header">
-            <Typography>{menuDerechoVerTambien(globalLanguage.lang)}</Typography>
+            <Typography>{menuDerechoVerTambien(lang)}</Typography>
           </ExpansionPanelSummary>
           <ExpansionPanelDetails className="panelDeDetalleVerTambien">
             <ul className="ulDelMenuDerechoVerTambien">
@@ -208,7 +193,7 @@ function MenuDerechoPasajes(props) {
       }
       <ExpansionPanel square expanded={props.expanded3} onChange={() => props.setExpanded3(!props.expanded3)} className="panelPrincipal">
         <ExpansionPanelSummary aria-controls="panel3d-content" id="panel3d-header">
-          <Typography>{menuDerechoReferenciasConsultadas(globalLanguage.lang)}</Typography>
+          <Typography>{menuDerechoReferenciasConsultadas(lang)}</Typography>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails className="panelDeDetalleReferenciasConsultadas">
           <ul className="ulDelMenuDerechoReferenciasConsultadas">

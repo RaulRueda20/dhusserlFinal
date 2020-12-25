@@ -23,14 +23,20 @@ import ModalNumeros from "../ModalNumeros";
 
 // Other req
 import { sesionStore } from "../../../../stores/sesionStore";
+import { expresionesStore } from "../../../../stores/expresionStore";
 import { webService } from "../../../../js/webServices";
-import { languageStore } from "../../../../stores/languageStore";
-import { letraStore } from "../../../../stores/letraStore";
 
 const Pasaje = (props) => {
+  const { match } = props
+
   const global = useContext(sesionStore);
-  const globalLanguage = useContext(languageStore);
-  const globalLetra = useContext(letraStore);
+  const { state, dispatch } = global
+  const { sesion, ultimasVisitadas, lang, langLista, letra } = state
+
+  const globalExpresion = useContext(expresionesStore);
+  const { store, attend } = globalExpresion
+  // const { expresiones, chunk } = store
+
   const [expresiones, setExpresiones] = useState([]);
   const [idExpresion, setIdExpresion] = useState("");
   const [referenciaSeleccionada, setReferenciaSeleccionada] = useState(null);
@@ -99,9 +105,10 @@ const Pasaje = (props) => {
   };
 
   const findReferencias = (referencias, referenciaId) => {
+    let referenciaEncontrada = null
     for (let i in referencias) {
       if (referencias[i].refid == referenciaId) {
-        let referenciaEncontrada = referencias[i];
+        referenciaEncontrada = referencias[i];
       }
     }
     return referenciaEncontrada;
@@ -123,21 +130,21 @@ const Pasaje = (props) => {
 
   useEffect(() => {
     setLoading(true);
-    let idDeExpresion = props.match.params.expresion;
-    let idDeLaReferencia = props.match.params.id
+    const idDeExpresion = props.match.params.expresion;
+    const idDeLaReferencia = props.match.params.id
       ? props.match.params.id
       : false;
-    let service = "/expresiones/" + globalLanguage.langLista + "/" + globalLetra.letra;
+    let service = "/expresiones/" + langLista + "/" + letra;
     if (pasajeService != service) {
       setPasajeService(service);
-      webService(service, "GET", {}, global.sesion, ({ data }) => {
+      webService(service, "GET", {}, sesion, ({ data }) => {
         const { response } = data;
         setExpresiones(fixReferencias(response));
         setChunkList(fixReferencias(response).slice(0, 50));
       });
     }
     service = "/referencias/obtieneReferencias/" + idDeExpresion;
-    webService(service, "GET", {}, global.sesion, ({ data }) => {
+    webService(service, "GET", {}, sesion, ({ data }) => {
       const { response } = data;
       setReferencias(response);
       setIdExpresion(idDeExpresion);
@@ -150,14 +157,9 @@ const Pasaje = (props) => {
       setExpanded1(true);
       setExpanded2(true);
       if (response[0] == null) {
-        globalLetra.setLetra(globalLetra.letra);
+        setLetra(letra);
         setOpenModalN(true);
         setReferenciaSeleccionada(null);
-      } else if (globalLetra.letra != response[0].index_de.replace(/ /g, "")) {
-        if (!globalLetra.letraFlag) {
-          globalLetra.setLetra(response[0].index_de.replace(/ /g, ""));
-          globalLetra.setLetraFlag(true);
-        }
       }
     });
     updateDimensions();
@@ -168,11 +170,10 @@ const Pasaje = (props) => {
       }
     }, 1000);
   }, [
-    globalLetra.letra,
-    globalLanguage.langLista,
-    props.match.params.expresion,
-    props.match.params.id,
-    globalLetra.letraFlag,
+    letra,
+    langLista,
+    match.params.expresion,
+    match.params.id
   ]);
 
   return (
