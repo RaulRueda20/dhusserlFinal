@@ -25,8 +25,10 @@ const ListaBusqueda = (props) => {
     const { busquedaState, attend } = globalBusqueda
     const { tipoBusqueda, posicionPasaje, expresionesEncontradas } = busquedaState
 
-    const clickCambioIdBuscado = ({ currentTarget }) => {
-        const id = { currentTarget }
+    const clickCambioIdBuscado = (props) => {
+        console.log(props)
+        const { currentTarget } = props
+        const { id } = currentTarget
 
         if (tipoBusqueda == "Referencia") {
             attend({

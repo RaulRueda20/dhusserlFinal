@@ -30,7 +30,7 @@ const SelectorBusqueda = (props) => {
 
     const handleChange = ({ target }) => {
         const { value } = target
-        attend({ type: "BUSQUEDA_STATE", payload: value })
+        attend({ type: "SET_TIPO_BUSQUEDA", payload: value })
     }
 
     return (

@@ -8,7 +8,7 @@ const initialState = {
   posicionPasaje: 0,
   idPasaje: 0,
   abierto: true,
-  busqueda: [],
+  busqueda: "",
   tipoBusqueda: "Expresion",
   tipoBusquedaRealizada: ""
 }

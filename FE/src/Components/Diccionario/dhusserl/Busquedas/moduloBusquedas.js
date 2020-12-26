@@ -21,6 +21,7 @@ import { busquedaStore } from '../../../../stores/busquedaStore';
 const moduloBusqueda = {
     gridSelectorBusqueda: {
         paddingRight: "30px !important",
+        textAlign: "center"
     },
     gridSelectorLetras: {
         paddingRight: "30px !important"
@@ -46,7 +47,7 @@ const ModuloBusquedas = (props) => {
 
     return (
         <Grid container>
-            <Grid item xs={12} sm={8}>
+            <Grid item xs={12} sm={8} style={{ textAlign: 'center' }}>
                 <Busquedas />
             </Grid>
             <Grid item xs={12} sm={4} className={classes.gridSelectorBusqueda}>

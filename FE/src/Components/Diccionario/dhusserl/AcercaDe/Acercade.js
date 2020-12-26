@@ -21,24 +21,19 @@ const Acercade = ({ history }) => {
         })
     }, [lang])
 
-    const renderizadoDeAcercaDe = () => {
-        switch (lang) {
-            case "es":
-                return { __html: acercade.contenido }
-            case "ca":
-                return { __html: acercade.contenido_ca }
-            case "al":
-                return { __html: acercade.contenido_de }
-            case "en":
-                return { __html: acercade.contenido_en }
-            case "fr":
-                return { __html: acercade.contenido_fr }
-        }
+    switch (lang) {
+        case "es":
+            return <div className="acercaDe" dangerouslySetInnerHTML={{ __html: acercade.contenido }}></div>
+        case "ca":
+            return <div className="acercaDe" dangerouslySetInnerHTML={{ __html: acercade.contenido_ca }}></div>
+        case "al":
+            return <div className="acercaDe" dangerouslySetInnerHTML={{ __html: acercade.contenido_al }}></div>
+        case "en":
+            return <div className="acercaDe" dangerouslySetInnerHTML={{ __html: acercade.contenido_en }}></div>
+        case "fr":
+            return <div className="acercaDe" dangerouslySetInnerHTML={{ __html: acercade.contenido_fr }}></div>
     }
 
-    return (
-        <div className="acercaDe" dangerouslySetInnerHTML={() => renderizadoDeAcercaDe()}></div>
-    )
 }
 
 export default Acercade;

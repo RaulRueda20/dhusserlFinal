@@ -21,24 +21,18 @@ const Guia = ({ history }) => {
         })
     }, [lang])
 
-    const renderizadoGuia = () => {
-        switch (lang) {
-            case "es":
-                return { __html: guia.contenido }
-            case "ca":
-                return { __html: guia.contenido_ca }
-            case "al":
-                return { __html: guia.contenido_de }
-            case "en":
-                return { __html: guia.contenido_en }
-            case "fr":
-                return { __html: guia.contenido_fr }
-        }
+    switch (lang) {
+        case "es":
+            return <div className="guia" dangerouslySetInnerHTML={{ __html: guia.contenido }}></div>
+        case "ca":
+            return <div className="guia" dangerouslySetInnerHTML={{ __html: guia.contenido_ca }}></div>
+        case "al":
+            return <div className="guia" dangerouslySetInnerHTML={{ __html: guia.contenido_de }}></div>
+        case "en":
+            return <div className="guia" dangerouslySetInnerHTML={{ __html: guia.contenido_en }}></div>
+        case "fr":
+            return <div className="guia" dangerouslySetInnerHTML={{ __html: guia.contenido_fr }}></div>
     }
-
-    return (
-        <div className="guia" dangerouslySetInnerHTML={() => renderizadoGuia()}></div>
-    )
 }
 
 export default Guia;

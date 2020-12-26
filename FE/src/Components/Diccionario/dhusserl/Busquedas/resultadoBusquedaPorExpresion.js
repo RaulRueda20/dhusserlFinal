@@ -51,7 +51,7 @@ const ResultadoBusquedaExpresion = (props) => {
   const globalBusqueda = useContext(busquedaStore);
   const { busquedaState, attend } = globalBusqueda
   const { idPasaje, busqueda } = busquedaState
-  const { term_id, expresion, referencias } = expresionSeleccionada
+  const { term_id, expresion, referencias, traduccion } = expresionSeleccionada
 
   const [listaVerTambien, setListaVerTambien] = useState([]);
   const [pasajes, setPasajes] = useState({

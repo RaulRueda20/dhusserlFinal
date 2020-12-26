@@ -122,7 +122,7 @@ const Busquedas = (props) => {
                         <InputLabel htmlFor="input-with-icon-adornment">{busquedas(lang)}</InputLabel>
                         <Input
                             id="input-with-icon-adornment"
-                            onChange={event => dispatch({ type: "SET_BUSQUEDA", payload: event.target.value })}
+                            onChange={event => attend({ type: "SET_BUSQUEDA", payload: event.target.value })}
                             startAdornment={
                                 <InputAdornment position="end">
                                     <Tooltip title={distincionMayusyMinus(lang)}>
