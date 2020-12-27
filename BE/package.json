@@ -6,9 +6,7 @@
     "start": "node ./bin/dhusserl"
   },
   "dependencies": {
-    "bcrypt": "^5.0.0",
-    "bcrypt-nodejs": "^0.0.3",
-    "bcryptjs": "^2.4.3",
+    "bcrypt": "^3.0.8",
     "btoa-atob": "^0.1.2",
     "connect": "^3.6.6",
     "constantinople": "^4.0.1",
@@ -25,7 +23,7 @@
     "jade": "^1.11.0",
     "morgan": "^1.10.0",
     "nodemailer": "^4.6.8",
-    "nodemon": "^2.0.4",
+    "nodemon": "^2.0.2",
     "npm": "^6.7.0",
     "pg": "^7.4.3",
     "pg-promise": "^8.4.6",

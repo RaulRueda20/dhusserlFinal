@@ -1,70 +1,60 @@
-var createError = require("http-errors");
-var express = require("express");
-const basicAuth = require("express-basic-auth");
-var path = require("path");
-var cookieParser = require("cookie-parser");
-var logger = require("morgan");
-var bcrypt = require("bcrypt");
+var createError = require('http-errors');
+var express = require('express');
+const basicAuth = require('express-basic-auth')
+var path = require('path');
+var cookieParser = require('cookie-parser');
+var logger = require('morgan');
+var bcrypt = require('bcrypt');
 //var session = require('express-session');
 //var MemoryStore = require('connect').session.MemoryStore
 
-var indexRouter = require("./routes/index");
-var loginRouter = require("./routes/login");
-var expresionesRouter = require("./routes/expresiones");
-var referenciasRouter = require("./routes/referencias");
-var reporteRouter = require("./routes/reporte");
-var fixesRouter = require("./routes/fixes");
-var verTambien = require("./routes/vertambien");
+var indexRouter = require('./routes/index');
+var loginRouter = require('./routes/login');
+var expresionesRouter = require('./routes/expresiones');
+var referenciasRouter = require('./routes/referencias');
+var reporteRouter = require('./routes/reporte');
+var fixesRouter = require('./routes/fixes');
+var verTambien = require('./routes/vertambien');
 
-var acercaRouter = require("./routes/acerca_de");
-var manualRouter = require("./routes/manual");
+var acercaRouter = require('./routes/acerca_de');
+var manualRouter = require('./routes/manual');
 
-//const serverUrl = "localhost"
-var serverUrl = "127.0.0.1";
+var serverUrl = "127.0.0.1"
 //var port = "1859"
-var port = "5432";
-var user = "Y2xhZmVub3JfdGVybXVzZQ==";
-var password = "Q2w0ZjNuMHJfdDNybXVzMw==";
+var port= "5432"
+var user = "Y2xhZmVub3JfdGVybXVzZQ=="
+var password = "Q2w0ZjNuMHJfdDNybXVzMw=="
 
-var userList = [];
+var userList = []
 var pgp = require("pg-promise")(/*options*/);
 
 var app = express();
 
 // view engine setup
-app.set("views", path.join(__dirname, "views"));
-app.set("view engine", "jade");
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'jade');
 
-app.use(logger("dev"));
+app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, 'public')));
 
-global.rol = "admin";
+global.rol = "admin"
 
-app.use(function (req, res, next) {
+app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept, Authorization, WWW-Authenticate"
-  );
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization, WWW-Authenticate");
   res.header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE");
   res.header("Access-Control-Allow-Credentials", "true");
-  var connectionString =
-    "postgres://clafenor_termuse:Cl4f3n0r_t3rmus3@" +
-    serverUrl +
-    ":" +
-    port +
-    "/clafenor_terminos";
-  console.log(connectionString);
-  res.locals.connection = pgp(connectionString);
+  var connectionString = "postgres://clafenor_termuse:Cl4f3n0r_t3rmus3@"+serverUrl+":"+port+"/clafenor_terminos";
+  res.locals.connection = pgp(connectionString)
   next();
 });
 
 //app.use(session({
-// secret: "secret",
-//  store: new MemoryStore({reapInterval: 60000 * 10})
+   // secret: "secret",
+  //  store: new MemoryStore({reapInterval: 60000 * 10})
 //}));
 
 // app.use(basicAuth({
@@ -77,13 +67,13 @@ app.use(function (req, res, next) {
 //             var flag = false;
 //             console.log(user)
 //             for(var i in userList){
-//                 if(userList[i].user == user){
+//                 if(userList[i].user == user){           
 //                     flag = true
 //                     bcrypt.compare(password, userList[i].password, function(err, res) {
 //                         if(res){
 //                             switch(user){
 //                                 case " guest":
-//                                     global.rol = "guest"
+//                                     global.rol = "guest" 
 //                                     break
 //                                 case "azirionq":
 //                                     global.rol = "admin"
@@ -91,7 +81,7 @@ app.use(function (req, res, next) {
 //                                 default:
 //                                     global.rol = "public"
 //                                     break
-//                             }
+//                             } 
 //                             return authorize(null, true)
 //                         }else{
 //                             return authorize(null, false)
@@ -115,27 +105,27 @@ app.use(function (req, res, next) {
 //    })
 // )
 
-app.use("/api/v1.0", indexRouter);
-app.use("/api/v1.0/reporte", reporteRouter);
-app.use("/api/v1.0/login", loginRouter);
-app.use("/api/v1.0/expresiones", expresionesRouter);
-app.use("/api/v1.0/referencias", referenciasRouter);
-app.use("/api/v1.0/vertambien", verTambien);
+app.use('/api/v1.0', indexRouter);
+app.use('/api/v1.0/reporte', reporteRouter);
+app.use('/api/v1.0/login', loginRouter);
+app.use('/api/v1.0/expresiones', expresionesRouter);
+app.use('/api/v1.0/referencias', referenciasRouter);
+app.use('/api/v1.0/vertambien', verTambien)
 
-app.use("/api/v1.0/acerca_de", acercaRouter);
-app.use("/api/v1.0/manual", manualRouter);
+app.use('/api/v1.0/acerca_de', acercaRouter);
+app.use('/api/v1.0/manual', manualRouter);
 
 //app.use('/fixes', fixesRouter);
 
 // error handler
-app.use(function (err, req, res, next) {
+app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
-  res.locals.error = req.app.get("env") === "development" ? err : {};
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
 
   // render the error page
   res.status(err.status || 500);
-  res.render("error");
+  res.render('error');
 });
 
 module.exports = app;
