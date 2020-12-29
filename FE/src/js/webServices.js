@@ -1,6 +1,6 @@
 import axios from "axios";
 import * as localStore from "./localStore";
-const serverUrl = "http://localhost:1938/api/v1.0";
+const serverUrl = "http://3.22.12.85:1938/api/v1.0";
 //const serverUrl = "https://" + window.location.host + "/api/v1.0"
 
 const webService = (service, method, params, sesion, next) => {

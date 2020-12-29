@@ -33,18 +33,13 @@ import { expresionesStore } from "../../../../stores/expresionStore";
 
 const Expresion = (props) => {
   const global = useContext(sesionStore);
-  const { state } = global
-  const { sesion, ultimasVisitadas, lang, langLista, letra } = state
+  const { state } = global;
+  const { sesion, ultimasVisitadas, lang, langLista, letra } = state;
 
   const globalExpresion = useContext(expresionesStore);
-  const { store, attend } = globalExpresion
-  const { expresiones, chunk } = store
+  const { store, attend } = globalExpresion;
 
   const [loading, setLoading] = useState(false);
-  const [expresionSeleccionada, setExpresionSeleccionada] = useState({
-    id: "",
-    expresione: "",
-  });
 
   const [expanded1, setExpanded1] = useState(false);
   const [expanded2, setExpanded2] = useState(false);
@@ -59,9 +54,6 @@ const Expresion = (props) => {
   );
   const [modalNumeros, setModalNumeros] = useState(false);
   const [openModalN, setOpenModalN] = useState(false);
-  const [flagDeBusqueda, setFlagDeBusqueda] = useState(false);
-  const [chunkList, setChunkList] = useState([]);
-  const [chunkListGlobal, setChunkListGlobal] = useState([]);
   const [snackbar, setSnackbar] = useState({
     open: false,
     variant: "",
@@ -109,38 +101,36 @@ const Expresion = (props) => {
   };
 
   useEffect(() => {
+    props.setFlagCambio("expresiones");
     setLoading(true);
     if (document.getElementById("listaIzquierda").firstChild != null)
       document.getElementById("listaIzquierda").firstChild.scrollIntoView();
-    const service =
-      "/expresiones/" + langLista + "/" + letra;
+    const service = "/expresiones/" + langLista + "/" + letra;
     webService(service, "GET", {}, sesion, (data) => {
       attend({
-        type: 'START_EXPRESIONES', payload: {
+        type: "START_EXPRESIONES",
+        payload: {
           expresiones: fixReferencias(data.data.response),
-          chunk: fixReferencias(data.data.response).slice(0, 50)
-        }
-      })
+          chunk: fixReferencias(data.data.response).slice(0, 50),
+        },
+      });
       setLoading(false);
     });
     if (localStore.getObjects("bienvenida") == false) {
       setOpenModal(true);
       localStore.setObjects("bienvenida", true);
     }
-  }, [
-    letra,
-    langLista
-  ]);
+  }, [letra, langLista]);
 
   const getJerarquia = (event) => {
-    console.log(event.currentTarget.id)
+    console.log(event.currentTarget.id);
     attend({
       type: "SELECT_EXPRESION",
       payload: {
         id: event.currentTarget.id.split("/")[0],
         expresion: event.currentTarget.id.split("/")[1],
-      }
-    })
+      },
+    });
     setExpanded1(true);
     setExpanded2(true);
   };
@@ -189,14 +179,14 @@ const Expresion = (props) => {
               <KeyboardArrowDownIcon fontSize="large" />
             </IconButton>
           ) : (
-              <IconButton
-                className="iconoArriba"
-                onClick={handleMenuEscondido}
-                size="medium"
-              >
-                <KeyboardArrowUpIcon fontSize="large" />
-              </IconButton>
-            )}
+            <IconButton
+              className="iconoArriba"
+              onClick={handleMenuEscondido}
+              size="medium"
+            >
+              <KeyboardArrowUpIcon fontSize="large" />
+            </IconButton>
+          )}
         </Hidden>
         <Grid
           item
