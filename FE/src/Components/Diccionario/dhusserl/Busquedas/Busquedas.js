@@ -140,7 +140,7 @@ const Busquedas = (props) => {
         <Grid item xs={10}>
           <FormControl className={classes.buscador}>
             <InputLabel htmlFor="input-with-icon-adornment">
-              {busqueda(lang)}
+              {busquedas(lang)}
             </InputLabel>
             <Input
               id="input-with-icon-adornment"
