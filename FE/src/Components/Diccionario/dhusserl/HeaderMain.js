@@ -40,9 +40,9 @@ function HeaderMain(props) {
   const { state } = global;
   const { lang } = state;
 
-  useEffect(() => {
-    console.log("URL", props.match);
-  });
+  // useEffect(() => {
+  //   console.log("URL", props.match);
+  // });
 
   return (
     <Grid container direction="row" justify="center" className="grids">

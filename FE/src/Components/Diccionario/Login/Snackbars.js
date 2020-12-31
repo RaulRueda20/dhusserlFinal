@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import ErrorIcon from "@material-ui/icons/Error";
 import WarningIcon from "@material-ui/icons/Warning";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
@@ -7,6 +7,8 @@ import SnackbarContent from "@material-ui/core/SnackbarContent";
 import { amber, green, red } from "@material-ui/core/colors";
 import clsx from "clsx";
 import { makeStyles, useTheme } from "@material-ui/styles";
+
+import { sesionStore } from "../../../stores/sesionStore";
 
 const iconoVariante = {
   success: CheckCircleIcon,
@@ -29,7 +31,7 @@ const useStyle1 = makeStyles((theme) => ({
   },
   iconVariant: {
     opacity: 0.9,
-    marginRight: "20px !important",
+    marginRight: "5px !important",
   },
   message: {
     display: "flex",
@@ -39,10 +41,17 @@ const useStyle1 = makeStyles((theme) => ({
 
 const EnvoltorioDeSnack = (props) => {
   const classes = useStyle1();
+  const global = useContext(sesionStore);
+  const { state } = global;
+  const { snackbar } = state;
 
   const { className, message, onClose, variant, ...other } = props;
 
   const Icon = iconoVariante[variant];
+
+  useEffect(() => {
+    console.log("message en SnackbarContent", message);
+  });
 
   return (
     <SnackbarContent
@@ -51,7 +60,7 @@ const EnvoltorioDeSnack = (props) => {
       message={
         <span id="client-snackbar" className={classes.message}>
           <Icon className={clsx(classes.icon, classes.iconVariant)} />
-          {message}
+          {snackbar.message}
         </span>
       }
       {...other}
@@ -60,6 +69,10 @@ const EnvoltorioDeSnack = (props) => {
 };
 
 export default function Snackbars(props) {
+  const global = useContext(sesionStore);
+  const { state } = global;
+  const { snackbar } = state;
+
   return (
     <div>
       <Snackbar
@@ -67,12 +80,12 @@ export default function Snackbars(props) {
           vertical: "bottom",
           horizontal: "left",
         }}
-        open={props.snackbar.open}
+        open={snackbar.open}
         onClose={props.handleClose}
       >
         <EnvoltorioDeSnack
-          variant={props.snackbar.variant}
-          message={props.snackbar.message}
+          variant={snackbar.variant}
+          message={snackbar.message}
         />
       </Snackbar>
     </div>
