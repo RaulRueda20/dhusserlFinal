@@ -29,7 +29,7 @@ const ResultadoBusquedaReferencia = (props) => {
   const { classes } = props;
   const global = useContext(sesionStore);
   const { state } = global;
-  const { sesion } = global;
+  const { lang } = state;
 
   const globalBusqueda = useContext(busquedaStore);
   const { busquedaState } = globalBusqueda;
@@ -116,10 +116,10 @@ const ResultadoBusquedaReferencia = (props) => {
         <div dangerouslySetInnerHTML={htmlPasajeOriginal()}></div>
         <div dangerouslySetInnerHTML={htmlPasajeTraduccion()}></div>
       </Grid>
-      {/* <Grid item xs={12} className="pasajesRenderizadosBusquedaPorReferencia">
+      <Grid item xs={12} className="pasajesRenderizadosBusquedaPorReferencia">
         <Typography variant="h4" className={classes.typosTitulos}>
           {" "}
-          {expresionesAsociadas(globalLanguage.lang)}
+          {expresionesAsociadas(lang)}
         </Typography>
         <ul className="ulExpresionesRelacionadas">
           {props.pasajeSeleccionado.expresiones.map((expresion, index) => (
@@ -127,8 +127,8 @@ const ResultadoBusquedaReferencia = (props) => {
               <Link
                 to={`${props.match.path.slice(0, 20)}/pasaje/${
                   expresion.t_id
-                  }/${props.pasajeSeleccionado.ref_id}`}
-                onClick={(e)=>consultaDePasajes(e)}
+                }/${props.pasajeSeleccionado.ref_id}`}
+                onClick={(e) => consultaDePasajes(e)}
               >
                 <Typography id={expresion.t_id + "/" + index}>
                   {expresion.expresion_original +
@@ -139,7 +139,7 @@ const ResultadoBusquedaReferencia = (props) => {
             </li>
           ))}
         </ul>
-      </Grid> */}
+      </Grid>
     </Grid>
   );
 };

@@ -86,18 +86,21 @@ const MenuDerecho = (props) => {
   const { store } = globalExpresion;
   const { expresionSeleccionada } = store;
 
-  const [
-    referenciasConsultadasVista,
-    setReferenciasConsultadasVista,
-  ] = useState([]);
+  // const [
+  //   referenciasConsultadasVista,
+  //   setReferenciasConsultadasVista,
+  // ] = useState([]);
   const [listaVerTambien, setListaVerTambien] = useState([]);
   const [hijos, setHijos] = useState([]);
   const [padres, setPadres] = useState([]);
 
   useEffect(() => {
-    console.log("ultimasVisitadas", ultimasVisitadas);
-    setReferenciasConsultadasVista(ultimasVisitadas);
-    console.log("referenciasConsultadasVista", referenciasConsultadasVista);
+    // console.log("ultimasVisitadas", ultimasVisitadas);
+    // props.setReferenciasConsultadasVista(ultimasVisitadas);
+    console.log(
+      "referenciasConsultadasVista",
+      props.referenciasConsultadasVista
+    );
     if (expresionSeleccionada) {
       console.log(expresionSeleccionada);
       let service = "/vertambien/" + expresionSeleccionada.id;
@@ -129,7 +132,7 @@ const MenuDerecho = (props) => {
         );
       });
     }
-  }, [expresionSeleccionada, referenciasConsultadasVista]);
+  }, [expresionSeleccionada, ultimasVisitadas]);
 
   const fixReferenciasConsultadas = (expresion) => {
     let referencia = {
@@ -290,7 +293,7 @@ const MenuDerecho = (props) => {
         </ExpansionPanelSummary>
         <ExpansionPanelDetails className="panelDeDetalleReferenciasConsultadas">
           <ul className="ulDelMenuDerechoReferenciasConsultadas">
-            {referenciasConsultadasVista.map((consultas, index) => {
+            {props.referenciasConsultadasVista.map((consultas, index) => {
               return (
                 <Link
                   to={`${match.path.slice(0, 20)}/pasaje/${consultas.id}/${

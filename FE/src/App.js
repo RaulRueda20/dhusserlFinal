@@ -63,15 +63,15 @@ const App = () => {
         type: "SET_SESION",
         payload: sesionBuscador,
       });
-    }
-    if (
-      ultimasVisitadas.length == 0 &&
-      localStore.getObjects("referenciasConsultadas")
-    ) {
-      dispatch({
-        type: "SET_ULTIMAS_VISITADAS",
-        payload: localStore.getObjects("referenciasConsultadas"),
-      });
+      if (
+        ultimasVisitadas.length == 0 &&
+        localStore.getObjects("referenciasConsultadas")
+      ) {
+        dispatch({
+          type: "SET_ULTIMAS_VISITADAS",
+          payload: localStore.getObjects("referenciasConsultadas"),
+        });
+      }
     }
   }, [true]);
 
