@@ -101,6 +101,7 @@ const Expresion = (props) => {
   };
 
   useEffect(() => {
+    console.log("ULTIMASVISITADAS", ultimasVisitadas);
     props.setFlagCambio("expresiones");
     setLoading(true);
     if (document.getElementById("listaIzquierda").firstChild != null)

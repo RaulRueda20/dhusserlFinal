@@ -29,7 +29,8 @@ const PanelExpresion = ({
   getJerarquia,
 }) => {
   const global = useContext(sesionStore);
-  const { dispatch } = global;
+  const { state, dispatch } = global;
+  const { sesion, ultimasVisitadas, lang, langLista } = state;
 
   const globalExpresion = useContext(expresionesStore);
   const { store } = globalExpresion;
@@ -59,6 +60,8 @@ const PanelExpresion = ({
   };
 
   const guardadoDePasajes = (event) => {
+    // console.log("ENTRE AL GUARDADO DE PASAJE");
+    // console.log("ultimas visitadas", ultimasVisitadas);
     let idReferenciaConsultada = expresion.id;
     let refIdReferenciaConsultada = event.currentTarget.id.split("/")[0];
     let service =
@@ -67,10 +70,16 @@ const PanelExpresion = ({
       "/" +
       refIdReferenciaConsultada;
     webService(service, "GET", {}, ({ data }) => {
-      const referencias = fixReferenciasConsultadas(data.response);
+      //   console.log("response", data.data.response);
+      const referencias = fixReferenciasConsultadas(data.data.response);
+      //   let nuevasVisitadas = ultimasVisitadas;
+      //   nuevasVisitadas.push(referencias);
+      //   setUltimasVisitadas(nuevasVisitadas);
+      //   console.log("referencias", referencias);
       if (!localStore.getObjects("ultimasVisitadas")) {
         let referenciasConsultadas = [];
         referenciasConsultadas.push(referencias);
+        console.log("referenciasConsultadas", referenciasConsultadas);
         dispatch({
           type: "SET_ULTIMAS_VISITADAS",
           payload: referenciasConsultadas,
@@ -78,6 +87,7 @@ const PanelExpresion = ({
       } else {
         let referenciasConsultadas = localStore.getObjects("ultimasVisitadas");
         referenciasConsultadas.push(referencias);
+        console.log("referenciasConsultadas", referenciasConsultadas);
         dispatch({
           type: "SET_ULTIMAS_VISITADAS",
           payload: referenciasConsultadas,
@@ -98,26 +108,27 @@ const PanelExpresion = ({
     return { __html: pretty_e + "<p> // </p>" + pretty_t };
   };
 
-  const htmlPrettyT = () => {
-    return { __html: expresion.pretty_t + "<p> // </p>" + expresion.pretty_e };
-  };
+  //   const htmlPrettyT = () => {
+  //     return { __html: expresion.pretty_t + "<p> // </p>" + expresion.pretty_e };
+  //   };
 
   const clickHandleVista = ({ currentTarget }) => {
+    // console.log("ENTRE A CLICKHANDLEVISTA");
     const { id } = currentTarget;
-    console.log(currentTarget, parseInt(id), expresiones);
-
+    // console.log(currentTarget, parseInt(id), expresiones);
     const expresionesReferencias = expresiones[parseInt(id)];
-    if (!localStore.getObjects("referenciasConsultadas")) {
+    if (!localStore.getObjects("ultimasVisitadas")) {
+      console.log("NO HAY NADA EN ULTIMAS VISITADAS");
       let referenciasConsultadas = [];
       referenciasConsultadas.push(expresionesReferencias);
+      console.log("referenciasConsultadas", referenciasConsultadas);
       dispatch({
         type: "SET_ULTIMAS_VISITADAS",
         payload: referenciasConsultadas,
       });
     } else {
-      let referenciasConsultadas = localStore.getObjects(
-        "referenciasConsultadas"
-      );
+      //   console.log("ULTIMASVISITADAS", expresionesReferencias);
+      let referenciasConsultadas = localStore.getObjects("ultimasVisitadas");
       referenciasConsultadas.push(expresionesReferencias);
       dispatch({
         type: "SET_ULTIMAS_VISITADAS",
@@ -138,7 +149,7 @@ const PanelExpresion = ({
         value={expresion.id}
       >
         <Grid container justify="center" alignItems="center">
-          <Grid item xs={10} id={index} onClick={clickHandleVista}>
+          <Grid item xs={10} id={index} onClick={(e) => clickHandleVista(e)}>
             <Link
               to={
                 expresion.referencias[0].refid == null
@@ -205,7 +216,7 @@ const PanelExpresion = ({
                         }
                         className="consultaDePasajes"
                         id={referencia.refid + "/" + index}
-                        onClick={guardadoDePasajes}
+                        onClick={(e) => guardadoDePasajes(e)}
                       >
                         {referencia.refid +
                           "  :  " +

@@ -95,6 +95,7 @@ const MenuDerecho = (props) => {
   const [padres, setPadres] = useState([]);
 
   useEffect(() => {
+    console.log("ultimasVisitadas", ultimasVisitadas);
     setReferenciasConsultadasVista(ultimasVisitadas);
     console.log("referenciasConsultadasVista", referenciasConsultadasVista);
     if (expresionSeleccionada) {
@@ -128,7 +129,7 @@ const MenuDerecho = (props) => {
         );
       });
     }
-  }, [expresionSeleccionada]);
+  }, [expresionSeleccionada, referenciasConsultadasVista]);
 
   const fixReferenciasConsultadas = (expresion) => {
     let referencia = {
@@ -152,7 +153,6 @@ const MenuDerecho = (props) => {
   };
 
   const handleFlagLetraMain = (event) => {
-    console.log("ENTRE A LA VERGA ");
     const idExpresion = event.target.id.split("/")[0];
     const service = "/referencias/obtieneReferencias/" + idExpresion;
     webService(service, "GET", {}, sesion, (data) => {
@@ -291,7 +291,6 @@ const MenuDerecho = (props) => {
         <ExpansionPanelDetails className="panelDeDetalleReferenciasConsultadas">
           <ul className="ulDelMenuDerechoReferenciasConsultadas">
             {referenciasConsultadasVista.map((consultas, index) => {
-              console.log("consultas", consultas);
               return (
                 <Link
                   to={`${match.path.slice(0, 20)}/pasaje/${consultas.id}/${

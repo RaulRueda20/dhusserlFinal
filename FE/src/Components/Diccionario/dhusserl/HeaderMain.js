@@ -55,38 +55,35 @@ function HeaderMain(props) {
               setLogged={props.setLogged}
             />
           </Grid>
-          {
-            props.flagCambio == "expresiones" ? (
-              <Grid item xs={2} sm={1} md={1} xl={1}>
-                <Tooltip title="Ir al módulo de búsquedas">
-                  <Link to={`${props.match.url}/busquedas`}>
-                    <IconButton>
-                      <PageviewIcon className="iconos" />
-                    </IconButton>
-                  </Link>
-                </Tooltip>
-              </Grid>
-            ) : (
-              <Grid item xs={2} sm={1} md={1} xl={1}>
-                <Link to={`${props.match.url}/diccionario`}>
-                  <Tooltip title="Ir al diccionario">
-                    <IconButton>
-                      <Book className="iconos" />
-                    </IconButton>
-                  </Tooltip>
+          {props.flagCambio == "expresiones" ? (
+            <Grid item xs={2} sm={1} md={1} xl={1}>
+              <Tooltip title="Ir al módulo de búsquedas">
+                <Link to={`${props.match.url}/busquedas`}>
+                  <IconButton>
+                    <PageviewIcon className="iconos" />
+                  </IconButton>
                 </Link>
-              </Grid>
-            )
-            // ) : (
-            //   <Grid item xs={2} sm={1} md={1} xl={1}>
-            //     <Link to={`${props.match.url}/busquedas`}>
-            //       <IconButton>
-            //         <PageviewIcon className="iconos" />
-            //       </IconButton>
-            //     </Link>
-            //   </Grid>
-            // )
-          }
+              </Tooltip>
+            </Grid>
+          ) : props.flagCambio == "busquedas" ? (
+            <Grid item xs={2} sm={1} md={1} xl={1}>
+              <Link to={`${props.match.url}/diccionario`}>
+                <Tooltip title="Ir al diccionario">
+                  <IconButton>
+                    <Book className="iconos" />
+                  </IconButton>
+                </Tooltip>
+              </Link>
+            </Grid>
+          ) : (
+            <Grid item xs={2} sm={1} md={1} xl={1}>
+              <Link to={`${props.match.url}/busquedas`}>
+                <IconButton>
+                  <PageviewIcon className="iconos" />
+                </IconButton>
+              </Link>
+            </Grid>
+          )}
           <Grid item xs={6} sm={8} md={8} xl={8} align="center">
             <Typography variant="h2" className={classes.titulo}>
               {tituloDiccionario(lang)}
