@@ -54,7 +54,7 @@ const LoginForm = (props) => {
         variant: "error",
         message: "correo o password invalidos",
       });
-    } else if (correo && password) {
+    } else if (correo != "" && password != "") {
       setLoading(true);
       localStore.setObjects("admin_sesion", params);
       let service = "/login/admin?userId=" + correo + "&password=" + password;

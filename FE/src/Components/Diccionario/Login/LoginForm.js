@@ -39,46 +39,59 @@ const stylesFor = {
 function LoginForm(props) {
   const { classes, history, setLogin } = props;
   const global = React.useContext(sesionStore);
-  const { dispatch, state } = global
-  const { lang, loading } = state
+  const { dispatch, state } = global;
+  const { lang, loading } = state;
 
   const [correo, setCorreo] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [recuperarContra, setRecuperarContra] = React.useState(false);
 
   const onFormSubmit = (event) => {
-
     event.preventDefault();
-    dispatch({ type: 'START_LOADING' });
+    dispatch({ type: "START_LOADING" });
 
     var service = "/login/usuario";
     var params = JSON.stringify({ userId: correo, password: password });
+    if (correo == "" || password == "") {
+      console.log("lololo");
 
-    loginService(service, "POST", params, (data) => {
-      if (data.data.error) {
-        dispatch({
-          type: 'SET_SNACKBAR', payload: {
-            open: true,
-            variant: "error",
-            message: correoInvalido(lang),
-          }
-        });
-      } else {
-        var nuevaSesion = {
-          usuario: correo,
-          password: password,
-        };
+      dispatch({
+        type: "SET_SNACKBAR",
+        payload: {
+          open: true,
+          variant: "error",
+          message: correoInvalido(lang),
+        },
+      });
+      dispatch({ type: "STOP_LOADING" });
+    } else if (correo != "" && password != "") {
+      loginService(service, "POST", params, (data) => {
+        if (data.data.error) {
+          dispatch({
+            type: "SET_SNACKBAR",
+            payload: {
+              open: true,
+              variant: "error",
+              message: correoInvalido(lang),
+            },
+          });
+        } else {
+          var nuevaSesion = {
+            usuario: correo,
+            password: password,
+          };
 
-        dispatch({
-          type: 'INICIAR_SESION',
-          payload: nuevaSesion
-        })
+          dispatch({
+            type: "INICIAR_SESION",
+            payload: nuevaSesion,
+          });
 
-        history.push("/husserl");
-      }
-      dispatch({ type: 'STOP_LOADING' })
-    });
-  }
+          history.push("/husserl");
+        }
+        dispatch({ type: "STOP_LOADING" });
+      });
+    }
+  };
 
   function handleClickModal() {
     setRecuperarContra(true);
@@ -150,7 +163,6 @@ function LoginForm(props) {
         recuperarContra={recuperarContra}
         setRecuperarContra={setRecuperarContra}
       />
-
     </div>
   );
 }

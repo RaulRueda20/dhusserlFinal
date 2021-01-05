@@ -1,4 +1,4 @@
-import React, { useReducer } from 'react';
+import React, { useReducer } from "react";
 
 import * as localStore from "../js/localStore";
 
@@ -9,17 +9,17 @@ const initialState = {
   sesion: null,
   ultimasVisitadas: [],
   ultimaVisitada: [],
-  lang: 'es',
-  langLista: 'al',
-  letra: 'A',
+  lang: "es",
+  langLista: "al",
+  letra: "A",
   loading: false,
   alert: { open: false, mensaje: "", tituloAlerta: "" },
   snackbar: {
     open: false,
     variant: "",
     message: "",
-  }
-}
+  },
+};
 
 const sesionReducer = (state, action) => {
   const { type, payload } = action;
@@ -30,7 +30,7 @@ const sesionReducer = (state, action) => {
       var newSession = { user: usuario, password: password };
       newSession["ultimasVisitadas"] = [];
       newSession["ultimaVisitada"] = "alfabeto";
-      localStore.setObjects("ultimasVisitadas", [])
+      localStore.setObjects("ultimasVisitadas", []);
       localStore.setObjects("sesion", newSession);
       return { ...state, sesion: payload };
     case "SET_SESION":
@@ -42,7 +42,7 @@ const sesionReducer = (state, action) => {
     case "SET_LANGLISTA":
       return { ...state, langLista: payload };
     case "SET_ULTIMAS_VISITADAS":
-      localStore.setObjects("ultimasVisitadas", payload)
+      localStore.setObjects("ultimasVisitadas", payload);
       return { ...state, ultimasVisitadas: payload };
     case "START_LOADING":
       return { ...state, loading: true };
@@ -52,11 +52,19 @@ const sesionReducer = (state, action) => {
       return { ...state, alert: payload };
     case "SET_SNACKBAR":
       return { ...state, snackbar: payload };
+    case "CLOSE_SNACKBAR":
+      return {
+        ...state,
+        snackbar: {
+          open: false,
+          variant: state.snackbar.variant,
+          message: state.snackbar.message,
+        },
+      };
     default:
       break;
   }
-
-}
+};
 
 const SesionProvider = ({ children }) => {
   const [state, dispatch] = useReducer(sesionReducer, initialState);
