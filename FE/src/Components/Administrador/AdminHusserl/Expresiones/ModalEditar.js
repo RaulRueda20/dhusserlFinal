@@ -12,7 +12,7 @@ import {
   Tooltip,
   Snackbar,
 } from "@material-ui/core";
-import SwipeableViews from 'react-swipeable-views'
+import SwipeableViews from "react-swipeable-views";
 import ClearIcon from "@material-ui/icons/Clear";
 import Create from "@material-ui/icons/Create";
 import { withStyles } from "@material-ui/styles";
@@ -33,7 +33,7 @@ const estiloModalExpresiones = (theme) => ({
     top: "10vh",
     left: "calc(20vw - 120px)",
     width: "60vw",
-    height: "54vh",
+    height: "70vh",
     padding: "20px 30px",
     position: "absolute",
   },

@@ -1,7 +1,7 @@
 import React from "react";
 import classNames from "classnames";
 
-const ListaExpresiones = ({ expresiones, setIdExpresion }) => {
+const ListaExpresiones = ({ expresiones, setIdExpresion, idExpresion }) => {
   const handleClickExpresion = (event) => {
     setIdExpresion(event.target.value);
   };
@@ -12,7 +12,7 @@ const ListaExpresiones = ({ expresiones, setIdExpresion }) => {
         {expresiones.map((expresion) => (
           <li
             className={classNames(
-              { selected: expresion.id === props.idExpresion },
+              { selected: expresion.id === idExpresion },
               "sideListAdmin"
             )}
             key={expresion.id}
