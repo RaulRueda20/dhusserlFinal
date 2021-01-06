@@ -1,61 +1,101 @@
-import React from 'react';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
+import React, { useContext, useEffect } from "react";
+import { Link } from "react-router-dom";
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  IconButton,
+  Tooltip,
+} from "@material-ui/core";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
+import Grid from "@material-ui/core/Grid";
+import Book from "@material-ui/icons/Book";
+import PageviewIcon from "@material-ui/icons/Pageview";
+import MenuHeader from "./MenuHeader";
+import MenuIdioma from "../MenuIdioma";
 
-import MenuHeader from './MenuHeader';
-import MenuIdioma from '../MenuIdioma'
+import { tituloDiccionario } from "../../../js/Language";
 
-import {tituloDiccionario} from '../../../js/Language';
-import { languageStore } from '../../../stores/languageStore';
+import { sesionStore } from "../../../stores/sesionStore";
 
-const useStyles = makeStyles(theme => ({
-  titulo:{
+const useStyles = makeStyles((theme) => ({
+  titulo: {
     color: "white",
-    [theme.breakpoints.down('sm')]:{
-      display: "none"
-    }
+    [theme.breakpoints.down("sm")]: {
+      display: "none",
+    },
   },
   idiomas: {
-    textAlign: "center"
+    textAlign: "center",
   },
   menu: {
-    textAlign: "center"
-  }
-}))
+    textAlign: "center",
+  },
+}));
 
-
-function HeaderMain(props){
+function HeaderMain(props) {
   const classes = useStyles();
-  const globalLanguage = React.useContext(languageStore);
   const theme = useTheme();
+  const global = useContext(sesionStore);
+  const { state } = global;
+  const { lang } = state;
 
-  React.useEffect(()=>{
-    console.log("props", props)
-  },[true])
+  // useEffect(() => {
+  //   console.log("URL", props.match);
+  // });
 
-  return(
+  return (
     <Grid container direction="row" justify="center" className="grids">
       <AppBar position="static" color="primary" className="headerMain">
         <Toolbar variant="dense">
           <Grid item xs={2} sm={1} md={1} xl={1} className={classes.menu}>
-            <MenuHeader history={props.history} match={props.match} setLogged={props.setLogged}/>
+            <MenuHeader
+              history={props.history}
+              match={props.match}
+              setLogged={props.setLogged}
+            />
           </Grid>
-          <Grid item xs={8} sm={10} md={10} xl={10} align="center">
+          {props.flagCambio == "expresiones" ? (
+            <Grid item xs={2} sm={1} md={1} xl={1}>
+              <Tooltip title="Ir al módulo de búsquedas">
+                <Link to={`${props.match.url}/busquedas`}>
+                  <IconButton>
+                    <PageviewIcon className="iconos" />
+                  </IconButton>
+                </Link>
+              </Tooltip>
+            </Grid>
+          ) : props.flagCambio == "busquedas" ? (
+            <Grid item xs={2} sm={1} md={1} xl={1}>
+              <Link to={`${props.match.url}/diccionario`}>
+                <Tooltip title="Ir al diccionario">
+                  <IconButton>
+                    <Book className="iconos" />
+                  </IconButton>
+                </Tooltip>
+              </Link>
+            </Grid>
+          ) : (
+            <Grid item xs={2} sm={1} md={1} xl={1}>
+              <Link to={`${props.match.url}/busquedas`}>
+                <IconButton>
+                  <PageviewIcon className="iconos" />
+                </IconButton>
+              </Link>
+            </Grid>
+          )}
+          <Grid item xs={6} sm={8} md={8} xl={8} align="center">
             <Typography variant="h2" className={classes.titulo}>
-              {tituloDiccionario(globalLanguage.lang)}
+              {tituloDiccionario(lang)}
             </Typography>
           </Grid>
           <Grid item xs={2} sm={1} md={1} xl={1} className={classes.idiomas}>
-            <MenuIdioma/>
+            <MenuIdioma />
           </Grid>
         </Toolbar>
       </AppBar>
     </Grid>
-  )
+  );
 }
-
 
 export default HeaderMain;

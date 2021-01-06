@@ -1,9 +1,13 @@
 import React, { Fragment } from "react";
 import { Snackbar, SnackbarContent } from "@material-ui/core";
-import { amber, green } from "@material-ui/core/colors";
+import { amber, green, red } from "@material-ui/core/colors";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/styles";
-import { Error as ErrorIcon, Warning as WarningIcon, CheckCircle as CheckCircleIcon } from "@material-ui/icons";
+import {
+  Error as ErrorIcon,
+  Warning as WarningIcon,
+  CheckCircle as CheckCircleIcon,
+} from "@material-ui/icons";
 
 const iconoVariante = {
   success: CheckCircleIcon,
@@ -16,7 +20,7 @@ const useStyle1 = makeStyles((theme) => ({
     backgroundColor: green[600],
   },
   error: {
-    backgroundColor: theme.palette.error.dark,
+    backgroundColor: red[900],
   },
   warning: {
     backgroundColor: amber[700],
@@ -26,7 +30,7 @@ const useStyle1 = makeStyles((theme) => ({
   },
   iconVariant: {
     opacity: 0.9,
-    marginRight: theme.spacing(1),
+    marginRight: "20px !important",
   },
   message: {
     display: "flex",
@@ -80,6 +84,6 @@ const Snackbars = (props) => {
       </Snackbar>
     </Fragment>
   );
-}
+};
 
 export default Snackbars;

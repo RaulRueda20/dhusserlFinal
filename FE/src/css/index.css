@@ -1,36 +1,44 @@
-body{
-  margin : 0;
+body {
+  margin: 0;
 }
 
-a{
+a {
   cursor: pointer;
 }
 
-.footerDiccionario{
+.footerDiccionario {
   background-color: rgb(126, 46, 56);
   width: 100%;
   height: 64px;
-  box-shadow: 0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12);
+  box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2),
+    0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
 }
 
-.footerAdmin{
+.footerAdmin {
   background-color: #38673d;
   width: 100%;
   height: 64px;
-  box-shadow: 0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12);
+  box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2),
+    0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
 }
 
 @font-face {
-    font-family: DHTitle;
-    src: url(../fuentes/CASTELAR.ttf);
+  font-family: DHTitle;
+  src: url(../fuentes/CASTELAR.ttf);
 }
 
-h1{
-    font-family: DHTitle !important;
-    font-weight: bolder;
+h1 {
+  font-family: DHTitle !important;
+  font-weight: bolder;
 }
 
-tp, b, strong, p, hr, pre, span {
+tp,
+b,
+strong,
+p,
+hr,
+pre,
+span {
   font-family: "Roboto", "Helvetica", "Arial", sans-serif;
 }
 
@@ -38,7 +46,7 @@ tp, b, strong, p, hr, pre, span {
   min-height: 100vh;
 }
 
-.divisor{
+.divisor {
   margin: 10px 0px !important;
 }
 
@@ -54,25 +62,25 @@ tp, b, strong, p, hr, pre, span {
   z-index: 99999;
 }
 
-.grids{
+.grids {
   width: 100% !important;
 }
 
-.gridsLogin{
+.gridsLogin {
   width: 100% !important;
   height: 212px;
 }
 
-.gridsF{
+.gridsF {
   width: 100% !important;
   padding: 0px 5%;
 }
 
-#menuheader div.MuiPaper-root{
+#menuheader div.MuiPaper-root {
   margin-top: 25px;
 }
 
-.list-container{
+.list-container {
   height: 83.5vh;
   overflow-y: scroll;
   overflow-x: hidden;
@@ -80,46 +88,46 @@ tp, b, strong, p, hr, pre, span {
   /* padding: 10px 0px; */
 }
 
-.list-containerP{
+.list-containerP {
   height: 87.5vh;
   overflow-y: scroll;
   overflow-x: hidden;
   width: auto;
 }
 
-.list-item{
+.list-item {
   max-width: 100%;
 }
 
-.list-item a{
+.list-item a {
   padding: 10px 5px;
 }
 
-.list-item b{
+.list-item b {
   padding: 20px 10px;
 }
 
-.header-main{
+.header-main {
   box-shadow: 0 !important;
 }
 
-.input-with-icon-textfield{
+.input-with-icon-textfield {
   height: 20px;
 }
 
-ul{
+ul {
   list-style: none;
   margin: 0px;
   padding: 0px !important;
 }
 
-.sideList{
+.sideList {
   border-bottom: 1px lightgray solid;
   font-family: "Roboto", "Helvetica", "Arial", sans-serif;
   color: rgba(80, 80, 80);
 }
 
-.listasAdmin{
+.listasAdmin {
   padding: 10px;
   border-bottom: 1px lightgray solid;
   cursor: pointer;
@@ -127,41 +135,40 @@ ul{
   color: rgba(80, 80, 80);
 }
 
-.listasAdmin:hover{
-  background: rgba(0,0,0,0.18);
+.listasAdmin:hover {
+  background: rgba(0, 0, 0, 0.18);
 }
 
-option{
+option {
   font-family: "Roboto", "Helvetica", "Arial", sans-serif;
 }
 
-.sideListIzquierdo{
+.sideListIzquierdo {
   border-bottom: 1px lightgray solid;
   font-family: "Roboto", "Helvetica", "Arial", sans-serif;
   color: rgba(80, 80, 80);
 }
 
-option{
+option {
   font-family: "Roboto", "Helvetica", "Arial", sans-serif;
 }
 
-li.sideList:hover{
-  background: rgba(0,0,0,0.1);
+li.sideList:hover {
+  background: rgba(0, 0, 0, 0.1);
 }
 
-li.sideListIzquierdo:hover{
+li.sideListIzquierdo:hover {
   background: rgba(90, 163, 77, 0.2);
 }
 
-.pasajeSeleccionado{
+.pasajeSeleccionado {
   background: rgba(90, 163, 77, 0.3);
 }
-
 
 /* width */
 ::-webkit-scrollbar {
   width: 7px;
-  opacity: .75;
+  opacity: 0.75;
 }
 
 /* Track */
@@ -169,42 +176,43 @@ li.sideListIzquierdo:hover{
   /* box-shadow: inset 0 0 5px grey;  */
   /* border: 1px rgba(0,0,0, .05) solid; */
   /* border-radius: 10px; */
-  opacity: .75;
+  opacity: 0.75;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: rgba(20, 10, 10, .3); 
+  background: rgba(20, 10, 10, 0.3);
   /* border-radius: 10px; */
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(20, 10, 10, .5); 
+  background: rgba(20, 10, 10, 0.5);
 }
 
-.selected, .selectedP{
-  background: rgba(0,0,0,0.15);
+.selected,
+.selectedP {
+  background: rgba(0, 0, 0, 0.15);
 }
 
-header{
+header {
   height: 7vh;
   justify-content: center;
 }
 
-a{
+a {
   color: rgba(80, 80, 80);
   text-decoration: none;
 }
 
-.selectedButton{
+.selectedButton {
   color: white !important;
-  background : #38673d !important;
+  background: #38673d !important;
 }
 
-.selectedButton:hover{
+.selectedButton:hover {
   color: white !important;
-  background : #315a35 !important;
+  background: #315a35 !important;
 }
 
 .banderas {
@@ -213,262 +221,269 @@ a{
   height: 32px !important;
 }
 
-#simple-menu div.MuiPaper-root{
+#simple-menu div.MuiPaper-root {
   box-shadow: none;
   margin-top: 40px;
-  background-color: rgba(0,0,0,0);
+  background-color: rgba(0, 0, 0, 0);
 }
 
-.botonesLista{
+.botonesLista {
   border-radius: 100%;
 }
 
-.parrafo{
+.parrafo {
   margin-block-start: 10px !important;
   margin-block-end: 10px !important;
   padding: 0px 10px;
 }
 
-.consultaDePasajes:hover{
+.consultaDePasajes:hover {
   color: rgb(7, 142, 184);
   cursor: pointer;
   text-decoration: underline;
 }
 
-.consultaDePasajes{
+.consultaDePasajes {
   max-height: 40px;
   display: inline-block;
 }
 
-.pasajesVisitados{
+.pasajesVisitados {
   color: rgb(100, 30, 30);
-  text-decoration: underline; 
+  text-decoration: underline;
 }
 
-.ulDelMenuDerecho{
+.ulDelMenuDerecho {
   max-height: 67px;
   overflow: scroll;
   margin-top: 10px;
   padding: 0 16px !important;
 }
 
-.ulDelMenuDerechoPadres{
+.ulDelMenuDerechoPadres {
   max-height: 67px;
   margin-top: 10px;
-  background-color: rgba(20,10,10,.0.08);
+  background-color: rgba(20, 10, 10, 0.08);
   overflow: scroll;
 }
 
-.ulDelMenuDerechoExpresion{
+.ulDelMenuDerechoExpresion {
   min-height: 40px;
   margin-top: 5px;
-  background-color: rgba(20,10,10,.0.05);
+  background-color: rgba(20, 10, 10, 0.05);
   overflow: scroll;
 }
 
-.ulDelMenuDerechoHijos{
+.ulDelMenuDerechoHijos {
   max-height: 45px;
   margin-top: 5px;
-  background-color: rgba(20,10,10,.0.02);
+  background-color: rgba(20, 10, 10, 0.02);
   overflow: scroll;
 }
 
-.ulDelMenuDerechoHijosLibres{
+.ulDelMenuDerechoHijosLibres {
   max-height: 100px;
   margin-top: 5px;
-  background-color: rgba(20,10,10,.0.02);
+  background-color: rgba(20, 10, 10, 0.02);
   overflow: scroll;
 }
 
-.ulDelMenuDerechoVerTambien{
+.ulDelMenuDerechoVerTambien {
   max-height: 80px;
   margin-top: 5px;
-  background-color: rgba(20,10,10,.0.02);
+  background-color: rgba(20, 10, 10, 0.02);
   overflow: scroll;
 }
 
-.ulDelMenuDerechoReferenciasConsultadas{
+.ulDelMenuDerechoReferenciasConsultadas {
   max-height: 130px;
   margin-top: 5px;
-  background-color: rgba(20,10,10,.0.02);
+  background-color: rgba(20, 10, 10, 0.02);
   overflow: scroll;
   /* display: inline-block !important; */
 }
 
-.panelDeDetallePadres{
+.panelDeDetallePadres {
   display: block !important;
   min-height: 10vh;
-  background-color: rgba(20,10,10,.08);
+  background-color: rgba(20, 10, 10, 0.08);
   padding: 5px 0 0 25px !important;
-  border-bottom: 1px rgba(0,0,0,.1) dashed;
+  border-bottom: 1px rgba(0, 0, 0, 0.1) dashed;
 }
 
-.panelDeDetalleExpresion{
+.panelDeDetalleExpresion {
   display: block !important;
   min-height: 10vh;
-  background-color: rgba(20,10,10,.05);
+  background-color: rgba(20, 10, 10, 0.05);
   padding: 5px 0 0 25px !important;
-  border-bottom: 1px rgba(0,0,0,.1) dashed;
+  border-bottom: 1px rgba(0, 0, 0, 0.1) dashed;
 }
 
-.panelDeDetalleHijos{
+.panelDeDetalleHijos {
   display: block !important;
   max-height: 20vh;
-  background-color: rgba(20,10,10,.02);
+  background-color: rgba(20, 10, 10, 0.02);
   padding: 5px 0 0 25px !important;
   /* border-bottom: 1px rgba(0,0,0,.1) dashed; */
 }
 
-.panelDeDetalleHijosLibres{
+.panelDeDetalleHijosLibres {
   display: block !important;
   max-height: 40vh;
-  background-color: rgba(20,10,10,.02);
+  background-color: rgba(20, 10, 10, 0.02);
   padding: 5px 0 0 25px !important;
   /* border-bottom: 1px rgba(0,0,0,.1) dashed; */
 }
 
-.panelDeDetalleVerTambien{
+.panelDeDetalleVerTambien {
   display: block !important;
   max-height: 90px;
   height: 40vh;
-  background-color: rgba(20,10,10,.02);
+  background-color: rgba(20, 10, 10, 0.02);
   padding: 5px 0 0 25px !important;
-  border-bottom: 1px rgba(0,0,0,.1) dashed;
+  border-bottom: 1px rgba(0, 0, 0, 0.1) dashed;
 }
 
-
-.panelDeDetalleReferenciasConsultadas{
+.panelDeDetalleReferenciasConsultadas {
   display: block !important;
   max-height: 20vh;
-  background-color: rgba(20,10,10,.02);
+  background-color: rgba(20, 10, 10, 0.02);
   padding: 5px 0 0 25px !important;
-  border-bottom: 1px rgba(0,0,0,.1) dashed;
+  border-bottom: 1px rgba(0, 0, 0, 0.1) dashed;
 }
 
-.headerMain{
-  height:9vh;
+.headerMain {
+  height: 9vh;
 }
 
-.bordeDeConsultas{
+.bordeDeConsultas {
   border-bottom: 1px;
   border-bottom-color: lightgrey;
   border-bottom-style: dotted;
   padding: 2px;
 }
 
-.iconosIluminados:hover{
+.iconosIluminados:hover {
   color: rgb(7, 142, 184);
   cursor: pointer;
 }
 
-.banderaIzquierda{
+.iconos {
+  color: rgb(255, 255, 255);
+}
+
+.lang {
+  font-size: "2.5rem";
+  color: rgb(255, 255, 255);
+}
+
+.banderaIzquierda {
   width: 35px !important;
   height: 25px !important;
   opacity: 0.5;
 }
 
-.banderaIzquierda:hover{
-  opacity:1;
+.banderaIzquierda:hover {
+  opacity: 1;
 }
 
-.banderaBusquedaPasajes{
+.banderaBusquedaPasajes {
   width: 25px !important;
   height: 15px !important;
   opacity: 0.5;
 }
 
-.banderaBusquedaPasajes:hover{
-  opacity:1;
+.banderaBusquedaPasajes:hover {
+  opacity: 1;
 }
 
-.banderaPasajes{
+.banderaPasajes {
   width: 30px !important;
   height: 20px !important;
   opacity: 0.5;
 }
 
-.banderaPasajes:hover{
-  opacity:1;
+.banderaPasajes:hover {
+  opacity: 1;
 }
 
-.bordoDelMenuDerecho{
-  border-left:1px solid lightgrey;
-  background: rgba(0,0,0,0.05);
+.bordoDelMenuDerecho {
+  border-left: 1px solid lightgrey;
+  background: rgba(0, 0, 0, 0.05);
 }
 
-.menuSimple{
+.menuSimple {
   padding: 0 0 0 0 !important;
-  opacity:0.7;
+  opacity: 0.7;
   background-color: transparent !important;
 }
 
-.menuSimple:hover{
-  opacity:1;
+.menuSimple:hover {
+  opacity: 1;
 }
 
-.links:hover{
+.links:hover {
   color: rgb(7, 142, 184);
   cursor: pointer;
 }
 
-a:hover{
+a:hover {
   text-decoration: underline;
 }
 
-.links{
+.links {
   text-decoration: underline;
 }
 
-.ulDelPanelDeExpresiones{
+.ulDelPanelDeExpresiones {
   padding: 10px 20px !important;
   border-top: solid lightgrey;
-  background-color: rgb(255,255,255);
+  background-color: rgb(255, 255, 255);
   border-width: 1px;
 }
 
-.listaIzquierda{
+.listaIzquierda {
   height: calc(100vh - 9vh - 80px) !important;
-  overflow-y: scroll; 
+  overflow-y: scroll;
   overflow-x: hidden;
   width: auto;
-  background-color: rgb(245,245,245);
+  background-color: rgb(245, 245, 245);
   margin-right: 10px !important;
 }
 
-
-.panelesPrincipales{
-  background-color: rgba(0,0,0,.1) !important;
+.panelesPrincipales {
+  background-color: rgba(0, 0, 0, 0.1) !important;
 }
 
-.tagsMenuDerecho{
-  margin:0px !important;
+.tagsMenuDerecho {
+  margin: 0px !important;
 }
 
-.contenedorMenuDerecho{
+.contenedorMenuDerecho {
   max-height: calc(100vh - 150px);
   overflow: auto;
 }
 
-.contenedorMenuDerechoEscondido{
+.contenedorMenuDerechoEscondido {
   max-height: calc(100vh - 488px);
   overflow: auto;
 }
 
-.contenedorMenuBajo{
+.contenedorMenuBajo {
   max-height: 32vh;
   width: 100%;
   overflow: auto;
 }
 
-.panelPrincipal{
-  border-bottom: 1px rgba(0,0,0,.18) solid !important;
+.panelPrincipal {
+  border-bottom: 1px rgba(0, 0, 0, 0.18) solid !important;
 }
 
 /* .MuiButtonBase-root{
   background-color: transparent !important;
 } */
 
-.pasajesRenderizados{
+.pasajesRenderizados {
   padding: 15px 15px 15px 15px;
   height: calc(91vh - 182px) !important;
   overflow: auto;
@@ -477,22 +492,22 @@ a:hover{
   border-top: 1px double lightgrey;
 }
 
-hr{
-  margin-top:1rem;
+hr {
+  margin-top: 1rem;
   margin-bottom: 1rem;
   border: 0;
-  border-top: 1px solid rgba(0,0,0,.1)
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-.subtituloDescarga{
-  background-color: rgba(0,0,0,.1)
+.subtituloDescarga {
+  background-color: rgba(0, 0, 0, 0.1);
 }
 
 .referencia {
   margin: 10px 0px;
 }
 
-.botonPaginador{
+.botonPaginador {
   width: 40px;
   vertical-align: bottom;
   padding: 10px 0px;
@@ -501,79 +516,79 @@ hr{
   border: 1px lightgray solid;
 }
 
-.botonPaginador:hover{
+.botonPaginador:hover {
   background: rgba(90, 163, 77, 0.2);
   text-decoration: none;
   font-weight: 500;
 }
-.IconoIzquierdo{
+.IconoIzquierdo {
   position: absolute !important;
-  left:24.3%!important;
-  top:60%;
+  left: 24.3% !important;
+  top: 60%;
   z-index: 10;
 }
 
-.botonIzquierdoEscondido{
+.botonIzquierdoEscondido {
   position: fixed !important;
-  left:-10px !important;
-  top:60%;
+  left: -10px !important;
+  top: 60%;
 }
 
-.IconoDerecho{
+.IconoDerecho {
   position: absolute !important;
-  right:23.8%;
-  top:60%;
+  right: 23.8%;
+  top: 60%;
   z-index: 10;
 }
 
-.botonDerechoEscondido{
+.botonDerechoEscondido {
   position: fixed !important;
-  right:-16px !important;
-  top:60%;
+  right: -16px !important;
+  top: 60%;
 }
 
-.iconoAbajo{
+.iconoAbajo {
   position: absolute !important;
-  left:  calc(50% - 30px) !important;
-  top:59vh;
+  left: calc(50% - 30px) !important;
+  top: 59vh;
 }
 
-.iconoAbajoEscondido{
+.iconoAbajoEscondido {
   position: fixed !important;
   bottom: -5px !important;
-  left: 48%
+  left: 48%;
 }
 
-.menuAbajoEscondido{
+.menuAbajoEscondido {
   display: none;
 }
 
-.iconoArriba{
+.iconoArriba {
   position: absolute !important;
   left: calc(50% - 30px) !important;
   bottom: 0px;
 }
 
-.panelIzquierdoEscondido{
+.panelIzquierdoEscondido {
   display: none;
 }
 
-.panelDerechoEscondido{
+.panelDerechoEscondido {
   display: none;
 }
 
-.listaVistaBusqueda{
+.listaVistaBusqueda {
   display: none;
   border-bottom: 1px lightgray solid;
   font-family: "Roboto", "Helvetica", "Arial", sans-serif;
   color: rgba(80, 80, 80);
 }
 
-.contenedorBusqueda{
-  background-color: rgb(230,230,230);
+.contenedorBusqueda {
+  background-color: rgb(230, 230, 230);
   margin: 10px 20px;
-  max-height:74.5vh;
-  overflow-y:scroll;
+  max-height: 74.5vh;
+  overflow-y: scroll;
   text-align: start;
 }
 
@@ -581,22 +596,22 @@ hr{
   height: calc(100vh - 9vh - 31px) !important;
 } */
 
-.tituloResultados{
+.tituloResultados {
   margin: 10px !important;
 }
 
-.liBusqueda{
+.liBusqueda {
   border-bottom: dashed lightgray 1px;
   padding: 20px !important;
 }
 
-.liBusqueda:hover{
+.liBusqueda:hover {
   color: rgb(7, 142, 184);
   cursor: pointer;
   text-decoration: underline;
 }
 
-.pasajesRenderizadosBusqueda{
+.pasajesRenderizadosBusqueda {
   padding: 15px 15px 15px 15px;
   overflow: auto;
   border-right: 1px double lightgrey;
@@ -604,55 +619,55 @@ hr{
   border-top: 1px double lightgrey;
 }
 
-.pasajesRenderizadosVistaBusqueda{
+.pasajesRenderizadosVistaBusqueda {
   border-top: solid lightgray 1px;
 }
 
-.jerarquiaBusquedaIzquierda{
+.jerarquiaBusquedaIzquierda {
   border-right: dashed lightgray 1px;
   padding-left: 20px !important;
   padding-top: 20px !important;
 }
 
-.jerarquiaBusquedaDerecha{
+.jerarquiaBusquedaDerecha {
   padding-left: 20px !important;
   padding-top: 20px !important;
 }
 
-.consultaDePasajesB{
+.consultaDePasajesB {
   max-height: 40px;
   padding: 4px 0 0 16px !important;
   overflow: auto;
 }
 
-.consultaDePasajesB:hover{
+.consultaDePasajesB:hover {
   color: rgb(7, 142, 184);
   cursor: pointer;
   text-decoration: underline;
 }
 
-.ulDeBusqueda{
-  background-color: rgba(20,10,10,.0.08);
+.ulDeBusqueda {
+  background-color: rgba(20, 10, 10, 0.08);
   align-items: flex-start;
 }
 
-.ulDeBusquedaVerTambien{
-  background-color: rgba(20,10,10,.0.08);
+.ulDeBusquedaVerTambien {
+  background-color: rgba(20, 10, 10, 0.08);
   overflow: scroll;
 }
 
-.liExpresionesRelacionadas{
+.liExpresionesRelacionadas {
   border-bottom: dashed lightgray 1px;
   padding: 2px !important;
 }
 
-.liExpresionesRelacionadas:hover{
+.liExpresionesRelacionadas:hover {
   color: rgb(7, 142, 184);
   cursor: pointer;
   text-decoration: underline;
 }
 
-.pasajesRenderizadosBusquedaPorReferencia{
+.pasajesRenderizadosBusquedaPorReferencia {
   padding: 15px 15px 15px 15px;
   overflow: auto;
   overflow-y: auto;
@@ -661,76 +676,75 @@ hr{
   border-top: 1px double lightgrey;
 }
 
-.ulExpresionesRelacionadas{
+.ulExpresionesRelacionadas {
   padding-left: 30px !important;
 }
 
-.case{
-  opacity: .4;
+.case {
+  opacity: 0.4;
   padding: 0 !important;
 }
 
-.caseSeleccionado{
-  color: #FF0000 !important;
+.caseSeleccionado {
+  color: #ff0000 !important;
 }
 
-.resaltador{
+.resaltador {
   background: yellow;
 }
 
-.contenidoPasajes{
-  display:none
+.contenidoPasajes {
+  display: none;
 }
 
-.menuPasajeEscondido{
+.menuPasajeEscondido {
   height: 24vh;
   overflow-y: scroll;
 }
 
-
-.listaIzquierdaEscondida{
+.listaIzquierdaEscondida {
   height: 55vh;
-  overflow-y: scroll; 
+  overflow-y: scroll;
   overflow-x: hidden;
   width: auto;
-  background-color: rgb(245,245,245);
+  background-color: rgb(245, 245, 245);
   margin-right: 10px !important;
 }
 
-.iconoJerarquiaPasajes{
+.iconoJerarquiaPasajes {
   font-size: 17px !important;
 }
 
-.iconosIluminadosPasaje{
+.iconosIluminadosPasaje {
   margin-bottom: 3px;
 }
 
-.iconosIluminadosPasaje:hover{
+.iconosIluminadosPasaje:hover {
   color: rgb(7, 142, 184);
   cursor: pointer;
 }
 
-.acercaDe{
-  margin:50px;
+.acercaDe {
+  margin: 50px;
 }
 
-.guia{
-  margin:50px;
+.guia {
+  margin: 50px;
 }
 
-.lupita{
+.lupita {
   padding: 0 !important;
 }
 
-.busquedaEnExpresiones{
+.busquedaEnExpresiones {
   width: -webkit-fill-available;
 }
 
-.iconosAlineado{
+.iconosAlineado {
   text-align: center !important;
 }
 
-.sideListAdmin{
+.sideListAdmin {
   justify-content: flex-start;
   align-items: justyfi !important;
   margin-top: 10px;
@@ -740,22 +754,23 @@ hr{
   cursor: pointer;
 }
 
-.Renglones{
+.Renglones {
   display: flex;
 }
 
-.Renglones p{
+.Renglones p {
   margin-left: 5px;
   margin-right: 5px;
 }
 
-th, td{
-  padding:5px !important;
+th,
+td {
+  padding: 5px !important;
   font-size: -0.125rem !important;
   text-align: center !important;
 }
 
-.Titulopretty p{
+.Titulopretty p {
   font-size: 35px;
   font-weight: lighter;
   margin-top: 15px;

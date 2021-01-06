@@ -39,6 +39,7 @@ const App = () => {
   };
 
   useEffect(() => {
+    console.log("open", open);
     if (sesion == null && localStore.getObjects("sesion")) {
       console.log("CASO A");
       var sesionBuscador = {

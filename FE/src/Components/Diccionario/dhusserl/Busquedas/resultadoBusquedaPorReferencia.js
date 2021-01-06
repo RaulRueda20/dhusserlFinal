@@ -26,14 +26,14 @@ const resultadoBusquedaRef = {
 };
 
 const ResultadoBusquedaReferencia = (props) => {
-  const { classes, pasajeSeleccionado } = props;
+  const { classes } = props;
   const global = useContext(sesionStore);
-  const { state } = global
-  const { sesion } = global
+  const { state } = global;
+  const { lang } = state;
 
   const globalBusqueda = useContext(busquedaStore);
-  const { busquedaState } = globalBusqueda
-  const { idPasaje, busqueda, posicionPasaje } = busquedaState
+  const { busquedaState } = globalBusqueda;
+  const { idPasaje, busqueda, posicionPasaje } = busquedaState;
 
   const [pasajes, setPasajes] = useState({
     original: "",
@@ -91,7 +91,7 @@ const ResultadoBusquedaReferencia = (props) => {
     return referencia;
   }
 
-  function consultaDePasajes() {
+  function consultaDePasajes(event) {
     setTimeout(() => {
       if (document.getElementById("VP" + props.idExpresion) != null) {
         document.getElementById("VP" + props.idExpresion).scrollIntoView();
@@ -111,7 +111,7 @@ const ResultadoBusquedaReferencia = (props) => {
     <Grid container className={classes.contenedorReferencia}>
       <Grid item xs={12} className="pasajesRenderizadosBusqueda">
         <Typography variant="h4" className={classes.typosTitulos}>
-          {props.pasajeSeleccionado.ref_id}
+          {idPasaje}
         </Typography>
         <div dangerouslySetInnerHTML={htmlPasajeOriginal()}></div>
         <div dangerouslySetInnerHTML={htmlPasajeTraduccion()}></div>
@@ -119,7 +119,7 @@ const ResultadoBusquedaReferencia = (props) => {
       <Grid item xs={12} className="pasajesRenderizadosBusquedaPorReferencia">
         <Typography variant="h4" className={classes.typosTitulos}>
           {" "}
-          {expresionesAsociadas(globalLanguage.lang)}
+          {expresionesAsociadas(lang)}
         </Typography>
         <ul className="ulExpresionesRelacionadas">
           {props.pasajeSeleccionado.expresiones.map((expresion, index) => (
@@ -127,8 +127,8 @@ const ResultadoBusquedaReferencia = (props) => {
               <Link
                 to={`${props.match.path.slice(0, 20)}/pasaje/${
                   expresion.t_id
-                  }/${props.pasajeSeleccionado.ref_id}`}
-                onClick={consultaDePasajes}
+                }/${props.pasajeSeleccionado.ref_id}`}
+                onClick={(e) => consultaDePasajes(e)}
               >
                 <Typography id={expresion.t_id + "/" + index}>
                   {expresion.expresion_original +
@@ -142,6 +142,6 @@ const ResultadoBusquedaReferencia = (props) => {
       </Grid>
     </Grid>
   );
-}
+};
 
 export default withStyles(resultadoBusquedaRef)(ResultadoBusquedaReferencia);

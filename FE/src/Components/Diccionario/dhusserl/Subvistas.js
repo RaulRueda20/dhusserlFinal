@@ -1,5 +1,5 @@
 //React
-import React, { useEffect, useContext } from "react";
+import React, { useEffect, useContext, useState } from "react";
 
 //Elements
 import { Switch, Redirect, Route } from "react-router-dom";
@@ -19,8 +19,9 @@ import { ExpresionesProvider } from "../../../stores/expresionStore";
 
 const Subvistas = ({ match, history }) => {
   const global = useContext(sesionStore);
-  const { state } = global
-  const { sesion } = state
+  const { state } = global;
+  const { sesion } = state;
+  const [flagCambio, setFlagCambio] = useState("");
 
   useEffect(() => {
     if (sesion == null) return history.push("/diccionario/login");
@@ -28,11 +29,13 @@ const Subvistas = ({ match, history }) => {
 
   return (
     <ExpresionesProvider>
-      <HeaderMain match={match} history={history} />
+      <HeaderMain match={match} history={history} flagCambio={flagCambio} />
       <Switch>
         <Route
           path={`${match.url}/expresiones`}
-          render={(props) => <Expresion {...props} />}
+          render={(props) => (
+            <Expresion {...props} setFlagCambio={setFlagCambio} />
+          )}
         />
         <Route
           path={`${match.url}/pasaje/:expresion/:id`}
@@ -46,7 +49,7 @@ const Subvistas = ({ match, history }) => {
           path={`${match.url}/busquedas`}
           render={(props) => (
             <BusquedasProvider>
-              <ModuloBusquedas {...props} />
+              <ModuloBusquedas {...props} setFlagCambio={setFlagCambio} />
             </BusquedasProvider>
           )}
         />

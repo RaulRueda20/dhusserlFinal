@@ -45,13 +45,13 @@ const ResultadoBusquedaExpresion = (props) => {
   const { classes, match, expresionSeleccionada } = props;
 
   const global = useContext(sesionStore);
-  const { state, dispatch } = global
-  const { sesion, ultimasVisitadas } = state
+  const { state, dispatch } = global;
+  const { sesion, ultimasVisitadas } = state;
 
   const globalBusqueda = useContext(busquedaStore);
-  const { busquedaState, attend } = globalBusqueda
-  const { idPasaje, busqueda } = busquedaState
-  const { term_id, expresion, referencias, traduccion } = expresionSeleccionada
+  const { busquedaState, attend } = globalBusqueda;
+  const { idPasaje, busqueda } = busquedaState;
+  const { term_id, expresion, referencias, traduccion } = expresionSeleccionada;
 
   const [listaVerTambien, setListaVerTambien] = useState([]);
   const [pasajes, setPasajes] = useState({
@@ -63,15 +63,15 @@ const ResultadoBusquedaExpresion = (props) => {
   const [lang, setLang] = useState("al");
 
   useEffect(() => {
+    console.log("Expresion", expresion);
+    console.log("traduccion", traduccion);
     if (idPasaje == "") {
       var service = "/vertambien/" + term_id;
       webService(service, "GET", {}, sesion, ({ data }) => {
-        const { response } = data
+        const { response } = data;
         setListaVerTambien(response);
         webService(
-          "/expresiones/" +
-          lang +
-          "/hijosList/" + term_id,
+          "/expresiones/" + lang + "/hijosList/" + term_id,
           "GET",
           {},
           sesion,
@@ -80,10 +80,7 @@ const ResultadoBusquedaExpresion = (props) => {
           }
         );
         webService(
-          "/expresiones/" +
-          lang +
-          "/abuelosList/" +
-          term_id,
+          "/expresiones/" + lang + "/abuelosList/" + term_id,
           "GET",
           {},
           sesion,
@@ -95,7 +92,7 @@ const ResultadoBusquedaExpresion = (props) => {
     } else {
       var service = "/vertambien/" + idPasaje;
       webService(service, "GET", {}, sesion, ({ data }) => {
-        const { response } = data
+        const { response } = data;
         setListaVerTambien(response);
         webService(
           "/expresiones/" + lang + "/hijosList/" + idPasaje,
@@ -118,22 +115,18 @@ const ResultadoBusquedaExpresion = (props) => {
       });
     }
     setPasajes({
-      original: resaltarBusqueda(
-        referencias[0].ref_def_de,
-        busqueda
-      ),
-      traduccion: resaltarBusqueda(
-        referencias[0].ref_def_es,
-        busqueda
-      ),
+      original: resaltarBusqueda(referencias[0].ref_def_de, busqueda),
+      traduccion: resaltarBusqueda(referencias[0].ref_def_es, busqueda),
     });
   }, [idPasaje, lang, props.expresionSeleccionada]);
 
   const resaltarBusqueda = (string, separador) => {
     const split = string.split(separador);
-    const Split = split.join("<span class='resaltador'>" + separador + "</span>");
+    const Split = split.join(
+      "<span class='resaltador'>" + separador + "</span>"
+    );
     return Split;
-  }
+  };
 
   const clickChangeLangEsVB = () => {
     setLang("es");
@@ -144,17 +137,30 @@ const ResultadoBusquedaExpresion = (props) => {
   };
 
   const htmlPasajeOriginal = () => {
-    const { original } = pasajes
+    const { original } = pasajes;
     return { __html: original };
-  }
+  };
 
   const htmlPasajeTraduccion = () => {
-    const { traduccion } = pasajes
+    const { traduccion } = pasajes;
     return { __html: traduccion };
-  }
+  };
 
   const fixReferenciasConsultadas = (expresion) => {
-    const { clave, expresion_original, expresion_traduccion, id, index_de, index_es, epretty, tpretty, ref_original, ref_traduccion, refid, orden } = expresion[0]
+    const {
+      clave,
+      expresion_original,
+      expresion_traduccion,
+      id,
+      index_de,
+      index_es,
+      epretty,
+      tpretty,
+      ref_original,
+      ref_traduccion,
+      refid,
+      orden,
+    } = expresion[0];
     var referencia = {
       clave: clave,
       expresion: expresion_original,
@@ -173,9 +179,9 @@ const ResultadoBusquedaExpresion = (props) => {
       orden: orden,
     });
     return referencia;
-  }
+  };
 
-  const consultaDePasajes = () => {
+  const consultaDePasajes = (event) => {
     setTimeout(() => {
       if (document.getElementById("VP" + idExpresion) != null) {
         document.getElementById("VP" + idExpresion).scrollIntoView();
@@ -184,25 +190,23 @@ const ResultadoBusquedaExpresion = (props) => {
     var idExpresion = event.target.id.split("/")[0];
     var service = "/referencias/obtieneReferencias/" + idExpresion;
     webService(service, "GET", {}, ({ data }) => {
-      const { response } = data
+      const { response } = data;
       const referencias = fixReferenciasConsultadas(response);
       let nuevasVisitadas = ultimasVisitadas;
       nuevasVisitadas.push(referencias);
       dispatch({
         type: "SET_ULTIMAS_VISITADAS",
-        payload: nuevasVisitadas
-      })
+        payload: nuevasVisitadas,
+      });
     });
-  }
+  };
 
   return (
     <div className={classes.contenedorPrincipal}>
       <Grid container alignItems="center" alignContent="center">
         <Grid item md={11} xs={8}>
           <Typography variant="h2" className={classes.typosTitulos}>
-            {expresion +
-              "  /  " +
-              traduccion}
+            {expresion + "  /  " + traduccion}
           </Typography>
         </Grid>
       </Grid>
@@ -226,7 +230,7 @@ const ResultadoBusquedaExpresion = (props) => {
               <li key={padre.id + "-" + index}>
                 <Link
                   to={`${match.path.slice(0, 20)}/pasaje/${padre.padre}`}
-                  onClick={consultaDePasajes}
+                  onClick={(e) => consultaDePasajes(e)}
                 >
                   <Typography
                     variant="h6"
@@ -293,17 +297,17 @@ const ResultadoBusquedaExpresion = (props) => {
               <img className="banderaPasajes" src={al} />
             </Button>
           ) : (
-              <Button
-                className={classes.imagenesBandera}
-                onClick={clickChangeLangEsVB}
-              >
-                <img className="banderaPasajes" src={es} />
-              </Button>
-            )}
+            <Button
+              className={classes.imagenesBandera}
+              onClick={clickChangeLangEsVB}
+            >
+              <img className="banderaPasajes" src={es} />
+            </Button>
+          )}
         </Grid>
       </Grid>
     </div>
   );
-}
+};
 
 export default withStyles(resultadoBusqueda)(ResultadoBusquedaExpresion);

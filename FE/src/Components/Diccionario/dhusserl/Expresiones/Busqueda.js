@@ -3,7 +3,16 @@ import React, { useContext, useState } from "react";
 
 //Components
 import SearchIcon from "@material-ui/icons/Search";
-import { Input, InputLabel, InputAdornment, FormControl, IconButton, Tooltip, Grid, Snackbar } from "@material-ui/core";
+import {
+  Input,
+  InputLabel,
+  InputAdornment,
+  FormControl,
+  IconButton,
+  Tooltip,
+  Grid,
+  Snackbar,
+} from "@material-ui/core";
 import Icon from "@mdi/react";
 import { mdiFormatLetterCase } from "@mdi/js";
 import { createStyles } from "@material-ui/styles";
@@ -29,18 +38,25 @@ const useStyles = createStyles(() => ({
   switch: {
     textAlign: "center",
   },
-}))
+}));
 
 const Busqueda = (props) => {
-  const { busqueda, setModalDebusquedas, setModalCaracteresInvalidos, setModalNumeros, setLoading, setBusqueda } = props
-  const classes = useStyles()
+  const {
+    busqueda,
+    setModalDebusquedas,
+    setModalCaracteresInvalidos,
+    setModalNumeros,
+    setLoading,
+    setBusqueda,
+  } = props;
+  const classes = useStyles();
   const global = useContext(sesionStore);
-  const { state } = global
-  const { letra, lang, langLista, sesion } = state
+  const { state } = global;
+  const { letra, lang, langLista, sesion } = state;
 
   const globalExpresion = useContext(expresionesStore);
-  const { store, attend } = globalExpresion
-  const { expresiones } = store
+  const { store, attend } = globalExpresion;
+  const { expresiones } = store;
 
   const [insensitiveCase, setInsensitiveCase] = useState(false);
   const [snack, setSnack] = useState({ open: false, text: "" });
@@ -48,8 +64,8 @@ const Busqueda = (props) => {
   const ChunkC = (e) => {
     attend({
       type: "SET_CHUNK",
-      payload: e
-    })
+      payload: e,
+    });
   };
 
   const handleChangeBusquedaExpresiones = (event) => {
@@ -74,13 +90,14 @@ const Busqueda = (props) => {
             letra +
             "/" +
             langLista;
-
+          console.log("insensitiveCase", insensitiveCase);
           webService(
             servicebl,
             "POST",
             { parametro: busqueda, case: insensitiveCase },
             sesion,
             ({ data }) => {
+              console.log(data.response);
               if (letra == letraCapital) {
                 ChunkC(data.response);
               } else {
@@ -101,13 +118,14 @@ const Busqueda = (props) => {
             letra +
             "/" +
             langLista;
-
+          console.log("insensitiveCase", insensitiveCase);
           webService(
             servicebl,
             "POST",
             { parametro: busqueda, case: insensitiveCase },
             sesion,
             ({ data }) => {
+              console.log(data.response);
               if (letra == letraCapital) {
                 ChunkC(data.response);
               } else {
@@ -128,11 +146,11 @@ const Busqueda = (props) => {
 
   const handleInsensitiveCase = () => {
     setInsensitiveCase(!insensitiveCase);
-  }
+  };
 
   const handleClose = () => {
     setSnack({ open: false, text: "" });
-  }
+  };
 
   return (
     <form onSubmit={handleChangeBusquedaExpresiones}>
@@ -158,7 +176,7 @@ const Busqueda = (props) => {
         <Grid item xs={2} className={classes.switch}>
           <Tooltip title={distincionMayusyMinus(lang)}>
             <IconButton
-              onClick={handleInsensitiveCase}
+              onClick={(e) => handleInsensitiveCase(e)}
               className={classNames([
                 { caseSeleccionado: insensitiveCase == true },
                 "case",

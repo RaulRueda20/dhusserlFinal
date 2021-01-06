@@ -32,10 +32,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ListaExpresiones = ({ menuEscondido, getJerarquia, setOpenModalN, match }) => {
+const ListaExpresiones = ({
+  menuEscondido,
+  getJerarquia,
+  setOpenModalN,
+  match,
+}) => {
   const globalExpresion = useContext(expresionesStore);
-  const { store, attend } = globalExpresion
-  const { expresiones, chunk } = store
+  const { store, attend } = globalExpresion;
+  const { expresiones, chunk } = store;
 
   // console.log(chunk)
 
@@ -43,13 +48,12 @@ const ListaExpresiones = ({ menuEscondido, getJerarquia, setOpenModalN, match })
   const [panelesAbiertos, setPanelesAbiertos] = useState([]);
 
   const handleScroll = (e) => {
-    console.log(e)
     let element = e.target;
     if (element.scrollHeight - element.scrollTop === element.clientHeight) {
       attend({
         type: "SET_CHUNK",
-        payload: expresiones.slice(0, chunk.length + 20)
-      })
+        payload: expresiones.slice(0, chunk.length + 20),
+      });
     }
   };
 
@@ -91,6 +95,6 @@ const ListaExpresiones = ({ menuEscondido, getJerarquia, setOpenModalN, match })
       </div>
     </div>
   );
-}
+};
 
-export default ListaExpresiones
+export default ListaExpresiones;
