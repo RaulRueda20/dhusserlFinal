@@ -26,6 +26,7 @@ import {
   menuDerechoReferenciasConsultadas,
 } from "../../../../js/Language";
 import { webService } from "../../../../js/webServices";
+import * as localStore from "../../../../js/localStore";
 
 import { sesionStore } from "../../../../stores/sesionStore";
 import { expresionesStore } from "../../../../stores/expresionStore";
@@ -86,10 +87,10 @@ const MenuDerecho = (props) => {
   const { store } = globalExpresion;
   const { expresionSeleccionada } = store;
 
-  // const [
-  //   referenciasConsultadasVista,
-  //   setReferenciasConsultadasVista,
-  // ] = useState([]);
+  const [
+    referenciasConsultadasVista,
+    setReferenciasConsultadasVista,
+  ] = useState([]);
   const [listaVerTambien, setListaVerTambien] = useState([]);
   const [hijos, setHijos] = useState([]);
   const [padres, setPadres] = useState([]);
@@ -97,15 +98,28 @@ const MenuDerecho = (props) => {
   useEffect(() => {
     // console.log("ultimasVisitadas", ultimasVisitadas);
     // props.setReferenciasConsultadasVista(ultimasVisitadas);
-    console.log(
-      "referenciasConsultadasVista",
-      props.referenciasConsultadasVista
-    );
+    // console.log(
+    //   "referenciasConsultadasVista",
+    //   props.referenciasConsultadasVista
+    // );
+    // if (
+    //   (ultimasVisitadas != null) &
+    //   localStore.getObjects("ultimasVisitadas")
+    // ) {
+    //   console.log(
+    //     "ultimasVisitadas localStore",
+    //     localStore.getObjects("ultimasVisitadas")
+    //   );
+    //   console.log("ultimasVisitadas Context", ultimasVisitadas);
+    //   // setReferenciasConsultadasVista(ultimasVisitadas);
+    // }
+    setReferenciasConsultadasVista(localStore.getObjects("ultimasVisitadas"));
+    console.log("referenciasConsultadasVista", referenciasConsultadasVista);
     if (expresionSeleccionada) {
       console.log(expresionSeleccionada);
       let service = "/vertambien/" + expresionSeleccionada.id;
-      webService(service, "GET", {}, sesion, (data) => {
-        setListaVerTambien(data.data.response);
+      webService(service, "GET", {}, sesion, ({ data }) => {
+        setListaVerTambien(data.response);
         webService(
           "/expresiones/" +
             langLista +
@@ -293,7 +307,7 @@ const MenuDerecho = (props) => {
         </ExpansionPanelSummary>
         <ExpansionPanelDetails className="panelDeDetalleReferenciasConsultadas">
           <ul className="ulDelMenuDerechoReferenciasConsultadas">
-            {props.referenciasConsultadasVista.map((consultas, index) => {
+            {referenciasConsultadasVista.map((consultas, index) => {
               return (
                 <Link
                   to={`${match.path.slice(0, 20)}/pasaje/${consultas.id}/${

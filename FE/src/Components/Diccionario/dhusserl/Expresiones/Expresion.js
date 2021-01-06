@@ -59,10 +59,10 @@ const Expresion = (props) => {
     variant: "",
     message: "",
   });
-  const [
-    referenciasConsultadasVista,
-    setReferenciasConsultadasVista,
-  ] = useState([]);
+  // const [
+  //   referenciasConsultadasVista,
+  //   setReferenciasConsultadasVista,
+  // ] = useState([]);
 
   const fixReferencias = (referencias) => {
     var expresiones = [];
@@ -106,7 +106,19 @@ const Expresion = (props) => {
 
   useEffect(() => {
     // console.log("ULTIMASVISITADAS", ultimasVisitadas);
-    setReferenciasConsultadasVista(ultimasVisitadas);
+    // setReferenciasConsultadasVista(ultimasVisitadas);
+    // if (
+    //   (ultimasVisitadas != null) &
+    //   localStore.getObjects("ultimasVisitadas")
+    // ) {
+    //   console.log(
+    //     "ultimasVisitadas localStore",
+    //     localStore.getObjects("ultimasVisitadas")
+    //   );
+    //   console.log("ultimasVisitadas Context", ultimasVisitadas);
+    //   // setReferenciasConsultadasVista(ultimasVisitadas);
+    // }
+    console.log("ultimasVisitadas", ultimasVisitadas);
     props.setFlagCambio("expresiones");
     setLoading(true);
     if (document.getElementById("listaIzquierda").firstChild != null)
@@ -223,7 +235,6 @@ const Expresion = (props) => {
               expanded3={expanded3}
               setExpanded3={setExpanded3}
               getJerarquia={getJerarquia}
-              referenciasConsultadasVista={referenciasConsultadasVista}
             />
           </Hidden>
           <Hidden smUp>
