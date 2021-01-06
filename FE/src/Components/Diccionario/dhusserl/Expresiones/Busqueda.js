@@ -97,9 +97,9 @@ const Busqueda = (props) => {
             { parametro: busqueda, case: insensitiveCase },
             sesion,
             ({ data }) => {
-              console.log(data);
+              console.log(data.response);
               if (letra == letraCapital) {
-                ChunkC(expresiones.slice(0, 50));
+                ChunkC(data.response);
               } else {
                 setSnack({
                   open: true,
@@ -119,15 +119,15 @@ const Busqueda = (props) => {
             "/" +
             langLista;
           console.log("insensitiveCase", insensitiveCase);
-          console.log(data);
           webService(
             servicebl,
             "POST",
             { parametro: busqueda, case: insensitiveCase },
             sesion,
             ({ data }) => {
+              console.log(data.response);
               if (letra == letraCapital) {
-                ChunkC(expresiones.slice(0, 50));
+                ChunkC(data.response);
               } else {
                 setSnack({
                   open: true,

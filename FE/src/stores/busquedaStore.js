@@ -1,4 +1,4 @@
-import React, { useReducer } from 'react';
+import React, { useReducer } from "react";
 
 const busquedaStore = React.createContext(null);
 const { Provider } = busquedaStore;
@@ -10,8 +10,8 @@ const initialState = {
   abierto: true,
   busqueda: "",
   tipoBusqueda: "Expresion",
-  tipoBusquedaRealizada: ""
-}
+  tipoBusquedaRealizada: "Referencia",
+};
 
 const sesionReducer = (state, action) => {
   const { type, payload } = action;
@@ -34,8 +34,7 @@ const sesionReducer = (state, action) => {
     default:
       break;
   }
-
-}
+};
 
 const BusquedasProvider = ({ children }) => {
   const [busquedaState, attend] = useReducer(sesionReducer, initialState);
