@@ -123,7 +123,7 @@ const PasajesRenderizados = (props) => {
   return (
     <Fragment>
       {props.cerrado ? (
-        <Grid container>
+        <Grid container style={{ maxHeight: "80vh" }}>
           <Grid container xs={6}>
             <Grid
               item
@@ -172,7 +172,7 @@ const PasajesRenderizados = (props) => {
           </Grid>
         </Grid>
       ) : props.languageP == "al" ? (
-        <Grid container>
+        <Grid container style={{ maxHeight: "80vh" }}>
           <Grid containerxs={12}>
             <Grid
               item
@@ -217,51 +217,51 @@ const PasajesRenderizados = (props) => {
           </Grid>
         </Grid>
       ) : (
-            <Grid container>
-              <Grid containerxs={12}>
-                <Grid
-                  item
-                  xs={2}
-                  sm={2}
-                  md={1}
-                  lg={1}
-                  className={classes.botonDescargas}
+        <Grid container style={{ maxHeight: "80vh" }}>
+          <Grid containerxs={12}>
+            <Grid
+              item
+              xs={2}
+              sm={2}
+              md={1}
+              lg={1}
+              className={classes.botonDescargas}
+            >
+              <Tooltip title={descarga(globalLanguage.lang)}>
+                <IconButton
+                  size="small"
+                  className="iconosIluminados"
+                  onClick={props.clickHandleDescargas}
                 >
-                  <Tooltip title={descarga(globalLanguage.lang)}>
-                    <IconButton
-                      size="small"
-                      className="iconosIluminados"
-                      onClick={props.clickHandleDescargas}
-                    >
-                      <GetAppIcon fontSize="large" />
-                    </IconButton>
-                  </Tooltip>
-                </Grid>
-              </Grid>
-              <Grid
-                item
-                xs={8}
-                sm={8}
-                md={10}
-                lg={10}
-                className={classes.gridTituloPasaje}
-              >
-                <div
-                  className="Titulopretty"
-                  dangerouslySetInnerHTML={htmlPrettyT()}
-                ></div>
-              </Grid>
-              <Grid item xs={2} sm={2} md={1} lg={1} className={classes.bandera}>
-                <BanderaPasajes />
-              </Grid>
-              <Grid item xs={12} className="pasajesRenderizados">
-                <div
-                  id={"pasajes"}
-                  dangerouslySetInnerHTML={htmlPasajeTraduccion()}
-                ></div>
-              </Grid>
+                  <GetAppIcon fontSize="large" />
+                </IconButton>
+              </Tooltip>
             </Grid>
-          )}
+          </Grid>
+          <Grid
+            item
+            xs={8}
+            sm={8}
+            md={10}
+            lg={10}
+            className={classes.gridTituloPasaje}
+          >
+            <div
+              className="Titulopretty"
+              dangerouslySetInnerHTML={htmlPrettyT()}
+            ></div>
+          </Grid>
+          <Grid item xs={2} sm={2} md={1} lg={1} className={classes.bandera}>
+            <BanderaPasajes />
+          </Grid>
+          <Grid item xs={12} className="pasajesRenderizados">
+            <div
+              id={"pasajes"}
+              dangerouslySetInnerHTML={htmlPasajeTraduccion()}
+            ></div>
+          </Grid>
+        </Grid>
+      )}
     </Fragment>
   );
 };

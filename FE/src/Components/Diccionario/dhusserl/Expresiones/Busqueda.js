@@ -181,8 +181,16 @@ const Busqueda = (props) => {
                 { caseSeleccionado: insensitiveCase == true },
                 "case",
               ])}
+              style={{
+                marginTop: "10px",
+                textAlign: "center",
+              }}
             >
-              <Icon path={mdiFormatLetterCase} title="User Profile" size={1} />
+              <Icon
+                path={mdiFormatLetterCase}
+                title="User Profile"
+                size={1.2}
+              />
             </IconButton>
           </Tooltip>
         </Grid>

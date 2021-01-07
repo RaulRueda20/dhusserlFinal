@@ -813,7 +813,7 @@ const bienvenido = (lang) => {
 const bienvenidaModal = (lang) => {
   switch (lang) {
     case "es":
-      return "Si esta es tu primera vez que utiliza el diccionario, será conveniente que visite nuestra guía.";
+      return "Si esta es la primera vez que utiliza el diccionario, será conveniente que visite nuestra guía.";
     case "en":
       return "If this is your first time using the dictionary, you should visit our guide.";
     case "fr":

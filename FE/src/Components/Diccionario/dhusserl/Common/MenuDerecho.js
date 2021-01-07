@@ -1,24 +1,22 @@
 // React
 import React, { useContext, useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 
 // Elements
+import { Link } from "react-router-dom";
 import { withStyles } from "@material-ui/core/styles";
 import {
-  Divider,
   Typography,
   Accordion as MuiExpansionPanel,
   AccordionSummary as MuiExpansionPanelSummary,
   AccordionDetails as MuiExpansionPanelDetails,
 } from "@material-ui/core";
-
 import classNames from "classnames";
 
 // Components
-import ListaPadresPasajes from "./LIstaPadresPasajes";
-import ListaHijosPasajes from "./ListaHijosPasajes";
+import ListaPadresExpresion from "./ListaPadres";
+import ListaHijosExpresion from "./ListaHijos";
 
-// Language
+// Other req
 import {
   menuDerechoJerarquia,
   menuDerechoJerarquiaDerivadaDe,
@@ -27,10 +25,10 @@ import {
   menuDerechoVerTambien,
   menuDerechoReferenciasConsultadas,
 } from "../../../../js/Language";
-
-// Other req
 import { webService } from "../../../../js/webServices";
+
 import { sesionStore } from "../../../../stores/sesionStore";
+import { expresionesStore } from "../../../../stores/expresionStore";
 
 const ExpansionPanel = withStyles({
   root: {
@@ -55,12 +53,12 @@ const ExpansionPanelDetails = withStyles((theme) => ({
 
 const ExpansionPanelSummary = withStyles({
   root: {
-    backgroundColor: "rgba(0,0,0,.11) !important",
+    backgroundColor: "rgba(0,0,0,.1) !important",
     "&$expanded": {},
   },
   content: {
     "&$expanded": {
-      margin: "5px 0",
+      margin: "10px 0",
     },
   },
   expanded: {
@@ -70,47 +68,40 @@ const ExpansionPanelSummary = withStyles({
   },
 })(MuiExpansionPanelSummary);
 
-const MenuDerechoPasajes = (props) => {
+const MenuDerecho = (props) => {
+  const {
+    expanded1,
+    setExpanded1,
+    expanded2,
+    setExpanded2,
+    expanded3,
+    setExpanded3,
+    match,
+  } = props;
   const global = useContext(sesionStore);
   const { state, dispatch } = global;
-  const { lang, langLista, sesion, letra, ultimasVisitadas } = state;
+  const { sesion, ultimasVisitadas, lang, langLista } = state;
 
-  const [
-    referenciasConsultadasVista,
-    setReferenciasConsultadasVista,
-  ] = useState([]);
+  const globalExpresion = useContext(expresionesStore);
+  const { store } = globalExpresion;
+  const { expresionSeleccionada } = store;
+
   const [listaVerTambien, setListaVerTambien] = useState([]);
   const [hijos, setHijos] = useState([]);
   const [padres, setPadres] = useState([]);
-  const [nombre, setNombre] = useState("");
-
-  const emptyPasaje = {
-    clave: "",
-    epretty: "",
-    expresion_original: "",
-    expresion_traduccion: "",
-    orden: "",
-    pasaje_original: "",
-    pasaje_traduccion: "",
-    ref_original: "",
-    ref_traduccion: "",
-    refid: "",
-    tpretty: "",
-  };
 
   useEffect(() => {
-    setTimeout(() => {
-      if (document.getElementById("VP" + props.idExpresion) != null) {
-        document.getElementById("VP" + props.idExpresion).scrollIntoView();
-      }
-    }, 1000);
-    setReferenciasConsultadasVista(ultimasVisitadas);
-    if (props.idExpresion != "") {
-      var service = "/vertambien/" + props.idExpresion;
-      webService(service, "GET", {}, sesion, (data) => {
-        setListaVerTambien(data.data.response);
+    console.log("HOLA", ultimasVisitadas);
+    if (expresionSeleccionada) {
+      console.log(expresionSeleccionada);
+      let service = "/vertambien/" + expresionSeleccionada.id;
+      webService(service, "GET", {}, sesion, ({ data }) => {
+        setListaVerTambien(data.response);
         webService(
-          "/expresiones/" + langLista + "/hijosList/" + props.idExpresion,
+          "/expresiones/" +
+            langLista +
+            "/hijosList/" +
+            expresionSeleccionada.id,
           "GET",
           {},
           sesion,
@@ -119,7 +110,10 @@ const MenuDerechoPasajes = (props) => {
           }
         );
         webService(
-          "/expresiones/" + langLista + "/abuelosList/" + props.idExpresion,
+          "/expresiones/" +
+            langLista +
+            "/abuelosList/" +
+            expresionSeleccionada.id,
           "GET",
           {},
           sesion,
@@ -129,15 +123,10 @@ const MenuDerechoPasajes = (props) => {
         );
       });
     }
-    var expresion_original =
-      props.referenciaSeleccionada != null
-        ? props.referenciaSeleccionada
-        : emptyPasaje;
-    setNombre(expresion_original);
-  }, [props.idExpresion, props.referenciaSeleccionada, letra]);
+  }, [expresionSeleccionada, ultimasVisitadas]);
 
   const fixReferenciasConsultadas = (expresion) => {
-    var referencia = {
+    let referencia = {
       clave: expresion[0].clave,
       expresion: expresion[0].expresion_original,
       traduccion: expresion[0].expresion_traduccion,
@@ -158,14 +147,17 @@ const MenuDerechoPasajes = (props) => {
   };
 
   const handleFlagLetraMain = (event) => {
-    setLetraFlag(false);
-    var idExpresion = event.target.id.split("/")[0];
-    var service = "/referencias/obtieneReferencias/" + idExpresion;
+    const idExpresion = event.target.id.split("/")[0];
+    const service = "/referencias/obtieneReferencias/" + idExpresion;
     webService(service, "GET", {}, sesion, (data) => {
-      var referencias = fixReferenciasConsultadas(data.data.response);
+      const referencias = fixReferenciasConsultadas(data.data.response);
       let nuevasVisitadas = ultimasVisitadas;
       nuevasVisitadas.push(referencias);
-      setUltimasVisitadas(nuevasVisitadas);
+      console.log("Expresiones visitadas", nuevasVisitadas);
+      dispatch({
+        type: "SET_ULTIMAS_VISITADAS",
+        payload: nuevasVisitadas,
+      });
     });
   };
 
@@ -173,8 +165,8 @@ const MenuDerechoPasajes = (props) => {
     <div className="contenedorMenuDerecho">
       <ExpansionPanel
         square
-        expanded={props.expanded1}
-        onChange={() => props.setExpanded1(!props.expanded1)}
+        expanded={expanded1}
+        onChange={() => setExpanded1(!expanded1)}
         className="panelPrincipal"
       >
         <ExpansionPanelSummary
@@ -184,12 +176,12 @@ const MenuDerechoPasajes = (props) => {
           <Typography>{menuDerechoJerarquia(lang)}</Typography>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails className="panelDeDetallePadres">
-          <Typography variant="caption">
+          <Typography letiant="caption" className="tagsMenuDerecho">
             {menuDerechoJerarquiaDerivadaDe(lang)}
           </Typography>
           <ul className="ulDelMenuDerechoPadres" key={padres.refid}>
             {padres.map((padre, index) => (
-              <ListaPadresPasajes
+              <ListaPadresExpresion
                 {...props}
                 padre={padre}
                 index={index}
@@ -198,35 +190,34 @@ const MenuDerechoPasajes = (props) => {
             ))}
           </ul>
         </ExpansionPanelDetails>
-        <Divider />
         <ExpansionPanelDetails className="panelDeDetalleExpresion">
-          <Typography variant="caption">
+          <Typography letiant="caption" className="tagsMenuDerecho">
             {menuDerechoJerarquiaExpresion(lang)}
           </Typography>
           <ul className="ulDelMenuDerechoExpresion">
             <li>
               <Typography
-                key={nombre.refid}
-                variant="h6"
+                variant="body1"
                 className="consultaDePasajes"
+                style={{
+                  fontWeight: 500,
+                }}
               >
-                {nombre.expresion_original}
+                {expresionSeleccionada?.expresion}
               </Typography>
             </li>
           </ul>
         </ExpansionPanelDetails>
-        <Divider />
         <ExpansionPanelDetails
           className={classNames([
             { panelDeDetalleHijos: listaVerTambien != "" },
             "panelDeDetalleHijosLibres",
           ])}
         >
-          <Typography variant="caption">
+          <Typography letiant="caption" className="tagsMenuDerecho">
             {menuDerechoJerarquiaExpresionesDerivadas(lang)}
           </Typography>
           <ul
-            className="ulDelMenuDerechoHijos"
             className={classNames([
               { ulDelMenuDerechoHijos: listaVerTambien != "" },
               "ulDelMenuDerechoHijosLibres",
@@ -234,7 +225,7 @@ const MenuDerechoPasajes = (props) => {
             key={hijos.refid}
           >
             {hijos.map((hijo, index) => (
-              <ListaHijosPasajes
+              <ListaHijosExpresion
                 {...props}
                 hijo={hijo}
                 index={index}
@@ -247,8 +238,8 @@ const MenuDerechoPasajes = (props) => {
       {listaVerTambien != "" ? (
         <ExpansionPanel
           square
-          expanded={props.expanded2}
-          onChange={() => props.setExpanded2(!props.expanded2)}
+          expanded={expanded2}
+          onChange={() => setExpanded2(!expanded2)}
           className="panelPrincipal"
         >
           <ExpansionPanelSummary
@@ -259,36 +250,39 @@ const MenuDerechoPasajes = (props) => {
           </ExpansionPanelSummary>
           <ExpansionPanelDetails className="panelDeDetalleVerTambien">
             <ul className="ulDelMenuDerechoVerTambien">
-              {listaVerTambien.map((expresion, index) => (
-                <li key={expresion.id + "-" + index}>
-                  <Link
-                    to={`${props.match.path.slice(0, 20)}/pasaje/${
-                      expresion.id
-                    }`}
-                    onClick={(event) => handleFlagLetraMain(event)}
+              {listaVerTambien.map((expresion, index) => {
+                return (
+                  <li
+                    className="bordeDeConsultas"
+                    key={expresion.id + "-" + index}
                   >
-                    <Typography
-                      className={"consultaDePasajes"}
-                      variant="h6"
-                      id={expresion.id + "/" + index}
+                    <Link
+                      to={`${match.path.slice(0, 20)}/pasaje/${expresion.id}`}
+                      onClick={(event) => handleFlagLetraMain(event)}
                     >
-                      {expresion.expresion +
-                        "  //  " +
-                        expresion.traduccion +
-                        "  --  " +
-                        expresion.id}
-                    </Typography>
-                  </Link>
-                </li>
-              ))}
+                      <Typography
+                        className={"consultaDePasajes"}
+                        letiant="h6"
+                        id={expresion.id + "/" + index}
+                      >
+                        {expresion.expresion +
+                          "  //  " +
+                          expresion.traduccion +
+                          "  --  " +
+                          expresion.id}
+                      </Typography>
+                    </Link>
+                  </li>
+                );
+              })}
             </ul>
           </ExpansionPanelDetails>
         </ExpansionPanel>
       ) : null}
       <ExpansionPanel
         square
-        expanded={props.expanded3}
-        onChange={() => props.setExpanded3(!props.expanded3)}
+        expanded={expanded3}
+        onChange={() => setExpanded3(!expanded3)}
         className="panelPrincipal"
       >
         <ExpansionPanelSummary
@@ -299,30 +293,34 @@ const MenuDerechoPasajes = (props) => {
         </ExpansionPanelSummary>
         <ExpansionPanelDetails className="panelDeDetalleReferenciasConsultadas">
           <ul className="ulDelMenuDerechoReferenciasConsultadas">
-            {referenciasConsultadasVista.map((consultas, index) => (
-              <Link
-                key={"link" + index}
-                to={`/diccionario/husserl/pasaje/${consultas.id}/${consultas.referencias[0].refid}`}
-                onClick={(event) => handleFlagLetraMain(event)}
-              >
-                <li
-                  className="bordeDeConsultas"
-                  key={consultas.expresion + "-" + index}
+            {ultimasVisitadas.map((consultas, index) => {
+              return (
+                <Link
+                  to={`${match.path.slice(0, 20)}/pasaje/${consultas.id}/${
+                    consultas.referencias[0].refid
+                  }`}
+                  onClick={(event) => handleFlagLetraMain(event)}
+                  key={consultas.referencias[0].refid + "-" + index}
                 >
-                  <Typography
-                    className={"consultaDePasajes"}
-                    variant="h6"
-                    id={consultas.id + "/" + index}
+                  <li
+                    className="bordeDeConsultas"
+                    key={consultas.referencias[0].refid + "-" + index}
                   >
-                    {consultas.nombreExpresion +
-                      "  :  " +
-                      consultas.referencias[0].referencia_original +
-                      "/" +
-                      consultas.referencias[0].referencia_traduccion}
-                  </Typography>
-                </li>
-              </Link>
-            ))}
+                    <Typography
+                      className="consultaDePasajes"
+                      letiant="h6"
+                      id={consultas.id + "/" + index}
+                    >
+                      {consultas.expresion +
+                        "  :  " +
+                        consultas.referencias[0].referencia_original +
+                        "/" +
+                        consultas.referencias[0].referencia_traduccion}
+                    </Typography>
+                  </li>
+                </Link>
+              );
+            })}
           </ul>
         </ExpansionPanelDetails>
       </ExpansionPanel>
@@ -330,4 +328,4 @@ const MenuDerechoPasajes = (props) => {
   );
 };
 
-export default MenuDerechoPasajes;
+export default MenuDerecho;

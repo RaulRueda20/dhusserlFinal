@@ -14,7 +14,7 @@ import ListaLetras from "./ListaLetras";
 import LetraIndice from "./LetraIndice";
 import BanderaButon from "./BanderaButon";
 import ListaExpresiones from "./ListaExpresiones";
-import MenuDerecho from "./MenuDerecho";
+import MenuDerecho from "../Common/MenuDerecho";
 import Busqueda from "./Busqueda";
 import BusquedaAbajo from "./BusquedaAbajo";
 import ModalDeBienvenida from "./ModalDeBienvenida";

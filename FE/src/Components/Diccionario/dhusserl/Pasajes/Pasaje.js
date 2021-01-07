@@ -15,7 +15,7 @@ import BusquedaEscondida from "./BusquedaEscondida";
 import ContenidoPasaje from "./ContenidoPasaje";
 import Paginador from "./Paginador";
 import ListaEscondida from "./ListaEscondida";
-import MenuDerechoPasajes from "./MenuDerechoPasajes";
+import MenuDerechoPasajes from "../Common/MenuDerecho";
 import MenuEscondido from "./MenuEscondido";
 import ModalDeBusqueda from "../ModalDeBusqueda";
 import ModalCaracterInvalido from "../ModalCaracterInvalido";
@@ -27,14 +27,14 @@ import { expresionesStore } from "../../../../stores/expresionStore";
 import { webService } from "../../../../js/webServices";
 
 const Pasaje = (props) => {
-  const { match } = props
+  const { match } = props;
 
   const global = useContext(sesionStore);
-  const { state, dispatch } = global
-  const { sesion, ultimasVisitadas, lang, langLista, letra } = state
+  const { state, dispatch } = global;
+  const { sesion, ultimasVisitadas, lang, langLista, letra } = state;
 
   const globalExpresion = useContext(expresionesStore);
-  const { store, attend } = globalExpresion
+  const { store, attend } = globalExpresion;
   // const { expresiones, chunk } = store
 
   const [expresiones, setExpresiones] = useState([]);
@@ -105,7 +105,7 @@ const Pasaje = (props) => {
   };
 
   const findReferencias = (referencias, referenciaId) => {
-    let referenciaEncontrada = null
+    let referenciaEncontrada = null;
     for (let i in referencias) {
       if (referencias[i].refid == referenciaId) {
         referenciaEncontrada = referencias[i];
@@ -169,12 +169,7 @@ const Pasaje = (props) => {
         document.getElementById("VP" + props.idExpresion).scrollIntoView();
       }
     }, 1000);
-  }, [
-    letra,
-    langLista,
-    match.params.expresion,
-    match.params.id
-  ]);
+  }, [letra, langLista, match.params.expresion, match.params.id]);
 
   return (
     <Fragment>
@@ -188,16 +183,16 @@ const Pasaje = (props) => {
             <ArrowBackIosIcon size="small" className="iconosIluminados" />
           </IconButton>
         ) : (
-            <IconButton
-              className={classNames([
-                { botonIzquierdoEscondido: panelIzquierdo == true },
-              ])}
-              onClick={handlePanelIzquierdo}
-              size="small"
-            >
-              <ArrowForwardIosIcon size="small" className="iconosIluminados" />
-            </IconButton>
-          )}
+          <IconButton
+            className={classNames([
+              { botonIzquierdoEscondido: panelIzquierdo == true },
+            ])}
+            onClick={handlePanelIzquierdo}
+            size="small"
+          >
+            <ArrowForwardIosIcon size="small" className="iconosIluminados" />
+          </IconButton>
+        )}
         {panelDerecho == false ? (
           <IconButton
             className="IconoDerecho"
@@ -207,16 +202,16 @@ const Pasaje = (props) => {
             <ArrowForwardIosIcon size="small" className="iconosIluminados" />
           </IconButton>
         ) : (
-            <IconButton
-              className={classNames([
-                { botonDerechoEscondido: panelDerecho == true },
-              ])}
-              onClick={handlePanelDerecho}
-              size="small"
-            >
-              <ArrowBackIosIcon size="small" className="iconosIluminados" />
-            </IconButton>
-          )}
+          <IconButton
+            className={classNames([
+              { botonDerechoEscondido: panelDerecho == true },
+            ])}
+            onClick={handlePanelDerecho}
+            size="small"
+          >
+            <ArrowBackIosIcon size="small" className="iconosIluminados" />
+          </IconButton>
+        )}
       </Hidden>
       <Grid container>
         <Grid item xs={12}>
@@ -314,8 +309,8 @@ const Pasaje = (props) => {
                 ? 12
                 : 9
               : 6 && panelIzquierdo
-                ? 9
-                : 6
+              ? 9
+              : 6
           }
           lg={
             panelDerecho
@@ -323,8 +318,8 @@ const Pasaje = (props) => {
                 ? 12
                 : 9
               : 6 && panelIzquierdo
-                ? 9
-                : 6
+              ? 9
+              : 6
           }
           className={classNames([{ contenidoPasajes: openHidden == true }])}
         >

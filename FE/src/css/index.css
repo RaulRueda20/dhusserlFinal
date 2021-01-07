@@ -256,74 +256,79 @@ a {
 .ulDelMenuDerecho {
   max-height: 67px;
   overflow: scroll;
-  margin-top: 10px;
+  /* margin-top: 10px; */
   padding: 0 16px !important;
+  margin-left: 15px;
 }
 
 .ulDelMenuDerechoPadres {
   max-height: 67px;
-  margin-top: 10px;
-  background-color: rgba(20, 10, 10, 0.08);
+  /* margin-top: 10px; */
+  /* background-color: rgba(20, 10, 10, 0.08); */
   overflow: scroll;
+  margin-left: 15px;
 }
 
 .ulDelMenuDerechoExpresion {
   min-height: 40px;
   margin-top: 5px;
-  background-color: rgba(20, 10, 10, 0.05);
+  /* background-color: rgba(20, 10, 10, 0.05); */
   overflow: scroll;
+  margin-left: 15px;
 }
 
 .ulDelMenuDerechoHijos {
   max-height: 45px;
   margin-top: 5px;
-  background-color: rgba(20, 10, 10, 0.02);
+  /* background-color: rgba(20, 10, 10, 0.02); */
   overflow: scroll;
+  margin-left: 15px;
 }
 
 .ulDelMenuDerechoHijosLibres {
   max-height: 100px;
   margin-top: 5px;
-  background-color: rgba(20, 10, 10, 0.02);
+  /* background-color: rgba(20, 10, 10, 0.02); */
   overflow: scroll;
+  margin-left: 15px;
 }
 
 .ulDelMenuDerechoVerTambien {
-  max-height: 80px;
+  /* max-height: 80px;
   margin-top: 5px;
   background-color: rgba(20, 10, 10, 0.02);
-  overflow: scroll;
+  overflow: scroll; */
 }
 
 .ulDelMenuDerechoReferenciasConsultadas {
-  max-height: 130px;
-  margin-top: 5px;
-  background-color: rgba(20, 10, 10, 0.02);
-  overflow: scroll;
+  /* max-height: 130px; */
+  /* margin-top: 5px; */
+  /* background-color: rgba(20, 10, 10, 0.02); */
+  /* overflow: scroll; */
   /* display: inline-block !important; */
 }
 
 .panelDeDetallePadres {
   display: block !important;
-  min-height: 10vh;
+  min-height: 9.5vh;
   background-color: rgba(20, 10, 10, 0.08);
-  padding: 5px 0 0 25px !important;
+  padding: 7px 0 0 7px !important;
   border-bottom: 1px rgba(0, 0, 0, 0.1) dashed;
 }
 
 .panelDeDetalleExpresion {
   display: block !important;
-  min-height: 10vh;
+  min-height: 9.5vh;
   background-color: rgba(20, 10, 10, 0.05);
-  padding: 5px 0 0 25px !important;
+  padding: 7px 0 0 7px !important;
   border-bottom: 1px rgba(0, 0, 0, 0.1) dashed;
 }
 
 .panelDeDetalleHijos {
   display: block !important;
-  max-height: 20vh;
+  max-height: 19.5vh;
   background-color: rgba(20, 10, 10, 0.02);
-  padding: 5px 0 0 25px !important;
+  padding: 7px 0 0 7px !important;
   /* border-bottom: 1px rgba(0,0,0,.1) dashed; */
 }
 
@@ -331,25 +336,26 @@ a {
   display: block !important;
   max-height: 40vh;
   background-color: rgba(20, 10, 10, 0.02);
-  padding: 5px 0 0 25px !important;
+  padding: 7px 0 0 7px !important;
   /* border-bottom: 1px rgba(0,0,0,.1) dashed; */
 }
 
 .panelDeDetalleVerTambien {
   display: block !important;
-  max-height: 90px;
-  height: 40vh;
+  height: 9vh;
   background-color: rgba(20, 10, 10, 0.02);
-  padding: 5px 0 0 25px !important;
+  padding: 7px 0 0 7px !important;
   border-bottom: 1px rgba(0, 0, 0, 0.1) dashed;
+  overflow-y: scroll;
 }
 
 .panelDeDetalleReferenciasConsultadas {
   display: block !important;
-  max-height: 20vh;
+  height: 22vh;
   background-color: rgba(20, 10, 10, 0.02);
-  padding: 5px 0 0 25px !important;
+  padding: 7px 0 0 7px !important;
   border-bottom: 1px rgba(0, 0, 0, 0.1) dashed;
+  overflow-y: scroll;
 }
 
 .headerMain {
@@ -360,7 +366,7 @@ a {
   border-bottom: 1px;
   border-bottom-color: lightgrey;
   border-bottom-style: dotted;
-  padding: 2px;
+  padding: 5px;
 }
 
 .iconosIluminados:hover {

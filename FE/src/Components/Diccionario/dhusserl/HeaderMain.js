@@ -48,7 +48,7 @@ function HeaderMain(props) {
     <Grid container direction="row" justify="center" className="grids">
       <AppBar position="static" color="primary" className="headerMain">
         <Toolbar variant="dense">
-          <Grid item xs={2} sm={1} md={1} xl={1} className={classes.menu}>
+          <Grid item xs={2} sm={1} md={1} lg={1} className={classes.menu}>
             <MenuHeader
               history={props.history}
               match={props.match}
@@ -56,7 +56,7 @@ function HeaderMain(props) {
             />
           </Grid>
           {props.flagCambio == "expresiones" ? (
-            <Grid item xs={2} sm={1} md={1} xl={1}>
+            <Grid item xs={2} sm={1} md={1} lg={1}>
               <Tooltip title="Ir al módulo de búsquedas">
                 <Link to={`${props.match.url}/busquedas`}>
                   <IconButton>
@@ -66,7 +66,7 @@ function HeaderMain(props) {
               </Tooltip>
             </Grid>
           ) : props.flagCambio == "busquedas" ? (
-            <Grid item xs={2} sm={1} md={1} xl={1}>
+            <Grid item xs={2} sm={1} md={1} lg={1}>
               <Link to={`${props.match.url}/diccionario`}>
                 <Tooltip title="Ir al diccionario">
                   <IconButton>
@@ -76,7 +76,7 @@ function HeaderMain(props) {
               </Link>
             </Grid>
           ) : (
-            <Grid item xs={2} sm={1} md={1} xl={1}>
+            <Grid item xs={2} sm={1} md={1} lg={1}>
               <Link to={`${props.match.url}/busquedas`}>
                 <IconButton>
                   <PageviewIcon className="iconos" />
@@ -84,12 +84,12 @@ function HeaderMain(props) {
               </Link>
             </Grid>
           )}
-          <Grid item xs={6} sm={8} md={8} xl={8} align="center">
+          <Grid item xs={6} sm={8} md={8} lg={8} align="center">
             <Typography variant="h2" className={classes.titulo}>
               {tituloDiccionario(lang)}
             </Typography>
           </Grid>
-          <Grid item xs={2} sm={1} md={1} xl={1} className={classes.idiomas}>
+          <Grid item xs={2} sm={1} md={1} lg={1} className={classes.idiomas}>
             <MenuIdioma />
           </Grid>
         </Toolbar>
