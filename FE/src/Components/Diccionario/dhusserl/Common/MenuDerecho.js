@@ -89,8 +89,35 @@ const MenuDerecho = (props) => {
   const [listaVerTambien, setListaVerTambien] = useState([]);
   const [hijos, setHijos] = useState([]);
   const [padres, setPadres] = useState([]);
+  const [ultimasVisitadas1, setUltimasVisitadas1] = useState([]);
+
+  const fixUltimasVisitadas = (consultadas) => {
+    let expresionVisitada = [];
+    for (let i in consultadas) {
+      console.log("nombreExpresion en el fix", consultadas[i].nombreExpresion);
+      if (consultadas[i].nombreExpresion) {
+        expresionVisitada = {
+          clave: consultadas[0].clave,
+          expresion: consultadas[0].nombreExpresion,
+          traduccion: consultadas[0].traduccion,
+          id: consultadas[0].id,
+          pretty_e: consultadas[0].pretty_e,
+          pretty_t: consultadas[0].pretty_t,
+          referencias: [],
+        };
+        expresionVisitada.referencias.push({
+          referencia_original: consultadas[0].ref_original,
+          referencia_traduccion: consultadas[0].ref_traduccion,
+          refid: consultadas[0].refid,
+        });
+      }
+    }
+    console.log(expresionVisitada.expresion);
+    return expresionVisitada;
+  };
 
   useEffect(() => {
+    console.log("fixUltimasVisitadas", fixUltimasVisitadas(ultimasVisitadas));
     console.log("ultimasVisitadas", ultimasVisitadas);
     if (expresionSeleccionada) {
       let service = "/vertambien/" + expresionSeleccionada.id;
@@ -312,7 +339,7 @@ const MenuDerecho = (props) => {
                       letiant="h6"
                       id={consultas.id + "/" + index}
                     >
-                      {consultas.nombreExpresion +
+                      {consultas.expresion +
                         "  :  " +
                         consultas.referencias[0].referencia_original +
                         "/" +

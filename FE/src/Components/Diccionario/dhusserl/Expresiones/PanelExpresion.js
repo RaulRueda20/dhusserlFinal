@@ -118,10 +118,8 @@ const PanelExpresion = ({
     // console.log(currentTarget, parseInt(id), expresiones);
     const expresionesReferencias = expresiones[parseInt(id)];
     if (!localStore.getObjects("ultimasVisitadas")) {
-      console.log("NO HAY NADA EN ULTIMAS VISITADAS");
       let referenciasConsultadas = [];
       referenciasConsultadas.push(expresionesReferencias);
-      console.log("referenciasConsultadas", referenciasConsultadas);
       dispatch({
         type: "SET_ULTIMAS_VISITADAS",
         payload: referenciasConsultadas,

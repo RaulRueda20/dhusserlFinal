@@ -111,10 +111,10 @@ const Expresion = (props) => {
     //   (ultimasVisitadas != null) &
     //   localStore.getObjects("ultimasVisitadas")
     // ) {
-    //   console.log(
-    //     "ultimasVisitadas localStore",
-    //     localStore.getObjects("ultimasVisitadas")
-    //   );
+    console.log(
+      "ultimasVisitadas localStore",
+      localStore.getObjects("ultimasVisitadas")
+    );
     //   console.log("ultimasVisitadas Context", ultimasVisitadas);
     //   // setReferenciasConsultadasVista(ultimasVisitadas);
     // }
