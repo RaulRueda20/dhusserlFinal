@@ -14,7 +14,6 @@ import { mdiFormatLetterCase } from "@mdi/js";
 import "../../../../css/expresiones.css";
 import classNames from "classnames";
 import { withStyles } from "@material-ui/styles";
-
 import { webService } from "../../../../js/webServices";
 import { sesionStore } from "../../../../stores/sesionStore";
 
@@ -73,9 +72,11 @@ const Busqueda = (props) => {
   };
 
   const handleChangeBusquedaExpresiones = (event) => {
+    console.log("ENTRE A ESTA MADRE");
     event.preventDefault();
     var servicebl =
       "/referencias/busquedaExpresionPorLetraAdmin" + "/" + props.letraMain;
+    console.log("servicebl", servicebl);
     webService(
       servicebl,
       "POST",

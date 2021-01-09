@@ -4,8 +4,9 @@ const serverUrl = "http://3.22.12.85:1938/api/v1.0";
 //const serverUrl = "https://" + window.location.host + "/api/v1.0"
 
 const webService = (service, method, params, sesion, next) => {
-  var serverUsername = localStore.getObjects("sesion").user
-  var serverPassword = localStore.getObjects("sesion").password
+  console.log("next", next);
+  var serverUsername = localStore.getObjects("sesion").user;
+  var serverPassword = localStore.getObjects("sesion").password;
   // var serverUsername = sesion?.usuario ?? localStore.getObjects("sesion").user;
   // var serverPassword = sesion?.password ?? localStore.getObjects("sesion").password;
   var auth = "Basic " + btoa(serverUsername + ":" + serverPassword);
@@ -20,10 +21,10 @@ const webService = (service, method, params, sesion, next) => {
     },
   })
     .then((response) => {
-      return next(response);
+      next(response);
     })
     .catch((error) => {
-      console.log("ERROR EN ", service, error)
+      console.log("ERROR EN ", service, error);
       alert("Ha habido un error" + error.status + " : " + error.statusText);
     });
 };
@@ -43,7 +44,7 @@ const adminService = (service, method, params, next) => {
     },
   })
     .then((response) => {
-      next(response);
+      return next(response);
     })
     .catch((error) => {
       alert("Ha habido un error" + error.status + " : " + error.statusText);
@@ -68,7 +69,7 @@ const loginService = (service, method, params, next) => {
     data: params,
   })
     .then((response) => {
-      next(response);
+      return next(response);
     })
     .catch((error) => {
       alert("Ha habido un error" + error.status + " : " + error.statusText);

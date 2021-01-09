@@ -28,7 +28,7 @@ const MenuHeader = (props) => {
   };
 
   const closeMenu = () => {
-    tsetState({ anchorEl: null });
+    setState({ anchorEl: null });
   };
 
   const exitMain = () => {

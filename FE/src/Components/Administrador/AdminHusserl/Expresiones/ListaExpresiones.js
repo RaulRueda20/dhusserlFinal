@@ -12,7 +12,7 @@ const ListaExpresiones = (props) => {
         {props.expresiones.map((expresion) => (
           <li
             className={classNames(
-              { selected: expresion.id === props.idExpresion },
+              { selected: expresion.id === idExpresion },
               "sideListAdmin"
             )}
             key={expresion.id}
