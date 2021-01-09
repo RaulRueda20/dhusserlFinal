@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   FormControl,
   Input,
@@ -13,8 +13,10 @@ import { mdiFormatLetterCase } from "@mdi/js";
 
 import "../../../../css/expresiones.css";
 import classNames from "classnames";
-import { withStyles } from "@material-ui/styles"
+import { withStyles } from "@material-ui/styles";
+
 import { webService } from "../../../../js/webServices";
+import { sesionStore } from "../../../../stores/sesionStore";
 
 const styles = {
   TextFieldbus: {
@@ -26,6 +28,9 @@ const Busqueda = (props) => {
   const { classes } = props;
   const [insensitiveCase, setInsensitiveCase] = useState(false);
   const [busqueda, setBusqueda] = useState("");
+  const global = useContext(sesionStore);
+  const { state } = global;
+  const { sesion } = state;
 
   const fixExpresiones = (referencias) => {
     var expresiones = [];
@@ -75,9 +80,10 @@ const Busqueda = (props) => {
       servicebl,
       "POST",
       { parametro: busqueda, case: insensitiveCase },
+      sesion,
       ({ data }) => {
-        const { response } = data;
-        props.setExpresiones(fixExpresiones(response));
+        console.log(data.response);
+        props.setExpresiones(fixExpresiones(data.response));
       }
     );
   };
