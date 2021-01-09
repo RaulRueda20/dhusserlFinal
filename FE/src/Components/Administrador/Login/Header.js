@@ -12,7 +12,7 @@ const stylesHed = {
   },
 };
 
-const Header = () => {
+const Header = (props) => {
   const { classes } = props;
   return (
     <Fragment>

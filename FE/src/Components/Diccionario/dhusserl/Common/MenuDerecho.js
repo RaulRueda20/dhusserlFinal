@@ -91,9 +91,8 @@ const MenuDerecho = (props) => {
   const [padres, setPadres] = useState([]);
 
   useEffect(() => {
-    console.log("HOLA", ultimasVisitadas);
+    console.log("ultimasVisitadas", ultimasVisitadas);
     if (expresionSeleccionada) {
-      console.log(expresionSeleccionada);
       let service = "/vertambien/" + expresionSeleccionada.id;
       webService(service, "GET", {}, sesion, ({ data }) => {
         setListaVerTambien(data.response);
@@ -106,6 +105,7 @@ const MenuDerecho = (props) => {
           {},
           sesion,
           (data) => {
+            // console.log("hijo", data.data.response);
             setHijos(data.data.response);
           }
         );
@@ -118,6 +118,7 @@ const MenuDerecho = (props) => {
           {},
           sesion,
           (data2) => {
+            // console.log("padre", data2.data.response);
             setPadres(data2.data.response);
           }
         );
@@ -311,7 +312,7 @@ const MenuDerecho = (props) => {
                       letiant="h6"
                       id={consultas.id + "/" + index}
                     >
-                      {consultas.expresion +
+                      {consultas.nombreExpresion +
                         "  :  " +
                         consultas.referencias[0].referencia_original +
                         "/" +

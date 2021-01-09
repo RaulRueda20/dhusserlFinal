@@ -3,7 +3,7 @@ import { AppBar, Toolbar, Typography, Grid } from "@material-ui/core";
 
 import MenuHeader from "./MenuHeader";
 
-const HeaderMain = () => {
+const HeaderMain = (props) => {
   return (
     <Grid container direction="row" justify="center" className="grids">
       <AppBar position="static" color="primary">

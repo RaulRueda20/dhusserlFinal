@@ -1,7 +1,7 @@
 import React from "react";
 import classNames from "classnames";
 
-const ListaExpresiones = ({ expresiones, setIdExpresion }) => {
+const ListaExpresiones = (props) => {
   const handleClickExpresion = (event) => {
     setIdExpresion(event.target.value);
   };
@@ -9,7 +9,7 @@ const ListaExpresiones = ({ expresiones, setIdExpresion }) => {
   return (
     <div className="list-container">
       <ul>
-        {expresiones.map((expresion) => (
+        {props.expresiones.map((expresion) => (
           <li
             className={classNames(
               { selected: expresion.id === props.idExpresion },

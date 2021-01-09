@@ -1,5 +1,5 @@
 //React
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import { Link } from "react-router-dom";
 
 //Elements
@@ -20,8 +20,8 @@ import {
   Menu as MenuIcon,
 } from "@material-ui/icons";
 
-const MenuHeader = () => {
-  state = { anchorEl: null };
+const MenuHeader = (props) => {
+  const [state, setState] = useState({ anchorEl: null });
 
   const setMenu = (event) => {
     setState({ anchorEl: event.currentTarget });

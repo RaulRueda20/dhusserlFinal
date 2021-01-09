@@ -1,5 +1,5 @@
 // React
-import React, { useContext, useState, Fragment } from "react";
+import React, { useContext, useState, Fragment, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 // Elements
@@ -34,6 +34,10 @@ const ListaPadresExpresion = (props) => {
   const open = Boolean(anchorEl);
   const [padreDePadres, setPadreDePadres] = useState([]);
   const [hijosDePadres, setHijosDePadres] = useState([]);
+
+  useEffect(() => {
+    console.log("padres", props.padres);
+  });
 
   const handleClickDerivadaDe = (event) => {
     setAnchorEl(event.currentTarget);

@@ -39,6 +39,7 @@ const ResultadoBusquedaReferencia = (props) => {
     original: "",
     traduccion: "",
   });
+  // const [referencias, setReferencias] = useState("");
 
   useEffect(() => {
     setPasajes({
@@ -101,6 +102,7 @@ const ResultadoBusquedaReferencia = (props) => {
     var service = "/referencias/obtieneReferencias/" + idExpresion;
     webService(service, "GET", {}, global.sesion, (data) => {
       var referencias = fixReferenciasConsultadas(data.data.response);
+      console.log("referencias", referencias);
       var nuevasVisitadas = global.ultimasVisitadas;
       nuevasVisitadas.push(referencias);
       global.setUltimasVisitadas(nuevasVisitadas);

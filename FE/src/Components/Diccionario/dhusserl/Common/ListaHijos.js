@@ -1,5 +1,5 @@
 // React
-import React, { useContext, Fragment, useState } from "react";
+import React, { useContext, Fragment, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 // Elements
@@ -36,6 +36,10 @@ const ListaHijosExpresion = (props) => {
   const open = Boolean(anchorEl);
   const [padreDeHijos, setPadreDeHijos] = useState([]);
   const [hijosDeHijos, setHijosDeHijos] = useState([]);
+
+  useEffect(() => {
+    console.log("Hijos", props.hijos);
+  });
 
   const handleClickExpresionesDerivadas = (event) => {
     setAnchorEl(event.currentTarget);
