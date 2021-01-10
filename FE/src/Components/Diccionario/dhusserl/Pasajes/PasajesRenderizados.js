@@ -11,7 +11,7 @@ import BanderaPasajes from "./BanderaPasajes";
 
 //Other req
 import { descarga, noContienePasajes } from "../../../../js/Language";
-import { languageStore } from "../../../../stores/languageStore";
+import { sesionStore } from "../../../../stores/sesionStore";
 
 const useStyles = makeStyles((theme) => ({
   gridTituloPasaje: {
@@ -44,7 +44,11 @@ const useStyles = makeStyles((theme) => ({
 
 const PasajesRenderizados = (props) => {
   const classes = useStyles();
-  const globalLanguage = useContext(languageStore);
+
+  const global = useContext(sesionStore);
+  const { state } = global;
+  const { lang, pasajeLang } = state;
+
   const theme = useTheme();
   const [pasajeRenderizado, setPasajeRenderizado] = useState({
     original: "",
@@ -84,8 +88,8 @@ const PasajesRenderizados = (props) => {
       setTpretty(props.referenciaSeleccionada.tpretty);
     } else {
       setPasajeRenderizado({
-        original: noContienePasajes(globalLanguage.lang),
-        traduccion: noContienePasajes(globalLanguage.lang),
+        original: noContienePasajes(lang),
+        traduccion: noContienePasajes(lang),
       });
     }
 
@@ -94,7 +98,7 @@ const PasajesRenderizados = (props) => {
         ? props.referenciaSeleccionada
         : emptyPasaje;
     setTituloPasaje(nombreExpresion);
-  }, [props.referenciaSeleccionada, globalLanguage.lang, epretty]);
+  }, [props.referenciaSeleccionada, lang, epretty]);
 
   const resaltarBusqueda = (string, separador) => {
     let split = string.split(separador);
@@ -133,7 +137,7 @@ const PasajesRenderizados = (props) => {
               lg={1}
               className={classes.botonDescargas}
             >
-              <Tooltip title={descarga(globalLanguage.lang)}>
+              <Tooltip title={descarga(lang)}>
                 <IconButton
                   size="small"
                   className="iconosIluminados"
@@ -171,7 +175,7 @@ const PasajesRenderizados = (props) => {
             </Grid>
           </Grid>
         </Grid>
-      ) : props.languageP == "al" ? (
+      ) : pasajeLang == "al" ? (
         <Grid container style={{ maxHeight: "80vh" }}>
           <Grid containerxs={12}>
             <Grid
@@ -182,7 +186,7 @@ const PasajesRenderizados = (props) => {
               lg={1}
               className={classes.botonDescargas}
             >
-              <Tooltip title={descarga(globalLanguage.lang)}>
+              <Tooltip title={descarga(lang)}>
                 <IconButton
                   size="small"
                   className="iconosIluminados"
@@ -227,7 +231,7 @@ const PasajesRenderizados = (props) => {
               lg={1}
               className={classes.botonDescargas}
             >
-              <Tooltip title={descarga(globalLanguage.lang)}>
+              <Tooltip title={descarga(lang)}>
                 <IconButton
                   size="small"
                   className="iconosIluminados"

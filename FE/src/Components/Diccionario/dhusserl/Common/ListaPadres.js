@@ -35,10 +35,6 @@ const ListaPadresExpresion = (props) => {
   const [padreDePadres, setPadreDePadres] = useState([]);
   const [hijosDePadres, setHijosDePadres] = useState([]);
 
-  useEffect(() => {
-    console.log("padres", props.padres);
-  });
-
   const handleClickDerivadaDe = (event) => {
     setAnchorEl(event.currentTarget);
     let pid = event.currentTarget.id.split("padre")[1];

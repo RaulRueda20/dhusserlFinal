@@ -30,11 +30,11 @@ const Pasaje = (props) => {
   const { match } = props;
 
   const global = useContext(sesionStore);
-  const { state, dispatch } = global;
-  const { sesion, ultimasVisitadas, lang, langLista, letra } = state;
+  const { state } = global;
+  const { sesion, langLista, letra } = state;
 
   const globalExpresion = useContext(expresionesStore);
-  const { store, attend } = globalExpresion;
+  const { attend } = globalExpresion;
   // const { expresiones, chunk } = store
 
   const [expresiones, setExpresiones] = useState([]);
@@ -139,8 +139,16 @@ const Pasaje = (props) => {
       setPasajeService(service);
       webService(service, "GET", {}, sesion, ({ data }) => {
         const { response } = data;
-        setExpresiones(fixReferencias(response));
-        setChunkList(fixReferencias(response).slice(0, 50));
+        attend({
+          type: "START_EXPRESIONES",
+          payload: {
+            expresiones: fixReferencias(data.response),
+            chunk: fixReferencias(data.response).slice(0, 50),
+          },
+        });
+        setLoading(false);
+        // setExpresiones(fixReferencias(response));
+        // setChunkList(fixReferencias(response).slice(0, 50));
       });
     }
     service = "/referencias/obtieneReferencias/" + idDeExpresion;
@@ -161,6 +169,14 @@ const Pasaje = (props) => {
         setOpenModalN(true);
         setReferenciaSeleccionada(null);
       }
+
+      attend({
+        type: "SELECT_EXPRESION",
+        payload: {
+          id: response[0].id,
+          expresion: response[0].expresion_original,
+        },
+      });
     });
     updateDimensions();
     window.addEventListener("resize", updateDimensions);
@@ -232,8 +248,6 @@ const Pasaje = (props) => {
         >
           <Hidden xsDown>
             <BusquedaVP
-              expresiones={expresiones}
-              setExpresiones={setExpresiones}
               setIdExpresion={setIdExpresion}
               busqueda={busqueda}
               setBusqueda={setBusqueda}
@@ -242,13 +256,9 @@ const Pasaje = (props) => {
               setModalCaracteresInvalidos={setModalCaracteresInvalidos}
               setModalNumeros={setModalNumeros}
               setLoading={setLoading}
-              setChunkListGlobal={setChunkListGlobal}
-              setChunkList={setChunkList}
             />
             <ListaIzquierdaExpresion
               {...props}
-              expresiones={expresiones}
-              setExpresiones={setExpresiones}
               idExpresion={idExpresion}
               setIdExpresion={setIdExpresion}
               referenciaSeleccionada={referenciaSeleccionada}
@@ -259,10 +269,6 @@ const Pasaje = (props) => {
               setPosicionReferenciasConsultadas={
                 setPosicionReferenciasConsultadas
               }
-              chunkList={chunkList}
-              chunkListGlobal={chunkListGlobal}
-              setChunkList={setChunkList}
-              setChunkListGlobal={setChunkListGlobal}
               idDeLaReferencia={props.match.params.id}
             />
           </Hidden>

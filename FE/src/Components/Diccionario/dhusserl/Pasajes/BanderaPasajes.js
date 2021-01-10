@@ -7,7 +7,7 @@ import es from "../../../../Imagenes/spain.png";
 import al from "../../../../Imagenes/germany.png";
 
 import { idiomaConsultas } from "../../../../js/Language";
-import { languageStore } from "../../../../stores/languageStore";
+import { sesionStore } from "../../../../stores/sesionStore";
 
 const bandIn = {
   imagenesBandera: {
@@ -22,20 +22,22 @@ const bandIn = {
 
 const BanderaPasajes = (props) => {
   const { classes } = props;
-  const globalLanguage = useContext(languageStore);
+  const global = useContext(sesionStore);
+  const { state, dispatch } = global;
+  const { pasajeLang, lang } = state;
 
   const clickChangeLanguageEsBP = () => {
-    globalLanguage.setLangLista("es");
+    dispatch({ type: "SET_PASAJE_LANG", payload: "es" });
   };
 
   const clickChangeLanguageAlBP = () => {
-    globalLanguage.setLangLista("al");
+    dispatch({ type: "SET_PASAJE_LANG", payload: "al" });
   };
 
   return (
     <Fragment>
-      <Tooltip title={idiomaConsultas(globalLanguage.lang)}>
-        {globalLanguage.langLista == "es" ? (
+      <Tooltip title={idiomaConsultas(lang)}>
+        {pasajeLang == "es" ? (
           <Button
             className={classes.imagenesBandera}
             onClick={clickChangeLanguageAlBP}

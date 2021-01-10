@@ -7,27 +7,40 @@ import PanelExpresionIzquierdo from "./PanelExpresionIzquierdo";
 //Other req
 import * as localStore from "../../../../js/localStore";
 import { sesionStore } from "../../../../stores/sesionStore";
+import { expresionesStore } from "../../../../stores/expresionStore";
 
 const ListaIzquierdaExpresiones = (props) => {
   const [panelesAbiertos, setPanelesAbiertos] = useState([]);
   const global = useContext(sesionStore);
+  const { state, dispatch } = global;
+
+  const globalExpresion = useContext(expresionesStore);
+  const { store, attend } = globalExpresion;
+  const { expresiones, chunk } = store;
 
   const clickHandleVista = (event) => {
     let expresionClickeada = event.currentTarget.id.split("-")[0];
     let posicionExpresion = event.currentTarget.id.split("-")[1];
-    let expresionesReferencias = props.expresiones[posicionExpresion];
-    if (localStore.getObjects("referenciasConsultadas") == false) {
+
+    if (!localStore.getObjects("ultimasVisitadas")) {
       let referenciasConsultadas = [];
-      referenciasConsultadas.push(expresionesReferencias);
-      localStore.setObjects("referenciasConsultadas", referenciasConsultadas);
+      referenciasConsultadas.push(referencias);
+      //console.log("referenciasConsultadas", referenciasConsultadas);
+      localStore.setObjects("ultimasVisitadas", referenciasConsultadas);
+      dispatch({
+        type: "SET_ULTIMAS_VISITADAS",
+        payload: referenciasConsultadas,
+      });
     } else {
-      let store = localStore.getObjects("referenciasConsultadas");
-      store.push(expresionesReferencias);
-      localStore.setObjects("referenciasConsultadas", store);
+      let referenciasConsultadas = localStore.getObjects("ultimasVisitadas");
+      referenciasConsultadas.push(referencias);
+      // console.log("referenciasConsultadas", referenciasConsultadas);
+      localStore.setObjects("ultimasVisitadas", referenciasConsultadas);
+      dispatch({
+        type: "SET_ULTIMAS_VISITADAS",
+        payload: referenciasConsultadas,
+      });
     }
-    let nuevasVisitadas = global.ultimasVisitadas;
-    nuevasVisitadas.push(expresionesReferencias);
-    global.setUltimasVisitadas(nuevasVisitadas);
     props.setPosicionReferenciasConsultadas(posicionExpresion);
     props.setIdExpresion(expresionClickeada);
     props.setExpanded1(true);
@@ -52,41 +65,46 @@ const ListaIzquierdaExpresiones = (props) => {
     if (document.getElementById("listaIzquierda").firstChild != null)
       document.getElementById("listaIzquierda").firstChild.scrollIntoView();
     let coincidencia = null;
-    for (let i in props.expresiones) {
-      if (props.expresiones[i].id == props.idExpresion) {
+    for (let i in expresiones) {
+      if (expresiones[i].id == props.idExpresion) {
         coincidencia = i;
       }
     }
     if (coincidencia) {
-      props.setChunkList(
-        props.expresiones.slice(0, parseInt(coincidencia) + 30)
-      );
+      // props.setChunkList(
+      //   expresiones.slice(0, parseInt(coincidencia) + 30)
+      // );
+      attend({
+        type: "SET_CHUNK",
+        payload: expresiones.slice(0, parseInt(coincidencia) + 30),
+      });
       setTimeout(() => {
         if (document.getElementById("VP" + props.idExpresion) != null) {
           document.getElementById("VP" + props.idExpresion).scrollIntoView();
         }
-      }, 5000);
+      }, 1000);
     }
     setTimeout(() => {
       if (document.getElementById("VP" + props.idExpresion) != null) {
         document.getElementById("VP" + props.idExpresion).scrollIntoView();
       }
     }, 5000);
-  }, [props.idExpresion, props.expresionesGlobales, props.expresiones]);
+  }, [props.idExpresion, expresiones]);
 
   const handleScroll = (e) => {
     let element = e.target;
     if (element.scrollHeight - element.scrollTop === element.clientHeight) {
-      props.setChunkList(
-        props.expresiones.slice(0, props.chunkList.length + 20)
-      );
+      attend({
+        type: "SET_CHUNK",
+        payload: expresiones.slice(0, chunk.length + 20),
+      });
     }
   };
 
   return (
     <div className="listaIzquierda" onScroll={handleScroll}>
       <ul id="listaIzquierda">
-        {props.chunkList.map((expresion, index) => {
+        {chunk.map((expresion, index) => {
           return (
             <PanelExpresionIzquierdo
               {...props}

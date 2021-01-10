@@ -37,10 +37,6 @@ const ListaHijosExpresion = (props) => {
   const [padreDeHijos, setPadreDeHijos] = useState([]);
   const [hijosDeHijos, setHijosDeHijos] = useState([]);
 
-  useEffect(() => {
-    console.log("Hijos", props.hijos);
-  });
-
   const handleClickExpresionesDerivadas = (event) => {
     setAnchorEl(event.currentTarget);
     let hid = event.currentTarget.id.split("hijo")[1];

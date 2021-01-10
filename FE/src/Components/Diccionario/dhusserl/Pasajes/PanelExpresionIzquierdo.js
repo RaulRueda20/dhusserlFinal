@@ -12,10 +12,17 @@ import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import { webService } from "../../../../js/webServices";
 import * as localStore from "../../../../js/localStore";
 import { sesionStore } from "../../../../stores/sesionStore";
+import { expresionesStore } from "../../../../stores/expresionStore";
 import "../../../../css/expresiones.css";
 
 const PanelExpresionIzquierdo = (props) => {
   const global = useContext(sesionStore);
+  const { state, dispatch } = global;
+  const { sesion } = state;
+
+  const globalExpresion = useContext(expresionesStore);
+  const { attend } = globalExpresion;
+
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -61,22 +68,38 @@ const PanelExpresionIzquierdo = (props) => {
       idReferenciaConsultada +
       "/" +
       refIdReferenciaConsultada;
+
     console.log("service", service);
-    webService(service, "GET", {}, global.sesion, ({ data }) => {
+    webService(service, "GET", {}, sesion, ({ data }) => {
       const { response } = data;
       let referencias = fixReferenciasConsultadas(response);
-      if (localStore.getObjects("referenciasConsultadas") == false) {
+      console.log(response);
+      attend({
+        type: "SELECT_EXPRESION",
+        payload: {
+          id: response[0].id,
+          expresion: response[0].expresion_original,
+        },
+      });
+      if (!localStore.getObjects("ultimasVisitadas")) {
         let referenciasConsultadas = [];
         referenciasConsultadas.push(referencias);
-        localStore.setObjects("referenciasConsultadas", referenciasConsultadas);
+        //console.log("referenciasConsultadas", referenciasConsultadas);
+        localStore.setObjects("ultimasVisitadas", referenciasConsultadas);
+        dispatch({
+          type: "SET_ULTIMAS_VISITADAS",
+          payload: referenciasConsultadas,
+        });
       } else {
-        let store = localStore.getObjects("referenciasConsultadas");
-        store.push(referencias);
-        localStore.setObjects("referenciasConsultadas", store);
+        let referenciasConsultadas = localStore.getObjects("ultimasVisitadas");
+        referenciasConsultadas.push(referencias);
+        // console.log("referenciasConsultadas", referenciasConsultadas);
+        localStore.setObjects("ultimasVisitadas", referenciasConsultadas);
+        dispatch({
+          type: "SET_ULTIMAS_VISITADAS",
+          payload: referenciasConsultadas,
+        });
       }
-      let nuevasVisitadas = global.ultimasVisitadas;
-      nuevasVisitadas.push(referencias);
-      global.setUltimasVisitadas(nuevasVisitadas);
     });
   };
 

@@ -29,8 +29,7 @@ import {
 import { webService } from "../../../../js/webServices";
 import classNames from "classnames";
 import { sesionStore } from "../../../../stores/sesionStore";
-import { languageStore } from "../../../../stores/languageStore";
-import { letraStore } from "../../../../stores/letraStore";
+import { expresionesStore } from "../../../../stores/expresionStore";
 
 //Imagen
 import es from "../../../../Imagenes/spain.png";
@@ -53,32 +52,40 @@ const styles = {
 const BusquedaVP = (props) => {
   const { classes } = props;
   const global = useContext(sesionStore);
-  const globalLanguage = useContext(languageStore);
-  const globalLetra = useContext(letraStore);
+  const { state, dispatch } = global;
+  const { sesion, langLista, letra, lang } = state;
+
+  const globalExpresion = useContext(expresionesStore);
+  const { store, attend } = globalExpresion;
+  const { expresiones, chunk } = store;
+
   const [insensitiveCase, setInsensitiveCase] = useState(false);
   const [snack, setSnack] = useState({ open: false, text: "" });
 
   const clickChangeLanguageEsVP = () => {
-    globalLanguage.setLangLista("es");
+    dispatch({ type: "SET_LANGLISTA", payload: "es" });
   };
 
   const clickChangeLanguageAlVP = () => {
-    globalLanguage.setLangLista("al");
+    dispatch({ type: "SET_LANGLISTA", payload: "al" });
   };
 
   const handleInsensitiveCase = () => {
     setInsensitiveCase(!insensitiveCase);
   };
 
-  const ChunkC = (expresiones) => {
-    props.setChunkList(expresiones);
+  const ChunkC = (e) => {
+    attend({
+      type: "SET_CHUNK",
+      payload: e,
+    });
   };
 
   const handleChangeBusquedaPasajes = (event) => {
     event.preventDefault();
     if (props.busqueda != "") {
-      let stringCaracteres = props.busqueda.replace(/(?!\w|\s)./g, "");
-      let stringNumeros = props.busqueda.replace(/([0-9])./g, "");
+      var stringCaracteres = props.busqueda.replace(/(?!\w|\s)./g, "");
+      var stringNumeros = props.busqueda.replace(/([0-9])./g, "");
       if (props.busqueda.length < 2) {
         props.setModalDebusquedas(true);
       } else if (stringCaracteres.length < 2) {
@@ -86,62 +93,67 @@ const BusquedaVP = (props) => {
       } else if (stringNumeros.length < 2) {
         props.setModalNumeros(true);
       } else if (props.busqueda.length > 2) {
-        let letra = props.busqueda.slice(0, 1);
-        let letraCapital = letra.toUpperCase();
-        if (letra == letraCapital) {
-          let servicebl =
+        props.setLoading(true);
+        var letter = props.busqueda.slice(0, 1);
+        var letraCapital = letra.toUpperCase();
+        if (letter == letraCapital) {
+          var servicebl =
             "/referencias/busquedaExpresionPorLetra" +
             "/" +
-            globalLetra.letra +
+            letra +
             "/" +
-            globalLanguage.langLista;
+            langLista;
+          console.log("insensitiveCase", insensitiveCase);
           webService(
             servicebl,
             "POST",
             { parametro: props.busqueda, case: insensitiveCase },
-            global.sesion,
+            sesion,
             ({ data }) => {
-              const { response } = data;
-              if (globalLetra.letra == letraCapital) {
-                console.log("Mayuscula", response);
-                ChunkC(data.data.response);
+              console.log(data.response);
+              if (letra == letraCapital) {
+                ChunkC(data.response);
               } else {
                 setSnack({
                   open: true,
-                  text: letraNoCoincide(globalLanguage.lang),
+                  text: letraNoCoincide(lang),
                 });
               }
             }
           );
+
+          props.setLoading(false);
         } else {
-          let letraCapital = letra.toUpperCase();
-          let servicebl =
+          var letraCapital = letter.toUpperCase();
+          var servicebl =
             "/referencias/busquedaExpresionPorLetra" +
             "/" +
-            globalLetra.letra +
+            letra +
             "/" +
-            globalLanguage.langLista;
+            langLista;
+          console.log("insensitiveCase", insensitiveCase);
           webService(
             servicebl,
             "POST",
             { parametro: props.busqueda, case: insensitiveCase },
-            global.sesion,
+            sesion,
             ({ data }) => {
-              const { response } = data;
-              if (globalLetra.letra == letraCapital) {
-                ChunkC(response);
+              console.log(data.response);
+              if (letra == letraCapital) {
+                ChunkC(data.response);
               } else {
                 setSnack({
                   open: true,
-                  text: letraNoCoincide(globalLanguage.lang),
+                  text: letraNoCoincide(lang),
                 });
               }
             }
           );
+          props.setLoading(false);
         }
       }
     } else {
-      props.setChunkList(props.expresiones.slice(0, 50));
+      ChunkC(expresiones.slice(0, 50));
     }
   };
 
@@ -160,7 +172,7 @@ const BusquedaVP = (props) => {
         <Grid item xs={7} lg={9}>
           <FormControl className="busquedaEnExpresiones">
             <InputLabel htmlFor="input-with-icon-adornment">
-              {busquedas(globalLanguage.lang)}
+              {busquedas(lang)}
             </InputLabel>
             <Input
               onChange={(event) => props.setBusqueda(event.target.value)}
@@ -177,7 +189,7 @@ const BusquedaVP = (props) => {
           </FormControl>
         </Grid>
         <Grid item xs={3} lg={2} className={classes.switchPasaje}>
-          <Tooltip title={distincionMayusyMinus(globalLanguage.lang)}>
+          <Tooltip title={distincionMayusyMinus(lang)}>
             <IconButton
               onClick={handleInsensitiveCase}
               className={classNames([
@@ -190,8 +202,8 @@ const BusquedaVP = (props) => {
           </Tooltip>
         </Grid>
         <Grid item xs={2} lg={1}>
-          <Tooltip title={toolTipIdiomaDeLaLista(globalLanguage.lang)}>
-            {globalLanguage.language == "es" ? (
+          <Tooltip title={toolTipIdiomaDeLaLista(lang)}>
+            {langLista == "es" ? (
               <Button
                 className={classes.imagenesBandera}
                 onClick={clickChangeLanguageAlVP}

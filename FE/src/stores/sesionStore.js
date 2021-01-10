@@ -10,6 +10,7 @@ const initialState = {
   ultimasVisitadas: [],
   ultimaVisitada: [],
   lang: "es",
+  pasajeLang: "es",
   langLista: "al",
   letra: "A",
   loading: false,
@@ -37,6 +38,8 @@ const sesionReducer = (state, action) => {
       return { ...state, sesion: payload };
     case "SET_LANG":
       return { ...state, lang: payload };
+    case "SET_PASAJE_LANG":
+      return { ...state, pasajeLang: payload };
     case "SET_LETRA":
       return { ...state, letra: payload };
     case "SET_LANGLISTA":
