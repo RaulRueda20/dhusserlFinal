@@ -29,6 +29,7 @@ import { webService } from "../../../../js/webServices";
 
 import { sesionStore } from "../../../../stores/sesionStore";
 import { expresionesStore } from "../../../../stores/expresionStore";
+import * as localStore from "../../../../js/localStore";
 
 const ExpansionPanel = withStyles({
   root: {
@@ -91,34 +92,42 @@ const MenuDerecho = (props) => {
   const [padres, setPadres] = useState([]);
   const [ultimasVisitadas1, setUltimasVisitadas1] = useState([]);
 
-  const fixUltimasVisitadas = (consultadas) => {
-    let expresionVisitada = [];
-    for (let i in consultadas) {
-      console.log("nombreExpresion en el fix", consultadas[i].nombreExpresion);
-      if (consultadas[i].nombreExpresion) {
-        expresionVisitada = {
-          clave: consultadas[0].clave,
-          expresion: consultadas[0].nombreExpresion,
-          traduccion: consultadas[0].traduccion,
-          id: consultadas[0].id,
-          pretty_e: consultadas[0].pretty_e,
-          pretty_t: consultadas[0].pretty_t,
-          referencias: [],
-        };
-        expresionVisitada.referencias.push({
-          referencia_original: consultadas[0].ref_original,
-          referencia_traduccion: consultadas[0].ref_traduccion,
-          refid: consultadas[0].refid,
-        });
-      }
-    }
-    console.log(expresionVisitada.expresion);
-    return expresionVisitada;
-  };
+  // const fixUltimasVisitadas = (consultadas) => {
+  //   let expresionVisitada = [];
+  //   for (let i in consultadas) {
+  //     console.log("nombreExpresion en el fix", consultadas[i].nombreExpresion);
+  //     if (consultadas[i].nombreExpresion) {
+  //       expresionVisitada = {
+  //         clave: consultadas[0].clave,
+  //         expresion: consultadas[0].nombreExpresion,
+  //         traduccion: consultadas[0].traduccion,
+  //         id: consultadas[0].id,
+  //         pretty_e: consultadas[0].pretty_e,
+  //         pretty_t: consultadas[0].pretty_t,
+  //         referencias: [],
+  //       };
+  //       expresionVisitada.referencias.push({
+  //         referencia_original: consultadas[0].ref_original,
+  //         referencia_traduccion: consultadas[0].ref_traduccion,
+  //         refid: consultadas[0].refid,
+  //       });
+  //     }
+  //   }
+  //   console.log(expresionVisitada.expresion);
+  //   return expresionVisitada;
+  // };
 
   useEffect(() => {
-    console.log("fixUltimasVisitadas", fixUltimasVisitadas(ultimasVisitadas));
-    console.log("ultimasVisitadas", ultimasVisitadas);
+    if (
+      ultimasVisitadas != null &&
+      !localStore.getObjects("ultimasVisitadas")
+    ) {
+      console.log("NO HAY ALGO EN ULTIMAS VISITADAS");
+    } else {
+      console.log("ultimasVisitadas", ultimasVisitadas);
+    }
+    // console.log("fixUltimasVisitadas", fixUltimasVisitadas(ultimasVisitadas));
+    // console.log("ultimasVisitadas", ultimasVisitadas);
     if (expresionSeleccionada) {
       let service = "/vertambien/" + expresionSeleccionada.id;
       webService(service, "GET", {}, sesion, ({ data }) => {
@@ -181,7 +190,6 @@ const MenuDerecho = (props) => {
       const referencias = fixReferenciasConsultadas(data.data.response);
       let nuevasVisitadas = ultimasVisitadas;
       nuevasVisitadas.push(referencias);
-      console.log("Expresiones visitadas", nuevasVisitadas);
       dispatch({
         type: "SET_ULTIMAS_VISITADAS",
         payload: nuevasVisitadas,
@@ -339,7 +347,7 @@ const MenuDerecho = (props) => {
                       letiant="h6"
                       id={consultas.id + "/" + index}
                     >
-                      {consultas.expresion +
+                      {consultas.nombreExpresion +
                         "  :  " +
                         consultas.referencias[0].referencia_original +
                         "/" +

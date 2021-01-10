@@ -111,14 +111,10 @@ const Expresion = (props) => {
     //   (ultimasVisitadas != null) &
     //   localStore.getObjects("ultimasVisitadas")
     // ) {
-    console.log(
-      "ultimasVisitadas localStore",
-      localStore.getObjects("ultimasVisitadas")
-    );
     //   console.log("ultimasVisitadas Context", ultimasVisitadas);
     //   // setReferenciasConsultadasVista(ultimasVisitadas);
     // }
-    console.log("ultimasVisitadas", ultimasVisitadas);
+    // console.log("ultimasVisitadas", ultimasVisitadas);
     props.setFlagCambio("expresiones");
     setLoading(true);
     if (document.getElementById("listaIzquierda").firstChild != null)

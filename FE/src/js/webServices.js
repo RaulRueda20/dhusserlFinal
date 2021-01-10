@@ -4,7 +4,6 @@ const serverUrl = "http://3.22.12.85:1938/api/v1.0";
 //const serverUrl = "https://" + window.location.host + "/api/v1.0"
 
 const webService = (service, method, params, sesion, next) => {
-  console.log("next", next);
   var serverUsername = localStore.getObjects("sesion").user;
   var serverPassword = localStore.getObjects("sesion").password;
   // var serverUsername = sesion?.usuario ?? localStore.getObjects("sesion").user;

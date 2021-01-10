@@ -30,7 +30,7 @@ const PanelExpresion = ({
 }) => {
   const global = useContext(sesionStore);
   const { state, dispatch } = global;
-  const { sesion, ultimasVisitadas, lang, langLista } = state;
+  const { sesion, ultimasVisitadas } = state;
 
   const globalExpresion = useContext(expresionesStore);
   const { store } = globalExpresion;
@@ -41,7 +41,7 @@ const PanelExpresion = ({
   const fixReferenciasConsultadas = (e) => {
     let referencia = {
       clave: e[0].clave,
-      e: e[0].expresion_original,
+      nombreExpresion: e[0].expresion_original,
       traduccion: e[0].expresion_traduccion,
       id: e[0].id,
       index_de: e[0].index_de,
@@ -69,17 +69,14 @@ const PanelExpresion = ({
       idReferenciaConsultada +
       "/" +
       refIdReferenciaConsultada;
-    webService(service, "GET", {}, ({ data }) => {
-      //   console.log("response", data.data.response);
+    webService(service, "GET", {}, sesion, (data) => {
+      console.log("response", data.data.response);
       const referencias = fixReferenciasConsultadas(data.data.response);
-      //   let nuevasVisitadas = ultimasVisitadas;
-      //   nuevasVisitadas.push(referencias);
-      //   setUltimasVisitadas(nuevasVisitadas);
-      //   console.log("referencias", referencias);
       if (!localStore.getObjects("ultimasVisitadas")) {
         let referenciasConsultadas = [];
         referenciasConsultadas.push(referencias);
-        console.log("referenciasConsultadas", referenciasConsultadas);
+        //console.log("referenciasConsultadas", referenciasConsultadas);
+        localStore.setObjects("ultimasVisitadas", referenciasConsultadas);
         dispatch({
           type: "SET_ULTIMAS_VISITADAS",
           payload: referenciasConsultadas,
@@ -87,7 +84,8 @@ const PanelExpresion = ({
       } else {
         let referenciasConsultadas = localStore.getObjects("ultimasVisitadas");
         referenciasConsultadas.push(referencias);
-        console.log("referenciasConsultadas", referenciasConsultadas);
+        // console.log("referenciasConsultadas", referenciasConsultadas);
+        localStore.setObjects("ultimasVisitadas", referenciasConsultadas);
         dispatch({
           type: "SET_ULTIMAS_VISITADAS",
           payload: referenciasConsultadas,
@@ -120,6 +118,7 @@ const PanelExpresion = ({
     if (!localStore.getObjects("ultimasVisitadas")) {
       let referenciasConsultadas = [];
       referenciasConsultadas.push(expresionesReferencias);
+      localStore.setObjects("ultimasVisitadas", referenciasConsultadas);
       dispatch({
         type: "SET_ULTIMAS_VISITADAS",
         payload: referenciasConsultadas,
@@ -128,6 +127,7 @@ const PanelExpresion = ({
       //   console.log("ULTIMASVISITADAS", expresionesReferencias);
       let referenciasConsultadas = localStore.getObjects("ultimasVisitadas");
       referenciasConsultadas.push(expresionesReferencias);
+      localStore.setObjects("ultimasVisitadas", referenciasConsultadas);
       dispatch({
         type: "SET_ULTIMAS_VISITADAS",
         payload: referenciasConsultadas,

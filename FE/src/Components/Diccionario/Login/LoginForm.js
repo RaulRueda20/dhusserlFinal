@@ -53,8 +53,6 @@ function LoginForm(props) {
     var service = "/login/usuario";
     var params = JSON.stringify({ userId: correo, password: password });
     if (correo == "" || password == "") {
-      console.log("lololo");
-
       dispatch({
         type: "SET_SNACKBAR",
         payload: {

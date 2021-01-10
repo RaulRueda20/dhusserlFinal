@@ -39,9 +39,7 @@ const App = () => {
   };
 
   useEffect(() => {
-    console.log("open", open);
     if (sesion == null && localStore.getObjects("sesion")) {
-      console.log("CASO A");
       var sesionBuscador = {
         usuario: localStore.getObjects("sesion").user,
         password: localStore.getObjects("sesion").user,
@@ -53,11 +51,11 @@ const App = () => {
     }
     if (
       ultimasVisitadas.length == 0 &&
-      localStore.getObjects("referenciasConsultadas")
+      localStore.getObjects("ultimasVisitadas")
     ) {
       dispatch({
         type: "SET_ULTIMAS_VISITADAS",
-        payload: localStore.getObjects("referenciasConsultadas"),
+        payload: localStore.getObjects("ultimasVisitadas"),
       });
     }
   }, [true]);

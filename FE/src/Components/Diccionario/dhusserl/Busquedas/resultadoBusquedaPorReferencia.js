@@ -29,7 +29,7 @@ const ResultadoBusquedaReferencia = (props) => {
   const { classes } = props;
   const global = useContext(sesionStore);
   const { state } = global;
-  const { lang } = state;
+  const { lang, sesion } = state;
 
   const globalBusqueda = useContext(busquedaStore);
   const { busquedaState } = globalBusqueda;
@@ -94,18 +94,22 @@ const ResultadoBusquedaReferencia = (props) => {
 
   function consultaDePasajes(event) {
     setTimeout(() => {
-      if (document.getElementById("VP" + props.idExpresion) != null) {
-        document.getElementById("VP" + props.idExpresion).scrollIntoView();
+      if (document.getElementById("VP" + idPasaje) != null) {
+        document.getElementById("VP" + idPasaje).scrollIntoView();
       }
     }, 1000);
-    var idExpresion = event.target.id.split("/")[0];
-    var service = "/referencias/obtieneReferencias/" + idExpresion;
-    webService(service, "GET", {}, global.sesion, (data) => {
-      var referencias = fixReferenciasConsultadas(data.data.response);
-      console.log("referencias", referencias);
-      var nuevasVisitadas = global.ultimasVisitadas;
+    const idExpresion = event.target.id.split("/")[0];
+    const service = "/referencias/obtieneReferencias/" + idExpresion;
+    webService(service, "GET", {}, sesion, (data) => {
+      const referencias = fixReferenciasConsultadas(data.data.response);
+      let nuevasVisitadas = ultimasVisitadas;
       nuevasVisitadas.push(referencias);
-      global.setUltimasVisitadas(nuevasVisitadas);
+      localStore.setObjects("ultimasVisitadas", referencias);
+      console.log("Expresiones visitadas", nuevasVisitadas);
+      dispatch({
+        type: "SET_ULTIMAS_VISITADAS",
+        payload: nuevasVisitadas,
+      });
     });
   }
 
