@@ -118,16 +118,6 @@ const MenuDerecho = (props) => {
   // };
 
   useEffect(() => {
-    if (
-      ultimasVisitadas != null &&
-      !localStore.getObjects("ultimasVisitadas")
-    ) {
-      console.log("NO HAY ALGO EN ULTIMAS VISITADAS");
-    } else {
-      console.log("ultimasVisitadas", ultimasVisitadas);
-    }
-    // console.log("fixUltimasVisitadas", fixUltimasVisitadas(ultimasVisitadas));
-    // console.log("ultimasVisitadas", ultimasVisitadas);
     if (expresionSeleccionada) {
       let service = "/vertambien/" + expresionSeleccionada.id;
       webService(service, "GET", {}, sesion, ({ data }) => {
@@ -329,7 +319,7 @@ const MenuDerecho = (props) => {
         </ExpansionPanelSummary>
         <ExpansionPanelDetails className="panelDeDetalleReferenciasConsultadas">
           <ul className="ulDelMenuDerechoReferenciasConsultadas">
-            {ultimasVisitadas.map((consultas, index) => {
+            {ultimasVisitadas.reverse().map((consultas, index) => {
               return (
                 <Link
                   to={`${match.path.slice(0, 20)}/pasaje/${consultas.id}/${

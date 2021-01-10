@@ -18,49 +18,6 @@ const ListaIzquierdaExpresiones = (props) => {
   const { store, attend } = globalExpresion;
   const { expresiones, chunk } = store;
 
-  const clickHandleVista = (event) => {
-    let expresionClickeada = event.currentTarget.id.split("-")[0];
-    let posicionExpresion = event.currentTarget.id.split("-")[1];
-
-    if (!localStore.getObjects("ultimasVisitadas")) {
-      let referenciasConsultadas = [];
-      referenciasConsultadas.push(referencias);
-      //console.log("referenciasConsultadas", referenciasConsultadas);
-      localStore.setObjects("ultimasVisitadas", referenciasConsultadas);
-      dispatch({
-        type: "SET_ULTIMAS_VISITADAS",
-        payload: referenciasConsultadas,
-      });
-    } else {
-      let referenciasConsultadas = localStore.getObjects("ultimasVisitadas");
-      referenciasConsultadas.push(referencias);
-      // console.log("referenciasConsultadas", referenciasConsultadas);
-      localStore.setObjects("ultimasVisitadas", referenciasConsultadas);
-      dispatch({
-        type: "SET_ULTIMAS_VISITADAS",
-        payload: referenciasConsultadas,
-      });
-    }
-    props.setPosicionReferenciasConsultadas(posicionExpresion);
-    props.setIdExpresion(expresionClickeada);
-    props.setExpanded1(true);
-    props.setExpanded2(true);
-  };
-
-  const handleClickPanel = (event) => {
-    let expresionesAbiertas = panelesAbiertos;
-    props.setIdExpresion(event.currentTarget.id);
-    if (expresionesAbiertas.indexOf(event.currentTarget.id) > -1) {
-      expresionesAbiertas.splice(
-        expresionesAbiertas.indexOf(event.currentTarget.id),
-        1
-      );
-    } else {
-      expresionesAbiertas.push(event.currentTarget.id);
-    }
-    setPanelesAbiertos(expresionesAbiertas);
-  };
-
   useEffect(() => {
     if (document.getElementById("listaIzquierda").firstChild != null)
       document.getElementById("listaIzquierda").firstChild.scrollIntoView();
@@ -110,8 +67,6 @@ const ListaIzquierdaExpresiones = (props) => {
               {...props}
               key={expresion.id + "-" + index}
               expresion={expresion}
-              handleClickPanel={handleClickPanel}
-              clickHandleVista={clickHandleVista}
               index={index}
               getJerarquia={props.getJerarquia}
               idReferencias={props.idReferencias}

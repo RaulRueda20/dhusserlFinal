@@ -9,7 +9,6 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 
 // Other req
-import { webService } from "../../../../js/webServices";
 import * as localStore from "../../../../js/localStore";
 import { sesionStore } from "../../../../stores/sesionStore";
 import { expresionesStore } from "../../../../stores/expresionStore";
@@ -17,11 +16,11 @@ import "../../../../css/expresiones.css";
 
 const PanelExpresionIzquierdo = (props) => {
   const global = useContext(sesionStore);
-  const { state, dispatch } = global;
-  const { sesion } = state;
+  const { dispatch } = global;
 
   const globalExpresion = useContext(expresionesStore);
-  const { attend } = globalExpresion;
+  const { store } = globalExpresion;
+  const { expresiones } = store;
 
   const [open, setOpen] = useState(false);
 
@@ -31,76 +30,36 @@ const PanelExpresionIzquierdo = (props) => {
     }
   }, [props.match.params.expresion]);
 
-  const fixReferenciasConsultadas = (expresion) => {
-    let referencia = {
-      clave: expresion[0].clave,
-      expresion: expresion[0].expresion_original,
-      traduccion: expresion[0].expresion_traduccion,
-      id: expresion[0].id,
-      index_de: expresion[0].index_de,
-      index_es: expresion[0].index_es,
-      pretty_e: expresion[0].epretty,
-      pretty_t: expresion[0].tpretty,
-      referencias: [],
-    };
-    referencia.referencias.push({
-      referencia_original: expresion[0].ref_original,
-      referencia_traduccion: expresion[0].ref_traduccion,
-      refid: expresion[0].refid,
-      orden: expresion[0].orden,
-    });
-    return referencia;
-  };
-
   const handleVisitados = (event, index, referencia) => {
     if (
       document
         .getElementById(referencia + "/" + index)
-        .className.indexOf("pasajesVisitados") == -1
+        ?.className.indexOf("pasajesVisitados") == -1
     ) {
       document.getElementById(referencia + "/" + index).className +=
         " pasajesVisitados";
     }
-    let idReferenciaConsultada = props.expresion.id;
-    let refIdReferenciaConsultada = event.currentTarget.id.split("/")[0];
-    let service =
-      "/referencias/obtieneReferenciasIdRefId/" +
-      idReferenciaConsultada +
-      "/" +
-      refIdReferenciaConsultada;
 
-    console.log("service", service);
-    webService(service, "GET", {}, sesion, ({ data }) => {
-      const { response } = data;
-      let referencias = fixReferenciasConsultadas(response);
-      console.log(response);
-      attend({
-        type: "SELECT_EXPRESION",
-        payload: {
-          id: response[0].id,
-          expresion: response[0].expresion_original,
-        },
+    const expresionesReferencias = expresiones[props.index];
+    expresionesReferencias.nombreExpresion = expresionesReferencias.expresion;
+    if (!localStore.getObjects("ultimasVisitadas")) {
+      let referenciasConsultadas = [];
+      referenciasConsultadas.push(expresionesReferencias);
+      localStore.setObjects("ultimasVisitadas", referenciasConsultadas);
+      dispatch({
+        type: "SET_ULTIMAS_VISITADAS",
+        payload: referenciasConsultadas,
       });
-      if (!localStore.getObjects("ultimasVisitadas")) {
-        let referenciasConsultadas = [];
-        referenciasConsultadas.push(referencias);
-        //console.log("referenciasConsultadas", referenciasConsultadas);
-        localStore.setObjects("ultimasVisitadas", referenciasConsultadas);
-        dispatch({
-          type: "SET_ULTIMAS_VISITADAS",
-          payload: referenciasConsultadas,
-        });
-      } else {
-        let referenciasConsultadas = localStore.getObjects("ultimasVisitadas");
-        referenciasConsultadas.push(referencias);
-        // console.log("referenciasConsultadas", referenciasConsultadas);
-        localStore.setObjects("ultimasVisitadas", referenciasConsultadas);
-        dispatch({
-          type: "SET_ULTIMAS_VISITADAS",
-          payload: referenciasConsultadas,
-        });
-      }
-    });
+    } else {
+      let referenciasConsultadas = localStore.getObjects("ultimasVisitadas");
+      referenciasConsultadas.push(expresionesReferencias);
+      localStore.setObjects("ultimasVisitadas", referenciasConsultadas);
+      dispatch({
+        type: "SET_ULTIMAS_VISITADAS",
+        payload: referenciasConsultadas,
+      });
+    }
+    // });
   };
 
   const abrir = (id) => {
@@ -131,7 +90,9 @@ const PanelExpresionIzquierdo = (props) => {
           item
           xs={10}
           id={props.expresion.id + "-" + props.index}
-          onClick={(event) => props.clickHandleVista(event)}
+          onClick={(event) =>
+            handleVisitados(event, 0, props.expresion.referencias[0].refid)
+          }
         >
           <Link
             to={`${props.match.path.slice(0, 20)}/pasaje/${
