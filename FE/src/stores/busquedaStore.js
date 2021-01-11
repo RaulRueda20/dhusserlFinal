@@ -29,6 +29,15 @@ const sesionReducer = (state, action) => {
       return { ...state, busqueda: payload };
     case "SET_TIPO_BUSQUEDA":
       return { ...state, tipoBusqueda: payload };
+    case "RESET_TIPO_BUSQUEDA":
+      return {
+        ...state,
+        expresionesEncontradas: [],
+        posicionPasaje: 0,
+        idPasaje: 0,
+        busqueda: "",
+        tipoBusqueda: payload,
+      };
     case "SET_TIPO_BUSQUEDA_REALIZADA":
       return { ...state, tipoBusquedaRealizada: payload };
     default:

@@ -27,10 +27,10 @@ const ListaBusqueda = (props) => {
     tipoBusqueda,
     posicionPasaje,
     expresionesEncontradas,
+    abierto,
   } = busquedaState;
 
   const clickCambioIdBuscado = (props) => {
-    console.log(props);
     const { currentTarget } = props;
     const { id } = currentTarget;
 

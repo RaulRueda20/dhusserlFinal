@@ -79,14 +79,6 @@ const ResultadoBusquedaExpresion = (props) => {
     return Split;
   };
 
-  const clickChangeLangEsVB = () => {
-    setLang("es");
-  };
-
-  const clickChangeLanALVB = () => {
-    setLang("al");
-  };
-
   const htmlPasajeOriginal = () => {
     const { original } = pasajes;
     return { __html: original };

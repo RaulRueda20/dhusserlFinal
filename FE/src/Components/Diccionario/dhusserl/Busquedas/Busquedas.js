@@ -145,6 +145,7 @@ const Busquedas = (props) => {
             </InputLabel>
             <Input
               id="input-with-icon-adornment"
+              value={busqueda}
               onChange={(event) =>
                 attend({ type: "SET_BUSQUEDA", payload: event.target.value })
               }

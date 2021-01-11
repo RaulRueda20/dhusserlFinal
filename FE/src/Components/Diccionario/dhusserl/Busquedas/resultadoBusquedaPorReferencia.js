@@ -11,6 +11,7 @@ import { webService } from "../../../../js/webServices";
 import { sesionStore } from "../../../../stores/sesionStore";
 import { expresionesAsociadas } from "../../../../js/Language";
 import { busquedaStore } from "../../../../stores/busquedaStore";
+import * as localStore from "../../../../js/localStore";
 
 const resultadoBusquedaRef = {
   typosTitulos: {
@@ -31,7 +32,7 @@ const resultadoBusquedaRef = {
 const ResultadoBusquedaReferencia = (props) => {
   const { classes } = props;
   const global = useContext(sesionStore);
-  const { state } = global;
+  const { state, dispatch } = global;
   const { lang, sesion } = state;
 
   const globalBusqueda = useContext(busquedaStore);
@@ -104,10 +105,12 @@ const ResultadoBusquedaReferencia = (props) => {
     const idExpresion = event.target.id.split("/")[0];
     const service = "/referencias/obtieneReferencias/" + idExpresion;
     webService(service, "GET", {}, sesion, (data) => {
-      const referencias = fixReferenciasConsultadas(data.data.response);
-      let nuevasVisitadas = ultimasVisitadas;
+      let referencias = fixReferenciasConsultadas(data.data.response);
+      let nuevasVisitadas = localStore.getObjects("ultimasVisitadas");
+      console.log(referencias);
+      referencias.nombreExpresion = referencias.expresion;
       nuevasVisitadas.push(referencias);
-      localStore.setObjects("ultimasVisitadas", referencias);
+      localStore.setObjects("ultimasVisitadas", nuevasVisitadas);
       console.log("Expresiones visitadas", nuevasVisitadas);
       dispatch({
         type: "SET_ULTIMAS_VISITADAS",

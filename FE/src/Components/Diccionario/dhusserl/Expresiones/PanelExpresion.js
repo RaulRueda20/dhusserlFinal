@@ -60,8 +60,6 @@ const PanelExpresion = ({
   };
 
   const guardadoDePasajes = (event) => {
-    // console.log("ENTRE AL GUARDADO DE PASAJE");
-    // console.log("ultimas visitadas", ultimasVisitadas);
     let idReferenciaConsultada = expresion.id;
     let refIdReferenciaConsultada = event.currentTarget.id.split("/")[0];
     let service =
@@ -70,7 +68,6 @@ const PanelExpresion = ({
       "/" +
       refIdReferenciaConsultada;
     webService(service, "GET", {}, sesion, (data) => {
-      console.log("response", data.data.response);
       const referencias = fixReferenciasConsultadas(data.data.response);
       if (!localStore.getObjects("ultimasVisitadas")) {
         let referenciasConsultadas = [];
@@ -111,9 +108,7 @@ const PanelExpresion = ({
   //   };
 
   const clickHandleVista = ({ currentTarget }) => {
-    // console.log("ENTRE A CLICKHANDLEVISTA");
     const { id } = currentTarget;
-    // console.log(currentTarget, parseInt(id), expresiones);
     const expresionesReferencias = expresiones[parseInt(id)];
     if (!localStore.getObjects("ultimasVisitadas")) {
       let referenciasConsultadas = [];
