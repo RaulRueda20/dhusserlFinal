@@ -3,8 +3,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 
 //Components
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
+import { Grid, Divider, Typography } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
 
 //Other req
@@ -15,13 +14,17 @@ import { busquedaStore } from "../../../../stores/busquedaStore";
 
 const resultadoBusquedaRef = {
   typosTitulos: {
-    marginTop: "15px !important",
-    marginBottom: "15px !important",
+    paddingTop: "15px !important",
+    paddingBottom: "15px !important",
     textAlign: "center",
+    backgroundColor: "white",
   },
   contenedorReferencia: {
     overflowY: "auto",
-    maxHeight: "calc(91vh - 108px)",
+    maxHeight: "calc(91vh - 90px)",
+  },
+  barraDerecha: {
+    backgroundColor: "rgb(242,242,242)",
   },
 };
 
@@ -115,18 +118,22 @@ const ResultadoBusquedaReferencia = (props) => {
 
   return (
     <Grid container className={classes.contenedorReferencia}>
-      <Grid item xs={12} className="pasajesRenderizadosBusqueda">
+      <Grid item xs={8} className="pasajesRenderizadosBusqueda">
         <Typography variant="h4" className={classes.typosTitulos}>
-          {idPasaje}
+          {/* {idPasaje} */}
         </Typography>
         <div dangerouslySetInnerHTML={htmlPasajeOriginal()}></div>
+        <br />
+        <Divider />
+        <br />
         <div dangerouslySetInnerHTML={htmlPasajeTraduccion()}></div>
       </Grid>
-      <Grid item xs={12} className="pasajesRenderizadosBusquedaPorReferencia">
+      <Grid item xs={4} className={classes.barraDerecha}>
         <Typography variant="h4" className={classes.typosTitulos}>
           {" "}
           {expresionesAsociadas(lang)}
         </Typography>
+        <Divider />
         <ul className="ulExpresionesRelacionadas">
           {props.pasajeSeleccionado.expresiones.map((expresion, index) => (
             <li key={expresion.t_id} className="liExpresionesRelacionadas">

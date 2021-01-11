@@ -21,7 +21,7 @@ import { busquedaStore } from "../../../../stores/busquedaStore";
 const moduloBusqueda = {
   gridSelectorBusqueda: {
     paddingRight: "30px !important",
-    textAlign: "center",
+    // textAlign: "center",
   },
   gridSelectorLetras: {
     paddingRight: "30px !important",
@@ -65,9 +65,9 @@ const ModuloBusquedas = (props) => {
       {expresionesEncontradas.length < 1 ? null : (
         <Grid
           item
-          xs={abierto ? 8 : 1}
-          sm={abierto ? 6 : 1}
-          md={abierto ? 4 : 1}
+          xs={abierto ? 6 : 1}
+          sm={abierto ? 4 : 1}
+          md={abierto ? 3 : 1}
           className={classes.botonLista}
         >
           {!abierto ? (
@@ -85,8 +85,8 @@ const ModuloBusquedas = (props) => {
         <Grid
           item
           xs={abierto ? false : 11}
-          sm={abierto ? 6 : 11}
-          md={abierto ? 8 : 11}
+          sm={abierto ? 8 : 11}
+          md={abierto ? 9 : 11}
         >
           {tipoBusquedaRealizada == "Referencia" ? (
             <ResultadoBusquedaReferencia

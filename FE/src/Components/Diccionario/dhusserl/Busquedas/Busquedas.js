@@ -20,6 +20,7 @@ import { busquedaStore } from "../../../../stores/busquedaStore";
 //Other request
 import { webService } from "../../../../js/webServices";
 import { sesionStore } from "../../../../stores/sesionStore";
+import MenuDerecho from "../Common/MenuDerecho";
 import classNames from "classnames";
 
 //Language
@@ -137,7 +138,7 @@ const Busquedas = (props) => {
   return (
     <form onSubmit={handleChangeBusqueda}>
       <Grid container>
-        <Grid item xs={10}>
+        <Grid item xs={12}>
           <FormControl className={classes.buscador}>
             <InputLabel htmlFor="input-with-icon-adornment">
               {busquedas(lang)}

@@ -591,7 +591,7 @@ hr {
 }
 
 .contenedorBusqueda {
-  background-color: rgb(230, 230, 230);
+  background-color: rgb(242, 242, 242);
   margin: 10px 20px;
   max-height: 74.5vh;
   overflow-y: scroll;
@@ -608,7 +608,7 @@ hr {
 
 .liBusqueda {
   border-bottom: dashed lightgray 1px;
-  padding: 20px !important;
+  padding: 10px !important;
 }
 
 .liBusqueda:hover {
@@ -663,8 +663,8 @@ hr {
 }
 
 .liExpresionesRelacionadas {
-  border-bottom: dashed lightgray 1px;
-  padding: 2px !important;
+  border-bottom: solid lightgray 1px;
+  padding: 10px !important;
 }
 
 .liExpresionesRelacionadas:hover {
@@ -683,7 +683,7 @@ hr {
 }
 
 .ulExpresionesRelacionadas {
-  padding-left: 30px !important;
+  /* padding-left: 30px !important; */
 }
 
 .case {
