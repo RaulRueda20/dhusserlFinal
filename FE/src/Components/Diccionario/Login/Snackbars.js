@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React from "react";
 import ErrorIcon from "@material-ui/icons/Error";
 import WarningIcon from "@material-ui/icons/Warning";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
@@ -6,9 +6,7 @@ import Snackbar from "@material-ui/core/Snackbar";
 import SnackbarContent from "@material-ui/core/SnackbarContent";
 import { amber, green, red } from "@material-ui/core/colors";
 import clsx from "clsx";
-import { makeStyles, useTheme } from "@material-ui/styles";
-
-import { sesionStore } from "../../../stores/sesionStore";
+import { makeStyles } from "@material-ui/styles";
 
 const iconoVariante = {
   success: CheckCircleIcon,
@@ -64,10 +62,6 @@ const EnvoltorioDeSnack = (props) => {
 const Snackbars = (props) => {
   const { snackbar, handleClose } = props;
   const { open, variant, message } = snackbar;
-
-  React.useEffect(() => {
-    console.log(props);
-  }, [true]);
 
   return (
     <Snackbar

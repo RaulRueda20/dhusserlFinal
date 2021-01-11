@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   IconButton,
@@ -15,8 +15,6 @@ import Info from "@material-ui/icons/Info";
 import Exit from "@material-ui/icons/ExitToApp";
 import PageviewIcon from "@material-ui/icons/Pageview";
 
-import classNames from "classnames";
-
 import {
   menuDiccionario,
   menuAcercaDe,
@@ -28,11 +26,11 @@ import {
 
 import { sesionStore } from "../../../stores/sesionStore";
 
-function MenuHeader(props) {
-  const global = React.useContext(sesionStore);
+const MenuHeader = (props) => {
+  const global = useContext(sesionStore);
   const { state } = global;
   const { lang } = state;
-  const [state1, setState1] = React.useState({ anchorEl: null });
+  const [state1, setState1] = useState({ anchorEl: null });
 
   const handleMenu = (event) => {
     setState1({ anchorEl: event.currentTarget });
@@ -109,6 +107,6 @@ function MenuHeader(props) {
       </Menu>
     </div>
   );
-}
+};
 
 export default MenuHeader;

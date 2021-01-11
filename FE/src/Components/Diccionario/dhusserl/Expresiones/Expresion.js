@@ -105,16 +105,6 @@ const Expresion = (props) => {
   };
 
   useEffect(() => {
-    // console.log("ULTIMASVISITADAS", ultimasVisitadas);
-    // setReferenciasConsultadasVista(ultimasVisitadas);
-    // if (
-    //   (ultimasVisitadas != null) &
-    //   localStore.getObjects("ultimasVisitadas")
-    // ) {
-    //   console.log("ultimasVisitadas Context", ultimasVisitadas);
-    //   // setReferenciasConsultadasVista(ultimasVisitadas);
-    // }
-    // console.log("ultimasVisitadas", ultimasVisitadas);
     props.setFlagCambio("expresiones");
     setLoading(true);
     if (document.getElementById("listaIzquierda").firstChild != null)
@@ -137,7 +127,6 @@ const Expresion = (props) => {
   }, [letra, langLista, ultimasVisitadas]);
 
   const getJerarquia = (event) => {
-    console.log(event.currentTarget.id);
     attend({
       type: "SELECT_EXPRESION",
       payload: {

@@ -42,8 +42,6 @@ const ListaExpresiones = ({
   const { store, attend } = globalExpresion;
   const { expresiones, chunk } = store;
 
-  // console.log(chunk)
-
   const classes = useStyles();
   const [panelesAbiertos, setPanelesAbiertos] = useState([]);
 

@@ -52,12 +52,8 @@ const ResultadoBusquedaExpresion = (props) => {
     original: "",
     traduccion: "",
   });
-  const [lang, setLang] = useState("al");
 
   useEffect(() => {
-    console.log("Expresion", expresion);
-    console.log("traduccion", traduccion);
-
     globalExpresion.attend({
       type: "SELECT_EXPRESION",
       payload: {
@@ -69,7 +65,7 @@ const ResultadoBusquedaExpresion = (props) => {
       original: resaltarBusqueda(referencias[0].ref_def_de, busqueda),
       traduccion: resaltarBusqueda(referencias[0].ref_def_es, busqueda),
     });
-  }, [idPasaje, lang, props.expresionSeleccionada]);
+  }, [idPasaje, props.expresionSeleccionada]);
 
   const resaltarBusqueda = (string, separador) => {
     const split = string.split(separador);
@@ -90,7 +86,6 @@ const ResultadoBusquedaExpresion = (props) => {
   };
 
   const getJerarquia = (event) => {
-    console.log(event.currentTarget.id);
     attend({
       type: "SELECT_EXPRESION",
       payload: {

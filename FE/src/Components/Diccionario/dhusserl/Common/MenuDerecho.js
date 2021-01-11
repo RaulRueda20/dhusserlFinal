@@ -29,7 +29,6 @@ import { webService } from "../../../../js/webServices";
 
 import { sesionStore } from "../../../../stores/sesionStore";
 import { expresionesStore } from "../../../../stores/expresionStore";
-import * as localStore from "../../../../js/localStore";
 
 const ExpansionPanel = withStyles({
   root: {
@@ -90,32 +89,6 @@ const MenuDerecho = (props) => {
   const [listaVerTambien, setListaVerTambien] = useState([]);
   const [hijos, setHijos] = useState([]);
   const [padres, setPadres] = useState([]);
-  const [ultimasVisitadas1, setUltimasVisitadas1] = useState([]);
-
-  // const fixUltimasVisitadas = (consultadas) => {
-  //   let expresionVisitada = [];
-  //   for (let i in consultadas) {
-  //     console.log("nombreExpresion en el fix", consultadas[i].nombreExpresion);
-  //     if (consultadas[i].nombreExpresion) {
-  //       expresionVisitada = {
-  //         clave: consultadas[0].clave,
-  //         expresion: consultadas[0].nombreExpresion,
-  //         traduccion: consultadas[0].traduccion,
-  //         id: consultadas[0].id,
-  //         pretty_e: consultadas[0].pretty_e,
-  //         pretty_t: consultadas[0].pretty_t,
-  //         referencias: [],
-  //       };
-  //       expresionVisitada.referencias.push({
-  //         referencia_original: consultadas[0].ref_original,
-  //         referencia_traduccion: consultadas[0].ref_traduccion,
-  //         refid: consultadas[0].refid,
-  //       });
-  //     }
-  //   }
-  //   console.log(expresionVisitada.expresion);
-  //   return expresionVisitada;
-  // };
 
   useEffect(() => {
     if (expresionSeleccionada) {
@@ -131,7 +104,6 @@ const MenuDerecho = (props) => {
           {},
           sesion,
           (data) => {
-            // console.log("hijo", data.data.response);
             setHijos(data.data.response);
           }
         );
@@ -144,7 +116,6 @@ const MenuDerecho = (props) => {
           {},
           sesion,
           (data2) => {
-            // console.log("padre", data2.data.response);
             setPadres(data2.data.response);
           }
         );

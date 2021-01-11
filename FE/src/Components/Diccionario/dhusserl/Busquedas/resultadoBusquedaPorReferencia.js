@@ -67,7 +67,6 @@ const ResultadoBusquedaReferencia = (props) => {
   }
 
   function htmlPasajeOriginal() {
-    console.log("pasajes.original", pasajes.original);
     return { __html: pasajes.original };
   }
 
@@ -107,11 +106,9 @@ const ResultadoBusquedaReferencia = (props) => {
     webService(service, "GET", {}, sesion, (data) => {
       let referencias = fixReferenciasConsultadas(data.data.response);
       let nuevasVisitadas = localStore.getObjects("ultimasVisitadas");
-      console.log(referencias);
       referencias.nombreExpresion = referencias.expresion;
       nuevasVisitadas.push(referencias);
       localStore.setObjects("ultimasVisitadas", nuevasVisitadas);
-      console.log("Expresiones visitadas", nuevasVisitadas);
       dispatch({
         type: "SET_ULTIMAS_VISITADAS",
         payload: nuevasVisitadas,

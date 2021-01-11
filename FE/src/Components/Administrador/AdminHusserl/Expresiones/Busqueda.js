@@ -72,18 +72,15 @@ const Busqueda = (props) => {
   };
 
   const handleChangeBusquedaExpresiones = (event) => {
-    console.log("ENTRE A ESTA MADRE");
     event.preventDefault();
     var servicebl =
       "/referencias/busquedaExpresionPorLetraAdmin" + "/" + props.letraMain;
-    console.log("servicebl", servicebl);
     webService(
       servicebl,
       "POST",
       { parametro: busqueda, case: insensitiveCase },
       sesion,
       ({ data }) => {
-        console.log(data.response);
         props.setExpresiones(fixExpresiones(data.response));
       }
     );

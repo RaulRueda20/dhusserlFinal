@@ -1,34 +1,46 @@
-import React, { useContext, useState } from 'react';
-import { TextField, Grid, Typography, Button } from '@material-ui/core';
-import { withStyles } from '@material-ui/styles';
+import React, { useContext, useState } from "react";
+import { TextField, Grid, Typography, Button } from "@material-ui/core";
+import { withStyles } from "@material-ui/styles";
 
-import { registro, nombre, apellido, escuela, puesto, pais, email, contra, comprobacionContra, ingresar, registrado, aqui } from '../../../js/Language';
+import {
+  registro,
+  nombre,
+  apellido,
+  escuela,
+  puesto,
+  pais,
+  email,
+  contra,
+  comprobacionContra,
+  ingresar,
+  registrado,
+  aqui,
+} from "../../../js/Language";
 
-import { loginService } from '../../../js/webServices';
-import * as localStore from '../../../js/localStore';
-import { sesionStore } from '../../../stores/sesionStore';
+import { loginService } from "../../../js/webServices";
+import * as localStore from "../../../js/localStore";
+import { sesionStore } from "../../../stores/sesionStore";
 
 const stylesReg = {
   TextField1: {
-    justify: 'center',
+    justify: "center",
     width: "100%",
-
   },
   TextField2: {
-    justify: 'center',
+    justify: "center",
     width: "100%",
   },
   divDelForm: {
     paddingBottom: "15vh",
-    paddingTop: "7.5vh"
-  }
-}
+    paddingTop: "7.5vh",
+  },
+};
 
 const RegistroForm = (props) => {
   const { classes, setLogin } = props;
   const global = useContext(sesionStore);
-  const { state, dispatch } = global
-  const { lang } = state
+  const { state, dispatch } = global;
+  const { lang } = state;
 
   const [nuevoNombre, setNuevoNombre] = useState("");
   const [nuevoApellido, setNuevoApellido] = useState("");
@@ -41,55 +53,92 @@ const RegistroForm = (props) => {
 
   const onFormSubmit = (event) => {
     event.preventDefault();
-    dispatch({ type: 'START_LOADING' })
+    dispatch({ type: "START_LOADING" });
     var params = {
-      'nombre': nuevoNombre,
-      'apellidos': nuevoApellido,
-      'email': nuevoCorreo,
-      'institucion': nuevaEscuela,
-      'grado': nuevoPuesto,
-      'pais': nuevoPais,
-      'password': nuevoPassword
-    }
+      nombre: nuevoNombre,
+      apellidos: nuevoApellido,
+      email: nuevoCorreo,
+      institucion: nuevaEscuela,
+      grado: nuevoPuesto,
+      pais: nuevoPais,
+      password: nuevoPassword,
+    };
     if (nuevoPassword == repassword) {
-      var service = "/login/registrar"
+      var service = "/login/registrar";
       loginService(service, "POST", JSON.stringify(params), (data) => {
-        console.log("error", data.error)
         if (data.data.status == 200) {
-          var serviceh = "/login/sendRegistroEmail/" + localStore.getItem("es")
-          loginService(serviceh, "GET", { "nombre": nuevoNombre, "email": nuevoCorreo, "pass": nuevoPassword }, (data) => {
-            console.log("data", JSON.parse(data.config.data))
-            dispatch({ type: 'SET_ALERT', payload: { mensaje: "Operación Exitosa", open: true, tituloAlerta: "Operación Concluida con Exito" } })
-            dispatch({
-              type: "INICIAR_SESION",
-              payload: { "usuario": nuevoCorreo, "password": nuevoPassword }
-            })
-          })
+          var serviceh = "/login/sendRegistroEmail/" + localStore.getItem("es");
+          loginService(
+            serviceh,
+            "GET",
+            { nombre: nuevoNombre, email: nuevoCorreo, pass: nuevoPassword },
+            (data) => {
+              dispatch({
+                type: "SET_ALERT",
+                payload: {
+                  mensaje: "Operación Exitosa",
+                  open: true,
+                  tituloAlerta: "Operación Concluida con Exito",
+                },
+              });
+              dispatch({
+                type: "INICIAR_SESION",
+                payload: { usuario: nuevoCorreo, password: nuevoPassword },
+              });
+            }
+          );
         } else if (data.data.status == 501) {
-          dispatch({ type: 'SET_ALERT', payload: { mensaje: "El correo ya se encuentra registrado", open: true, tituloAlerta: "Alerta de Error" } })
+          dispatch({
+            type: "SET_ALERT",
+            payload: {
+              mensaje: "El correo ya se encuentra registrado",
+              open: true,
+              tituloAlerta: "Alerta de Error",
+            },
+          });
         } else if (data.data.status == 500) {
-          dispatch({ type: 'SET_ALERT', payload: { mensaje: "Hubo un error al enviar el correo de notificación", open: true, tituloAlerta: "Alerta de Error" } })
+          dispatch({
+            type: "SET_ALERT",
+            payload: {
+              mensaje: "Hubo un error al enviar el correo de notificación",
+              open: true,
+              tituloAlerta: "Alerta de Error",
+            },
+          });
         }
-      })
+      });
     } else {
-      dispatch({ type: 'SET_ALERT', payload: { mensaje: "El password no coincide", open: true, tituloAlerta: "Alerta de Error" } })
+      dispatch({
+        type: "SET_ALERT",
+        payload: {
+          mensaje: "El password no coincide",
+          open: true,
+          tituloAlerta: "Alerta de Error",
+        },
+      });
     }
-    dispatch({ type: 'STOP_LOADING' })
-  }
+    dispatch({ type: "STOP_LOADING" });
+  };
 
   return (
     <form onSubmit={onFormSubmit} className={classes.divDelForm}>
-      <Typography variant="h3" align="center" gutterBottom >
+      <Typography variant="h3" align="center" gutterBottom>
         {registro(lang)}
       </Typography>
-      <Grid className="gridsF" container direction="column" alignItems="center" spacing={2}>
+      <Grid
+        className="gridsF"
+        container
+        direction="column"
+        alignItems="center"
+        spacing={2}
+      >
         <Grid item xs={12} sm={8} lg={7} className="grids">
           <TextField
             label={nombre(lang)}
             id="custom-css-outlined-input"
             margin="normal"
             value={nuevoNombre}
-            onChange={e => setNuevoNombre(e.target.value)}
+            onChange={(e) => setNuevoNombre(e.target.value)}
             className={classes.TextField1}
           />
         </Grid>
@@ -98,7 +147,7 @@ const RegistroForm = (props) => {
             label={apellido(lang)}
             id="custom-css-outlined-input"
             value={nuevoApellido}
-            onChange={e => setNuevoApellido(e.target.value)}
+            onChange={(e) => setNuevoApellido(e.target.value)}
             className={classes.TextField2}
           />
         </Grid>
@@ -107,7 +156,7 @@ const RegistroForm = (props) => {
             label={escuela(lang)}
             id="custom-css-outlined-input"
             value={nuevaEscuela}
-            onChange={e => setNuevaEscuela(e.target.value)}
+            onChange={(e) => setNuevaEscuela(e.target.value)}
             className={classes.TextField2}
           />
         </Grid>
@@ -116,7 +165,7 @@ const RegistroForm = (props) => {
             label={puesto(lang)}
             id="custom-css-outlined-input"
             value={nuevoPuesto}
-            onChange={e => setNuevoPuesto(e.target.value)}
+            onChange={(e) => setNuevoPuesto(e.target.value)}
             className={classes.TextField2}
           />
         </Grid>
@@ -125,7 +174,7 @@ const RegistroForm = (props) => {
             label={pais(lang)}
             id="custom-css-outlined-input"
             value={nuevoPais}
-            onChange={e => setNuevoPais(e.target.value)}
+            onChange={(e) => setNuevoPais(e.target.value)}
             className={classes.TextField2}
           />
         </Grid>
@@ -134,7 +183,7 @@ const RegistroForm = (props) => {
             label={email(lang)}
             id="custom-css-outlined-input"
             value={nuevoCorreo}
-            onChange={e => setNuevoCorreo(e.target.value)}
+            onChange={(e) => setNuevoCorreo(e.target.value)}
             className={classes.TextField2}
             type="email"
           />
@@ -144,7 +193,7 @@ const RegistroForm = (props) => {
             label={contra(lang)}
             id="custom-css-outlined-input"
             value={nuevoPassword}
-            onChange={e => setNuevoPassword(e.target.value)}
+            onChange={(e) => setNuevoPassword(e.target.value)}
             className={classes.TextField2}
             type="password"
           />
@@ -154,7 +203,7 @@ const RegistroForm = (props) => {
             label={comprobacionContra(lang)}
             id="custom-css-outlined-input"
             value={repassword}
-            onChange={e => setRepassword(e.target.value)}
+            onChange={(e) => setRepassword(e.target.value)}
             className={classes.TextField2}
             type="password"
           />
@@ -176,13 +225,16 @@ const RegistroForm = (props) => {
 
         <Grid item xs={12} sm={8} lg={7}>
           <Typography variant="h4">
-            {registrado(lang)} <a className="links" onClick={() => setLogin(true)}> {aqui(lang)} </a>
+            {registrado(lang)}{" "}
+            <a className="links" onClick={() => setLogin(true)}>
+              {" "}
+              {aqui(lang)}{" "}
+            </a>
           </Typography>
         </Grid>
       </Grid>
     </form>
-  )
-}
+  );
+};
 
 export default withStyles(stylesReg)(RegistroForm);
-

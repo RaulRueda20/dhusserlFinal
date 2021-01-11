@@ -52,7 +52,6 @@ const Busquedas = (props) => {
     let posicionActual = -1;
     let pasajeActual = "";
     let i = 0;
-    // console.log("pasajes", pasajes.length)
     while (i < pasajes.length) {
       if (pasajeActual != pasajes[i].ref_id) {
         posicionActual++;

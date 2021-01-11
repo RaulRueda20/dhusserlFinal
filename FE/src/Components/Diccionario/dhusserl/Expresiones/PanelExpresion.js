@@ -30,7 +30,7 @@ const PanelExpresion = ({
 }) => {
   const global = useContext(sesionStore);
   const { state, dispatch } = global;
-  const { sesion, ultimasVisitadas } = state;
+  const { sesion } = state;
 
   const globalExpresion = useContext(expresionesStore);
   const { store } = globalExpresion;
@@ -72,7 +72,6 @@ const PanelExpresion = ({
       if (!localStore.getObjects("ultimasVisitadas")) {
         let referenciasConsultadas = [];
         referenciasConsultadas.push(referencias);
-        //console.log("referenciasConsultadas", referenciasConsultadas);
         localStore.setObjects("ultimasVisitadas", referenciasConsultadas);
         dispatch({
           type: "SET_ULTIMAS_VISITADAS",
@@ -81,7 +80,6 @@ const PanelExpresion = ({
       } else {
         let referenciasConsultadas = localStore.getObjects("ultimasVisitadas");
         referenciasConsultadas.push(referencias);
-        // console.log("referenciasConsultadas", referenciasConsultadas);
         localStore.setObjects("ultimasVisitadas", referenciasConsultadas);
         dispatch({
           type: "SET_ULTIMAS_VISITADAS",
@@ -103,10 +101,6 @@ const PanelExpresion = ({
     return { __html: pretty_e + "<p> // </p>" + pretty_t };
   };
 
-  //   const htmlPrettyT = () => {
-  //     return { __html: expresion.pretty_t + "<p> // </p>" + expresion.pretty_e };
-  //   };
-
   const clickHandleVista = ({ currentTarget }) => {
     const { id } = currentTarget;
     const expresionesReferencias = expresiones[parseInt(id)];
@@ -119,7 +113,6 @@ const PanelExpresion = ({
         payload: referenciasConsultadas,
       });
     } else {
-      //   console.log("ULTIMASVISITADAS", expresionesReferencias);
       let referenciasConsultadas = localStore.getObjects("ultimasVisitadas");
       referenciasConsultadas.push(expresionesReferencias);
       localStore.setObjects("ultimasVisitadas", referenciasConsultadas);
