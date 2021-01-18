@@ -1294,14 +1294,29 @@ const expresionesAsociadas = (lang) => {
   switch (lang) {
     case "es":
       return "Expresiones Asociadas al Pasaje";
-    case "en":
-      return "Mit dem Textauszug verbundene Ausdrücke";
-    case "fr":
-      return "Expressions linked to the passage";
     case "al":
+      return "Mit dem Textauszug verbundene Ausdrücke";
+    case "en":
+      return "Expressions linked to the passage";
+    case "fr":
       return "Expressions liées au passage";
     case "ca":
       return "Expressions associades a el passatge";
+  }
+};
+
+const recuperandoInformacion = (lang) => {
+  switch (lang) {
+    case "es":
+      return "Recuperando información...";
+    case "en":
+      return "Recovering information...";
+    case "fr":
+      return "Récupération d'informations ...";
+    case "al":
+      return "Informationen wiederherstellen...";
+    case "ca":
+      return "Recuperant informació ...";
   }
 };
 
@@ -1393,4 +1408,5 @@ export {
   InstitutoF,
   UNAM,
   expresionesAsociadas,
+  recuperandoInformacion,
 };

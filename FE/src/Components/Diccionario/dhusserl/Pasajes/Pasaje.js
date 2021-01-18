@@ -9,7 +9,7 @@ import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 
 //Components
 import ListaLetras from "../Expresiones/ListaLetras";
-import BusquedaVP from "./BusquedaVP";
+import Busqueda from "../Common/Busqueda";
 import ListaIzquierdaExpresion from "./ListaIzquierdaExpresion";
 import BusquedaEscondida from "./BusquedaEscondida";
 import ContenidoPasaje from "./ContenidoPasaje";
@@ -30,7 +30,7 @@ const Pasaje = (props) => {
   const { match } = props;
 
   const global = useContext(sesionStore);
-  const { state } = global;
+  const { state, dispatch } = global;
   const { sesion, langLista, letra } = state;
 
   const globalExpresion = useContext(expresionesStore);
@@ -142,8 +142,8 @@ const Pasaje = (props) => {
         attend({
           type: "START_EXPRESIONES",
           payload: {
-            expresiones: fixReferencias(data.response),
-            chunk: fixReferencias(data.response).slice(0, 50),
+            expresiones: fixReferencias(response),
+            chunk: fixReferencias(response).slice(0, 50),
           },
         });
         setLoading(false);
@@ -165,16 +165,19 @@ const Pasaje = (props) => {
       setExpanded1(true);
       setExpanded2(true);
       if (response[0] == null) {
-        setLetra(letra);
+        dispatch({
+          type: "SET_LETRA",
+          payload: letra,
+        });
         setOpenModalN(true);
-        setReferenciaSeleccionada(null);
+        setReferenciaSeleccionada("none");
       }
-
+      console.log(response);
       attend({
         type: "SELECT_EXPRESION",
         payload: {
-          id: response[0].id,
-          expresion: response[0].expresion_original,
+          id: idDeExpresion,
+          expresion: response[0]?.expresion_original ?? "",
         },
       });
     });
@@ -247,9 +250,10 @@ const Pasaje = (props) => {
           ])}
         >
           <Hidden xsDown>
-            <BusquedaVP
+            <Busqueda
               setIdExpresion={setIdExpresion}
               busqueda={busqueda}
+              bandera={true}
               setBusqueda={setBusqueda}
               setFlagDeBusqueda={setFlagDeBusqueda}
               setModalDebusquedas={setModalDebusquedas}

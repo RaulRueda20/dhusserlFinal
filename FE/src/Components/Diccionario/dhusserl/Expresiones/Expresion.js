@@ -15,7 +15,7 @@ import LetraIndice from "./LetraIndice";
 import BanderaButon from "./BanderaButon";
 import ListaExpresiones from "./ListaExpresiones";
 import MenuDerecho from "../Common/MenuDerecho";
-import Busqueda from "./Busqueda";
+import Busqueda from "../Common/Busqueda";
 import BusquedaAbajo from "./BusquedaAbajo";
 import ModalDeBienvenida from "./ModalDeBienvenida";
 import MenuBajo from "./MenuBajo";
@@ -23,7 +23,6 @@ import ModalDeNulos from "../ModalDeNulos";
 import ModalDeBusqueda from "../ModalDeBusqueda";
 import ModalCaracterInvalido from "../ModalCaracterInvalido";
 import ModalNumeros from "../ModalNumeros";
-import Snackbars from "../../Login/Snackbars";
 
 //Other req
 import { webService } from "../../../../js/webServices";
@@ -54,15 +53,6 @@ const Expresion = (props) => {
   );
   const [modalNumeros, setModalNumeros] = useState(false);
   const [openModalN, setOpenModalN] = useState(false);
-  const [snackbar, setSnackbar] = useState({
-    open: false,
-    variant: "",
-    message: "",
-  });
-  // const [
-  //   referenciasConsultadasVista,
-  //   setReferenciasConsultadasVista,
-  // ] = useState([]);
 
   const fixReferencias = (referencias) => {
     var expresiones = [];
@@ -142,10 +132,6 @@ const Expresion = (props) => {
     setMenuEscondido(!menuEscondido);
   };
 
-  const handleClose = () => {
-    setSnackbar({ open: false, variant: snackbar.variant, message: "" });
-  };
-
   return (
     <Fragment>
       <Grid container>
@@ -205,6 +191,7 @@ const Expresion = (props) => {
           <Hidden xsDown>
             <Busqueda
               busqueda={busqueda}
+              bandera={false}
               setBusqueda={setBusqueda}
               setLoading={setLoading}
               setModalDebusquedas={setModalDebusquedas}
@@ -261,7 +248,6 @@ const Expresion = (props) => {
         modalNumeros={modalNumeros}
         setModalNumeros={setModalNumeros}
       />
-      <Snackbars snackbar={snackbar} handleClose={handleClose} />
     </Fragment>
   );
 };

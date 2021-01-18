@@ -10,8 +10,13 @@ import GetAppIcon from "@material-ui/icons/GetApp";
 import BanderaPasajes from "./BanderaPasajes";
 
 //Other req
-import { descarga, noContienePasajes } from "../../../../js/Language";
+import {
+  descarga,
+  noContienePasajes,
+  recuperandoInformacion,
+} from "../../../../js/Language";
 import { sesionStore } from "../../../../stores/sesionStore";
+import { expresionesStore } from "../../../../stores/expresionStore";
 
 const useStyles = makeStyles((theme) => ({
   gridTituloPasaje: {
@@ -49,6 +54,10 @@ const PasajesRenderizados = (props) => {
   const { state } = global;
   const { lang, pasajeLang } = state;
 
+  const globalExpresion = useContext(expresionesStore);
+  const { store, attend } = globalExpresion;
+  // const {};
+
   const theme = useTheme();
   const [pasajeRenderizado, setPasajeRenderizado] = useState({
     original: "",
@@ -73,7 +82,10 @@ const PasajesRenderizados = (props) => {
   };
 
   useEffect(() => {
-    if (props.referenciaSeleccionada != null) {
+    if (
+      props.referenciaSeleccionada != "none" &&
+      props.referenciaSeleccionada != null
+    ) {
       setPasajeRenderizado({
         original: resaltarBusqueda(
           props.referenciaSeleccionada.pasaje_original,
@@ -86,10 +98,15 @@ const PasajesRenderizados = (props) => {
       });
       setEpretty(props.referenciaSeleccionada.epretty);
       setTpretty(props.referenciaSeleccionada.tpretty);
-    } else {
+    } else if (props.referenciaSeleccionada == "none") {
       setPasajeRenderizado({
         original: noContienePasajes(lang),
         traduccion: noContienePasajes(lang),
+      });
+    } else {
+      setPasajeRenderizado({
+        original: recuperandoInformacion(lang),
+        traduccion: recuperandoInformacion(lang),
       });
     }
 

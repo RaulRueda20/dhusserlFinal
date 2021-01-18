@@ -66,7 +66,7 @@ const MenuHeader = (props) => {
         onClose={closeMenu}
         open={Boolean(state1.anchorEl)}
       >
-        <Link to={`${props.match.url}/diccionario`}>
+        <Link to={`${props.match.url}/expresiones`}>
           <MenuItem onClick={closeMenu}>
             <ListItemIcon>
               <Book />

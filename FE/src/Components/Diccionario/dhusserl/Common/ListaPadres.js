@@ -11,6 +11,8 @@ import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import Jerarquia from "@material-ui/icons/DeviceHub";
 
+import * as localStore from "../../../../js/localStore";
+
 // Other req
 import { webService } from "../../../../js/webServices";
 import { sesionStore } from "../../../../stores/sesionStore";
@@ -28,7 +30,7 @@ const ITEM_HEIGHT = 48;
 const ListaPadresExpresion = (props) => {
   const global = useContext(sesionStore);
   const { state, dispatch } = global;
-  const { langLista, lang, sesion, ultimasVisitadas } = state;
+  const { langLista, lang, sesion, ultimasVisitadas, letra } = state;
 
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -68,6 +70,7 @@ const ListaPadresExpresion = (props) => {
     let referencia = {
       clave: expresion[0].clave,
       expresion: expresion[0].expresion_original,
+      nombreExpresion: expresion[0].expresion_original,
       traduccion: expresion[0].expresion_traduccion,
       id: expresion[0].id,
       index_de: expresion[0].index_de,
@@ -86,11 +89,12 @@ const ListaPadresExpresion = (props) => {
   };
 
   const handleFlagLetraMain = (event) => {
-    setTimeout(() => {
-      if (document.getElementById("VP" + props.idExpresion) != null) {
-        document.getElementById("VP" + props.idExpresion).scrollIntoView();
-      }
-    }, 1000);
+    if (letra != event.target.innerHTML[0].toUpperCase()) {
+      dispatch({
+        type: "SET_LETRA",
+        payload: event.target.innerHTML[0].toUpperCase(),
+      });
+    }
     const idExpresion = event.target.id.split("/")[0];
     const service = "/referencias/obtieneReferencias/" + idExpresion;
     webService(service, "GET", {}, sesion, ({ data }) => {
@@ -98,6 +102,7 @@ const ListaPadresExpresion = (props) => {
       const referencias = fixReferenciasConsultadas(response);
       let nuevasVisitadas = ultimasVisitadas;
       nuevasVisitadas.push(referencias);
+      localStore.setObjects("ultimasVisitadas", nuevasVisitadas);
       dispatch({
         type: "SET_ULTIMAS_VISITADAS",
         payload: nuevasVisitadas,

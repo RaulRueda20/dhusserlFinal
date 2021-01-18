@@ -10,8 +10,8 @@ import {
   FormControl,
   IconButton,
   Tooltip,
+  Button,
   Grid,
-  Snackbar,
 } from "@material-ui/core";
 import Icon from "@mdi/react";
 import { mdiFormatLetterCase } from "@mdi/js";
@@ -27,9 +27,14 @@ import classNames from "classnames";
 //Language
 import {
   busquedas,
+  toolTipIdiomaDeLaLista,
   distincionMayusyMinus,
   letraNoCoincide,
 } from "../../../../js/Language";
+
+//Imagen
+import es from "../../../../Imagenes/spain.png";
+import al from "../../../../Imagenes/germany.png";
 
 const useStyles = createStyles(() => ({
   contenedor: {
@@ -37,6 +42,14 @@ const useStyles = createStyles(() => ({
   },
   switch: {
     textAlign: "center",
+  },
+  imagenesBandera: {
+    width: "25px !important",
+    height: "15px !important",
+    fontSize: "0px",
+    minHeight: "0px",
+    minWidth: "0px !important",
+    padding: "0px !important",
   },
 }));
 
@@ -48,10 +61,11 @@ const Busqueda = (props) => {
     setModalNumeros,
     setLoading,
     setBusqueda,
+    bandera,
   } = props;
   const classes = useStyles();
   const global = useContext(sesionStore);
-  const { state } = global;
+  const { state, dispatch } = global;
   const { letra, lang, langLista, sesion } = state;
 
   const globalExpresion = useContext(expresionesStore);
@@ -59,13 +73,23 @@ const Busqueda = (props) => {
   const { expresiones } = store;
 
   const [insensitiveCase, setInsensitiveCase] = useState(false);
-  const [snack, setSnack] = useState({ open: false, text: "" });
 
   const ChunkC = (e) => {
     attend({
-      type: "SET_CHUNK",
-      payload: e,
+      type: "START_EXPRESIONES",
+      payload: {
+        expresiones: e,
+        chunk: e.slice(0, 50),
+      },
     });
+  };
+
+  const clickChangeLanguageEsVP = () => {
+    dispatch({ type: "SET_LANGLISTA", payload: "es" });
+  };
+
+  const clickChangeLanguageAlVP = () => {
+    dispatch({ type: "SET_LANGLISTA", payload: "al" });
   };
 
   const handleChangeBusquedaExpresiones = (event) => {
@@ -99,9 +123,13 @@ const Busqueda = (props) => {
               if (letra == letraCapital) {
                 ChunkC(data.response);
               } else {
-                setSnack({
-                  open: true,
-                  text: letraNoCoincide(lang),
+                dispatch({
+                  type: "SET_SNACKBAR",
+                  payload: {
+                    open: true,
+                    variant: "error",
+                    text: letraNoCoincide(lang),
+                  },
                 });
               }
             }
@@ -125,9 +153,13 @@ const Busqueda = (props) => {
               if (letra == letraCapital) {
                 ChunkC(data.response);
               } else {
-                setSnack({
-                  open: true,
-                  text: letraNoCoincide(lang),
+                dispatch({
+                  type: "SET_SNACKBAR",
+                  payload: {
+                    open: true,
+                    variant: "error",
+                    text: letraNoCoincide(lang),
+                  },
                 });
               }
             }
@@ -144,14 +176,16 @@ const Busqueda = (props) => {
     setInsensitiveCase(!insensitiveCase);
   };
 
-  const handleClose = () => {
-    setSnack({ open: false, text: "" });
-  };
-
   return (
     <form onSubmit={handleChangeBusquedaExpresiones}>
-      <Grid container className={classes.contenedor}>
-        <Grid item xs={10}>
+      <Grid
+        container
+        className={classes.contenedor}
+        justify="center"
+        alignItems="center"
+        alignContent="center"
+      >
+        <Grid item xs={bandera ? 8 : 10}>
           <FormControl className="busquedaEnExpresiones">
             <InputLabel htmlFor="input-with-icon-adornment">
               {busquedas(lang)}
@@ -169,7 +203,12 @@ const Busqueda = (props) => {
             />
           </FormControl>
         </Grid>
-        <Grid item xs={2} className={classes.switch}>
+        <Grid
+          item
+          xs={2}
+          className={classes.switch}
+          style={{ textAlign: "center" }}
+        >
           <Tooltip title={distincionMayusyMinus(lang)}>
             <IconButton
               onClick={(e) => handleInsensitiveCase(e)}
@@ -190,17 +229,28 @@ const Busqueda = (props) => {
             </IconButton>
           </Tooltip>
         </Grid>
+        {bandera ? (
+          <Grid item xs={2} style={{ textAlign: "center" }} id="banderita">
+            <Tooltip title={toolTipIdiomaDeLaLista(lang)}>
+              {langLista == "es" ? (
+                <Button
+                  className={classes.imagenesBandera}
+                  onClick={clickChangeLanguageAlVP}
+                >
+                  <img className="banderaBusquedaPasajes" src={al} />
+                </Button>
+              ) : (
+                <Button
+                  className={classes.imagenesBandera}
+                  onClick={clickChangeLanguageEsVP}
+                >
+                  <img className="banderaBusquedaPasajes" src={es} />
+                </Button>
+              )}
+            </Tooltip>
+          </Grid>
+        ) : null}
       </Grid>
-      <Snackbar
-        anchorOrigin={{ vertical: "top", horizontal: "left" }}
-        key={`top,left`}
-        open={snack.open}
-        onClose={handleClose}
-        ContentProps={{
-          "aria-describedby": "message-id",
-        }}
-        message={<span id="message-id">{snack.text}</span>}
-      />
     </form>
   );
 };

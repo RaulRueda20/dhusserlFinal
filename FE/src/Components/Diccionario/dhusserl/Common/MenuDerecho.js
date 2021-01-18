@@ -15,6 +15,7 @@ import classNames from "classnames";
 // Components
 import ListaPadresExpresion from "./ListaPadres";
 import ListaHijosExpresion from "./ListaHijos";
+import UltimasVisitadas from "./UltimasVisitadas";
 
 // Other req
 import {
@@ -29,6 +30,7 @@ import { webService } from "../../../../js/webServices";
 
 import { sesionStore } from "../../../../stores/sesionStore";
 import { expresionesStore } from "../../../../stores/expresionStore";
+import * as localStore from "../../../../js/localStore";
 
 const ExpansionPanel = withStyles({
   root: {
@@ -80,7 +82,7 @@ const MenuDerecho = (props) => {
   } = props;
   const global = useContext(sesionStore);
   const { state, dispatch } = global;
-  const { sesion, ultimasVisitadas, lang, langLista } = state;
+  const { sesion, ultimasVisitadas, lang, langLista, letra } = state;
 
   const globalExpresion = useContext(expresionesStore);
   const { store } = globalExpresion;
@@ -127,6 +129,7 @@ const MenuDerecho = (props) => {
     let referencia = {
       clave: expresion[0].clave,
       expresion: expresion[0].expresion_original,
+      nombreExpresion: expresion[0].expresion_original,
       traduccion: expresion[0].expresion_traduccion,
       id: expresion[0].id,
       index_de: expresion[0].index_de,
@@ -145,18 +148,27 @@ const MenuDerecho = (props) => {
   };
 
   const handleFlagLetraMain = (event) => {
+    if (letra != event.target.innerHTML[0].toUpperCase()) {
+      dispatch({
+        type: "SET_LETRA",
+        payload: event.target.innerHTML[0].toUpperCase(),
+      });
+    }
     const idExpresion = event.target.id.split("/")[0];
     const service = "/referencias/obtieneReferencias/" + idExpresion;
     webService(service, "GET", {}, sesion, (data) => {
       const referencias = fixReferenciasConsultadas(data.data.response);
       let nuevasVisitadas = ultimasVisitadas;
       nuevasVisitadas.push(referencias);
+      localStore.setObjects("ultimasVisitadas", nuevasVisitadas);
       dispatch({
         type: "SET_ULTIMAS_VISITADAS",
         payload: nuevasVisitadas,
       });
     });
   };
+
+  const handleLinkClick = (event) => {};
 
   return (
     <div className="contenedorMenuDerecho">
@@ -289,36 +301,7 @@ const MenuDerecho = (props) => {
           <Typography>{menuDerechoReferenciasConsultadas(lang)}</Typography>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails className="panelDeDetalleReferenciasConsultadas">
-          <ul className="ulDelMenuDerechoReferenciasConsultadas">
-            {ultimasVisitadas.reverse().map((consultas, index) => {
-              return (
-                <Link
-                  to={`${match.path.slice(0, 20)}/pasaje/${consultas.id}/${
-                    consultas.referencias[0].refid
-                  }`}
-                  onClick={(event) => handleFlagLetraMain(event)}
-                  key={consultas.referencias[0].refid + "-" + index}
-                >
-                  <li
-                    className="bordeDeConsultas"
-                    key={consultas.referencias[0].refid + "-" + index}
-                  >
-                    <Typography
-                      className="consultaDePasajes"
-                      letiant="h6"
-                      id={consultas.id + "/" + index}
-                    >
-                      {consultas.nombreExpresion +
-                        "  :  " +
-                        consultas.referencias[0].referencia_original +
-                        "/" +
-                        consultas.referencias[0].referencia_traduccion}
-                    </Typography>
-                  </li>
-                </Link>
-              );
-            })}
-          </ul>
+          <UltimasVisitadas match={match} />
         </ExpansionPanelDetails>
       </ExpansionPanel>
     </div>

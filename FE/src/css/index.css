@@ -221,6 +221,10 @@ a {
   height: 32px !important;
 }
 
+#banderita button {
+  min-width: 0px !important;
+}
+
 #simple-menu div.MuiPaper-root {
   box-shadow: none;
   margin-top: 40px;

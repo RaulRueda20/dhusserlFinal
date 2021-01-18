@@ -13,6 +13,8 @@ import {
 } from "@material-ui/core";
 import Jerarquia from "@material-ui/icons/DeviceHub";
 
+import * as localStore from "../../../../js/localStore";
+
 //Language
 import {
   noDerivaDe,
@@ -30,7 +32,7 @@ const ITEM_HEIGHT = 48;
 const ListaHijosExpresion = (props) => {
   const global = useContext(sesionStore);
   const { state, dispatch } = global;
-  const { langLista, lang, sesion, ultimasVisitadas } = state;
+  const { langLista, lang, sesion, ultimasVisitadas, letra } = state;
 
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -70,6 +72,7 @@ const ListaHijosExpresion = (props) => {
     let referencia = {
       clave: expresion[0].clave,
       expresion: expresion[0].expresion_original,
+      nombreExpresion: expresion[0].expresion_original,
       traduccion: expresion[0].expresion_traduccion,
       id: expresion[0].id,
       index_de: expresion[0].index_de,
@@ -88,11 +91,12 @@ const ListaHijosExpresion = (props) => {
   };
 
   const handleFlagLetraMain = (event) => {
-    setTimeout(() => {
-      if (document.getElementById("VP" + props.idExpresion) != null) {
-        document.getElementById("VP" + props.idExpresion).scrollIntoView();
-      }
-    }, 1000);
+    if (letra != event.target.innerHTML[0].toUpperCase()) {
+      dispatch({
+        type: "SET_LETRA",
+        payload: event.target.innerHTML[0].toUpperCase(),
+      });
+    }
     const idExpresion = event.target.id.split("/")[0];
     const service = "/referencias/obtieneReferencias/" + idExpresion;
     webService(service, "GET", {}, sesion, ({ data }) => {
@@ -100,6 +104,7 @@ const ListaHijosExpresion = (props) => {
       const referencias = fixReferenciasConsultadas(response);
       let nuevasVisitadas = ultimasVisitadas;
       nuevasVisitadas.push(referencias);
+      localStore.setObjects("ultimasVisitadas", nuevasVisitadas);
       dispatch({
         type: "SET_ULTIMAS_VISITADAS",
         payload: nuevasVisitadas,

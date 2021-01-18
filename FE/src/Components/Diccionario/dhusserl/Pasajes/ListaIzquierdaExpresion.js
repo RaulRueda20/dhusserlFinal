@@ -1,19 +1,13 @@
 //React
-import React, { useState, useEffect, useContext } from "react";
+import React, { useEffect, useContext } from "react";
 
 //Components
 import PanelExpresionIzquierdo from "./PanelExpresionIzquierdo";
 
 //Other req
-import * as localStore from "../../../../js/localStore";
-import { sesionStore } from "../../../../stores/sesionStore";
 import { expresionesStore } from "../../../../stores/expresionStore";
 
 const ListaIzquierdaExpresiones = (props) => {
-  const [panelesAbiertos, setPanelesAbiertos] = useState([]);
-  const global = useContext(sesionStore);
-  const { state, dispatch } = global;
-
   const globalExpresion = useContext(expresionesStore);
   const { store, attend } = globalExpresion;
   const { expresiones, chunk } = store;
@@ -28,9 +22,6 @@ const ListaIzquierdaExpresiones = (props) => {
       }
     }
     if (coincidencia) {
-      // props.setChunkList(
-      //   expresiones.slice(0, parseInt(coincidencia) + 30)
-      // );
       attend({
         type: "SET_CHUNK",
         payload: expresiones.slice(0, parseInt(coincidencia) + 30),

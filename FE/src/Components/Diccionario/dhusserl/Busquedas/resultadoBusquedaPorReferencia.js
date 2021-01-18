@@ -33,7 +33,7 @@ const ResultadoBusquedaReferencia = (props) => {
   const { classes } = props;
   const global = useContext(sesionStore);
   const { state, dispatch } = global;
-  const { lang, sesion } = state;
+  const { lang, sesion, letra } = state;
 
   const globalBusqueda = useContext(busquedaStore);
   const { busquedaState } = globalBusqueda;
@@ -96,11 +96,12 @@ const ResultadoBusquedaReferencia = (props) => {
   }
 
   function consultaDePasajes(event) {
-    setTimeout(() => {
-      if (document.getElementById("VP" + idPasaje) != null) {
-        document.getElementById("VP" + idPasaje).scrollIntoView();
-      }
-    }, 1000);
+    if (letra != event.target.innerHTML[0].toUpperCase()) {
+      dispatch({
+        type: "SET_LETRA",
+        payload: event.target.innerHTML[0].toUpperCase(),
+      });
+    }
     const idExpresion = event.target.id.split("/")[0];
     const service = "/referencias/obtieneReferencias/" + idExpresion;
     webService(service, "GET", {}, sesion, (data) => {

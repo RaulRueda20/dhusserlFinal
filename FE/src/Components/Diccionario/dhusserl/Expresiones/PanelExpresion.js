@@ -89,13 +89,6 @@ const PanelExpresion = ({
     });
   };
 
-  const handleModal = () => {
-    const { referencias } = expresion;
-    if (referencias[0].refid == null) {
-      setOpenModalN(true);
-    }
-  };
-
   const htmlPrettyE = () => {
     const { pretty_e, pretty_t } = expresion;
     return { __html: pretty_e + "<p> // </p>" + pretty_t };
@@ -139,12 +132,11 @@ const PanelExpresion = ({
             <Link
               to={
                 expresion.referencias[0].refid == null
-                  ? "#"
+                  ? `${match.path.slice(0, 20)}/pasaje/${expresion.id}`
                   : `${match.path.slice(0, 20)}/pasaje/${expresion.id}/${
                       expresion.referencias[0].refid
                     }`
               }
-              onClick={handleModal}
             >
               <span
                 className="Renglones"
