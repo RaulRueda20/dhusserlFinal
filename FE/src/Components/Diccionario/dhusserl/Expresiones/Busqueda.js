@@ -97,7 +97,12 @@ const Busqueda = (props) => {
             sesion,
             ({ data }) => {
               if (letra == letraCapital) {
-                ChunkC(data.response);
+                console.log("data de busqueda", data.response);
+                if (data.response == []) {
+                  setModalDebusquedas(true);
+                } else {
+                  ChunkC(data.response);
+                }
               } else {
                 setSnack({
                   open: true,
@@ -123,7 +128,12 @@ const Busqueda = (props) => {
             sesion,
             ({ data }) => {
               if (letra == letraCapital) {
-                ChunkC(data.response);
+                console.log("data de busqueda", data.response);
+                if (data.response == []) {
+                  setModalDebusquedas(true);
+                } else {
+                  ChunkC(data.response);
+                }
               } else {
                 setSnack({
                   open: true,

@@ -183,7 +183,7 @@ const PanelExpresion = ({
             className="ulDelPanelDeExpresiones"
           >
             {expresion.referencias[0].refid == null
-              ? "No hay ninguna referencia para esta expresión. Ver por favor la lista de expresiones derivadas."
+              ? "Recuperando información."
               : expresion.referencias.map((referencia, index) => (
                   <li className="referencia" key={referencia + "/" + index}>
                     <Typography

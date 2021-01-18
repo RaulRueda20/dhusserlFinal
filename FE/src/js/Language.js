@@ -1038,15 +1038,15 @@ const tituloBusqueda = (lang) => {
 const mensajeBusqueda = (lang) => {
   switch (lang) {
     case "es":
-      return "Favor de hacer una busqueda más especifíca.";
+      return "La búsqueda no obtiene resultados o es demasiado pequeña,favor de hacer otra búsqueda más especifíca.";
     case "en":
-      return "Please do a more specific search.";
+      return "The search returns no results or is too small,please do a more specific search.";
     case "fr":
-      return "Veuillez effectuer une recherche plus spécifique.";
+      return "La recherche ne renvoie aucun résultat ou est trop petite,veuillez effectuer une recherche plus spécifique.";
     case "al":
-      return "Bitte führen Sie eine genauere Suche durch.";
+      return "Die Suche liefert keine Ergebnisse oder ist zu klein,bitte führen Sie eine genauere Suche durch.";
     case "ca":
-      return "Favor de fer una cerca més especifíca.";
+      return "La cerca no obté resultats o és massa petita,favor de fer una cerca més especifíca.";
   }
 };
 
