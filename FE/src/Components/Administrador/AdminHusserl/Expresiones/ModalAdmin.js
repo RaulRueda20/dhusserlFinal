@@ -29,12 +29,12 @@ const estiloModalExpresiones = (theme) => ({
     width: "80%",
   },
   modalin: {
-    top: "25vh",
+    top: "20vh",
     left: "calc(20vw - 30px)",
     width: "60vw",
     padding: "20px 30px",
     position: "absolute",
-    height: "50vh",
+    height: "70vh",
   },
   contenedorSubtitulos: {
     width: "100%",
@@ -47,6 +47,7 @@ const estiloModalExpresiones = (theme) => ({
   botonAgregar: {
     width: "50%",
     left: "50%",
+    top: "10px",
   },
 });
 
