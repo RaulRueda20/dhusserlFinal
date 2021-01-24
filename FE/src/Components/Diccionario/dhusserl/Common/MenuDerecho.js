@@ -205,15 +205,17 @@ const MenuDerecho = (props) => {
           </Typography>
           <ul className="ulDelMenuDerechoExpresion">
             <li>
-              <Typography
-                variant="body1"
-                className="consultaDePasajes"
-                style={{
-                  fontWeight: 500,
-                }}
-              >
-                {expresionSeleccionada?.expresion}
-              </Typography>
+              <Link>
+                <Typography
+                  variant="body1"
+                  className="consultaDePasajes"
+                  style={{
+                    fontWeight: 500,
+                  }}
+                >
+                  {expresionSeleccionada?.expresion}
+                </Typography>
+              </Link>
             </li>
           </ul>
         </ExpansionPanelDetails>
