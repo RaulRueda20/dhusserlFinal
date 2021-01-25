@@ -35,7 +35,6 @@ const useStyles = makeStyles((theme) => ({
 
 function HeaderMain(props) {
   const classes = useStyles();
-  const theme = useTheme();
   const global = useContext(sesionStore);
   const { state } = global;
   const { lang } = state;

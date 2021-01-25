@@ -20,7 +20,6 @@ import { busquedaStore } from "../../../../stores/busquedaStore";
 //Other request
 import { webService } from "../../../../js/webServices";
 import { sesionStore } from "../../../../stores/sesionStore";
-import MenuDerecho from "../Common/MenuDerecho";
 import classNames from "classnames";
 
 //Language

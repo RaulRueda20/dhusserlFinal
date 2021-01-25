@@ -28,7 +28,7 @@ import { sesionStore } from "../../../stores/sesionStore";
 
 const MenuHeader = (props) => {
   const global = useContext(sesionStore);
-  const { state } = global;
+  const { state, dispatch } = global;
   const { lang } = state;
   const [state1, setState1] = useState({ anchorEl: null });
 
@@ -43,7 +43,10 @@ const MenuHeader = (props) => {
   const exitMain = () => {
     localStorage.removeItem("sesion");
     props.history.push("/diccionario/login");
-    global.setSesion(null);
+    dispatch({
+      type: "SET_SESION",
+      payload: null,
+    });
   };
 
   return (
