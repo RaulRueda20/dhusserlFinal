@@ -59,7 +59,6 @@ const ResultadoBusquedaExpresion = (props) => {
   });
 
   useEffect(() => {
-    console.log("props.expresionSeleccionada", props.expresionSeleccionada);
     globalExpresion.attend({
       type: "SELECT_EXPRESION",
       payload: {
@@ -172,23 +171,21 @@ const ResultadoBusquedaExpresion = (props) => {
         </Grid> */}
         <Grid xs={4} className="listaReferencia">
           <ul className="ulExpresionesRelacionadas">
-            {props.expresionSeleccionada.referencias.map(
-              (referenciasList, index) => (
-                <li key={expresion.t_id} className="liExpresionesRelacionadas">
-                  <Link
-                    to={`${props.match.path.slice(0, 20)}/pasaje/${
-                      props.expresionSeleccionada.id
-                    }/${props.expresionSeleccionada.referencias[0].refid}`}
-                    onClick={(e) => consultaDePasajes(e)}
-                  >
-                    <Typography className="referenciasTypo">
-                      {referenciasList.referencia_original} //{" "}
-                      {referenciasList.referencia_traduccion}
-                    </Typography>
-                  </Link>
-                </li>
-              )
-            )}
+            {props.expresionSeleccionada.referencias.map((referenciasList) => (
+              <li key={expresion.t_id} className="liExpresionesRelacionadas">
+                <Link
+                  to={`${props.match.path.slice(0, 20)}/pasaje/${
+                    props.expresionSeleccionada.id
+                  }/${props.expresionSeleccionada.referencias[0].refid}`}
+                  onClick={(e) => consultaDePasajes(e)}
+                >
+                  <Typography className="referenciasTypo">
+                    {referenciasList.referencia_original} //{" "}
+                    {referenciasList.referencia_traduccion}
+                  </Typography>
+                </Link>
+              </li>
+            ))}
           </ul>
         </Grid>
         <Grid item xs={4}>

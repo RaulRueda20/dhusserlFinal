@@ -93,6 +93,7 @@ const MenuDerecho = (props) => {
   const [padres, setPadres] = useState([]);
 
   useEffect(() => {
+    console.log("expresionSeleccionada", expresionSeleccionada);
     if (expresionSeleccionada) {
       let service = "/vertambien/" + expresionSeleccionada.id;
       webService(service, "GET", {}, sesion, ({ data }) => {
@@ -168,8 +169,6 @@ const MenuDerecho = (props) => {
     });
   };
 
-  const handleLinkClick = (event) => {};
-
   return (
     <div className="contenedorMenuDerecho">
       <ExpansionPanel
@@ -205,7 +204,11 @@ const MenuDerecho = (props) => {
           </Typography>
           <ul className="ulDelMenuDerechoExpresion">
             <li>
-              <Link>
+              <Link
+                to={`${props.match.path.slice(0, 20)}/pasaje/${
+                  expresionSeleccionada.id
+                }`}
+              >
                 <Typography
                   variant="body1"
                   className="consultaDePasajes"
