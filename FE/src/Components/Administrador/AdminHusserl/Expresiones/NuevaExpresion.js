@@ -21,16 +21,28 @@ import CartaPasajes from "./CartaPasajes";
 //Other req
 import { adminService } from "../../../../js/webServices";
 
-const stylebonton = {
-  contenedorPaper: {
-    width: "100%",
+const estiloModalExpresiones = (theme) => ({
+  Boton1: {
+    width: "80%",
   },
-  contenedorPasajes: {
-    width: "100%",
-    maxHeight: "30vh",
-    overflow: "scroll",
+  modalin: {
+    top: "10vh",
+    left: "calc(20vw - 120px)",
+    width: "60vw",
+    height: "70vh",
+    padding: "20px 30px",
+    position: "absolute",
   },
-};
+  contenedorSubtitulos: {
+    padding: "15px 15px",
+  },
+  botonAgregar: {
+    width: "50%",
+    left: "50%",
+    marginTop: "15px !important",
+    marginRight: "30 px !importan",
+  },
+});
 
 const emptyObj = {
   clave: "",
@@ -164,4 +176,4 @@ const NuevaExpresion = (props) => {
   );
 };
 
-export default withStyles(stylebonton)(NuevaExpresion);
+export default withStyles(estiloModalExpresiones)(NuevaExpresion);

@@ -121,7 +121,12 @@ const Busqueda = (props) => {
             sesion,
             ({ data }) => {
               if (letra == letraCapital) {
-                ChunkC(data.response);
+                console.log("data de busqueda", data.response);
+                if (data.response == []) {
+                  setModalDebusquedas(true);
+                } else {
+                  ChunkC(data.response);
+                }
               } else {
                 dispatch({
                   type: "SET_SNACKBAR",
@@ -151,7 +156,12 @@ const Busqueda = (props) => {
             sesion,
             ({ data }) => {
               if (letra == letraCapital) {
-                ChunkC(data.response);
+                console.log("data de busqueda", data.response);
+                if (data.response == []) {
+                  setModalDebusquedas(true);
+                } else {
+                  ChunkC(data.response);
+                }
               } else {
                 dispatch({
                   type: "SET_SNACKBAR",

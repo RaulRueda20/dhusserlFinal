@@ -453,6 +453,17 @@ a:hover {
   border-width: 1px;
 }
 
+.listaReferencia {
+  margin-top: 30px !important;
+  padding-left: 100px !important;
+  padding-right: 348px !important;
+  max-height: 73vh;
+  overflow: scroll;
+}
+
+/* .referenciasTypo {
+} */
+
 .listaIzquierda {
   height: calc(100vh - 9vh - 80px) !important;
   overflow-y: scroll;
@@ -671,6 +682,11 @@ hr {
   border-bottom: solid lightgray 1px;
   padding: 10px !important;
 }
+/* 
+.liExpresionesRelacionadas1 {
+  border-bottom: solid lightgray 1px;
+  padding: 10px !important;
+} */
 
 .liExpresionesRelacionadas:hover {
   color: rgb(7, 142, 184);

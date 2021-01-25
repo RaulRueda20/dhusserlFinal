@@ -161,13 +161,32 @@ const ResultadoBusquedaExpresion = (props) => {
         </Grid>
       </Grid>
       <Grid container className={classes.contenedorDeResultados}>
-        <Grid item xs={8} style={{ paddingRight: "30px" }}>
+        {/* <Grid item xs={8} style={{ paddingRight: "30px" }}>
           <div dangerouslySetInnerHTML={htmlPasajeOriginal()}></div>
           <Divider />
           <div
             className={classes.divPasajes}
             dangerouslySetInnerHTML={htmlPasajeTraduccion()}
           ></div>
+        </Grid> */}
+        <Grid xs={4} className="listaReferencia">
+          <ul className="ulExpresionesRelacionadas">
+            {props.expresionSeleccionada.referencias.map((referenciasList) => (
+              <li key={expresion.t_id} className="liExpresionesRelacionadas">
+                <Link
+                  to={`${props.match.path.slice(0, 20)}/pasaje/${
+                    props.expresionSeleccionada.id
+                  }/${props.expresionSeleccionada.referencias[0].refid}`}
+                  onClick={(e) => consultaDePasajes(e)}
+                >
+                  <Typography className="referenciasTypo">
+                    {referenciasList.referencia_original} //{" "}
+                    {referenciasList.referencia_traduccion}
+                  </Typography>
+                </Link>
+              </li>
+            ))}
+          </ul>
         </Grid>
         <Grid item xs={4}>
           <MenuDerecho

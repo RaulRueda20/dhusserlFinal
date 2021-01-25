@@ -1,5 +1,5 @@
 //React
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, Fragment } from "react";
 
 //Components
 import SearchIcon from "@material-ui/icons/Search";
@@ -21,6 +21,7 @@ import { busquedaStore } from "../../../../stores/busquedaStore";
 import { webService } from "../../../../js/webServices";
 import { sesionStore } from "../../../../stores/sesionStore";
 import classNames from "classnames";
+import ModalDeBusqueda from "../ModalDeBusqueda";
 
 //Language
 import { busquedas, distincionMayusyMinus } from "../../../../js/Language";
@@ -45,6 +46,8 @@ const Busquedas = (props) => {
   const globalBusqueda = useContext(busquedaStore);
   const { busquedaState, attend } = globalBusqueda;
   const { tipoBusqueda, busqueda } = busquedaState;
+
+  const [modalDeBusquedas, setModalDebusquedas] = useState(false);
 
   const fixPasajes = (pasajes) => {
     let pasajesArreglados = [];
@@ -86,46 +89,52 @@ const Busquedas = (props) => {
   const handleChangeBusqueda = (event) => {
     event.preventDefault();
     dispatch({ type: "START_LOADING" });
-    if (tipoBusqueda == "Referencia") {
-      const servicebr = "/expresiones/busqueda/" + insensitiveCase;
-      webService(
-        servicebr,
-        "POST",
-        { parametro: busqueda },
-        sesion,
-        ({ data }) => {
-          const { response } = data;
-          attend({
-            type: "SET_TIPO_BUSQUEDA_REALIZADA",
-            payload: "Referencia",
-          });
-          attend({
-            type: "SET_EXPRESIONES_ENCONTRADAS",
-            payload: fixPasajes(response),
-          });
-          dispatch({ type: "STOP_LOADING" });
-        }
-      );
+    console.log("Busqueda", busqueda);
+    if (busqueda == "") {
+      setModalDebusquedas(true);
+      dispatch({ type: "STOP_LOADING" });
     } else {
-      const servicebe = "/referencias/busquedaExpresion";
-      webService(
-        servicebe,
-        "POST",
-        { parametro: busqueda, case: insensitiveCase },
-        sesion,
-        ({ data }) => {
-          const { response } = data;
-          attend({
-            type: "SET_TIPO_BUSQUEDA_REALIZADA",
-            payload: "Expresion",
-          });
-          attend({
-            type: "SET_EXPRESIONES_ENCONTRADAS",
-            payload: response,
-          });
-          dispatch({ type: "STOP_LOADING" });
-        }
-      );
+      if (tipoBusqueda == "Referencia") {
+        const servicebr = "/expresiones/busqueda/" + insensitiveCase;
+        webService(
+          servicebr,
+          "POST",
+          { parametro: busqueda },
+          sesion,
+          ({ data }) => {
+            const { response } = data;
+            attend({
+              type: "SET_TIPO_BUSQUEDA_REALIZADA",
+              payload: "Referencia",
+            });
+            attend({
+              type: "SET_EXPRESIONES_ENCONTRADAS",
+              payload: fixPasajes(response),
+            });
+            dispatch({ type: "STOP_LOADING" });
+          }
+        );
+      } else {
+        const servicebe = "/referencias/busquedaExpresion";
+        webService(
+          servicebe,
+          "POST",
+          { parametro: busqueda, case: insensitiveCase },
+          sesion,
+          ({ data }) => {
+            const { response } = data;
+            attend({
+              type: "SET_TIPO_BUSQUEDA_REALIZADA",
+              payload: "Expresion",
+            });
+            attend({
+              type: "SET_EXPRESIONES_ENCONTRADAS",
+              payload: response,
+            });
+            dispatch({ type: "STOP_LOADING" });
+          }
+        );
+      }
     }
   };
 
@@ -134,50 +143,56 @@ const Busquedas = (props) => {
   };
 
   return (
-    <form onSubmit={handleChangeBusqueda}>
-      <Grid container>
-        <Grid item xs={12}>
-          <FormControl className={classes.buscador}>
-            <InputLabel htmlFor="input-with-icon-adornment">
-              {busquedas(lang)}
-            </InputLabel>
-            <Input
-              id="input-with-icon-adornment"
-              value={busqueda}
-              onChange={(event) =>
-                attend({ type: "SET_BUSQUEDA", payload: event.target.value })
-              }
-              startAdornment={
-                <InputAdornment position="end">
-                  <Tooltip title={distincionMayusyMinus(lang)}>
-                    <IconButton
-                      onClick={handleInsensitiveCase}
-                      className={classNames([
-                        { caseSeleccionado: insensitiveCase == true },
-                        "case",
-                      ])}
-                    >
-                      <Icon
-                        path={mdiFormatLetterCase}
-                        title="User Profile"
-                        size={1}
-                      />
+    <Fragment>
+      <form onSubmit={handleChangeBusqueda}>
+        <Grid container>
+          <Grid item xs={12}>
+            <FormControl className={classes.buscador}>
+              <InputLabel htmlFor="input-with-icon-adornment">
+                {busquedas(lang)}
+              </InputLabel>
+              <Input
+                id="input-with-icon-adornment"
+                value={busqueda}
+                onChange={(event) =>
+                  attend({ type: "SET_BUSQUEDA", payload: event.target.value })
+                }
+                startAdornment={
+                  <InputAdornment position="end">
+                    <Tooltip title={distincionMayusyMinus(lang)}>
+                      <IconButton
+                        onClick={handleInsensitiveCase}
+                        className={classNames([
+                          { caseSeleccionado: insensitiveCase == true },
+                          "case",
+                        ])}
+                      >
+                        <Icon
+                          path={mdiFormatLetterCase}
+                          title="User Profile"
+                          size={1}
+                        />
+                      </IconButton>
+                    </Tooltip>
+                  </InputAdornment>
+                }
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton type="submit">
+                      <SearchIcon fontSize="small" />
                     </IconButton>
-                  </Tooltip>
-                </InputAdornment>
-              }
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton type="submit">
-                    <SearchIcon fontSize="small" />
-                  </IconButton>
-                </InputAdornment>
-              }
-            />
-          </FormControl>
+                  </InputAdornment>
+                }
+              />
+            </FormControl>
+          </Grid>
         </Grid>
-      </Grid>
-    </form>
+      </form>
+      <ModalDeBusqueda
+        modalDeBusquedas={modalDeBusquedas}
+        setModalDebusquedas={setModalDebusquedas}
+      />
+    </Fragment>
   );
 };
 
