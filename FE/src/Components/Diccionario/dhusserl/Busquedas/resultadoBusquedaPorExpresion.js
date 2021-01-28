@@ -38,6 +38,7 @@ const resultadoBusqueda = {
 
 const ResultadoBusquedaExpresion = (props) => {
   const { classes, expresionSeleccionada } = props;
+
   const global = useContext(sesionStore);
   const { state, dispatch } = global;
   const { lang, sesion, letra } = state;
@@ -49,7 +50,14 @@ const ResultadoBusquedaExpresion = (props) => {
   const globalBusqueda = useContext(busquedaStore);
   const { busquedaState, attend } = globalBusqueda;
   const { idPasaje, busqueda } = busquedaState;
-  const { term_id, expresion, referencias, traduccion } = expresionSeleccionada;
+
+  const {
+    term_id,
+    expresion,
+    referencias,
+    traduccion,
+    t_id,
+  } = expresionSeleccionada;
 
   const globalExpresion = useContext(expresionesStore);
 
@@ -59,10 +67,11 @@ const ResultadoBusquedaExpresion = (props) => {
   });
 
   useEffect(() => {
+    console.log(expresionSeleccionada, expresion);
     globalExpresion.attend({
       type: "SELECT_EXPRESION",
       payload: {
-        id: term_id,
+        id: term_id ?? t_id ?? expresionSeleccionada.id,
         expresion: expresion,
       },
     });
@@ -70,24 +79,16 @@ const ResultadoBusquedaExpresion = (props) => {
       original: resaltarBusqueda(referencias[0].ref_def_de, busqueda),
       traduccion: resaltarBusqueda(referencias[0].ref_def_es, busqueda),
     });
-  }, [idPasaje, props.expresionSeleccionada]);
+  }, [idPasaje, expresionSeleccionada]);
 
   const resaltarBusqueda = (string, separador) => {
+    console.log(string, separador);
+    if (!string) return "";
     const split = string.split(separador);
     const Split = split.join(
       "<span class='resaltador'>" + separador + "</span>"
     );
     return Split;
-  };
-
-  const htmlPasajeOriginal = () => {
-    const { original } = pasajes;
-    return { __html: original };
-  };
-
-  const htmlPasajeTraduccion = () => {
-    const { traduccion } = pasajes;
-    return { __html: traduccion };
   };
 
   function fixReferenciasConsultadas(expresion) {
@@ -161,18 +162,13 @@ const ResultadoBusquedaExpresion = (props) => {
         </Grid>
       </Grid>
       <Grid container className={classes.contenedorDeResultados}>
-        {/* <Grid item xs={8} style={{ paddingRight: "30px" }}>
-          <div dangerouslySetInnerHTML={htmlPasajeOriginal()}></div>
-          <Divider />
-          <div
-            className={classes.divPasajes}
-            dangerouslySetInnerHTML={htmlPasajeTraduccion()}
-          ></div>
-        </Grid> */}
         <Grid xs={4} className="listaReferencia">
           <ul className="ulExpresionesRelacionadas">
             {props.expresionSeleccionada.referencias.map((referenciasList) => (
-              <li key={expresion.t_id} className="liExpresionesRelacionadas">
+              <li
+                key={expresion?.t_id ?? expresion?.term_id}
+                className="liExpresionesRelacionadas"
+              >
                 <Link
                   to={`${props.match.path.slice(0, 20)}/pasaje/${
                     props.expresionSeleccionada.id
@@ -180,7 +176,7 @@ const ResultadoBusquedaExpresion = (props) => {
                   onClick={(e) => consultaDePasajes(e)}
                 >
                   <Typography className="referenciasTypo">
-                    {referenciasList.referencia_original} //{" "}
+                    {referenciasList.referencia_original} {" // "}
                     {referenciasList.referencia_traduccion}
                   </Typography>
                 </Link>
