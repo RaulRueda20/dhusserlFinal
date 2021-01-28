@@ -206,7 +206,7 @@ const MenuDerecho = (props) => {
             <li>
               <Link
                 to={`${props.match.path.slice(0, 20)}/pasaje/${
-                  expresionSeleccionada.id
+                  expresionSeleccionada?.id
                 }`}
               >
                 <Typography
