@@ -91,38 +91,16 @@ const ResultadoBusquedaExpresion = (props) => {
     return Split;
   };
 
-  function fixReferenciasConsultadas(expresion) {
-    var referencia = {
-      clave: expresion[0].clave,
-      expresion: expresion[0].expresion_original,
-      traduccion: expresion[0].expresion_traduccion,
-      id: expresion[0].id,
-      index_de: expresion[0].index_de,
-      index_es: expresion[0].index_es,
-      pretty_e: expresion[0].epretty,
-      pretty_t: expresion[0].tpretty,
-      referencias: [],
-    };
-    referencia.referencias.push({
-      referencia_original: expresion[0].ref_original,
-      referencia_traduccion: expresion[0].ref_traduccion,
-      refid: expresion[0].refid,
-      orden: expresion[0].orden,
-    });
-    return referencia;
-  }
-
   function consultaDePasajes(event) {
+    console.log(event);
     if (letra != expresion[0].toUpperCase()) {
       dispatch({
         type: "SET_LETRA",
         payload: expresion[0].toUpperCase(),
       });
     }
-    let ref = fixReferenciasConsultadas(referencias);
     let nuevasVisitadas = localStore.getObjects("ultimasVisitadas");
-    ref.nombreExpresion = referencias.expresion;
-    nuevasVisitadas.push(ref);
+    nuevasVisitadas.push(expresionSeleccionada);
     localStore.setObjects("ultimasVisitadas", nuevasVisitadas);
     dispatch({
       type: "SET_ULTIMAS_VISITADAS",
@@ -163,10 +141,13 @@ const ResultadoBusquedaExpresion = (props) => {
       </Grid>
       <Grid container className={classes.contenedorDeResultados}>
         <Grid xs={4} className="listaReferencia">
+          <Typography variant="h3">
+            Pasajes en los que aparece la expresión
+          </Typography>
           <ul className="ulExpresionesRelacionadas">
             {props.expresionSeleccionada.referencias.map((referenciasList) => (
               <li
-                key={expresion?.t_id ?? expresion?.term_id}
+                key={expresion?.t_id ?? expresion?.term_id ?? expresion?.id}
                 className="liExpresionesRelacionadas"
               >
                 <Link
@@ -174,6 +155,11 @@ const ResultadoBusquedaExpresion = (props) => {
                     props.expresionSeleccionada.id
                   }/${props.expresionSeleccionada.referencias[0].refid}`}
                   onClick={(e) => consultaDePasajes(e)}
+                  id={
+                    expresionSeleccionada.referencias[0].refid +
+                    "/" +
+                    expresionSeleccionada.id
+                  }
                 >
                   <Typography className="referenciasTypo">
                     {referenciasList.referencia_original} {" // "}
