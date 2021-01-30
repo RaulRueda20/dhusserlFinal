@@ -13,6 +13,7 @@ import { expresionesStore } from "../../../../stores/expresionStore";
 import MenuDerecho from "../Common/MenuDerecho";
 import { sesionStore } from "../../../../stores/sesionStore";
 import * as localStore from "../../../../js/localStore";
+import { pasajesAsociados } from "../../../../js/Language";
 
 const resultadoBusqueda = {
   typosTitulos: {
@@ -41,7 +42,7 @@ const ResultadoBusquedaExpresion = (props) => {
 
   const global = useContext(sesionStore);
   const { state, dispatch } = global;
-  const { lang, sesion, letra } = state;
+  const { lang, letra } = state;
 
   const [expanded1, setExpanded1] = useState(true);
   const [expanded2, setExpanded2] = useState(true);
@@ -125,7 +126,7 @@ const ResultadoBusquedaExpresion = (props) => {
       <Grid container alignItems="center" alignContent="center">
         <Grid item xs={10}>
           <Typography variant="h2" className={classes.typosTitulos}>
-            {expresion + " / " + traduccion}
+            {expresion + " // " + traduccion}
           </Typography>
         </Grid>
         <Grid item xs={2}>
@@ -141,9 +142,7 @@ const ResultadoBusquedaExpresion = (props) => {
       </Grid>
       <Grid container className={classes.contenedorDeResultados}>
         <Grid xs={4} className="listaReferencia">
-          <Typography variant="h3">
-            Pasajes en los que aparece la expresión
-          </Typography>
+          <Typography variant="h3">{pasajesAsociados(lang)}</Typography>
           <ul className="ulExpresionesRelacionadas">
             {props.expresionSeleccionada.referencias.map((referenciasList) => (
               <li

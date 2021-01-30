@@ -18,8 +18,6 @@ import ListaEscondida from "./ListaEscondida";
 import MenuDerechoPasajes from "../Common/MenuDerecho";
 import MenuEscondido from "./MenuEscondido";
 import ModalDeBusqueda from "../ModalDeBusqueda";
-import ModalCaracterInvalido from "../ModalCaracterInvalido";
-import ModalNumeros from "../ModalNumeros";
 
 // Other req
 import { sesionStore } from "../../../../stores/sesionStore";
@@ -56,10 +54,6 @@ const Pasaje = (props) => {
   const [referencias, setReferencias] = useState([]);
   const [openModalN, setOpenModalN] = useState(false);
   const [modalDeBusquedas, setModalDebusquedas] = useState(false);
-  const [modalCaracteresIvalidos, setModalCaracteresInvalidos] = useState(
-    false
-  );
-  const [modalNumeros, setModalNumeros] = useState(false);
   const [flagDeBusqueda, setFlagDeBusqueda] = useState(false);
   const [chunkList, setChunkList] = useState([]);
   const [chunkListGlobal, setChunkListGlobal] = useState([]);
@@ -257,8 +251,6 @@ const Pasaje = (props) => {
               setBusqueda={setBusqueda}
               setFlagDeBusqueda={setFlagDeBusqueda}
               setModalDebusquedas={setModalDebusquedas}
-              setModalCaracteresInvalidos={setModalCaracteresInvalidos}
-              setModalNumeros={setModalNumeros}
               setLoading={setLoading}
             />
             <ListaIzquierdaExpresion
@@ -286,8 +278,6 @@ const Pasaje = (props) => {
                 openHidden={openHidden}
                 setOpenHidden={setOpenHidden}
                 setModalDebusquedas={setModalDebusquedas}
-                setModalCaracteresInvalidos={setModalCaracteresInvalidos}
-                setModalNumeros={setModalNumeros}
                 setLoading={setLoading}
                 setChunkListGlobal={setChunkListGlobal}
                 setChunkList={setChunkList}
@@ -401,14 +391,7 @@ const Pasaje = (props) => {
       <ModalDeBusqueda
         modalDeBusquedas={modalDeBusquedas}
         setModalDebusquedas={setModalDebusquedas}
-      />
-      <ModalCaracterInvalido
-        modalCaracteresIvalidos={modalCaracteresIvalidos}
-        setModalCaracteresInvalidos={setModalCaracteresInvalidos}
-      />
-      <ModalNumeros
-        modalNumeros={modalNumeros}
-        setModalNumeros={setModalNumeros}
+        match={props.match}
       />
     </Fragment>
   );

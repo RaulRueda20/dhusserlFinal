@@ -1,5 +1,5 @@
 // React
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 
 // Components
 import Modal from "@material-ui/core/Modal";
@@ -10,9 +10,14 @@ import ClearIcon from "@material-ui/icons/Clear";
 import IconButton from "@material-ui/core/IconButton";
 import Divider from "@material-ui/core/Divider";
 import { withStyles } from "@material-ui/styles";
+import { Link } from "react-router-dom";
 
 //Language
-import { tituloBusqueda, mensajeBusqueda } from "../../../js/Language";
+import {
+  tituloBusqueda,
+  mensajeBusqueda,
+  búsqueda,
+} from "../../../js/Language";
 import { sesionStore } from "../../../stores/sesionStore";
 
 const modalBusqueda = {
@@ -45,6 +50,10 @@ const ModalDeBusqueda = (props) => {
   const { state } = global;
   const { lang } = state;
 
+  useEffect(() => {
+    console.log(props.match);
+  });
+
   function clickHandleCloseModal() {
     props.setModalDebusquedas(false);
   }
@@ -58,7 +67,7 @@ const ModalDeBusqueda = (props) => {
       <Paper className={classes.modalinb}>
         <Grid container alignContent="center" alignItems="center">
           <Grid item xs={11}>
-            <Typography variant="h4">{tituloBusqueda(lang)}</Typography>
+            <Typography variant="h3">{tituloBusqueda(lang)}</Typography>
           </Grid>
           <Grid item xs={1}>
             <IconButton aria-haspopup="true" onClick={clickHandleCloseModal}>
@@ -68,6 +77,7 @@ const ModalDeBusqueda = (props) => {
           <Divider />
           <Grid item xs={12} className={classes.gridDelTypo}>
             <Typography variant="h5">{mensajeBusqueda(lang)}</Typography>
+            <Typography>{búsqueda(lang)}</Typography>
           </Grid>
         </Grid>
       </Paper>

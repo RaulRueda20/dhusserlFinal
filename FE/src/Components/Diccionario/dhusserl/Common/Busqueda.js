@@ -57,8 +57,6 @@ const Busqueda = (props) => {
   const {
     busqueda,
     setModalDebusquedas,
-    setModalCaracteresInvalidos,
-    setModalNumeros,
     setLoading,
     setBusqueda,
     bandera,
@@ -100,9 +98,9 @@ const Busqueda = (props) => {
       if (busqueda.length < 2) {
         setModalDebusquedas(true);
       } else if (stringCaracteres.length < 2) {
-        setModalCaracteresInvalidos(true);
+        setModalDebusquedas(true);
       } else if (stringNumeros.length < 2) {
-        setModalNumeros(true);
+        setModalDebusquedas(true);
       } else if (busqueda.length > 2) {
         setLoading(true);
         var letter = busqueda.slice(0, 1);
@@ -133,7 +131,7 @@ const Busqueda = (props) => {
                   payload: {
                     open: true,
                     variant: "error",
-                    text: letraNoCoincide(lang),
+                    message: letraNoCoincide(lang),
                   },
                 });
               }
@@ -168,7 +166,7 @@ const Busqueda = (props) => {
                   payload: {
                     open: true,
                     variant: "error",
-                    text: letraNoCoincide(lang),
+                    message: letraNoCoincide(lang),
                   },
                 });
               }
@@ -178,6 +176,7 @@ const Busqueda = (props) => {
         }
       }
     } else {
+      setModalDebusquedas(true);
       ChunkC(expresiones.slice(0, 50));
     }
   };

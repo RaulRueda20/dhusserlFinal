@@ -77,9 +77,9 @@ const BusquedaEscondida = (props) => {
       if (props.busqueda.length < 2) {
         props.setModalDebusquedas(true);
       } else if (stringCaracteres.length < 2) {
-        props.setModalCaracteresInvalidos(true);
+        props.setModalDebusquedas(true);
       } else if (stringNumeros.length < 2) {
-        props.setModalNumeros(true);
+        props.setModalDebusquedas(true);
       } else if (props.busqueda.length > 2) {
         let letra = props.busqueda.slice(0, 1);
         let letraCapital = letra.toUpperCase();

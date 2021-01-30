@@ -19,10 +19,7 @@ import Busqueda from "../Common/Busqueda";
 import BusquedaAbajo from "./BusquedaAbajo";
 import ModalDeBienvenida from "./ModalDeBienvenida";
 import MenuBajo from "./MenuBajo";
-import ModalDeNulos from "../ModalDeNulos";
 import ModalDeBusqueda from "../ModalDeBusqueda";
-import ModalCaracterInvalido from "../ModalCaracterInvalido";
-import ModalNumeros from "../ModalNumeros";
 
 //Other req
 import { webService } from "../../../../js/webServices";
@@ -48,10 +45,6 @@ const Expresion = (props) => {
   const [busqueda, setBusqueda] = useState("");
   const [menuEscondido, setMenuEscondido] = useState(false);
   const [modalDeBusquedas, setModalDebusquedas] = useState(false);
-  const [modalCaracteresIvalidos, setModalCaracteresInvalidos] = useState(
-    false
-  );
-  const [modalNumeros, setModalNumeros] = useState(false);
   const [openModalN, setOpenModalN] = useState(false);
 
   const fixReferencias = (referencias) => {
@@ -196,8 +189,6 @@ const Expresion = (props) => {
               setBusqueda={setBusqueda}
               setLoading={setLoading}
               setModalDebusquedas={setModalDebusquedas}
-              setModalCaracteresInvalidos={setModalCaracteresInvalidos}
-              setModalNumeros={setModalNumeros}
             />
             <MenuDerecho
               {...props}
@@ -215,8 +206,6 @@ const Expresion = (props) => {
               busqueda={busqueda}
               setBusqueda={setBusqueda}
               setModalDebusquedas={setModalDebusquedas}
-              setModalCaracteresInvalidos={setModalCaracteresInvalidos}
-              setModalNumeros={setModalNumeros}
               setLoading={setLoading}
             />
             <MenuBajo
@@ -235,19 +224,11 @@ const Expresion = (props) => {
       <LinearProgress
         className={classNames([{ hidden: !loading }, "loadingBar"])}
       />
-      <ModalDeNulos openModalN={openModalN} setOpenModalN={setOpenModalN} />
       <ModalDeBienvenida openModal={openModal} setOpenModal={setOpenModal} />
       <ModalDeBusqueda
         modalDeBusquedas={modalDeBusquedas}
         setModalDebusquedas={setModalDebusquedas}
-      />
-      <ModalCaracterInvalido
-        modalCaracteresIvalidos={modalCaracteresIvalidos}
-        setModalCaracteresInvalidos={setModalCaracteresInvalidos}
-      />
-      <ModalNumeros
-        modalNumeros={modalNumeros}
-        setModalNumeros={setModalNumeros}
+        match={props.match}
       />
     </Fragment>
   );
