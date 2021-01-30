@@ -804,6 +804,10 @@ td {
   margin-bottom: 15px;
 }
 
+.pasajesAsociados {
+  margin-bottom: 25px !important;
+}
+
 /* .tituloBusqueda {
   font-size: 20px !important;
   color: black !important;

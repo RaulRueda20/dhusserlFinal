@@ -142,7 +142,9 @@ const ResultadoBusquedaExpresion = (props) => {
       </Grid>
       <Grid container className={classes.contenedorDeResultados}>
         <Grid xs={4} className="listaReferencia">
-          <Typography variant="h3">{pasajesAsociados(lang)}</Typography>
+          <Typography variant="h3" className="pasajesAsociados">
+            {pasajesAsociados(lang)}
+          </Typography>
           <ul className="ulExpresionesRelacionadas">
             {props.expresionSeleccionada.referencias.map((referenciasList) => (
               <li
