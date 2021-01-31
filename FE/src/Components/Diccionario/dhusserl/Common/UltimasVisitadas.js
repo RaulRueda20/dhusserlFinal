@@ -47,6 +47,10 @@ const UltimasVisitadas = (props) => {
   };
 
   const handleFlagLetraMain = (event) => {
+    dispatch({
+      type: "SET_LANGLISTA",
+      payload: "al",
+    });
     if (letra != event.target.innerHTML[0].toUpperCase()) {
       dispatch({
         type: "SET_LETRA",

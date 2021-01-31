@@ -146,7 +146,7 @@ const ResultadoBusquedaReferencia = (props) => {
               >
                 <Typography id={expresion.t_id + "/" + index}>
                   {expresion.expresion_original +
-                    "  /  " +
+                    "  //  " +
                     expresion.expresion_traduccion}
                 </Typography>
               </Link>

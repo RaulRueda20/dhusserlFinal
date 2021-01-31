@@ -90,6 +90,33 @@ const Busqueda = (props) => {
     dispatch({ type: "SET_LANGLISTA", payload: "al" });
   };
 
+  const dealwithchar = (letra) => {
+    switch (letra) {
+      case "Ä":
+      case "Á":
+      case "Â":
+        return "A";
+      case "Ë":
+      case "É":
+      case "Ê":
+        return "E";
+      case "Ö":
+      case "Ó":
+      case "Ô":
+        return "O";
+      case "Ï":
+      case "Í":
+      case "Î":
+        return "I";
+      case "Ü":
+      case "Ú":
+      case "Û":
+        return "U";
+      default:
+        return letra;
+    }
+  };
+
   const handleChangeBusquedaExpresiones = (event) => {
     event.preventDefault();
     if (busqueda != "") {
@@ -104,8 +131,8 @@ const Busqueda = (props) => {
       } else if (busqueda.length > 2) {
         setLoading(true);
         var letter = busqueda.slice(0, 1);
-        var letraCapital = letra.toUpperCase();
-        if (letter == letraCapital) {
+        var letraCapital = letter.toUpperCase();
+        if (letra == dealwithchar(letraCapital)) {
           var servicebl =
             "/referencias/busquedaExpresionPorLetra" +
             "/" +
@@ -118,61 +145,70 @@ const Busqueda = (props) => {
             { parametro: busqueda, case: insensitiveCase },
             sesion,
             ({ data }) => {
-              if (letra == letraCapital) {
-                console.log("data de busqueda", data.response);
-                if (data.response == []) {
-                  setModalDebusquedas(true);
-                } else {
-                  ChunkC(data.response);
-                }
+              // if (letra == letraCapital) {
+              console.log("data de busqueda", data.response);
+              if (data.response == []) {
+                setModalDebusquedas(true);
               } else {
-                dispatch({
-                  type: "SET_SNACKBAR",
-                  payload: {
-                    open: true,
-                    variant: "error",
-                    message: letraNoCoincide(lang),
-                  },
-                });
+                ChunkC(data.response);
               }
+              // } else {
+              //   dispatch({
+              //     type: "SET_SNACKBAR",
+              //     payload: {
+              //       open: true,
+              //       variant: "error",
+              //       message: letraNoCoincide(lang),
+              //     },
+              //   });
+              // }
             }
           );
 
           setLoading(false);
         } else {
-          var letraCapital = letter.toUpperCase();
-          var servicebl =
-            "/referencias/busquedaExpresionPorLetra" +
-            "/" +
-            letra +
-            "/" +
-            langLista;
-          webService(
-            servicebl,
-            "POST",
-            { parametro: busqueda, case: insensitiveCase },
-            sesion,
-            ({ data }) => {
-              if (letra == letraCapital) {
-                console.log("data de busqueda", data.response);
-                if (data.response == []) {
-                  setModalDebusquedas(true);
-                } else {
-                  ChunkC(data.response);
-                }
-              } else {
-                dispatch({
-                  type: "SET_SNACKBAR",
-                  payload: {
-                    open: true,
-                    variant: "error",
-                    message: letraNoCoincide(lang),
-                  },
-                });
-              }
-            }
-          );
+          dispatch({
+            type: "SET_SNACKBAR",
+            payload: {
+              open: true,
+              variant: "error",
+              message: letraNoCoincide(lang),
+            },
+          });
           setLoading(false);
+          // var letraCapital = letter.toUpperCase();
+          // var servicebl =
+          //   "/referencias/busquedaExpresionPorLetra" +
+          //   "/" +
+          //   letra +
+          //   "/" +
+          //   langLista;
+          // webService(
+          //   servicebl,
+          //   "POST",
+          //   { parametro: busqueda, case: insensitiveCase },
+          //   sesion,
+          //   ({ data }) => {
+          //     if (letra == letraCapital) {
+          //       console.log("data de busqueda", data.response);
+          //       if (data.response == []) {
+          //         setModalDebusquedas(true);
+          //       } else {
+          //         ChunkC(data.response);
+          //       }
+          //     } else {
+          //       dispatch({
+          //         type: "SET_SNACKBAR",
+          //         payload: {
+          //           open: true,
+          //           variant: "error",
+          //           message: letraNoCoincide(lang),
+          //         },
+          //       });
+          //     }
+          //   }
+          // );
+          // setLoading(false);
         }
       }
     } else {

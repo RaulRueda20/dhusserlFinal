@@ -127,6 +127,7 @@ const MenuDerecho = (props) => {
   }, [expresionSeleccionada, ultimasVisitadas]);
 
   const fixReferenciasConsultadas = (expresion) => {
+    console.log(expresion);
     let referencia = {
       clave: expresion[0].clave,
       expresion: expresion[0].expresion_original,
@@ -156,8 +157,10 @@ const MenuDerecho = (props) => {
       });
     }
     const idExpresion = event.target.id.split("/")[0];
+    console.log("ID", idExpresion);
     const service = "/referencias/obtieneReferencias/" + idExpresion;
     webService(service, "GET", {}, sesion, (data) => {
+      console.log(data);
       const referencias = fixReferenciasConsultadas(data.data.response);
       let nuevasVisitadas = ultimasVisitadas;
       nuevasVisitadas.push(referencias);
@@ -208,6 +211,7 @@ const MenuDerecho = (props) => {
                 to={`${props.match.path.slice(0, 20)}/pasaje/${
                   expresionSeleccionada?.id
                 }`}
+                onClick={(event) => handleFlagLetraMain(event)}
               >
                 <Typography
                   variant="body1"
@@ -215,6 +219,7 @@ const MenuDerecho = (props) => {
                   style={{
                     fontWeight: 500,
                   }}
+                  id={expresionSeleccionada?.id + "/expresionprincipal"}
                 >
                   {expresionSeleccionada?.expresion}
                 </Typography>
