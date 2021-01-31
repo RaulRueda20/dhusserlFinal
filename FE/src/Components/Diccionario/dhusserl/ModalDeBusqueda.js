@@ -1,6 +1,7 @@
 // React
 import React, { useContext, useEffect } from "react";
-
+import { Link } from "react-router-dom";
+import PageviewIcon from "@material-ui/icons/Pageview";
 // Components
 import Modal from "@material-ui/core/Modal";
 import Typography from "@material-ui/core/Typography";
@@ -10,7 +11,6 @@ import ClearIcon from "@material-ui/icons/Clear";
 import IconButton from "@material-ui/core/IconButton";
 import Divider from "@material-ui/core/Divider";
 import { withStyles } from "@material-ui/styles";
-import { Link } from "react-router-dom";
 
 //Language
 import {
@@ -22,12 +22,12 @@ import { sesionStore } from "../../../stores/sesionStore";
 
 const modalBusqueda = {
   modalinb: {
-    width: "50%",
+    width: "30%",
     maxHeight: "75vh",
     top: "35.5vh",
     position: "absolute",
     padding: "20px 20px",
-    left: "calc(25% - 30px)",
+    left: "calc(35% - 30px)",
   },
   botonClear: {
     bottom: "15px",
@@ -76,8 +76,13 @@ const ModalDeBusqueda = (props) => {
           </Grid>
           <Divider />
           <Grid item xs={12} className={classes.gridDelTypo}>
-            <Typography variant="h5">{mensajeBusqueda(lang)}</Typography>
-            <Typography>{búsqueda(lang)}</Typography>
+            <Typography variant="h5">
+              ... {mensajeBusqueda(lang)}{" "}
+              <Link to={`/diccionario/husserl/busquedas`} className="links">
+                {búsqueda(lang)} <PageviewIcon />
+              </Link>
+            </Typography>
+            {/* <Typography>{búsqueda(lang)}</Typography> */}
           </Grid>
         </Grid>
       </Paper>
