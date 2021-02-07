@@ -93,7 +93,7 @@ const MenuDerecho = (props) => {
   const [padres, setPadres] = useState([]);
 
   useEffect(() => {
-    console.log("expresionSeleccionada", expresionSeleccionada);
+    // console.log("expresionSeleccionada", expresionSeleccionada);
     if (expresionSeleccionada) {
       let service = "/vertambien/" + expresionSeleccionada.id;
       webService(service, "GET", {}, sesion, ({ data }) => {
@@ -127,7 +127,7 @@ const MenuDerecho = (props) => {
   }, [expresionSeleccionada, ultimasVisitadas]);
 
   const fixReferenciasConsultadas = (expresion) => {
-    console.log(expresion);
+    // console.log(expresion);
     let referencia = {
       clave: expresion[0].clave,
       expresion: expresion[0].expresion_original,
@@ -157,10 +157,10 @@ const MenuDerecho = (props) => {
       });
     }
     const idExpresion = event.target.id.split("/")[0];
-    console.log("ID", idExpresion);
+    // console.log("ID", idExpresion);
     const service = "/referencias/obtieneReferencias/" + idExpresion;
     webService(service, "GET", {}, sesion, (data) => {
-      console.log(data);
+      // console.log(data);
       const referencias = fixReferenciasConsultadas(data.data.response);
       let nuevasVisitadas = ultimasVisitadas;
       nuevasVisitadas.push(referencias);

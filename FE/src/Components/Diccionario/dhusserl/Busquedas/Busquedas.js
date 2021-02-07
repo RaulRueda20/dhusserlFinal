@@ -89,7 +89,7 @@ const Busquedas = (props) => {
   const handleChangeBusqueda = (event) => {
     event.preventDefault();
     dispatch({ type: "START_LOADING" });
-    console.log("Busqueda", busqueda);
+    // console.log("Busqueda", busqueda);
     if (busqueda == "") {
       setModalDebusquedas(true);
       dispatch({ type: "STOP_LOADING" });

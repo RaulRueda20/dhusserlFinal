@@ -68,7 +68,7 @@ const ResultadoBusquedaExpresion = (props) => {
   });
 
   useEffect(() => {
-    console.log(expresionSeleccionada, expresion);
+    // console.log(expresionSeleccionada, expresion);
     globalExpresion.attend({
       type: "SELECT_EXPRESION",
       payload: {
@@ -83,7 +83,7 @@ const ResultadoBusquedaExpresion = (props) => {
   }, [idPasaje, expresionSeleccionada]);
 
   const resaltarBusqueda = (string, separador) => {
-    console.log(string, separador);
+    // console.log(string, separador);
     if (!string) return "";
     const split = string.split(separador);
     const Split = split.join(
@@ -93,7 +93,7 @@ const ResultadoBusquedaExpresion = (props) => {
   };
 
   function consultaDePasajes(event) {
-    console.log(event);
+    // console.log(event);
     if (letra != expresion[0].toUpperCase()) {
       dispatch({
         type: "SET_LETRA",

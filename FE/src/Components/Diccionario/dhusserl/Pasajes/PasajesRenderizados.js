@@ -109,12 +109,12 @@ const PasajesRenderizados = (props) => {
         traduccion: recuperandoInformacion(lang),
       });
     }
-
     let nombreExpresion =
       props.referenciaSeleccionada != null
         ? props.referenciaSeleccionada
         : emptyPasaje;
     setTituloPasaje(nombreExpresion);
+    console.log("pasajeRenderizado", pasajeRenderizado.traduccion);
   }, [props.referenciaSeleccionada, lang, epretty]);
 
   const resaltarBusqueda = (string, separador) => {

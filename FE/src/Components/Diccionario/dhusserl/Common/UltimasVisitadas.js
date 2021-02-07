@@ -19,9 +19,13 @@ const UltimasVisitadas = (props) => {
   const { match } = props;
 
   useEffect(() => {
-    console.log("RESET", props);
+    // console.log("lista", lista);
     let uv = localStore.getObjects("ultimasVisitadas");
-    setLista(uv.reverse());
+    setLista(uv);
+    if (uv.length > 0) {
+      // console.log("mayor a cero");
+      setLista(uv.reverse());
+    }
   }, [ultimasVisitadas]);
 
   const fixReferenciasConsultadas = (expresion) => {

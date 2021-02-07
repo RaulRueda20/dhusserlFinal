@@ -50,10 +50,6 @@ const ModalDeBusqueda = (props) => {
   const { state } = global;
   const { lang } = state;
 
-  useEffect(() => {
-    console.log(props.match);
-  });
-
   function clickHandleCloseModal() {
     props.setModalDebusquedas(false);
   }
