@@ -29,6 +29,7 @@ import {
 import { webService } from "../../../../js/webServices";
 
 import { sesionStore } from "../../../../stores/sesionStore";
+import { fixLetter } from "../../../../js/utils";
 import { expresionesStore } from "../../../../stores/expresionStore";
 import * as localStore from "../../../../js/localStore";
 
@@ -150,10 +151,10 @@ const MenuDerecho = (props) => {
   };
 
   const handleFlagLetraMain = (event) => {
-    if (letra != event.target.innerHTML[0].toUpperCase()) {
+    if (letra != fixLetter(event.target.innerHTML[0].toUpperCase())) {
       dispatch({
         type: "SET_LETRA",
-        payload: event.target.innerHTML[0].toUpperCase(),
+        payload: fixLetter(event.target.innerHTML[0].toUpperCase()),
       });
     }
     const idExpresion = event.target.id.split("/")[0];

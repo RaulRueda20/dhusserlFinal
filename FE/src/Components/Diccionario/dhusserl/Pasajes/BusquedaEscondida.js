@@ -31,6 +31,7 @@ import classNames from "classnames";
 import { sesionStore } from "../../../../stores/sesionStore";
 import { languageStore } from "../../../../stores/languageStore";
 import { letraStore } from "../../../../stores/letraStore";
+import { fixLetter } from "../../../../js/utils";
 
 //Imagen
 import es from "../../../../Imagenes/spain.png";
@@ -82,7 +83,7 @@ const BusquedaEscondida = (props) => {
         props.setModalDebusquedas(true);
       } else if (props.busqueda.length > 2) {
         let letra = props.busqueda.slice(0, 1);
-        let letraCapital = letra.toUpperCase();
+        let letraCapital = fixLetter(letra);
         if (letra == letraCapital) {
           let servicebl =
             "/referencias/busquedaExpresionPorLetra" +

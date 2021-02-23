@@ -32,6 +32,8 @@ import {
   letraNoCoincide,
 } from "../../../../js/Language";
 
+import { fixLetter } from "../../../../js/utils";
+
 //Imagen
 import es from "../../../../Imagenes/spain.png";
 import al from "../../../../Imagenes/germany.png";
@@ -90,33 +92,6 @@ const Busqueda = (props) => {
     dispatch({ type: "SET_LANGLISTA", payload: "al" });
   };
 
-  const dealwithchar = (letra) => {
-    switch (letra) {
-      case "Ä":
-      case "Á":
-      case "Â":
-        return "A";
-      case "Ë":
-      case "É":
-      case "Ê":
-        return "E";
-      case "Ö":
-      case "Ó":
-      case "Ô":
-        return "O";
-      case "Ï":
-      case "Í":
-      case "Î":
-        return "I";
-      case "Ü":
-      case "Ú":
-      case "Û":
-        return "U";
-      default:
-        return letra;
-    }
-  };
-
   const handleChangeBusquedaExpresiones = (event) => {
     event.preventDefault();
     if (busqueda != "") {
@@ -132,7 +107,7 @@ const Busqueda = (props) => {
         setLoading(true);
         var letter = busqueda.slice(0, 1);
         var letraCapital = letter.toUpperCase();
-        if (letra == dealwithchar(letraCapital)) {
+        if (letra == fixLetter(letraCapital)) {
           var servicebl =
             "/referencias/busquedaExpresionPorLetra" +
             "/" +

@@ -31,6 +31,7 @@ import { sesionStore } from "../../../../stores/sesionStore";
 import { expresionesStore } from "../../../../stores/expresionStore";
 import { webService } from "../../../../js/webServices";
 import { expresionesAsociadas } from "../../../../js/Language";
+import { fixLetter } from "../../../../js/utils";
 
 const Pasaje = (props) => {
   const { match } = props;
@@ -60,9 +61,7 @@ const Pasaje = (props) => {
     setPosicionReferenciasConsultadas,
   ] = useState("");
   const [referencias, setReferencias] = useState([]);
-  const [openModalN, setOpenModalN] = useState(false);
   const [modalDeBusquedas, setModalDebusquedas] = useState(false);
-  const [flagDeBusqueda, setFlagDeBusqueda] = useState(false);
   const [chunkList, setChunkList] = useState([]);
   const [chunkListGlobal, setChunkListGlobal] = useState([]);
   const [isQV, setIsQV] = useState(false);
@@ -231,7 +230,6 @@ const Pasaje = (props) => {
             type: "SET_LETRA",
             payload: letra,
           });
-          setOpenModalN(true);
           setReferenciaSeleccionada("none");
         }
         console.log(response);
@@ -264,10 +262,10 @@ const Pasaje = (props) => {
   }
 
   function consultaDePasajes(event) {
-    if (letra != event.target.innerHTML[0].toUpperCase()) {
+    if (letra != fixLetter(event.target.innerHTML[0].toUpperCase())) {
       dispatch({
         type: "SET_LETRA",
-        payload: event.target.innerHTML[0].toUpperCase(),
+        payload: fixLetter(event.target.innerHTML[0].toUpperCase()),
       });
     }
     const idExpresion = event.target.id.split("/")[0];
@@ -350,7 +348,6 @@ const Pasaje = (props) => {
               busqueda={busqueda}
               bandera={true}
               setBusqueda={setBusqueda}
-              setFlagDeBusqueda={setFlagDeBusqueda}
               setModalDebusquedas={setModalDebusquedas}
               setLoading={setLoading}
             />

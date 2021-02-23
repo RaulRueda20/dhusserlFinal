@@ -12,6 +12,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Jerarquia from "@material-ui/icons/DeviceHub";
 
 import * as localStore from "../../../../js/localStore";
+import { fixLetter } from "../../../../js/utils";
 
 // Other req
 import { webService } from "../../../../js/webServices";
@@ -89,10 +90,10 @@ const ListaPadresExpresion = (props) => {
   };
 
   const handleFlagLetraMain = (event) => {
-    if (letra != event.target.innerHTML[0].toUpperCase()) {
+    if (letra != fixLetter(event.target.innerHTML[0])) {
       dispatch({
         type: "SET_LETRA",
-        payload: event.target.innerHTML[0].toUpperCase(),
+        payload: fixLetter(event.target.innerHTML[0]),
       });
     }
     const idExpresion = event.target.id.split("/")[0];

@@ -10,7 +10,6 @@ import {
   FormControl,
   IconButton,
   Tooltip,
-  Switch,
   Grid,
   Snackbar,
 } from "@material-ui/core";
@@ -31,6 +30,8 @@ import {
   distincionMayusyMinus,
   letraNoCoincide,
 } from "../../../../js/Language";
+
+import { fixLetter } from "../../../../js/utils";
 
 const styles = {
   contenedor: {
@@ -60,7 +61,7 @@ const BusquedaAbajo = (props) => {
   const { sesion } = state;
 
   const globalExpresion = useContext(expresionesStore);
-  const { store, attend } = globalExpresion;
+  const { store } = globalExpresion;
   const { letra, lang, langLista, expresiones } = store;
 
   const [insensitiveCase, setInsensitiveCase] = useState(false);
@@ -79,8 +80,7 @@ const BusquedaAbajo = (props) => {
         setModalDebusquedas(true);
       } else if (busqueda.length > 2) {
         setLoading(true);
-        var letra = busqueda.slice(0, 1);
-        var letraCapital = letra.toUpperCase();
+        var letraCapital = fixLetter(busqueda.slice(0, 1).toUpperCase());
         if (letra == letraCapital) {
           var servicebl =
             "/referencias/busquedaExpresionPorLetra" +

@@ -1,5 +1,5 @@
 // React
-import React, { useContext, Fragment, useState, useEffect } from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 
 // Elements
@@ -14,6 +14,7 @@ import {
 import Jerarquia from "@material-ui/icons/DeviceHub";
 
 import * as localStore from "../../../../js/localStore";
+import { fixLetter } from "../../../../js/utils";
 
 //Language
 import {
@@ -91,10 +92,10 @@ const ListaHijosExpresion = (props) => {
   };
 
   const handleFlagLetraMain = (event) => {
-    if (letra != event.target.innerHTML[0].toUpperCase()) {
+    if (letra != fixLetter(event.target.innerHTML[0])) {
       dispatch({
         type: "SET_LETRA",
-        payload: event.target.innerHTML[0].toUpperCase(),
+        payload: fixLetter(event.target.innerHTML[0]),
       });
     }
     const idExpresion = event.target.id.split("/")[0];

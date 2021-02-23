@@ -2,7 +2,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 //Components
-import { Grid, Typography, Divider, IconButton } from "@material-ui/core";
+import { Grid, Typography, IconButton } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
 
 import LinkIcon from "@material-ui/icons/Link";
@@ -13,6 +13,7 @@ import { expresionesStore } from "../../../../stores/expresionStore";
 import MenuDerecho from "../Common/MenuDerecho";
 import { sesionStore } from "../../../../stores/sesionStore";
 import * as localStore from "../../../../js/localStore";
+import { fixLetter } from "../../../../js/utils";
 import { pasajesAsociados } from "../../../../js/Language";
 
 const resultadoBusqueda = {
@@ -94,10 +95,10 @@ const ResultadoBusquedaExpresion = (props) => {
 
   function consultaDePasajes(event) {
     console.log(event);
-    if (letra != expresion[0].toUpperCase()) {
+    if (letra != fixLetter(expresion[0])) {
       dispatch({
         type: "SET_LETRA",
-        payload: expresion[0].toUpperCase(),
+        payload: fixLetter(expresion[0]),
       });
     }
     let nuevasVisitadas = localStore.getObjects("ultimasVisitadas");

@@ -21,13 +21,7 @@ import { expresionesStore } from "../../../../stores/expresionStore";
 // CSS
 import "../../../../css/expresiones.css";
 
-const PanelExpresion = ({
-  match,
-  expresion,
-  index,
-  setOpenModalN,
-  getJerarquia,
-}) => {
+const PanelExpresion = ({ match, expresion, index, getJerarquia }) => {
   const global = useContext(sesionStore);
   const { state, dispatch } = global;
   const { sesion } = state;
