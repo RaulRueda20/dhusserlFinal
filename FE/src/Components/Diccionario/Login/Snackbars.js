@@ -44,9 +44,9 @@ const EnvoltorioDeSnack = (props) => {
 
   const Icon = iconoVariante[variant];
 
-  useEffect(() => {
-    console.log("mensaje", message);
-  }, [true]);
+  // useEffect(() => {
+  //   console.log("mensaje", message);
+  // }, [true]);
 
   return (
     <SnackbarContent

@@ -203,9 +203,9 @@ const Pasaje = (props) => {
       service = "/referencias/obtieneReferenciasByRef/" + idDeLaReferencia;
       webService(service, "GET", {}, sesion, ({ data }) => {
         const { response } = data;
-        console.log(response);
+        // console.log(response);
         const fixedThing = fixPasajes(response);
-        console.log("Fixed thing", fixedThing);
+        // console.log("Fixed thing", fixedThing);
         setQv(fixedThing[0]);
         setIsQV(true);
         setLoading(false);
@@ -232,7 +232,7 @@ const Pasaje = (props) => {
           });
           setReferenciaSeleccionada("none");
         }
-        console.log(response);
+        // console.log(response);
         attend({
           type: "SELECT_EXPRESION",
           payload: {

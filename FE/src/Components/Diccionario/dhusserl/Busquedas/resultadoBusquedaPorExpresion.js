@@ -69,7 +69,7 @@ const ResultadoBusquedaExpresion = (props) => {
   });
 
   useEffect(() => {
-    console.log(expresionSeleccionada, expresion);
+    // console.log(expresionSeleccionada, expresion);
     globalExpresion.attend({
       type: "SELECT_EXPRESION",
       payload: {
@@ -84,7 +84,7 @@ const ResultadoBusquedaExpresion = (props) => {
   }, [idPasaje, expresionSeleccionada]);
 
   const resaltarBusqueda = (string, separador) => {
-    console.log(string, separador);
+    // console.log(string, separador);
     if (!string) return "";
     const split = string.split(separador);
     const Split = split.join(

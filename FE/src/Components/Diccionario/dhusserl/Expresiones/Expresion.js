@@ -48,7 +48,6 @@ const Expresion = (props) => {
   const [openModalN, setOpenModalN] = useState(false);
 
   const fixReferencias = (referencias) => {
-    console.log(referencias);
     var expresiones = [];
     var posicActual = -1;
     var expreActual = "";
