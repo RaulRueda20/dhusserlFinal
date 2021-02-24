@@ -142,7 +142,7 @@ const ResultadoBusquedaExpresion = (props) => {
         </Grid>
       </Grid>
       <Grid container className={classes.contenedorDeResultados}>
-        <Grid xs={4} className="listaReferencia">
+        <Grid item xs={12} sm={8} md={8} lg={8} className="listaReferencia">
           <Typography variant="h3" className="pasajesAsociados">
             {pasajesAsociados(lang)}
           </Typography>
@@ -172,7 +172,7 @@ const ResultadoBusquedaExpresion = (props) => {
             ))}
           </ul>
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={12} sm={4} md={4} lg={4}>
           <MenuDerecho
             {...props}
             expanded1={expanded1}

@@ -38,7 +38,7 @@ const ResultadoBusquedaReferencia = (props) => {
 
   const globalBusqueda = useContext(busquedaStore);
   const { busquedaState } = globalBusqueda;
-  const { idPasaje, busqueda, posicionPasaje } = busquedaState;
+  const { busqueda, posicionPasaje } = busquedaState;
 
   const [pasajes, setPasajes] = useState({
     original: "",
