@@ -70,6 +70,7 @@ const ContenidoPasaje = (props) => {
         openDescargas={openDescargas}
         setOpenDescargas={setOpenDescargas}
         idExpresion={props.idExpresion}
+        match={props.match}
       />
     </Fragment>
   );
