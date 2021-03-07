@@ -319,7 +319,7 @@ router.get('/recoverPassword/:lang', function(req, res){
             //<p>' + body + here + ' ' + serverUrl + '/diccionario/recoverPassword.html?e=' + emailEncoded + '</p>\
             //<p>' + warning + '</p>' + foot
             var htmlContent = '<h3>' + header + '</h3><hr/><br/>\
-            <p>' + body + here + ' ' + 'http://localhost:8080/#/diccionario/recuperacionPass/' + emailEncoded + '</p>\
+            <p>' + body + here + ' ' + "http://3.22.12.85:1938/#/diccionario/recuperacionPass/" + emailEncoded + '</p>\
             <p>' + warning + '</p>' + foot
             console.log(htmlContent)
             let transporter = nodemailer.createTransport({
@@ -331,7 +331,7 @@ router.get('/recoverPassword/:lang', function(req, res){
             });
 
             let mailOptions = {
-                from: '"'+ nameCC +'" <foo@example.com>', // sender address
+                from: nameCC, // sender address
                 to: toEmail, // list of receivers
                 subject: subj, // Subject line
                 html: htmlContent // html body

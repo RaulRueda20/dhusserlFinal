@@ -395,7 +395,7 @@ router.delete('/quitarPasaje/:refid/:termid', function(req, res, next){
 	})}else{res.send(JSON.stringify({"status": 401, "error": "Está prohibido para este usuario.", "response": null}));}
 });
 
-const fixReferencias = (referencias) => {
+/*const fixReferencias = (referencias) => {
     var expresionesUnicas=[]
     var coincidencia = null
     for (var i in referencias){
@@ -443,7 +443,48 @@ const fixReferencias = (referencias) => {
         }
     }
     return expresionesUnicas 
-}
+}*/
+
+const fixReferencias = (referencias) => {
+    var expresiones = [];
+    var posicActual = -1;
+    var expreActual = "";
+    var i = 0;
+    while (i < referencias.length) {
+      if (expreActual != referencias[i].expresion) {
+        posicActual++;
+        expreActual = referencias[i].expresion;
+        expresiones.push({
+          clave: referencias[i].clave,
+          nombreExpresion: referencias[i].expresion,
+	  expresion: referencias[i].expresion,
+          id: referencias[i].id,
+          index_de: referencias[i].index_de,
+          index_es: referencias[i].index_es,
+          pretty_e: referencias[i].pretty_e,
+          pretty_t: referencias[i].pretty_t,
+          referencias: [],
+          traduccion: referencias[i].traduccion,
+        });
+        expresiones[posicActual].referencias.push({
+          referencia_original: referencias[i].referencia_original,
+          referencia_traduccion: referencias[i].referencia_traduccion,
+          refid: referencias[i].refid,
+          orden: referencias[i].orden,
+        });
+        i++;
+      } else {
+        expresiones[posicActual].referencias.push({
+          referencia_original: referencias[i].referencia_original,
+          referencia_traduccion: referencias[i].referencia_traduccion,
+          refid: referencias[i].refid,
+          orden: referencias[i].orden,
+        });
+        i++;
+      }
+    }
+    return expresiones;
+  };
 
 router.post('/busquedaExpresion', function(req, res, next){
     if(global.rol != "guest"){
@@ -523,8 +564,8 @@ router.post('/busquedaExpresionPorLetraAdmin/:letra', function(req, res, next){
 })
 
 router.post('/busquedaExpresionPorLetra/:letra/:lenguaje', function(req, res, next){
-    //console.log("req", req.params)
-    console.log("global.rol", global.rol)
+    console.log("req", req.params)
+    //console.log("global.rol", global.rol)
     if(global.rol != "guest"){
         var currentdate = new Date();
         var datetime = currentdate.getDay() + "/"+(currentdate.getMonth() + 1)
@@ -541,8 +582,16 @@ router.post('/busquedaExpresionPorLetra/:letra/:lenguaje', function(req, res, ne
             }else{
                 var condicion = "where termino.t_term_es ilike $1 and termino.t_index_de like '"+req.params.letra+"%'"
             }
-            var ordenamiento = "order by termino.t_term_es"
-            var terminos = "termino.t_term_es as expresion, termino.t_term_de as traduccion,"
+            //var ordenamiento = "order by termino.t_term_es"
+            var ordenamiento = "order by termino.t_term_es, termino_referencia.tr_order,\
+                CASE WHEN clave = 'IP' THEN 1 \
+                WHEN clave = 'PW' THEN 2 \
+                WHEN clave = 'I1' THEN 3 \
+                WHEN clave = 'I2' THEN 4 \
+                WHEN clave = 'PV' THEN 5 \
+                WHEN clave = 'CM' THEN 6 \
+                END, refid;"
+		var terminos = "termino.t_term_es as expresion, termino.t_term_de as traduccion,"
             var prettys = "termino.t_em_de as pretty_t, termino.t_em_es as pretty_e,"
         }else{   
             if(req.body.case){
@@ -550,7 +599,14 @@ router.post('/busquedaExpresionPorLetra/:letra/:lenguaje', function(req, res, ne
             }else{
                 var condicion = "where termino.t_term_de ilike $1 and termino.t_index_de ilike '"+req.params.letra+"%'"
             }
-            var ordenamiento = "order by termino.t_term_de"
+            var ordenamiento = "order by termino.t_term_de, termino_referencia.tr_order,\
+    		CASE WHEN clave = 'IP' THEN 1 \
+      		WHEN clave = 'PW' THEN 2 \
+      		WHEN clave = 'I1' THEN 3 \
+      		WHEN clave = 'I2' THEN 4 \
+      		WHEN clave = 'PV' THEN 5 \
+      		WHEN clave = 'CM' THEN 6 \
+     		END, refid;"
             var terminos = "termino.t_term_de as expresion, termino.t_term_es as traduccion,"
             var prettys = "termino.t_em_de as pretty_e, termino.t_em_es as pretty_t,"
         }
@@ -562,6 +618,7 @@ router.post('/busquedaExpresionPorLetra/:letra/:lenguaje', function(req, res, ne
         termino.t_index_es as index_es," + prettys +
         "termino_referencia.tr_termid as term_id,\
         termino_referencia.tr_refid as term_refid,\
+	termino_referencia.tr_order as orden,\
         referencia.clave as clave, \
         referencia.ref_id as refid,\
         referencia.ref_libro_de as referencia_original,\
@@ -574,7 +631,7 @@ router.post('/busquedaExpresionPorLetra/:letra/:lenguaje', function(req, res, ne
         //console.log("queryString", queryString)
         res.locals.connection.query(queryString, filter)
     .then(function(results) {
-        //console.log("resultados!!!", results)
+        console.log("resultados!!!", results)
         res.send(JSON.stringify({"status": 200, "error": null, "response": fixReferencias(results)}));
         //If there is no error, all is good and response is 200OK.
   	}).catch(function(error){
