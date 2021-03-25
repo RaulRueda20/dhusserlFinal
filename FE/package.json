@@ -11,6 +11,7 @@
     "@material-ui/styles": "^4.0.1",
     "@mdi/js": "^4.5.95",
     "@mdi/react": "^1.2.1",
+    "@react-pdf/renderer": "^1.6.13",
     "abort-controller": "^3.0.0",
     "autoscroll-react": "^3.2.0",
     "axios": "^0.18.0",
@@ -18,6 +19,7 @@
     "ckeditor4-react": "^1.1.1",
     "ckeditor4-react-advanced": "^1.1.7",
     "classnames": "^2.2.6",
+    "jspdf": "^2.3.1",
     "nodemon": "^1.19.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
@@ -27,6 +29,7 @@
     "react-scroll": "^1.7.16",
     "react-scroll-to-top": "^0.2.3",
     "react-swipeable-views": "^0.13.3",
+    "react-to-pdf": "^0.0.13",
     "react-to-target-auto-scroll": "^1.0.5",
     "regenerator-runtime": "^0.13.5",
     "webpack-dev-server": "^3.10.3"
@@ -54,6 +57,7 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-class-properties": "^7.4.0",
+    "@babel/plugin-transform-runtime": "^7.9.0",
     "@babel/preset-env": "^7.4.3",
     "@babel/preset-react": "^7.0.0",
     "babel-jest": "^24.7.1",

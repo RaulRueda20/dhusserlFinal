@@ -82,7 +82,7 @@ const ListaDeConsultados = (props) => {
 
   useEffect(() => {
     //let listaConsultas = localStore.getObjects("referenciasConsultadas")
-    let listaConsultas = global.ultimasVisitadas;
+    let listaConsultas = global.state.ultimasVisitadas;
     let listaVacia = [];
     for (let i in listaConsultas) {
       listaVacia.push(listaConsultas[i]);
@@ -157,8 +157,8 @@ const ListaDeConsultados = (props) => {
               <ListItemText
                 id={labelId}
                 primary={`${
-                  value.expresion + "-" + value.referencias[0].refid
-                  }`}
+                  value.nombreExpresion + "-" + value.referencias[0].refid
+                }`}
               />
             </ListItem>
           );

@@ -83,7 +83,7 @@ var recursive_replace_text = (text, replace, lang, refid, res, final) => {
 	const posX = text.indexOf(replace[0])
 	  let posY = 0
 	  let c = posX
-	  console.log("POS X:",text[posX])
+//	  console.log("POS X:",text[posX])
 	  while(c < text.length){
 	  	if(text[c] == replace[1]){
                         console.log('HERE')
@@ -99,34 +99,35 @@ var recursive_replace_text = (text, replace, lang, refid, res, final) => {
 			posY = c
 		}
 	}*/
-	console.log("FOUND", posX, posY)
+//	console.log("FOUND", posX, posY)
     let partOne = text.slice(
       posX,posY
     );
     //let partTwo = partOne;
-    console.log("-------------------------------------------------------------------------------------------",partOne, "-----------------------------------------------------------------------------------");
+  //  console.log("-------------------------------------------------------------------------------------------",partOne, "-----------------------------------------------------------------------------------");
     let pieces = partOne.split("'");
-    console.log(pieces);
+    //console.log(pieces);
     const id = pieces[1];
     const partTwo = "<a href='/#/diccionario/husserl/pasaje/QV/"+id+"'";
-	console.log("PART ONE:", partOne, "---------------------------------------------------------------------------------------", partTwo)
+//	console.log("PART ONE:", partOne, "---------------------------------------------------------------------------------------", partTwo)
     //let newText = text;
     const newText = text.replace(partOne,partTwo);
-    console.log(newText);
+    //console.log(newText);
     //return final()
     return recursive_replace_text(newText, replace, lang, refid, res, final);
   } else {
-    console.log("Done replacing");
-    console.log(
-      "----------------------------------------------------------------------------------------------------"
-    );
-
+  //  console.log("Done replacing");
+    //console.log(
+     // "----------------------------------------------------------------------------------------------------"
+    //);
+    console.log('we change this', text, 'in this ', refid)
     res.locals.connection
       .query("UPDATE referencia SET "+lang+" = $1 where ref_id = $2;", [
         text,
         refid,
       ])
       .then(function (results) {
+	
         console.log(results);
         
 	return final()
@@ -318,12 +319,12 @@ router.post("/fixthisshit", function (req, res) {
     .then(function (results) {
       var finalFlag = false;
       console.log(results.length);
-	/*recorrido(results, 0, res, (listaFinal) => {
+	recorrido(results, 0, res, (listaFinal) => {
 		res.status(200).json(listaFinal)
-	})*/
+	})/*
 	    recorrido_b(results, 0, res, (listaFinal) => {
                 res.status(200).json(listaFinal)
-        })
+        })*/
 /*	    
       for (var i in results) {
         console.log(i + " : " + results[i].ref_id);

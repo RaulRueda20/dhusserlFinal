@@ -1,5 +1,5 @@
 // React
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, Fragment } from "react";
 
 // Components
 import {
@@ -23,9 +23,14 @@ import ClearIcon from "@material-ui/icons/Clear";
 import ListaDeConsultados from "./ListaDeConsultados";
 
 // Other req
-import { webService } from "../../../../js/webServices";
+import { webService, webServiceAsync } from "../../../../js/webServices";
 import { sesionStore } from "../../../../stores/sesionStore";
 import { languageStore } from "../../../../stores/languageStore";
+
+import { jsPDF } from "jspdf";
+
+// Default export is a4 paper, portrait, using millimeters for units
+const doc = new jsPDF("l", "mm", [297, 210]);
 
 //Language
 import {
@@ -76,6 +81,7 @@ const ModalDescargas = (props) => {
   const [descargarPasajeSolo, setdescargarPasajeSolo] = useState(
     "seleccionado"
   );
+  const [flagHtml, setFlagHtml] = useState(false);
 
   const handleChangeA = (name) => (event) => {
     setCheckedA({ ...checkedA, [name]: event.target.checked });
@@ -104,7 +110,7 @@ const ModalDescargas = (props) => {
     props.setOpenDescargas(false);
   };
 
-  const clickHandleDescarga = () => {
+  const clickHandleDescarga = async () => {
     let opciones = [0, 0, 0, 0];
     checkedB ? opciones.push(1) : opciones.push(0);
     checkedC ? opciones.push(1) : opciones.push(0);
@@ -168,6 +174,7 @@ const ModalDescargas = (props) => {
           });
         }
       } else {
+        let completeHtml = "";
         let serviceR =
           "/reporte/reporteGeneralpdf/" +
           props.idExpresion +
@@ -182,15 +189,29 @@ const ModalDescargas = (props) => {
           globalLanguage.lang +
           "&refid=" +
           props.match.params.id;
-        webService(serviceR, "GET", {}, global.sesion, ({ data }) => {
-          const { response } = data;
-          document.getElementById("toDownloadDiv").innerHTML =
-            "<a href='/files/" +
-            response +
-            ".pdf' id='fileToDownload' download></a>";
-          document.getElementById("fileToDownload").click();
-        });
+        const response = await webServiceAsync(
+          serviceR,
+          "GET",
+          {},
+          global.sesion
+        );
+        completeHtml += response.data;
+        // webService(serviceR, "GET", {}, global.sesion, ({ data }) => {
+        //   try {
+        //     const newWindow = window.open("Descarga PDF");
+        //     newWindow.document.write(data);
+        //     setTimeout(() => {
+        //       newWindow.stop();
+        //       newWindow.print();
+
+        //       setTimeout(() => newWindow.close(), 500);
+        //     }, 500);
+        //   } catch (error) {
+        //     console.log(error);
+        //   }
+        // });
         if (checked.length > 0) {
+          console.log("ENTRE al segundo if");
           for (let i in checked) {
             let refid = checked[i].split("/")[0];
             let id = checked[i].split("/")[1];
@@ -208,15 +229,22 @@ const ModalDescargas = (props) => {
               globalLanguage.lang +
               "&refid=" +
               refid;
-            webService(serviceR, "GET", {}, ({ data }) => {
-              const { response } = data;
-              document.getElementById("toDownloadDiv").innerHTML =
-                "<a href='/files/" +
-                response +
-                ".pdf' id='fileToDownload' download></a>";
-              document.getElementById("fileToDownload").click();
-            });
+            const { data } = await webServiceAsync(serviceR, "GET", {}, {});
+
+            completeHtml += data;
           }
+        }
+        try {
+          const newWindow = window.open("Descarga PDF");
+          newWindow.document.write(completeHtml);
+          setTimeout(() => {
+            newWindow.stop();
+            newWindow.print();
+
+            setTimeout(() => newWindow.close(), 500);
+          }, 500);
+        } catch (error) {
+          console.log(error);
         }
       }
     } else {
@@ -236,12 +264,18 @@ const ModalDescargas = (props) => {
           "&refid=" +
           props.match.params.id;
         webService(serviceR, "GET", {}, global.sesion, ({ data }) => {
-          const { response } = data;
-          document.getElementById("toDownloadDiv").innerHTML =
-            "<a href='/files/" +
-            response +
-            ".pdf' id='fileToDownload' download></a>";
-          document.getElementById("fileToDownload").click();
+          try {
+            const newWindow = window.open("Descarga PDF");
+            newWindow.document.write(data);
+            setTimeout(() => {
+              newWindow.stop();
+              newWindow.print();
+
+              setTimeout(() => newWindow.close(), 500);
+            }, 500);
+          } catch (error) {
+            console.log(error);
+          }
         });
       } else {
         let serviceR =
@@ -271,156 +305,171 @@ const ModalDescargas = (props) => {
   };
 
   return (
-    <Modal
-      aria-labelledby="simple-modal-title"
-      aria-describedby="simple-modal-description"
-      open={props.openDescargas}
-      onClose={closeDescargas}
-    >
-      <Paper className={classes.modalinDescarga}>
-        <div id="toDownloadDiv" hidden />
-        <Grid
-          container
-          justify="center"
-          alignItems="center"
-          alignContent="center"
+    <Fragment>
+      {!flagHtml ? (
+        <Modal
+          aria-labelledby="simple-modal-title"
+          aria-describedby="simple-modal-description"
+          open={props.openDescargas}
+          onClose={closeDescargas}
         >
-          <Grid item xs={11}>
-            <Typography variant="h4">
-              {descargarConsulta(globalLanguage.lang)}
-            </Typography>
-          </Grid>
-          <Grid item xs={1}>
-            <IconButton aria-haspopup="true" onClick={closeDescargas}>
-              <ClearIcon />
-            </IconButton>
-          </Grid>
-        </Grid>
-        <Divider className="divisor" />
-        <FormGroup>
-          <Grid container>
-            <Grid item xs={12}>
-              <Typography>{seGeneraArchivo(globalLanguage.lang)}</Typography>
-            </Grid>
-            <Grid item xs={12}>
-              <Typography>
-                {menuDerechoJerarquia(globalLanguage.lang)}
-              </Typography>
-            </Grid>
-            <Grid item xs={12}>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={checkedA}
-                    onChange={() => setCheckedA(!checkedA)}
-                    value="checkedA"
-                  />
-                }
-                label={conReferencias(globalLanguage.lang)}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Typography>{descargarEn(globalLanguage.lang)}</Typography>
-            </Grid>
-            <Grid item xs={6}>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={checkedB}
-                    onChange={() => setCheckedB(!checkedB)}
-                    value="checkedB"
-                  />
-                }
-                label={idiomaAl(globalLanguage.lang)}
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={checkedC}
-                    onChange={() => setCheckedC(!checkedC)}
-                    value="checkedC"
-                  />
-                }
-                label={idiomaEs(globalLanguage.lang)}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Typography>
-                {pasajeSeleccionadoOTodos(globalLanguage.lang)}
-              </Typography>
-            </Grid>
-            <RadioGroup
-              aria-label={pasajeSeleccionadoOTodos(globalLanguage.lang)}
-              name="Pasaje seleccionado"
-              value={descargarPasajeSolo}
-              onChange={pasajeSeleccionadoRadio}
+          <Paper className={classes.modalinDescarga}>
+            <div id="toDownloadDiv" hidden />
+            <Grid
+              container
+              justify="center"
+              alignItems="center"
+              alignContent="center"
             >
-              <Grid item xs={12}>
-                <Grid container>
-                  <Grid item xs={6}>
-                    <FormControlLabel
-                      control={<Radio />}
-                      value="seleccionado"
-                      label={pasajeSeleccionado(globalLanguage.lang)}
-                    />
-                  </Grid>
-                  <Grid item xs={6}>
-                    <FormControlLabel
-                      control={<Radio />}
-                      value="todos"
-                      label={todosLosPasajes(globalLanguage.lang)}
-                    />
-                  </Grid>
+              <Grid item xs={11}>
+                <Typography variant="h4">
+                  {descargarConsulta(globalLanguage.lang)}
+                </Typography>
+              </Grid>
+              <Grid item xs={1}>
+                <IconButton aria-haspopup="true" onClick={closeDescargas}>
+                  <ClearIcon />
+                </IconButton>
+              </Grid>
+            </Grid>
+            <Divider className="divisor" />
+            <FormGroup>
+              <Grid container>
+                <Grid item xs={12}>
+                  <Typography>
+                    {seGeneraArchivo(globalLanguage.lang)}
+                  </Typography>
                 </Grid>
+                <Grid item xs={12}>
+                  <Typography>
+                    {menuDerechoJerarquia(globalLanguage.lang)}
+                  </Typography>
+                </Grid>
+                <Grid item xs={12}>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={checkedA}
+                        onChange={() => setCheckedA(!checkedA)}
+                        value="checkedA"
+                      />
+                    }
+                    label={conReferencias(globalLanguage.lang)}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography>{descargarEn(globalLanguage.lang)}</Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={checkedB}
+                        onChange={() => setCheckedB(!checkedB)}
+                        value="checkedB"
+                      />
+                    }
+                    label={idiomaAl(globalLanguage.lang)}
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={checkedC}
+                        onChange={() => setCheckedC(!checkedC)}
+                        value="checkedC"
+                      />
+                    }
+                    label={idiomaEs(globalLanguage.lang)}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography>
+                    {pasajeSeleccionadoOTodos(globalLanguage.lang)}
+                  </Typography>
+                </Grid>
+                <RadioGroup
+                  aria-label={pasajeSeleccionadoOTodos(globalLanguage.lang)}
+                  name="Pasaje seleccionado"
+                  value={descargarPasajeSolo}
+                  onChange={pasajeSeleccionadoRadio}
+                >
+                  <Grid item xs={12}>
+                    <Grid container>
+                      <Grid item xs={6}>
+                        <FormControlLabel
+                          control={<Radio />}
+                          value="seleccionado"
+                          label={pasajeSeleccionado(globalLanguage.lang)}
+                        />
+                      </Grid>
+                      <Grid item xs={6}>
+                        <FormControlLabel
+                          control={<Radio />}
+                          value="todos"
+                          label={todosLosPasajes(globalLanguage.lang)}
+                        />
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                </RadioGroup>
+                <Grid item xs={12}>
+                  <Typography>{tipoDeArchivos(globalLanguage.lang)}</Typography>
+                </Grid>
+                <RadioGroup
+                  aria-label={tipoDeArchivos(globalLanguage.lang)}
+                  name="Tipo de archivo"
+                  value={value}
+                  onChange={handleChangeRadio}
+                >
+                  <Grid item xs={6}>
+                    <FormControlLabel
+                      control={<Radio />}
+                      value="texto"
+                      label={texto(globalLanguage.lang)}
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <FormControlLabel
+                      control={<Radio />}
+                      value="PDF"
+                      label="PDF"
+                    />
+                  </Grid>
+                </RadioGroup>
               </Grid>
-            </RadioGroup>
-            <Grid item xs={12}>
-              <Typography>{tipoDeArchivos(globalLanguage.lang)}</Typography>
+            </FormGroup>
+            <Divider className="divisor" />
+            <Grid container>
+              <Grid item xs={12} className={classes.tituloConsultados}>
+                <Typography>
+                  {descargarConsultadas(globalLanguage.lang)}
+                </Typography>
+              </Grid>
+              <Grid item xs={12}>
+                <ListaDeConsultados checked={checked} setChecked={setChecked} />
+              </Grid>
             </Grid>
-            <RadioGroup
-              aria-label={tipoDeArchivos(globalLanguage.lang)}
-              name="Tipo de archivo"
-              value={value}
-              onChange={handleChangeRadio}
-            >
-              <Grid item xs={6}>
-                <FormControlLabel
-                  control={<Radio />}
-                  value="texto"
-                  label={texto(globalLanguage.lang)}
-                />
+            <Divider className="divisor" />
+            <Grid container>
+              <Grid item xs={12} className={classes.gridDeBotones}>
+                <Button
+                  variant="contained"
+                  type="submit"
+                  onClick={clickHandleDescarga}
+                >
+                  {descargarConsulta(globalLanguage.lang)}
+                </Button>
               </Grid>
-              <Grid item xs={6}>
-                <FormControlLabel control={<Radio />} value="PDF" label="PDF" />
-              </Grid>
-            </RadioGroup>
-          </Grid>
-        </FormGroup>
-        <Divider className="divisor" />
-        <Grid container>
-          <Grid item xs={12} className={classes.tituloConsultados}>
-            <Typography>{descargarConsultadas(globalLanguage.lang)}</Typography>
-          </Grid>
-          <Grid item xs={12}>
-            <ListaDeConsultados checked={checked} setChecked={setChecked} />
-          </Grid>
-        </Grid>
-        <Divider className="divisor" />
-        <Grid container>
-          <Grid item xs={12} className={classes.gridDeBotones}>
-            <Button
-              variant="contained"
-              type="submit"
-              onClick={clickHandleDescarga}
-            >
-              {descargarConsulta(globalLanguage.lang)}
-            </Button>
-          </Grid>
-        </Grid>
-      </Paper>
-    </Modal>
+            </Grid>
+          </Paper>
+        </Modal>
+      ) : (
+        <div id="toDownloadDiv"></div>
+      )}
+    </Fragment>
+    // {!flagHtml  ?  }
   );
 };
 

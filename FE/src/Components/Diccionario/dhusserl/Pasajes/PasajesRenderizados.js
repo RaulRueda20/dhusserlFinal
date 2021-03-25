@@ -114,7 +114,6 @@ const PasajesRenderizados = (props) => {
         ? props.referenciaSeleccionada
         : emptyPasaje;
     setTituloPasaje(nombreExpresion);
-    console.log("pasajeRenderizado", pasajeRenderizado.traduccion);
   }, [props.referenciaSeleccionada, lang, epretty]);
 
   const resaltarBusqueda = (string, separador) => {

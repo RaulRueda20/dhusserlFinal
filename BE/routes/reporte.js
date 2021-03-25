@@ -3,7 +3,7 @@ var express = require('express');
 var router = express.Router();
 var fs = require('fs')
 var htmlToText = require('html-to-text');
-var conversion = require("phantom-html-to-pdf")();
+//var conversion = require("phantom-html-to-pdf")();
 var createHTML = require('create-html')
 var randomstring = require("randomstring");
 var os = require( 'os' );
@@ -15,7 +15,7 @@ var axios = require('axios');
 
 // var filesRoute = "/usr/share/UNAM/DH/public/files/"
 
-var filesRoute = "../reportesDH"
+var filesRoute = "/app/DH/public/files/"
 
 function processList(id, res, lista, index, htmlRes, lang, expresion_aleman, referencia_aleman, expresion_espaniol, referencia_espaniol, hierarchy, pasaje_aleman, pasaje_espaniol, final){
     if(index == lista.length){
@@ -291,13 +291,13 @@ function processList(id, res, lista, index, htmlRes, lang, expresion_aleman, ref
                         if(pasaje_aleman > 0) htmlContent+="<div>" + t7 + "\
                                                         <div style='padding : 10px 40px;'>" + basics.pasaje_original + "</div>\
                                                     </div><br/>"
-                        if(pasaje_espaniol > 0) htmlContent+="<div>" + t8 +
-                                                        "<div style='padding : 10px 40px;'>" + basics.pasaje_traduccion + "</div>\
-                                                        </div><br/></div>"
+			if(pasaje_aleman > 0 && pasaje_espaniol > 0)htmlContent += "<hr/>"
+			if (pasaje_espaniol > 0) htmlContent +="<div>" + t8 + "<div style = 'padding : 10x 40px;'>" + basics.pasaje_traduccion + "</div>\
+                               </div><br/></div>"
                     // console.log("results", htmlRes)
                     // console.log("before", htmlContent)
                     htmlRes+=htmlContent
-                    // console.log("html", htmlRes)
+                    console.log("html", htmlRes)
                     return processList(id, res, lista, index+1, htmlRes, lang, expresion_aleman, referencia_aleman, expresion_espaniol, referencia_espaniol, hierarchy, pasaje_aleman, pasaje_espaniol, final)
                 }).catch(function(error){
                     console.log(error)
@@ -352,16 +352,9 @@ router.get('/reporteGeneralPdf/:id', function(req, res, next){
     res.locals.connection.query(queryString, filter)
     .then(function(results){
         processList(req.params.id, res, results, 0, "", req.query.lang, req.query.expresion_aleman, req.query.referencia_aleman, req.query.expresion_espaniol, req.query.referencia_espaniol, req.query.hierarchy, req.query.pasaje_aleman, req.query.pasaje_espaniol, resultado => {
+	    console.log("Resultado", resultado)
+	    return res.send(resultado)
             var htmltitle = randomstring.generate(10);
-            conversion({ html: resultado, }, function(err, pdf) {
-                if(err){
-                    console.log(err)
-                    res.send(JSON.stringify({"status": 500, "error": null, "response": err}));
-                } 
-                var output = fs.createWriteStream(filesRoute +htmltitle+'.pdf')
-                pdf.stream.pipe(output);
-                res.send(JSON.stringify({"status": 200, "error": null, "response": htmltitle}));
-            });
         })
     }).catch(error => {
         console.log(error)
@@ -424,7 +417,7 @@ router.get('/reporteGeneralTxt/:id', function(req, res, next){
     // }
 })
 
-router.get('/reportePdf/:id', function(req, res, next){
+router.get('/reportepdf/:id', function(req, res, next){
     if(global.rol != "guest"){
     console.log(req.query.lang)
     switch(req.query.lang){
@@ -666,6 +659,9 @@ router.get('/reportePdf/:id', function(req, res, next){
                         if(req.query.pasaje_aleman > 0) htmlContent+="<div>" + t7 + "\
                                                         <div style='padding : 10px 40px;'>" + basics.pasaje_original + "</div>\
                                                     </div><br/>"
+			if(req.query.pasaje_aleman > 0 && req.query.pasaje_espaniol > 0 ){
+				htmlContent += "<hr/>"
+			}
                         if(req.query.pasaje_espaniol > 0) htmlContent+="<div>" + t8 +
                                                         "<div style='padding : 10px 40px;'>" + basics.pasaje_traduccion + "</div>\
                                                         </div><br/></div>"
@@ -696,11 +692,14 @@ router.get('/reportePdf/:id', function(req, res, next){
                         margin-left: 56px;\
                     }\
                     </style></body>"
+		    //console.log("HTML", htmlContent)
+		    return res.send(htmlContent)
                     var htmltitle = randomstring.generate(10);
-                    conversion({ html: htmlContent, }, function(err, pdf) {
-                        var output = fs.createWriteStream(filesRoute +htmltitle+'.pdf')
-                        res.send(JSON.stringify({"status": 200, "error": null, "response": htmltitle}));
-                      });
+                    //conversion({ html: htmlContent, }, function(err, pdf) {
+			//console.log("HTMLCONTENT", html)    
+                        //var output = fs.createWriteStream(filesRoute +htmltitle+'.pdf')
+                        //res.send(JSON.stringify({"status": 200, "error": null, "response": html}));
+                      //});
                 }).catch(function(error){
                     res.send(JSON.stringify({"status": 500, "error": error, "response": null})); 
                 })
@@ -944,8 +943,9 @@ router.get('/reporteText/:id', function(req, res, next){
                     htmlContent+='\
                         <hr/>'
                         if(req.query.pasaje_aleman > 0) htmlContent+="<div id='pasaje'>" + t7 +
-                            "<div style='padding : 10px 40px;'> id='pasaje'" + basics.pasaje_original + "</div>\
+                            "<div style='padding : 10px 40px;' id='pasaje'>" + basics.pasaje_original + "</div>\
                             </div>"
+			if(req.query.pasaje_aleman >0 && req.query.pasaje_espaniol > 0) htmlContent += "<hr/>"
                         if(req.query.pasaje_espaniol > 0) htmlContent+="<div id='pasaje'>" + t8 +
                             "<div style='padding : 10px 40px;' id='pasaje'>" + basics.pasaje_traduccion + "</div>\
                             </div>"
