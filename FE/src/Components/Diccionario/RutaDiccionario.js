@@ -9,6 +9,7 @@ import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import LoginD from "./Login/LoginD";
 import Subvistas from "./dhusserl/Subvistas";
 import Aviso_privacidad from "./Aviso_privacidad";
+import TerminosyCondiciones from "./TerminosyCondiciones";
 //imort Recuperacion from './Login/Recuperacion'
 
 const theme = createMuiTheme({
@@ -81,6 +82,10 @@ const RutaDiccionario = ({ match }) => {
         <Route
           path={`${match.url}/Aviso_privacidad`}
           render={(props) => <Aviso_privacidad {...props} />}
+        />
+        <Route
+          path={`${match.url}/TerminosyCondiciones`}
+          render={(props) => <TerminosyCondiciones {...props} />}
         />
         <Route path={`${match.url}/`}>
           <Redirect to={`${match.url}/login`} />
