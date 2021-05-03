@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ErrorIcon from "@material-ui/icons/Error";
 import WarningIcon from "@material-ui/icons/Warning";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
@@ -43,6 +43,10 @@ const EnvoltorioDeSnack = (props) => {
   const { className, message, onClose, variant, ...other } = props;
 
   const Icon = iconoVariante[variant];
+
+  // useEffect(() => {
+  //   console.log("mensaje", message);
+  // }, [true]);
 
   return (
     <SnackbarContent

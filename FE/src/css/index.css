@@ -364,6 +364,7 @@ a {
 
 .headerMain {
   height: 9vh;
+  /* max-height: 94px; */
 }
 
 .bordeDeConsultas {
@@ -802,3 +803,15 @@ td {
   margin-top: 15px;
   margin-bottom: 15px;
 }
+
+.pasajesAsociados {
+  margin-bottom: 25px !important;
+}
+
+/* .tituloBusqueda {
+  font-size: 20px !important;
+  color: black !important;
+  font-weight: bolder;
+  margin-top: 15px !important;
+  margin-bottom: 15px !important;
+} */

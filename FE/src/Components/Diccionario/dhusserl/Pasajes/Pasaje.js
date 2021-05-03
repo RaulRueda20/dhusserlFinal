@@ -1,8 +1,15 @@
 //React
 import React, { useContext, useState, useEffect, Fragment } from "react";
-
+import { Link } from "react-router-dom";
 //Elements
-import { Grid, IconButton, Hidden, LinearProgress } from "@material-ui/core";
+import {
+  Grid,
+  IconButton,
+  Hidden,
+  LinearProgress,
+  Divider,
+  Typography,
+} from "@material-ui/core";
 import classNames from "classnames";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
@@ -18,20 +25,20 @@ import ListaEscondida from "./ListaEscondida";
 import MenuDerechoPasajes from "../Common/MenuDerecho";
 import MenuEscondido from "./MenuEscondido";
 import ModalDeBusqueda from "../ModalDeBusqueda";
-import ModalCaracterInvalido from "../ModalCaracterInvalido";
-import ModalNumeros from "../ModalNumeros";
 
 // Other req
 import { sesionStore } from "../../../../stores/sesionStore";
 import { expresionesStore } from "../../../../stores/expresionStore";
 import { webService } from "../../../../js/webServices";
+import { expresionesAsociadas } from "../../../../js/Language";
+import { fixLetter } from "../../../../js/utils";
 
 const Pasaje = (props) => {
   const { match } = props;
 
   const global = useContext(sesionStore);
   const { state, dispatch } = global;
-  const { sesion, langLista, letra } = state;
+  const { sesion, langLista, letra, lang } = state;
 
   const globalExpresion = useContext(expresionesStore);
   const { attend } = globalExpresion;
@@ -54,15 +61,18 @@ const Pasaje = (props) => {
     setPosicionReferenciasConsultadas,
   ] = useState("");
   const [referencias, setReferencias] = useState([]);
-  const [openModalN, setOpenModalN] = useState(false);
   const [modalDeBusquedas, setModalDebusquedas] = useState(false);
-  const [modalCaracteresIvalidos, setModalCaracteresInvalidos] = useState(
-    false
-  );
-  const [modalNumeros, setModalNumeros] = useState(false);
-  const [flagDeBusqueda, setFlagDeBusqueda] = useState(false);
   const [chunkList, setChunkList] = useState([]);
   const [chunkListGlobal, setChunkListGlobal] = useState([]);
+  const [isQV, setIsQV] = useState(false);
+  const [qv, setQv] = useState({
+    ref_id: "",
+    ref_libro_de: "",
+    ref_libro_es: "",
+    ref_original: "",
+    ref_traduccion: "",
+    expresiones: [],
+  });
 
   const fixReferencias = (referencias) => {
     let expresiones = [];
@@ -128,12 +138,50 @@ const Pasaje = (props) => {
     }
   };
 
+  const fixPasajes = (pasajes) => {
+    let pasajesArreglados = [];
+    let posicionActual = -1;
+    let pasajeActual = "";
+    let i = 0;
+    while (i < pasajes.length) {
+      if (pasajeActual != pasajes[i].ref_id) {
+        posicionActual++;
+        pasajeActual = pasajes[i].ref_id;
+        pasajesArreglados.push({
+          ref_id: pasajes[i].refid,
+          ref_original: pasajes[i].ref_original,
+          ref_traduccion: pasajes[i].ref_traduccion,
+          ref_libro_de: pasajes[i].pasaje_original,
+          ref_libro_es: pasajes[i].pasaje_traduccion,
+          expresiones: [],
+        });
+        pasajesArreglados[posicionActual].expresiones.push({
+          orden: pasajes[i].orden,
+          expresion_original: pasajes[i].expresion_original,
+          expresion_traduccion: pasajes[i].expresion_traduccion,
+          t_id: pasajes[i].id,
+        });
+        i++;
+      } else {
+        pasajesArreglados[posicionActual].expresiones.push({
+          orden: pasajes[i].orden,
+          expresion_original: pasajes[i].expresion_original,
+          expresion_traduccion: pasajes[i].expresion_traduccion,
+          t_id: pasajes[i].id,
+        });
+        i++;
+      }
+    }
+    return pasajesArreglados;
+  };
+
   useEffect(() => {
     setLoading(true);
     const idDeExpresion = props.match.params.expresion;
     const idDeLaReferencia = props.match.params.id
       ? props.match.params.id
       : false;
+
     let service = "/expresiones/" + langLista + "/" + letra;
     if (pasajeService != service) {
       setPasajeService(service);
@@ -151,36 +199,51 @@ const Pasaje = (props) => {
         // setChunkList(fixReferencias(response).slice(0, 50));
       });
     }
-    service = "/referencias/obtieneReferencias/" + idDeExpresion;
-    webService(service, "GET", {}, sesion, ({ data }) => {
-      const { response } = data;
-      setReferencias(response);
-      setIdExpresion(idDeExpresion);
-      if (idDeLaReferencia && idDeLaReferencia != null) {
-        setReferenciaSeleccionada(findReferencias(response, idDeLaReferencia));
-      } else {
-        setReferenciaSeleccionada(response[0]);
-      }
-      setLoading(false);
-      setExpanded1(true);
-      setExpanded2(true);
-      if (response[0] == null) {
-        dispatch({
-          type: "SET_LETRA",
-          payload: letra,
-        });
-        setOpenModalN(true);
-        setReferenciaSeleccionada("none");
-      }
-      console.log(response);
-      attend({
-        type: "SELECT_EXPRESION",
-        payload: {
-          id: idDeExpresion,
-          expresion: response[0]?.expresion_original ?? "",
-        },
+    if (idDeExpresion == "QV") {
+      service = "/referencias/obtieneReferenciasByRef/" + idDeLaReferencia;
+      webService(service, "GET", {}, sesion, ({ data }) => {
+        const { response } = data;
+        // console.log(response);
+        const fixedThing = fixPasajes(response);
+        // console.log("Fixed thing", fixedThing);
+        setQv(fixedThing[0]);
+        setIsQV(true);
+        setLoading(false);
       });
-    });
+    } else {
+      service = "/referencias/obtieneReferencias/" + idDeExpresion;
+      webService(service, "GET", {}, sesion, ({ data }) => {
+        const { response } = data;
+        setReferencias(response);
+        setIdExpresion(idDeExpresion);
+        if (idDeLaReferencia && idDeLaReferencia != null) {
+          setReferenciaSeleccionada(
+            findReferencias(response, idDeLaReferencia)
+          );
+        } else {
+          setReferenciaSeleccionada(response[0]);
+        }
+        setExpanded1(true);
+        setExpanded2(true);
+        if (response[0] == null) {
+          dispatch({
+            type: "SET_LETRA",
+            payload: letra,
+          });
+          setReferenciaSeleccionada("none");
+        }
+        // console.log(response);
+        attend({
+          type: "SELECT_EXPRESION",
+          payload: {
+            id: idDeExpresion,
+            expresion: response[0]?.expresion_original ?? "",
+          },
+        });
+        setIsQV(false);
+        setLoading(false);
+      });
+    }
     updateDimensions();
     window.addEventListener("resize", updateDimensions);
     setTimeout(() => {
@@ -189,6 +252,36 @@ const Pasaje = (props) => {
       }
     }, 1000);
   }, [letra, langLista, match.params.expresion, match.params.id]);
+
+  function htmlPasajeOriginal() {
+    return { __html: qv.ref_libro_de };
+  }
+
+  function htmlPasajeTraduccion() {
+    return { __html: qv.ref_libro_es };
+  }
+
+  function consultaDePasajes(event) {
+    if (letra != fixLetter(event.target.innerHTML[0].toUpperCase())) {
+      dispatch({
+        type: "SET_LETRA",
+        payload: fixLetter(event.target.innerHTML[0].toUpperCase()),
+      });
+    }
+    const idExpresion = event.target.id.split("/")[0];
+    // const service = "/referencias/obtieneReferencias/" + idExpresion;
+    // webService(service, "GET", {}, sesion, (data) => {
+    //   let referencias = fixReferenciasConsultadas(data.data.response);
+    //   let nuevasVisitadas = localStore.getObjects("ultimasVisitadas");
+    //   referencias.nombreExpresion = referencias.expresion;
+    //   nuevasVisitadas.push(referencias);
+    //   localStore.setObjects("ultimasVisitadas", nuevasVisitadas);
+    //   dispatch({
+    //     type: "SET_ULTIMAS_VISITADAS",
+    //     payload: nuevasVisitadas,
+    //   });
+    // });
+  }
 
   return (
     <Fragment>
@@ -255,10 +348,7 @@ const Pasaje = (props) => {
               busqueda={busqueda}
               bandera={true}
               setBusqueda={setBusqueda}
-              setFlagDeBusqueda={setFlagDeBusqueda}
               setModalDebusquedas={setModalDebusquedas}
-              setModalCaracteresInvalidos={setModalCaracteresInvalidos}
-              setModalNumeros={setModalNumeros}
               setLoading={setLoading}
             />
             <ListaIzquierdaExpresion
@@ -286,8 +376,6 @@ const Pasaje = (props) => {
                 openHidden={openHidden}
                 setOpenHidden={setOpenHidden}
                 setModalDebusquedas={setModalDebusquedas}
-                setModalCaracteresInvalidos={setModalCaracteresInvalidos}
-                setModalNumeros={setModalNumeros}
                 setLoading={setLoading}
                 setChunkListGlobal={setChunkListGlobal}
                 setChunkList={setChunkList}
@@ -333,23 +421,35 @@ const Pasaje = (props) => {
           }
           className={classNames([{ contenidoPasajes: openHidden == true }])}
         >
-          <ContenidoPasaje
-            referencias={referencias}
-            referenciaSeleccionada={referenciaSeleccionada}
-            idExpresion={idExpresion}
-            match={props.match}
-            panelDerecho={panelDerecho}
-            panelIzquierdo={panelIzquierdo}
-            openHidden={openHidden}
-            setOpenHidden={setOpenHidden}
-          />
-          {referenciaSeleccionada == null ? null : (
-            <Paginador
-              {...props}
-              referencias={referencias}
-              referenciaSeleccionada={referenciaSeleccionada}
-              expresionId={props.match.params.expresion}
-            />
+          {!isQV ? (
+            <Fragment>
+              <ContenidoPasaje
+                referencias={referencias}
+                referenciaSeleccionada={referenciaSeleccionada}
+                idExpresion={idExpresion}
+                match={props.match}
+                panelDerecho={panelDerecho}
+                panelIzquierdo={panelIzquierdo}
+                openHidden={openHidden}
+                setOpenHidden={setOpenHidden}
+              />
+              {referenciaSeleccionada == null ? null : (
+                <Paginador
+                  {...props}
+                  referencias={referencias}
+                  referenciaSeleccionada={referenciaSeleccionada}
+                  expresionId={props.match.params.expresion}
+                />
+              )}
+            </Fragment>
+          ) : (
+            <div style={{ padding: "30px 15px" }}>
+              <div dangerouslySetInnerHTML={htmlPasajeOriginal()}></div>
+              <br />
+              <Divider />
+              <br />
+              <div dangerouslySetInnerHTML={htmlPasajeTraduccion()}></div>
+            </div>
           )}
         </Grid>
         <Grid
@@ -363,19 +463,57 @@ const Pasaje = (props) => {
           ])}
         >
           <Hidden xsDown>
-            <MenuDerechoPasajes
-              {...props}
-              idExpresion={idExpresion}
-              expresiones={expresiones}
-              expanded1={expanded1}
-              setExpanded1={setExpanded1}
-              expanded2={expanded2}
-              setExpanded2={setExpanded2}
-              expanded3={expanded3}
-              setExpanded3={setExpanded3}
-              referenciaSeleccionada={referenciaSeleccionada}
-              posicionReferenciasConsultadas={posicionReferenciasConsultadas}
-            />
+            {isQV ? (
+              <div>
+                <Typography
+                  variant="h4"
+                  style={{
+                    padding: "15px 0",
+                    textAlign: "center",
+                    backgroundColor: "white",
+                  }}
+                >
+                  {" "}
+                  {expresionesAsociadas(lang)}
+                </Typography>
+                <Divider />
+                <ul className="ulExpresionesRelacionadas">
+                  {qv?.expresiones?.map((expresion, index) => (
+                    <li
+                      key={expresion.t_id}
+                      className="liExpresionesRelacionadas"
+                    >
+                      <Link
+                        to={`${match.path.slice(0, 20)}/pasaje/${
+                          expresion.t_id
+                        }/${qv?.ref_id}`}
+                        onClick={(e) => consultaDePasajes(e)}
+                      >
+                        <Typography id={expresion.t_id + "/" + index}>
+                          {expresion.expresion_original +
+                            "  //  " +
+                            expresion.expresion_traduccion}
+                        </Typography>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ) : (
+              <MenuDerechoPasajes
+                {...props}
+                idExpresion={idExpresion}
+                expresiones={expresiones}
+                expanded1={expanded1}
+                setExpanded1={setExpanded1}
+                expanded2={expanded2}
+                setExpanded2={setExpanded2}
+                expanded3={expanded3}
+                setExpanded3={setExpanded3}
+                referenciaSeleccionada={referenciaSeleccionada}
+                posicionReferenciasConsultadas={posicionReferenciasConsultadas}
+              />
+            )}
           </Hidden>
         </Grid>
         {openHidden == true ? (
@@ -401,14 +539,7 @@ const Pasaje = (props) => {
       <ModalDeBusqueda
         modalDeBusquedas={modalDeBusquedas}
         setModalDebusquedas={setModalDebusquedas}
-      />
-      <ModalCaracterInvalido
-        modalCaracteresIvalidos={modalCaracteresIvalidos}
-        setModalCaracteresInvalidos={setModalCaracteresInvalidos}
-      />
-      <ModalNumeros
-        modalNumeros={modalNumeros}
-        setModalNumeros={setModalNumeros}
+        match={props.match}
       />
     </Fragment>
   );

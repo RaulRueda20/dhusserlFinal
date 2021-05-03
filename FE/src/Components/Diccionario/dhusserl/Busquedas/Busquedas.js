@@ -20,7 +20,6 @@ import { busquedaStore } from "../../../../stores/busquedaStore";
 //Other request
 import { webService } from "../../../../js/webServices";
 import { sesionStore } from "../../../../stores/sesionStore";
-import MenuDerecho from "../Common/MenuDerecho";
 import classNames from "classnames";
 import ModalDeBusqueda from "../ModalDeBusqueda";
 
@@ -90,7 +89,7 @@ const Busquedas = (props) => {
   const handleChangeBusqueda = (event) => {
     event.preventDefault();
     dispatch({ type: "START_LOADING" });
-    console.log("Busqueda", busqueda);
+    // console.log("Busqueda", busqueda);
     if (busqueda == "") {
       setModalDebusquedas(true);
       dispatch({ type: "STOP_LOADING" });
@@ -104,15 +103,19 @@ const Busquedas = (props) => {
           sesion,
           ({ data }) => {
             const { response } = data;
-            attend({
-              type: "SET_TIPO_BUSQUEDA_REALIZADA",
-              payload: "Referencia",
-            });
-            attend({
-              type: "SET_EXPRESIONES_ENCONTRADAS",
-              payload: fixPasajes(response),
-            });
-            dispatch({ type: "STOP_LOADING" });
+            if (response != null) {
+              attend({
+                type: "SET_TIPO_BUSQUEDA_REALIZADA",
+                payload: "Referencia",
+              });
+              attend({
+                type: "SET_EXPRESIONES_ENCONTRADAS",
+                payload: fixPasajes(response),
+              });
+              dispatch({ type: "STOP_LOADING" });
+            } else {
+              setModalDebusquedas(true);
+            }
           }
         );
       } else {
@@ -124,15 +127,19 @@ const Busquedas = (props) => {
           sesion,
           ({ data }) => {
             const { response } = data;
-            attend({
-              type: "SET_TIPO_BUSQUEDA_REALIZADA",
-              payload: "Expresion",
-            });
-            attend({
-              type: "SET_EXPRESIONES_ENCONTRADAS",
-              payload: response,
-            });
-            dispatch({ type: "STOP_LOADING" });
+            if (response != null) {
+              attend({
+                type: "SET_TIPO_BUSQUEDA_REALIZADA",
+                payload: "Expresion",
+              });
+              attend({
+                type: "SET_EXPRESIONES_ENCONTRADAS",
+                payload: response,
+              });
+              dispatch({ type: "STOP_LOADING" });
+            } else {
+              setModalDebusquedas(true);
+            }
           }
         );
       }

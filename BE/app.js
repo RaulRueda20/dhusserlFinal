@@ -5,6 +5,7 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 var bcrypt = require("bcrypt");
+
 //var session = require('express-session');
 //var MemoryStore = require('connect').session.MemoryStore
 
@@ -20,12 +21,14 @@ var acercaRouter = require("./routes/acerca_de");
 var manualRouter = require("./routes/manual");
 
 //var serverUrl = "127.0.0.1";
-var serverUrl = "dhusserl.csrmdcb3syip.us-east-2.rds.amazonaws.com";
-var port = "5432";
-
-//var port = "1859"
-// var user = "Y2xhZmVub3JfdGVybXVzZQ=="
-// var password = "Q2w0ZjNuMHJfdDNybXVzMw=="
+// var serverUrl = "dhusserl.csrmdcb3syip.us-east-2.rds.amazonaws.com";
+//var serverUrl = "database-1.csrmdcb3syip.us-east-2.rds.amazonaws.com"
+var serverUrl = "132.248.184.4";
+// var port = "1859";
+//var port= "5432"
+var port = "10443";
+var user = "Y2xhZmVub3JfdGVybXVzZQ==";
+var password = "Q2w0ZjNuMHJfdDNybXVzMw==";
 
 var userList = [];
 var pgp = require("pg-promise")(/*options*/);
@@ -125,7 +128,7 @@ app.use("/api/v1.0/vertambien", verTambien);
 app.use("/api/v1.0/acerca_de", acercaRouter);
 app.use("/api/v1.0/manual", manualRouter);
 
-//app.use('/fixes', fixesRouter);
+app.use("/fixes", fixesRouter);
 
 // error handler
 app.use(function (err, req, res, next) {

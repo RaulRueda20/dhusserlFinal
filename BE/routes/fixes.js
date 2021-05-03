@@ -66,6 +66,293 @@ router.get('/fixDatabase', function(req, res, next){
 var serverUrl = "127.0.0.1"
 var port = "3200"
 
+var recursive_replace_text = (text, replace, lang, refid, res, final) => {
+  console.log(
+    "----------------------------------------------------------------------------------------------------"
+  );
+  console.log(
+    replace[0] +
+      " : " +
+      replace[1] +
+      " : " +
+      lang +
+      " : " +
+      refid
+  );
+  if (text.indexOf(replace[0]) > -1) {
+	const posX = text.indexOf(replace[0])
+	  let posY = 0
+	  let c = posX
+//	  console.log("POS X:",text[posX])
+	  while(c < text.length){
+	  	if(text[c] == replace[1]){
+                        console.log('HERE')
+                        posY = c
+			c = text.length
+                }
+	  c++
+	  }
+	/*for(let c = posX; c < text.length ; c++){
+		console.log(text[c], replace[1])
+		if(text[c] == replace[1]){
+			console.log('HERE')
+			posY = c
+		}
+	}*/
+//	console.log("FOUND", posX, posY)
+    let partOne = text.slice(
+      posX,posY
+    );
+    //let partTwo = partOne;
+  //  console.log("-------------------------------------------------------------------------------------------",partOne, "-----------------------------------------------------------------------------------");
+    let pieces = partOne.split("'");
+    //console.log(pieces);
+    const id = pieces[1];
+    const partTwo = "<a href='/#/diccionario/husserl/pasaje/QV/"+id+"'";
+//	console.log("PART ONE:", partOne, "---------------------------------------------------------------------------------------", partTwo)
+    //let newText = text;
+    const newText = text.replace(partOne,partTwo);
+    //console.log(newText);
+    //return final()
+    return recursive_replace_text(newText, replace, lang, refid, res, final);
+  } else {
+  //  console.log("Done replacing");
+    //console.log(
+     // "----------------------------------------------------------------------------------------------------"
+    //);
+    console.log('we change this', text, 'in this ', refid)
+    res.locals.connection
+      .query("UPDATE referencia SET "+lang+" = $1 where ref_id = $2;", [
+        text,
+        refid,
+      ])
+      .then(function (results) {
+	
+        console.log(results);
+        
+	return final()
+	
+        //return true;
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+	//return true
+  }
+};
+
+var recursive_replace_text_b = (text, replace, lang, refid, res, final) => {
+  console.log(
+    "----------------------------------------------------------------------------------------------------"
+  );
+  console.log(
+    replace[0] +
+      " : " +
+      replace[1] +
+      " : " +
+      lang +
+      " : " +
+      refid
+  );
+  if (text.indexOf(replace[0]) > -1) {
+        const posX = text.indexOf(replace[0])
+          let posY = 0
+          let c = posX
+          console.log("POS X:",text[posX])
+          while(c < text.length){
+                if(text[c] == replace[1]){
+                        console.log('HERE')
+                        posY = c
+                        c = text.length
+                }
+          c++
+          }
+        /*for(let c = posX; c < text.length ; c++){
+                console.log(text[c], replace[1])
+                if(text[c] == replace[1]){
+                        console.log('HERE')
+                        posY = c
+                }
+        }*/
+        console.log("FOUND", posX, posY)
+    let partOne = text.slice(
+      posX,posY
+    );
+	  console.log(partOne)
+    //let partTwo = partOne;
+    console.log("-------------------------------------------------------------------------------------------",partOne, "-----------------------------------------------------------------------------------");
+    let pieces = partOne.split("&exec=");
+    console.log(pieces);
+    const id = pieces[0].split("&")[0];
+	  console.log("ID", id)
+    const partTwo = "<a href='/#/diccionario/husserl/pasaje/QV/"+id+"'";
+        console.log("PART ONE:", partOne, "---------------------------------------------------------------------------------------", partTwo)
+    //let newText = text;
+    const newText = text.replace(partOne,partTwo);
+    console.log(newText);
+    //return final()
+    return recursive_replace_text_b(newText, replace, lang, refid, res, final);
+  } else {
+    console.log("Done replacing");
+    console.log(
+      "----------------------------------------------------------------------------------------------------"
+    );
+
+    /*res.locals.connection
+      .query("UPDATE referencia SET "+lang+" = $1 where ref_id = $2;", [
+        text,
+        refid,
+      ])
+      .then(function (results) {
+        console.log(results);
+
+        */return final()/*
+
+        //return true;
+      })
+      .catch(function (error) {
+        console.log(error);
+      });*/
+        //return true
+  }
+};
+
+const recorrido = (lista, index,res, next) => {
+	if(index == lista.length) return next(lista)
+	else{
+	recursive_replace_text(
+          lista[index].ref_def_de,
+          ['<a href="#"', '>'],
+          "ref_def_de",
+          lista[index].ref_id,
+		res,
+          () => {
+	  	recursive_replace_text(
+          		lista[index].ref_def_es,
+          		['<a href="#"', '>'],
+          		"ref_def_es",
+          		lista[index].ref_id,
+			res,
+          		() => {
+				recursive_replace_text(
+          				lista[index].ref_def_de,
+          				['<A href="#"', '>'],
+          				"ref_def_de",
+          				lista[index].ref_id,
+                			res,
+          				() => {
+                				recursive_replace_text(
+                        			lista[index].ref_def_es,
+                        			['<A href="#"', '>'],
+                        			"ref_def_es",
+                        			lista[index].ref_id,
+                        			res,
+                        			() => {
+                                			return recorrido(lista, index+1, res,next)
+                        			}
+                				);
+          				}
+        			)
+          		}
+        	);	
+	  }
+        );	
+	}
+}
+
+const recorrido_b = (lista, index,res, next) => {
+        if(index == lista.length) return next(lista)
+        else{
+        recursive_replace_text_b(
+          lista[index].ref_def_de,
+          ['exec=', '>'],
+          "ref_def_de",
+          lista[index].ref_id,
+                res,
+          () => {
+                recursive_replace_text_b(
+                        lista[index].ref_def_es,
+                        ['exec=', '>'],
+                        "ref_def_es",
+                        lista[index].ref_id,
+                        res,
+                        () => {
+                                recursive_replace_text_b(
+                                        lista[index].ref_def_de,
+                                        ['EXEC=', '>'],
+                                        "ref_def_de",
+                                        lista[index].ref_id,
+                                        res,
+                                        () => {
+                                                recursive_replace_text_b(
+                                                lista[index].ref_def_es,
+                                                ['EXEC=', '>'],
+                                                "ref_def_es",
+                                                lista[index].ref_id,
+                                                res,
+                                                () => {
+                                                        return recorrido_b(lista, index+1, res,next)
+                                                }
+                                                );
+                                        }
+                                )
+                        }
+                );
+          }
+        );
+        }
+}
+
+
+router.post("/fixthisshit", function (req, res) {
+  console.log(
+    "----------------------------------------------------------------------------------------------------"
+  );
+  console.log(
+    "---------------------------------------------START--------------------------------------------------"
+  );
+  console.log(
+    "----------------------------------------------------------------------------------------------------"
+  );
+  res.locals.connection
+    .query("SELECT ref_id, ref_def_de, ref_def_es from referencia;", [])
+    .then(function (results) {
+      var finalFlag = false;
+      console.log(results.length);
+	recorrido(results, 0, res, (listaFinal) => {
+		res.status(200).json(listaFinal)
+	})/*
+	    recorrido_b(results, 0, res, (listaFinal) => {
+                res.status(200).json(listaFinal)
+        })*/
+/*	    
+      for (var i in results) {
+        console.log(i + " : " + results[i].ref_id);
+        console.log(
+          "----------------------------------------------------------------------------------------------------"
+        );
+        if (i == results.length - 1) {
+          console.log("happened " + results.length);
+          finalFlag = true;
+        }
+        var re = null;
+        re = recursive_replace_text(
+          results[i].ref_def_de,
+          ['/husserl/pasaje/', '">'],
+          res,
+          "ref_def_de",
+          results[i].ref_id,
+          finalFlag
+        );
+        console.log("Done " + i);
+      }*/
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+});
+
+
 var recursive_call = (res, list, n) => {
     console.log(n + " - " + list.length)
     if(n == list.length)

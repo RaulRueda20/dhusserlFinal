@@ -64,10 +64,11 @@ const RegistroForm = (props) => {
       password: nuevoPassword,
     };
     if (nuevoPassword == repassword) {
+      console.log("lang", lang);
       var service = "/login/registrar";
       loginService(service, "POST", JSON.stringify(params), (data) => {
         if (data.data.status == 200) {
-          var serviceh = "/login/sendRegistroEmail/" + localStore.getItem("es");
+          var serviceh = "/login/sendRegistroEmail/" + lang;
           loginService(
             serviceh,
             "GET",

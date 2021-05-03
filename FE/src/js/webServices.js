@@ -1,7 +1,8 @@
 import axios from "axios";
 import * as localStore from "./localStore";
-const serverUrl = "http://3.22.12.85:1938/api/v1.0";
-//const serverUrl = "https://" + window.location.host + "/api/v1.0"
+//const serverUrl = "http://3.22.12.85:1938/api/v1.0";
+//const serverUrl = "http://localhost:1938/api/v1.0";
+const serverUrl = "https://diccionariohusserl.org/api/v1.0";
 
 const webService = (service, method, params, sesion, next) => {
   var serverUsername = localStore.getObjects("sesion").user;
@@ -23,9 +24,29 @@ const webService = (service, method, params, sesion, next) => {
       next(response);
     })
     .catch((error) => {
-      console.log("ERROR EN ", service, error);
+      // console.log("ERROR EN ", service, error);
       alert("Ha habido un error" + error.status + " : " + error.statusText);
     });
+};
+
+const webServiceAsync = async (service, method, params, sesion) => {
+  var serverUsername = localStore.getObjects("sesion").user;
+  var serverPassword = localStore.getObjects("sesion").password;
+  // var serverUsername = sesion?.usuario ?? localStore.getObjects("sesion").user;
+  // var serverPassword = sesion?.password ?? localStore.getObjects("sesion").password;
+  var auth = "Basic " + btoa(serverUsername + ":" + serverPassword);
+  const response = await axios({
+    method: method,
+    // contentType : 'application/json',
+    url: serverUrl + service,
+    data: params,
+    headers: {
+      Authorization: auth,
+      "Content-Type": "application/json",
+    },
+  });
+
+  return response;
 };
 
 const adminService = (service, method, params, next) => {
@@ -75,4 +96,4 @@ const loginService = (service, method, params, next) => {
     });
 };
 
-export { webService, loginService, adminService };
+export { webService, loginService, adminService, webServiceAsync };

@@ -1,5 +1,11 @@
 import React from "react";
-import { TextField, Grid, Typography, Button } from "@material-ui/core";
+import {
+  TextField,
+  Grid,
+  Typography,
+  Button,
+  BottomNavigation,
+} from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
 
 import {
@@ -51,7 +57,10 @@ function LoginForm(props) {
     dispatch({ type: "START_LOADING" });
 
     var service = "/login/usuario";
-    var params = JSON.stringify({ userId: correo, password: password });
+    var params = JSON.stringify({
+      userId: correo,
+      password: password,
+    });
     if (correo == "" || password == "") {
       dispatch({
         type: "SET_SNACKBAR",

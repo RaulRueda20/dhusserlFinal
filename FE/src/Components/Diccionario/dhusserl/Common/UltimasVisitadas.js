@@ -11,6 +11,8 @@ import { sesionStore } from "../../../../stores/sesionStore";
 
 import * as localStore from "../../../../js/localStore";
 
+import { fixLetter } from "../../../../js/utils";
+
 const UltimasVisitadas = (props) => {
   const global = useContext(sesionStore);
   const { state, dispatch } = global;
@@ -19,9 +21,13 @@ const UltimasVisitadas = (props) => {
   const { match } = props;
 
   useEffect(() => {
-    console.log("RESET", props);
+    // console.log("lista", lista);
     let uv = localStore.getObjects("ultimasVisitadas");
-    setLista(uv.reverse());
+    setLista(uv);
+    if (uv.length > 0) {
+      // console.log("mayor a cero");
+      setLista(uv.reverse());
+    }
   }, [ultimasVisitadas]);
 
   const fixReferenciasConsultadas = (expresion) => {
@@ -47,10 +53,14 @@ const UltimasVisitadas = (props) => {
   };
 
   const handleFlagLetraMain = (event) => {
-    if (letra != event.target.innerHTML[0].toUpperCase()) {
+    dispatch({
+      type: "SET_LANGLISTA",
+      payload: "al",
+    });
+    if (letra != fixLetter(event.target.innerHTML[0].toUpperCase())) {
       dispatch({
         type: "SET_LETRA",
-        payload: event.target.innerHTML[0].toUpperCase(),
+        payload: fixLetter(event.target.innerHTML[0].toUpperCase()),
       });
     }
     const idExpresion = event.target.id.split("/")[0];

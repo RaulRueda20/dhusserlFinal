@@ -467,8 +467,9 @@ router.post('/busqueda/:case', function(req, res, next){
     + currentdate.getHours() + ":"
 	+ currentdate.getMinutes() + ":" + currentdate.getSeconds();
 	var filter = ["%"+req.body.parametro+"%"]
-	var condicion = req.params.case == "true" ? "where referencia.ref_def_de ilike $1 or referencia.ref_def_es ilike $1 order by ref_id" : "where referencia.ref_def_de like $1 or referencia.ref_def_es like $1 order by ref_id"
-	var queryString="\
+	//var condicion = req.params.case == "true" ? "where referencia.ref_def_de ilike $1 or referencia.ref_def_es ilike $1 order by ref_id" : "where referencia.ref_def_de like $1 or referencia.ref_def_es like $1 order by ref_id"
+	var condicion = req.params.case == "true" ? "where referencia.ref_def_de ilike $1 or referencia.ref_def_es ilike $1 or termino.t_term_es ilike $1 or termino.t_term_de ilike $1 order by ref_id" : "where referencia.ref_def_de like $1 or referencia.ref_def_es like $1 or termino.t_term_es like $1 or termino.t_term_de like $1 order by ref_id";
+	    var queryString="\
 	select\
 		referencia.ref_id as ref_id,\
 		referencia.ref_libro_de as ref_libro_de,\

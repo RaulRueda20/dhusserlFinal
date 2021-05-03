@@ -9,6 +9,7 @@ import { withStyles } from "@material-ui/styles";
 //Other req
 import { webService } from "../../../../js/webServices";
 import { sesionStore } from "../../../../stores/sesionStore";
+import { fixLetter } from "../../../../js/utils";
 import { expresionesAsociadas } from "../../../../js/Language";
 import { busquedaStore } from "../../../../stores/busquedaStore";
 import * as localStore from "../../../../js/localStore";
@@ -37,7 +38,7 @@ const ResultadoBusquedaReferencia = (props) => {
 
   const globalBusqueda = useContext(busquedaStore);
   const { busquedaState } = globalBusqueda;
-  const { idPasaje, busqueda, posicionPasaje } = busquedaState;
+  const { busqueda, posicionPasaje } = busquedaState;
 
   const [pasajes, setPasajes] = useState({
     original: "",
@@ -96,10 +97,10 @@ const ResultadoBusquedaReferencia = (props) => {
   }
 
   function consultaDePasajes(event) {
-    if (letra != event.target.innerHTML[0].toUpperCase()) {
+    if (letra != fixLetter(event.target.innerHTML[0])) {
       dispatch({
         type: "SET_LETRA",
-        payload: event.target.innerHTML[0].toUpperCase(),
+        payload: fixLetter(event.target.innerHTML[0]),
       });
     }
     const idExpresion = event.target.id.split("/")[0];
@@ -146,7 +147,7 @@ const ResultadoBusquedaReferencia = (props) => {
               >
                 <Typography id={expresion.t_id + "/" + index}>
                   {expresion.expresion_original +
-                    "  /  " +
+                    "  //  " +
                     expresion.expresion_traduccion}
                 </Typography>
               </Link>

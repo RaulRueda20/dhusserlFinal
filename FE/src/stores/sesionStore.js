@@ -10,7 +10,7 @@ const initialState = {
   ultimasVisitadas: [],
   ultimaVisitada: [],
   lang: "es",
-  pasajeLang: "es",
+  pasajeLang: "al",
   langLista: "al",
   letra: "A",
   loading: false,

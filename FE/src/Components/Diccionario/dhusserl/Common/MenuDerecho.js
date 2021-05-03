@@ -29,6 +29,7 @@ import {
 import { webService } from "../../../../js/webServices";
 
 import { sesionStore } from "../../../../stores/sesionStore";
+import { fixLetter } from "../../../../js/utils";
 import { expresionesStore } from "../../../../stores/expresionStore";
 import * as localStore from "../../../../js/localStore";
 
@@ -93,7 +94,7 @@ const MenuDerecho = (props) => {
   const [padres, setPadres] = useState([]);
 
   useEffect(() => {
-    console.log("expresionSeleccionada", expresionSeleccionada);
+    // console.log("expresionSeleccionada", expresionSeleccionada);
     if (expresionSeleccionada) {
       let service = "/vertambien/" + expresionSeleccionada.id;
       webService(service, "GET", {}, sesion, ({ data }) => {
@@ -127,6 +128,7 @@ const MenuDerecho = (props) => {
   }, [expresionSeleccionada, ultimasVisitadas]);
 
   const fixReferenciasConsultadas = (expresion) => {
+    // console.log(expresion);
     let referencia = {
       clave: expresion[0].clave,
       expresion: expresion[0].expresion_original,
@@ -149,15 +151,17 @@ const MenuDerecho = (props) => {
   };
 
   const handleFlagLetraMain = (event) => {
-    if (letra != event.target.innerHTML[0].toUpperCase()) {
+    if (letra != fixLetter(event.target.innerHTML[0].toUpperCase())) {
       dispatch({
         type: "SET_LETRA",
-        payload: event.target.innerHTML[0].toUpperCase(),
+        payload: fixLetter(event.target.innerHTML[0].toUpperCase()),
       });
     }
     const idExpresion = event.target.id.split("/")[0];
+    // console.log("ID", idExpresion);
     const service = "/referencias/obtieneReferencias/" + idExpresion;
     webService(service, "GET", {}, sesion, (data) => {
+      // console.log(data);
       const referencias = fixReferenciasConsultadas(data.data.response);
       let nuevasVisitadas = ultimasVisitadas;
       nuevasVisitadas.push(referencias);
@@ -206,8 +210,9 @@ const MenuDerecho = (props) => {
             <li>
               <Link
                 to={`${props.match.path.slice(0, 20)}/pasaje/${
-                  expresionSeleccionada.id
+                  expresionSeleccionada?.id
                 }`}
+                onClick={(event) => handleFlagLetraMain(event)}
               >
                 <Typography
                   variant="body1"
@@ -215,6 +220,7 @@ const MenuDerecho = (props) => {
                   style={{
                     fontWeight: 500,
                   }}
+                  id={expresionSeleccionada?.id + "/expresionprincipal"}
                 >
                   {expresionSeleccionada?.expresion}
                 </Typography>

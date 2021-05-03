@@ -87,7 +87,7 @@ const ListaBusqueda = (props) => {
                 >
                   <Typography>
                     {expresionEncontradaporReferencia.ref_libro_de +
-                      "  /  " +
+                      "  //  " +
                       expresionEncontradaporReferencia.ref_libro_es}
                   </Typography>
                 </li>
@@ -115,7 +115,7 @@ const ListaBusqueda = (props) => {
                   >
                     <Typography>
                       {expresionEncontradaPorExpresion.expresion +
-                        "  /  " +
+                        "  //  " +
                         expresionEncontradaPorExpresion.traduccion}
                     </Typography>
                   </li>

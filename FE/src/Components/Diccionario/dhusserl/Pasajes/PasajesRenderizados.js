@@ -109,7 +109,6 @@ const PasajesRenderizados = (props) => {
         traduccion: recuperandoInformacion(lang),
       });
     }
-
     let nombreExpresion =
       props.referenciaSeleccionada != null
         ? props.referenciaSeleccionada

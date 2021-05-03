@@ -1023,30 +1023,30 @@ const mensajeNulos = (lang) => {
 const tituloBusqueda = (lang) => {
   switch (lang) {
     case "es":
-      return "La busqueda es muy pequeña.";
+      return "La búsqueda no tiene resultados";
     case "en":
-      return "The search is very small.";
+      return "The search has no results.";
     case "fr":
-      return "La recherche est très petite.";
+      return "La recherche n'a pas de résultats.";
     case "al":
-      return "Die Suche ist sehr klein.";
+      return "Die Suche ist ergebnislos.";
     case "ca":
-      return "La recerca és molt petita.";
+      return "La cerca no té resultats.";
   }
 };
 
 const mensajeBusqueda = (lang) => {
   switch (lang) {
     case "es":
-      return "La búsqueda no obtiene resultados o es demasiado pequeña,favor de hacer otra búsqueda más especifíca.";
+      return "O no hubo expresión que buscar o la expresión buscada no existe. Favor de visitar el módulo de ";
     case "en":
-      return "The search returns no results or is too small,please do a more specific search.";
+      return "Either there was no expression to search for or the searched expression does not exist. Please visit the module";
     case "fr":
-      return "La recherche ne renvoie aucun résultat ou est trop petite,veuillez effectuer une recherche plus spécifique.";
+      return "Soit il n'y avait pas d'expression à rechercher, soit l'expression recherchée n'existe pas. Veuillez visiter le module";
     case "al":
-      return "Die Suche liefert keine Ergebnisse oder ist zu klein,bitte führen Sie eine genauere Suche durch.";
+      return "Entweder gab es keinen Ausdruck, nach dem gesucht wurde, oder der gesuchte Ausdruck existiert nicht. Bitte besuchen Sie das Modul";
     case "ca":
-      return "La cerca no obté resultats o és massa petita,favor de fer una cerca més especifíca.";
+      return "O no hi va haver expressió de buscar o l'expressió buscada no existeix. Favor de visitar el mòdul de";
   }
 };
 
@@ -1320,6 +1320,36 @@ const recuperandoInformacion = (lang) => {
   }
 };
 
+const pasajesAsociados = (lang) => {
+  switch (lang) {
+    case "es":
+      return "Pasajes asociados a la expresión";
+    case "en":
+      return "Passages associated with the expression";
+    case "fr":
+      return "Passages associés à l'expression";
+    case "al":
+      return "Mit dem Ausdruck verknüpfte Textauszüge";
+    case "ca":
+      return "Passatges associats a l'expressió";
+  }
+};
+
+const búsqueda = (lang) => {
+  switch (lang) {
+    case "es":
+      return "búsqueda";
+    case "en":
+      return "search";
+    case "fr":
+      return "Recherche";
+    case "al":
+      return "Suche";
+    case "ca":
+      return "recerca";
+  }
+};
+
 export {
   tituloDiccionario,
   ingresar,
@@ -1409,4 +1439,6 @@ export {
   UNAM,
   expresionesAsociadas,
   recuperandoInformacion,
+  pasajesAsociados,
+  búsqueda,
 };

@@ -1,6 +1,7 @@
 // React
-import React, { useContext } from "react";
-
+import React, { useContext, useEffect } from "react";
+import { Link } from "react-router-dom";
+import PageviewIcon from "@material-ui/icons/Pageview";
 // Components
 import Modal from "@material-ui/core/Modal";
 import Typography from "@material-ui/core/Typography";
@@ -12,17 +13,21 @@ import Divider from "@material-ui/core/Divider";
 import { withStyles } from "@material-ui/styles";
 
 //Language
-import { tituloBusqueda, mensajeBusqueda } from "../../../js/Language";
+import {
+  tituloBusqueda,
+  mensajeBusqueda,
+  búsqueda,
+} from "../../../js/Language";
 import { sesionStore } from "../../../stores/sesionStore";
 
 const modalBusqueda = {
   modalinb: {
-    width: "50%",
+    width: "30%",
     maxHeight: "75vh",
     top: "35.5vh",
     position: "absolute",
     padding: "20px 20px",
-    left: "calc(25% - 30px)",
+    left: "calc(35% - 30px)",
   },
   botonClear: {
     bottom: "15px",
@@ -58,7 +63,7 @@ const ModalDeBusqueda = (props) => {
       <Paper className={classes.modalinb}>
         <Grid container alignContent="center" alignItems="center">
           <Grid item xs={11}>
-            <Typography variant="h4">{tituloBusqueda(lang)}</Typography>
+            <Typography variant="h3">{tituloBusqueda(lang)}</Typography>
           </Grid>
           <Grid item xs={1}>
             <IconButton aria-haspopup="true" onClick={clickHandleCloseModal}>
@@ -67,7 +72,13 @@ const ModalDeBusqueda = (props) => {
           </Grid>
           <Divider />
           <Grid item xs={12} className={classes.gridDelTypo}>
-            <Typography variant="h5">{mensajeBusqueda(lang)}</Typography>
+            <Typography variant="h5">
+              ... {mensajeBusqueda(lang)}{" "}
+              <Link to={`/diccionario/husserl/busquedas`} className="links">
+                {búsqueda(lang)} <PageviewIcon />
+              </Link>
+            </Typography>
+            {/* <Typography>{búsqueda(lang)}</Typography> */}
           </Grid>
         </Grid>
       </Paper>

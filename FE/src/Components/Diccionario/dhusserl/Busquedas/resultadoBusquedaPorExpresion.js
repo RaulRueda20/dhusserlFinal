@@ -2,7 +2,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 //Components
-import { Grid, Typography, Divider, IconButton } from "@material-ui/core";
+import { Grid, Typography, IconButton } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
 
 import LinkIcon from "@material-ui/icons/Link";
@@ -13,6 +13,8 @@ import { expresionesStore } from "../../../../stores/expresionStore";
 import MenuDerecho from "../Common/MenuDerecho";
 import { sesionStore } from "../../../../stores/sesionStore";
 import * as localStore from "../../../../js/localStore";
+import { fixLetter } from "../../../../js/utils";
+import { pasajesAsociados } from "../../../../js/Language";
 
 const resultadoBusqueda = {
   typosTitulos: {
@@ -38,9 +40,10 @@ const resultadoBusqueda = {
 
 const ResultadoBusquedaExpresion = (props) => {
   const { classes, expresionSeleccionada } = props;
+
   const global = useContext(sesionStore);
   const { state, dispatch } = global;
-  const { lang, sesion, letra } = state;
+  const { lang, letra } = state;
 
   const [expanded1, setExpanded1] = useState(true);
   const [expanded2, setExpanded2] = useState(true);
@@ -49,7 +52,14 @@ const ResultadoBusquedaExpresion = (props) => {
   const globalBusqueda = useContext(busquedaStore);
   const { busquedaState, attend } = globalBusqueda;
   const { idPasaje, busqueda } = busquedaState;
-  const { term_id, expresion, referencias, traduccion } = expresionSeleccionada;
+
+  const {
+    term_id,
+    expresion,
+    referencias,
+    traduccion,
+    t_id,
+  } = expresionSeleccionada;
 
   const globalExpresion = useContext(expresionesStore);
 
@@ -59,10 +69,11 @@ const ResultadoBusquedaExpresion = (props) => {
   });
 
   useEffect(() => {
+    // console.log(expresionSeleccionada, expresion);
     globalExpresion.attend({
       type: "SELECT_EXPRESION",
       payload: {
-        id: term_id,
+        id: term_id ?? t_id ?? expresionSeleccionada.id,
         expresion: expresion,
       },
     });
@@ -70,9 +81,11 @@ const ResultadoBusquedaExpresion = (props) => {
       original: resaltarBusqueda(referencias[0].ref_def_de, busqueda),
       traduccion: resaltarBusqueda(referencias[0].ref_def_es, busqueda),
     });
-  }, [idPasaje, props.expresionSeleccionada]);
+  }, [idPasaje, expresionSeleccionada]);
 
   const resaltarBusqueda = (string, separador) => {
+    // console.log(string, separador);
+    if (!string) return "";
     const split = string.split(separador);
     const Split = split.join(
       "<span class='resaltador'>" + separador + "</span>"
@@ -80,48 +93,16 @@ const ResultadoBusquedaExpresion = (props) => {
     return Split;
   };
 
-  const htmlPasajeOriginal = () => {
-    const { original } = pasajes;
-    return { __html: original };
-  };
-
-  const htmlPasajeTraduccion = () => {
-    const { traduccion } = pasajes;
-    return { __html: traduccion };
-  };
-
-  function fixReferenciasConsultadas(expresion) {
-    var referencia = {
-      clave: expresion[0].clave,
-      expresion: expresion[0].expresion_original,
-      traduccion: expresion[0].expresion_traduccion,
-      id: expresion[0].id,
-      index_de: expresion[0].index_de,
-      index_es: expresion[0].index_es,
-      pretty_e: expresion[0].epretty,
-      pretty_t: expresion[0].tpretty,
-      referencias: [],
-    };
-    referencia.referencias.push({
-      referencia_original: expresion[0].ref_original,
-      referencia_traduccion: expresion[0].ref_traduccion,
-      refid: expresion[0].refid,
-      orden: expresion[0].orden,
-    });
-    return referencia;
-  }
-
   function consultaDePasajes(event) {
-    if (letra != expresion[0].toUpperCase()) {
+    console.log(event);
+    if (letra != fixLetter(expresion[0])) {
       dispatch({
         type: "SET_LETRA",
-        payload: expresion[0].toUpperCase(),
+        payload: fixLetter(expresion[0]),
       });
     }
-    let ref = fixReferenciasConsultadas(referencias);
     let nuevasVisitadas = localStore.getObjects("ultimasVisitadas");
-    ref.nombreExpresion = referencias.expresion;
-    nuevasVisitadas.push(ref);
+    nuevasVisitadas.push(expresionSeleccionada);
     localStore.setObjects("ultimasVisitadas", nuevasVisitadas);
     dispatch({
       type: "SET_ULTIMAS_VISITADAS",
@@ -146,7 +127,7 @@ const ResultadoBusquedaExpresion = (props) => {
       <Grid container alignItems="center" alignContent="center">
         <Grid item xs={10}>
           <Typography variant="h2" className={classes.typosTitulos}>
-            {expresion + " / " + traduccion}
+            {expresion + " // " + traduccion}
           </Typography>
         </Grid>
         <Grid item xs={2}>
@@ -161,26 +142,29 @@ const ResultadoBusquedaExpresion = (props) => {
         </Grid>
       </Grid>
       <Grid container className={classes.contenedorDeResultados}>
-        {/* <Grid item xs={8} style={{ paddingRight: "30px" }}>
-          <div dangerouslySetInnerHTML={htmlPasajeOriginal()}></div>
-          <Divider />
-          <div
-            className={classes.divPasajes}
-            dangerouslySetInnerHTML={htmlPasajeTraduccion()}
-          ></div>
-        </Grid> */}
-        <Grid xs={4} className="listaReferencia">
+        <Grid item xs={12} sm={8} md={8} lg={8} className="listaReferencia">
+          <Typography variant="h3" className="pasajesAsociados">
+            {pasajesAsociados(lang)}
+          </Typography>
           <ul className="ulExpresionesRelacionadas">
             {props.expresionSeleccionada.referencias.map((referenciasList) => (
-              <li key={expresion.t_id} className="liExpresionesRelacionadas">
+              <li
+                key={expresion?.t_id ?? expresion?.term_id ?? expresion?.id}
+                className="liExpresionesRelacionadas"
+              >
                 <Link
                   to={`${props.match.path.slice(0, 20)}/pasaje/${
                     props.expresionSeleccionada.id
                   }/${props.expresionSeleccionada.referencias[0].refid}`}
                   onClick={(e) => consultaDePasajes(e)}
+                  id={
+                    expresionSeleccionada.referencias[0].refid +
+                    "/" +
+                    expresionSeleccionada.id
+                  }
                 >
                   <Typography className="referenciasTypo">
-                    {referenciasList.referencia_original} //{" "}
+                    {referenciasList.referencia_original} {" // "}
                     {referenciasList.referencia_traduccion}
                   </Typography>
                 </Link>
@@ -188,7 +172,7 @@ const ResultadoBusquedaExpresion = (props) => {
             ))}
           </ul>
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={12} sm={4} md={4} lg={4}>
           <MenuDerecho
             {...props}
             expanded1={expanded1}
