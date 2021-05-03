@@ -1,5 +1,5 @@
-import React, {useEffect, useContext} from "react";
-import {Typography} from "@material-ui/core";
+import React, { useEffect, useContext } from "react";
+import { Typography } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
 
 import {
@@ -9,6 +9,7 @@ import {
   FooterAl,
   InstitutoF,
   UNAM,
+  leaAviso,
 } from "../../../js/Language";
 
 import { sesionStore } from "../../../stores/sesionStore";
@@ -27,11 +28,10 @@ const styles = {
 const Footer = (props) => {
   const { classes } = props;
   const global = useContext(sesionStore);
-  const { state } = global
-  const { lang } = state
+  const { state } = global;
+  const { lang } = state;
 
-  useEffect(() => {
-  }, [lang]);
+  useEffect(() => {}, [lang]);
 
   return (
     <div className={classes.footerBody}>
@@ -49,6 +49,8 @@ const Footer = (props) => {
           {UNAM(lang)}
         </a>{" "}
         {FooterAl(lang)}
+        <br />
+        {leaAviso(lang)}
       </Typography>
       <footer className="footerDiccionario">
         <Typography className={classes.footerText} variant="h4" align="center">
@@ -57,5 +59,5 @@ const Footer = (props) => {
       </footer>
     </div>
   );
-}
+};
 export default withStyles(styles)(Footer);
