@@ -1,3 +1,6 @@
+import React, { Fragment } from "react";
+import { Link } from "react-router-dom";
+
 const tituloDiccionario = (lang) => {
   // const lang = localStore.getItem("lang")
   switch (lang) {
@@ -1023,30 +1026,30 @@ const mensajeNulos = (lang) => {
 const tituloBusqueda = (lang) => {
   switch (lang) {
     case "es":
-      return "La búsqueda no tiene resultados";
+      return "La busqueda es muy pequeña.";
     case "en":
-      return "The search has no results.";
+      return "The search is very small.";
     case "fr":
-      return "La recherche n'a pas de résultats.";
+      return "La recherche est très petite.";
     case "al":
-      return "Die Suche ist ergebnislos.";
+      return "Die Suche ist sehr klein.";
     case "ca":
-      return "La cerca no té resultats.";
+      return "La recerca és molt petita.";
   }
 };
 
 const mensajeBusqueda = (lang) => {
   switch (lang) {
     case "es":
-      return "O no hubo expresión que buscar o la expresión buscada no existe. Favor de visitar el módulo de ";
+      return "La búsqueda no obtiene resultados o es demasiado pequeña,favor de hacer otra búsqueda más especifíca.";
     case "en":
-      return "Either there was no expression to search for or the searched expression does not exist. Please visit the module";
+      return "The search returns no results or is too small,please do a more specific search.";
     case "fr":
-      return "Soit il n'y avait pas d'expression à rechercher, soit l'expression recherchée n'existe pas. Veuillez visiter le module";
+      return "La recherche ne renvoie aucun résultat ou est trop petite,veuillez effectuer une recherche plus spécifique.";
     case "al":
-      return "Entweder gab es keinen Ausdruck, nach dem gesucht wurde, oder der gesuchte Ausdruck existiert nicht. Bitte besuchen Sie das Modul";
+      return "Die Suche liefert keine Ergebnisse oder ist zu klein,bitte führen Sie eine genauere Suche durch.";
     case "ca":
-      return "O no hi va haver expressió de buscar o l'expressió buscada no existeix. Favor de visitar el mòdul de";
+      return "La cerca no obté resultats o és massa petita,favor de fer una cerca més especifíca.";
   }
 };
 
@@ -1320,6 +1323,111 @@ const recuperandoInformacion = (lang) => {
   }
 };
 
+const terminosYCondiciones = (lang) => {
+  switch (lang) {
+    case "es":
+      return (
+        <Fragment>
+          Al registrarse en nuestro sitio, usted afirma que está de acuerdo con
+          nuestros{" "}
+          <Link to="/diccionario/TerminosyCondiciones">
+            Términos y Condiciones de uso
+          </Link>
+          , y que ha leído y conoce nuestro{" "}
+          <Link to="/diccionario/aviso_privacidad">Aviso de Privacidad</Link>
+        </Fragment>
+      );
+    case "en":
+      return (
+        <Fragment>
+          By registering on our site, you affirm that you agree to our{" "}
+          <Link to="/diccionario/TerminosyCondiciones">
+            Terms and Conditions of use
+          </Link>
+          and that you have read and are aware of our{" "}
+          <Link to="/diccionario/aviso_privacidad">Privacy Notice</Link>
+        </Fragment>
+      );
+    case "fr":
+      return (
+        <Fragment>
+          En vous inscrivant sur notre site, vous affirmez que vous acceptez nos{" "}
+          <Link to="/diccionario/TerminosyCondiciones">
+            Conditions Générales d'Utilisation
+          </Link>
+          , et que vous avez lu et pris connaissance de notre{" "}
+          <Link to="/diccionario/aviso_privacidad">
+            Politique de Confidentialité
+          </Link>
+        </Fragment>
+      );
+    case "al":
+      return (
+        <Fragment>
+          Indem Sie sich auf unserer Seite registrieren, bestätigen Sie, dass
+          Sie mit unseren Nutzungsbedingungen einverstanden sind und dass Sie
+          unsere Datenschutzhinweise gelesen haben und sich dieser bewusst sind.
+        </Fragment>
+      );
+    case "ca":
+      return (
+        <Fragment>
+          A l'registrar al nostre lloc, vostè afirma que està d'acord amb els
+          nostres{" "}
+          <Link to="/diccionario/TerminosyCondiciones">
+            Termes i Condicions d'ús
+          </Link>
+          , i que ha llegit i coneix el nostre
+          <Link to="/diccionario/aviso_privacidad">Avís de Privadesa</Link>.
+        </Fragment>
+      );
+  }
+};
+
+const leaAviso = (lang) => {
+  switch (lang) {
+    case "es":
+      return (
+        <Fragment>
+          Lea nuestro{" "}
+          <Link to="/diccionario/aviso_privacidad">aviso de privacidad</Link>
+        </Fragment>
+      );
+    case "en":
+      return (
+        <Fragment>
+          Read our{" "}
+          <Link to="/diccionario/aviso_privacidad">privacy notice</Link>
+        </Fragment>
+      );
+    case "fr":
+      return (
+        <Fragment>
+          Lisez notre{" "}
+          <Link to="/diccionario/aviso_privacidad">
+            Avis de confidentialité
+          </Link>
+        </Fragment>
+      );
+    case "al":
+      return (
+        <Fragment>
+          Lesen{" "}
+          <Link to="/diccionario/aviso_privacidad">
+            Sie unsere Datenschutzhinweise
+          </Link>
+        </Fragment>
+      );
+    case "ca":
+      return (
+        <Fragment>
+          Llegiu el nostre{" "}
+          <Link to="/diccionario/aviso_privacidad">Avís de privadesa</Link>
+        </Fragment>
+      );
+  }
+};
+
 const pasajesAsociados = (lang) => {
   switch (lang) {
     case "es":
@@ -1439,6 +1547,8 @@ export {
   UNAM,
   expresionesAsociadas,
   recuperandoInformacion,
+  terminosYCondiciones,
+  leaAviso,
   pasajesAsociados,
   búsqueda,
 };

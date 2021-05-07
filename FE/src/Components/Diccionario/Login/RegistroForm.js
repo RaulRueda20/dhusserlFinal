@@ -15,6 +15,7 @@ import {
   ingresar,
   registrado,
   aqui,
+  terminosYCondiciones,
 } from "../../../js/Language";
 
 import { loginService } from "../../../js/webServices";
@@ -194,6 +195,7 @@ const RegistroForm = (props) => {
           />
         </Grid>
         <Grid item xs={12} sm={8} lg={7} className="grids">
+          {terminosYCondiciones(lang)}
           <Grid container justify="flex-end" className="grids">
             <Grid item>
               <Button
