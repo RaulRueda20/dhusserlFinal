@@ -65,29 +65,13 @@ const RegistroForm = (props) => {
     };
     if (nuevoPassword == repassword) {
       console.log("lang", lang);
-      var service = "/login/registrar";
+      var service = `/login/registrar/${lang}`;
       loginService(service, "POST", JSON.stringify(params), (data) => {
         if (data.data.status == 200) {
-          var serviceh = "/login/sendRegistroEmail/" + lang;
-          loginService(
-            serviceh,
-            "GET",
-            { nombre: nuevoNombre, email: nuevoCorreo, pass: nuevoPassword },
-            (data) => {
-              dispatch({
-                type: "SET_ALERT",
-                payload: {
-                  mensaje: "Operación Exitosa",
-                  open: true,
-                  tituloAlerta: "Operación Concluida con Exito",
-                },
-              });
-              dispatch({
-                type: "INICIAR_SESION",
-                payload: { usuario: nuevoCorreo, password: nuevoPassword },
-              });
-            }
-          );
+          dispatch({
+            type: "INICIAR_SESION",
+            payload: { usuario: nuevoCorreo, password: nuevoPassword },
+          });
         } else if (data.data.status == 501) {
           dispatch({
             type: "SET_ALERT",

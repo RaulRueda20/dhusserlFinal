@@ -10,7 +10,7 @@ import LoginD from "./Login/LoginD";
 import Subvistas from "./dhusserl/Subvistas";
 import Aviso_privacidad from "./Aviso_privacidad";
 import TerminosyCondiciones from "./TerminosyCondiciones";
-//imort Recuperacion from './Login/Recuperacion'
+import Recuperacion from "./Login/Recuperacion";
 
 const theme = createMuiTheme({
   palette: {
@@ -87,6 +87,11 @@ const RutaDiccionario = ({ match }) => {
           path={`${match.url}/TerminosyCondiciones`}
           render={(props) => <TerminosyCondiciones {...props} />}
         />
+        <Route
+          path={`${match.url}/recuperacion/:hash`}
+          render={(props) => <Recuperacion {...props} />}
+        />
+
         <Route path={`${match.url}/`}>
           <Redirect to={`${match.url}/login`} />
         </Route>

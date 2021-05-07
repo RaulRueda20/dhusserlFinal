@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
   },
   lang: {
     fontSize: "2.5rem",
-    color: "white",
+    color: "black",
   },
 }));
 

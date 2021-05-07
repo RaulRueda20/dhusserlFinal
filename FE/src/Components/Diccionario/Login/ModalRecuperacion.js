@@ -51,7 +51,7 @@ const modalRecuperacion = {
 
 const ModalRecuperacion = (props) => {
   const global = useContext(sesionStore);
-  const { state } = global;
+  const { state, dispatch } = global;
   const { lang } = state;
   const { classes, setRecuperarContra, recuperarContra } = props;
   const [correoRecuperado, setCorreoRecuperado] = useState("");
@@ -60,7 +60,7 @@ const ModalRecuperacion = (props) => {
     event.preventDefault();
     dispatch({ type: "START_LOADING" });
     var email = correoRecuperado;
-    var service = "/login/recoverPassword/es?email=" + email;
+    var service = `/login/recoverPassword/${lang}?email=${email}`;
     var enconding = window.btoa(email);
     loginService(service, "GET", {}, (data) => {
       dispatch({ type: "STOP_LOADING" });
