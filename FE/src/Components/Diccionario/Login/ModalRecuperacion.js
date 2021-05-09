@@ -63,8 +63,9 @@ const ModalRecuperacion = (props) => {
     var service = `/login/recoverPassword/${lang}?email=${email}`;
     var enconding = window.btoa(email);
     loginService(service, "GET", {}, (data) => {
+      console.log("DATA", data);
       dispatch({ type: "STOP_LOADING" });
-      if (data.status == 200) {
+      if (data.data.status == 200) {
         dispatch({
           type: "SET_SNACKBAR",
           payload: { open: true, variant: "success", message: exitoBody(lang) },
