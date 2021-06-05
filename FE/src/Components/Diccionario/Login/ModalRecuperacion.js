@@ -63,25 +63,25 @@ const ModalRecuperacion = (props) => {
     var service = `/login/recoverPassword/${lang}?email=${email}`;
     var enconding = window.btoa(email);
     loginService(service, "GET", {}, (data) => {
-      console.log("DATA", data);
+      // console.log("DATA", data);
       dispatch({ type: "STOP_LOADING" });
-      if (data.data.status == 200) {
-        dispatch({
-          type: "SET_SNACKBAR",
-          payload: { open: true, variant: "success", message: exitoBody(lang) },
-        });
-        // dispatch({ type: 'SET_SESION', payload: { "user": nuevoCorreo, "password": nuevoPassword } })
-        // setStore(data.response, email.correo)
-      } else {
-        dispatch({
-          type: "SET_SNACKBAR",
-          payload: {
-            open: true,
-            variant: "error",
-            message: correoNoEncontrado(lang),
-          },
-        });
-      }
+      // if (data.data.status == 200) {
+      dispatch({
+        type: "SET_SNACKBAR",
+        payload: { open: true, variant: "success", message: exitoBody(lang) },
+      });
+      // dispatch({ type: 'SET_SESION', payload: { "user": nuevoCorreo, "password": nuevoPassword } })
+      // setStore(data.response, email.correo)
+      // } else {
+      //   dispatch({
+      //     type: "SET_SNACKBAR",
+      //     payload: {
+      //       open: true,
+      //       variant: "error",
+      //       message: correoNoEncontrado(lang),
+      //     },
+      //   });
+      // }
     });
   };
 
