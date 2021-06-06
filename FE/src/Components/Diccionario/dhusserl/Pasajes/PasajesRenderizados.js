@@ -103,11 +103,15 @@ const PasajesRenderizados = (props) => {
         original: noContienePasajes(lang),
         traduccion: noContienePasajes(lang),
       });
+      setEpretty("");
+      setTpretty("");
     } else {
       setPasajeRenderizado({
         original: recuperandoInformacion(lang),
         traduccion: recuperandoInformacion(lang),
       });
+      setEpretty("");
+      setTpretty("");
     }
     let nombreExpresion =
       props.referenciaSeleccionada != null
