@@ -56,10 +56,8 @@ const Pasaje = (props) => {
   const [busqueda, setBusqueda] = useState("");
   const [openHidden, setOpenHidden] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [
-    posicionReferenciasConsultadas,
-    setPosicionReferenciasConsultadas,
-  ] = useState("");
+  const [posicionReferenciasConsultadas, setPosicionReferenciasConsultadas] =
+    useState("");
   const [referencias, setReferencias] = useState([]);
   const [modalDeBusquedas, setModalDebusquedas] = useState(false);
   const [chunkList, setChunkList] = useState([]);
@@ -80,9 +78,9 @@ const Pasaje = (props) => {
     let expreActual = "";
     let i = 0;
     while (i < referencias.length) {
-      if (expreActual != referencias[i].expresion) {
+      if (expreActual != referencias[i].pretty_e) {
         posicActual++;
-        expreActual = referencias[i].expresion;
+        expreActual = referencias[i].pretty_e;
         expresiones.push({
           clave: referencias[i].clave,
           expresion: referencias[i].expresion,
