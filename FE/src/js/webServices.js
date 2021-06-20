@@ -1,15 +1,17 @@
 import axios from "axios";
 import * as localStore from "./localStore";
-// const serverUrl = "http://3.22.12.85:1938/api/v1.0";
+const serverUrl = "http://3.22.12.85:1938/api/v1.0";
 //const serverUrl = "http://localhost:1938/api/v1.0";
-const serverUrl = "https://diccionariohusserl.org/api/v1.0";
+// const serverUrl = "https://diccionariohusserl.org/api/v1.0";
 
 const webService = (service, method, params, sesion, next) => {
   var serverUsername = localStore.getObjects("sesion").user;
   var serverPassword = localStore.getObjects("sesion").password;
   // var serverUsername = sesion?.usuario ?? localStore.getObjects("sesion").user;
   // var serverPassword = sesion?.password ?? localStore.getObjects("sesion").password;
+
   var auth = "Basic " + btoa(serverUsername + ":" + serverPassword);
+
   axios({
     method: method,
     // contentType : 'application/json',
