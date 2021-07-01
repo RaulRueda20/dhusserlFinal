@@ -18,7 +18,9 @@ const sesionReducer = (state, action) => {
 
   switch (type) {
     case "SET_EXPRESIONES_ENCONTRADAS":
-      return { ...state, expresionesEncontradas: payload };
+      console.log("expresiones store busqueda");
+      console.log("payload", payload);
+      return { ...state, expresionesEncontradas: payload, posicionPasaje: 0 };
     case "SET_POSICION_PASAJE":
       return { ...state, posicionPasaje: payload };
     case "SET_ID_PASAJE":

@@ -53,13 +53,7 @@ const ResultadoBusquedaExpresion = (props) => {
   const { busquedaState, attend } = globalBusqueda;
   const { idPasaje, busqueda } = busquedaState;
 
-  const {
-    term_id,
-    expresion,
-    referencias,
-    traduccion,
-    t_id,
-  } = expresionSeleccionada;
+  const { expresion, referencias, traduccion } = expresionSeleccionada;
 
   const globalExpresion = useContext(expresionesStore);
 
@@ -69,11 +63,12 @@ const ResultadoBusquedaExpresion = (props) => {
   });
 
   useEffect(() => {
-    // console.log(expresionSeleccionada, expresion);
+    console.log("expresionSeleccionada", expresionSeleccionada.id);
+    // console.log("t_id", t_id);
     globalExpresion.attend({
       type: "SELECT_EXPRESION",
       payload: {
-        id: term_id ?? t_id ?? expresionSeleccionada.id,
+        id: expresionSeleccionada.id,
         expresion: expresion,
       },
     });
@@ -94,7 +89,6 @@ const ResultadoBusquedaExpresion = (props) => {
   };
 
   function consultaDePasajes(event) {
-    console.log(event);
     if (letra != fixLetter(expresion[0])) {
       dispatch({
         type: "SET_LETRA",
@@ -132,7 +126,9 @@ const ResultadoBusquedaExpresion = (props) => {
         </Grid>
         <Grid item xs={2}>
           <Link
-            to={`${props.match.path.slice(0, 20)}/pasaje/${term_id}`}
+            to={`${props?.match?.path.slice(0, 20)}/pasaje/${
+              expresionSeleccionada.id
+            }`}
             onClick={(e) => consultaDePasajes(e)}
           >
             <IconButton>
@@ -147,15 +143,15 @@ const ResultadoBusquedaExpresion = (props) => {
             {pasajesAsociados(lang)}
           </Typography>
           <ul className="ulExpresionesRelacionadas">
-            {props.expresionSeleccionada.referencias.map((referenciasList) => (
+            {expresionSeleccionada?.referencias.map((referenciasList) => (
               <li
-                key={expresion?.t_id ?? expresion?.term_id ?? expresion?.id}
+                key={expresionSeleccionada.id}
                 className="liExpresionesRelacionadas"
               >
                 <Link
-                  to={`${props.match.path.slice(0, 20)}/pasaje/${
-                    props.expresionSeleccionada.id
-                  }/${props.expresionSeleccionada.referencias[0].refid}`}
+                  to={`${props?.match?.path.slice(0, 20)}/pasaje/${
+                    expresionSeleccionada?.id
+                  }/${expresionSeleccionada?.referencias[0].refid}`}
                   onClick={(e) => consultaDePasajes(e)}
                   id={
                     expresionSeleccionada.referencias[0].refid +
@@ -164,8 +160,8 @@ const ResultadoBusquedaExpresion = (props) => {
                   }
                 >
                   <Typography className="referenciasTypo">
-                    {referenciasList.referencia_original} {" // "}
-                    {referenciasList.referencia_traduccion}
+                    {referenciasList?.referencia_original} {" // "}
+                    {referenciasList?.referencia_traduccion}
                   </Typography>
                 </Link>
               </li>

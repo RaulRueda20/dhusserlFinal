@@ -53,6 +53,7 @@ const ModuloBusquedas = (props) => {
 
   useEffect(() => {
     props.setFlagCambio("Busquedas");
+    //console.log(tipoBusquedaRealizada);
   });
 
   return (

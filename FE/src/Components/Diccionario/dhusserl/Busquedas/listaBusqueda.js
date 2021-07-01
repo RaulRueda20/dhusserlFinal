@@ -1,5 +1,5 @@
 //React
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 
 //Components
 import Grid from "@material-ui/core/Grid";
@@ -12,7 +12,11 @@ import Tooltip from "@material-ui/core/Tooltip";
 import classNames from "classnames";
 
 //Language
-import { resultadoBusqueda, cerrarListaTooltip } from "../../../../js/Language";
+import {
+  resultadoBusqueda,
+  cerrarListaTooltip,
+  pasajeSeleccionado,
+} from "../../../../js/Language";
 import { sesionStore } from "../../../../stores/sesionStore";
 import { busquedaStore } from "../../../../stores/busquedaStore";
 
@@ -23,12 +27,8 @@ const ListaBusqueda = (props) => {
 
   const globalBusqueda = useContext(busquedaStore);
   const { busquedaState, attend } = globalBusqueda;
-  const {
-    tipoBusqueda,
-    posicionPasaje,
-    expresionesEncontradas,
-    abierto,
-  } = busquedaState;
+  const { tipoBusqueda, posicionPasaje, expresionesEncontradas, abierto } =
+    busquedaState;
 
   const clickCambioIdBuscado = (props) => {
     const { currentTarget } = props;
@@ -52,6 +52,21 @@ const ListaBusqueda = (props) => {
     });
   };
 
+  useEffect(() => {
+    console.log(
+      "ultimo consolelog en hacer mtfckr",
+      expresionesEncontradas,
+      tipoBusqueda
+    );
+    if (tipoBusqueda == "Referencia") {
+      document.getElementById("listaReferencia").firstChild.scrollIntoView();
+    } else {
+      //console.log(document.getElementById("listaExpresion").firstChild);
+      console.log("expresionesEncontradas en la lista", expresionesEncontradas);
+      document.getElementById("listaExpresion").firstChild.scrollIntoView();
+    }
+  }, [expresionesEncontradas]);
+
   const abrirLista = () => {
     attend({ type: "SET_ABIERTO", payload: !abierto });
   };
@@ -72,23 +87,23 @@ const ListaBusqueda = (props) => {
       </Grid>
       {tipoBusqueda == "Referencia" ? (
         <Grid item xs={12} className="contenedorBusqueda">
-          <ul className="ulBusqueda">
+          <ul className="ulBusqueda" id="listaReferencia">
             {expresionesEncontradas.map(
               (expresionEncontradaporReferencia, index) => (
                 <li
-                  id={expresionEncontradaporReferencia.ref_id + "-" + index}
+                  id={expresionEncontradaporReferencia?.ref_id + "-" + index}
                   onClick={(event) => clickCambioIdBuscado(event)}
-                  value={expresionEncontradaporReferencia.ref_id + "-" + index}
-                  key={expresionEncontradaporReferencia.ref_id + "-" + index}
+                  value={expresionEncontradaporReferencia?.ref_id + "-" + index}
+                  key={expresionEncontradaporReferencia?.ref_id + "-" + index}
                   className={classNames([
                     { pasajeSeleccionado: posicionPasaje == index },
                     "liBusqueda",
                   ])}
                 >
                   <Typography>
-                    {expresionEncontradaporReferencia.ref_libro_de +
+                    {expresionEncontradaporReferencia?.ref_libro_de +
                       "  //  " +
-                      expresionEncontradaporReferencia.ref_libro_es}
+                      expresionEncontradaporReferencia?.ref_libro_es}
                   </Typography>
                 </li>
               )
@@ -98,25 +113,23 @@ const ListaBusqueda = (props) => {
       ) : (
         <Grid container justify="center" alignItems="center">
           <Grid item xs={12} className="contenedorBusqueda">
-            <ul className="ulBusqueda">
+            <ul className="ulBusqueda" id="listaExpresion">
               {expresionesEncontradas.map(
                 (expresionEncontradaPorExpresion, index) => (
                   <li
                     onClick={(event) => clickCambioIdBuscado(event)}
-                    id={expresionEncontradaPorExpresion.term_id + "-" + index}
-                    value={
-                      expresionEncontradaPorExpresion.term_id + "-" + index
-                    }
-                    key={expresionEncontradaPorExpresion.term_id + "-" + index}
+                    id={"expresionEncontradaPorExpresion" + "-" + index}
+                    value={expresionEncontradaPorExpresion?.refid + "-" + index}
+                    key={expresionEncontradaPorExpresion?.refid + "-" + index}
                     className={classNames([
                       { pasajeSeleccionado: posicionPasaje == index },
                       "liBusqueda",
                     ])}
                   >
                     <Typography>
-                      {expresionEncontradaPorExpresion.expresion +
+                      {expresionEncontradaPorExpresion?.expresion +
                         "  //  " +
-                        expresionEncontradaPorExpresion.traduccion}
+                        expresionEncontradaPorExpresion?.traduccion}
                     </Typography>
                   </li>
                 )

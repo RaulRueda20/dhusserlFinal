@@ -137,18 +137,18 @@ const ResultadoBusquedaReferencia = (props) => {
         </Typography>
         <Divider />
         <ul className="ulExpresionesRelacionadas">
-          {props.pasajeSeleccionado.expresiones.map((expresion, index) => (
+          {props?.pasajeSeleccionado?.expresiones.map((expresion, index) => (
             <li key={expresion.t_id} className="liExpresionesRelacionadas">
               <Link
-                to={`${props.match.path.slice(0, 20)}/pasaje/${
+                to={`${props?.match?.path.slice(0, 20)}/pasaje/${
                   expresion.t_id
-                }/${props.pasajeSeleccionado.ref_id}`}
+                }/${props?.pasajeSeleccionado?.ref_id}`}
                 onClick={(e) => consultaDePasajes(e)}
               >
                 <Typography id={expresion.t_id + "/" + index}>
-                  {expresion.expresion_original +
+                  {expresion?.expresion_original +
                     "  //  " +
-                    expresion.expresion_traduccion}
+                    expresion?.expresion_traduccion}
                 </Typography>
               </Link>
             </li>
