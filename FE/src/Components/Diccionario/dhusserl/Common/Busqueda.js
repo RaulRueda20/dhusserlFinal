@@ -56,13 +56,8 @@ const useStyles = createStyles(() => ({
 }));
 
 const Busqueda = (props) => {
-  const {
-    busqueda,
-    setModalDebusquedas,
-    setLoading,
-    setBusqueda,
-    bandera,
-  } = props;
+  const { busqueda, setModalDebusquedas, setLoading, setBusqueda, bandera } =
+    props;
   const classes = useStyles();
   const global = useContext(sesionStore);
   const { state, dispatch } = global;
@@ -97,13 +92,13 @@ const Busqueda = (props) => {
     if (busqueda != "") {
       var stringCaracteres = busqueda.replace(/(?!\w|\s)./g, "");
       var stringNumeros = busqueda.replace(/([0-9])./g, "");
-      if (busqueda.length < 2) {
+      if (busqueda.length < 0) {
         setModalDebusquedas(true);
-      } else if (stringCaracteres.length < 2) {
+      } else if (stringCaracteres.length < 0) {
         setModalDebusquedas(true);
-      } else if (stringNumeros.length < 2) {
+      } else if (stringNumeros.length < 0) {
         setModalDebusquedas(true);
-      } else if (busqueda.length > 2) {
+      } else if (busqueda.length > 0) {
         setLoading(true);
         var letter = busqueda.slice(0, 1);
         var letraCapital = letter.toUpperCase();

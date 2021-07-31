@@ -170,7 +170,7 @@ const PanelExpresion = ({ match, expresion, index, getJerarquia }) => {
           >
             {expresion.referencias[0].refid == null
               ? "Recuperando información."
-              : expresion.referencias.map((referencia, index) => (
+              : expresion?.referencias?.map((referencia, index) => (
                   <li className="referencia" key={referencia + "/" + index}>
                     <Typography
                       variant="h6"

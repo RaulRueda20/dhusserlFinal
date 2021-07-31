@@ -20,8 +20,10 @@ const Pasajes = () => {
     var service = "/referencias/lista";
     adminService(service, "GET", {}, ({ data }) => {
       const { response } = data;
+      console.log("respuesta de pasajes seleccionado", response);
       setPasajes(response);
-      setPasajeSeleccionado(response[0].ref_id);
+      setPasajeSeleccionado(response[1].ref_id);
+      document.getElementById("listaClaves").firstChild.click();
     });
   }, [reload]);
 

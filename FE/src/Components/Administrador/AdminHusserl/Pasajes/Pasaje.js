@@ -45,7 +45,11 @@ const infopasajes = {
 };
 
 const InfoPasajes = (props) => {
-  const { classes } = props;
+  const { classes, pasaje, pasajeName, clave } = props;
+
+  React.useEffect(() => {
+    console.log("pasaje", pasaje);
+  }, [pasaje]);
 
   return (
     <div className={classes.cartainfodepasajes}>
@@ -53,14 +57,14 @@ const InfoPasajes = (props) => {
         <Grid item xs={2}>
           <TextField
             id="standard-name"
-            value={props.clave}
+            value={clave}
             onChange={(event) => props.setClave(event.target.value)}
           ></TextField>
         </Grid>
         <Grid item xs={10}>
           <TextField
             id="standard-name"
-            value={props.pasajeName}
+            value={pasajeName}
             onChange={(event) => props.setPasajeName(event.target.value)}
             className={classes.contenedorselectpasaje}
           />
@@ -70,10 +74,10 @@ const InfoPasajes = (props) => {
         <Grid
           item
           className={classes.contenedoreditorpasaje}
-          id={"pasaje" + props.pasajeName}
+          id={"pasaje" + pasajeName}
         >
           <CKEditor
-            data={props.pasaje}
+            data={pasaje}
             onChange={(evt) => {
               var data = evt.editor.getData();
               props.setPasaje(data);

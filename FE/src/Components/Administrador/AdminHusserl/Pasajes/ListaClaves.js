@@ -5,7 +5,7 @@ import classNames from "classnames";
 const ListaClaves = (props) => {
   return (
     <Fragment>
-      <ul className="list-containerP">
+      <ul className="list-containerP" id="listaClaves">
         {props.pasajes.map((referencia) => {
           return (
             <li

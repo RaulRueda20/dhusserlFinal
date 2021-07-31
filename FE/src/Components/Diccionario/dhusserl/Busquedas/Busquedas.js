@@ -89,7 +89,7 @@ const Busquedas = (props) => {
   const handleChangeBusqueda = (event) => {
     event.preventDefault();
     dispatch({ type: "START_LOADING" });
-    // console.log("Busqueda", busqueda);
+    console.log("Busqueda", busqueda);
     if (busqueda == "") {
       setModalDebusquedas(true);
       dispatch({ type: "STOP_LOADING" });
@@ -120,11 +120,11 @@ const Busquedas = (props) => {
           }
         );
       } else {
-        const servicebe = "/referencias/busquedaExpresion";
+        const servicebe = "/referencias/busquedaExpresion/" + insensitiveCase;
         webService(
           servicebe,
           "POST",
-          { parametro: busqueda, case: insensitiveCase },
+          { parametro: busqueda },
           sesion,
           ({ data }) => {
             const { response } = data;

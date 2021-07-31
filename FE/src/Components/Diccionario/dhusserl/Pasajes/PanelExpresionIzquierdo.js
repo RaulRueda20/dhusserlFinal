@@ -25,16 +25,20 @@ const PanelExpresionIzquierdo = (props) => {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    if (props.expresion.id == props.match.params.expresion) {
+    console.log("ENTRE A PANEL EXPRESIONES IZQUIERDOS");
+    console.log("props.match.params.expresion", props.match);
+    console.log("props.expresion.referencias", props.expresion);
+    if (props?.expresion?.id == props?.match?.params?.expresion) {
       setOpen(true);
     }
-  }, [props.match.params.expresion]);
+  }, [props?.match?.params?.expresion]);
 
   const handleVisitados = (event, index, referencia) => {
+    console.log("index", index);
     if (
       document
         .getElementById(referencia + "/" + index)
-        ?.className.indexOf("pasajesVisitados") == -1
+        .className.indexOf("pasajesVisitados") == -1
     ) {
       document.getElementById(referencia + "/" + index).className +=
         " pasajesVisitados";
@@ -122,42 +126,45 @@ const PanelExpresionIzquierdo = (props) => {
       <div>
         {open ? (
           <ul
-            key={props.expresion.id}
-            id={"referencias" + props.expresion.id}
+            key={props?.expresion?.id}
+            id={"referencias" + props?.expresion?.id}
             className="ulDelPanelDeExpresiones"
           >
-            {props.expresion.referencias[0].refid == null
+            {props?.expresion?.referencias[0]?.refid == null
               ? "No hay ninguna referencia para esta expresión. Ver por favor la lista de expresiones derivadas."
-              : props.expresion.referencias.map((referencia, index) => {
+              : props?.expresion?.referencias.map((referencia, index) => {
+                  console.log("referencia", referencia);
                   return (
                     <li className="referencia" id={"panel" + index}>
                       <Grid container justify="center" alignItems="center">
                         <Grid
                           item
                           xs={10}
-                          id={props.expresion.id + "/" + props.index}
+                          id={props?.expresion?.id + "/" + props?.index}
                         >
                           <Typography
                             variant="h6"
                             className={classNames([
-                              { remarcadoDeReferencias: referencia.orden == 1 },
+                              {
+                                remarcadoDeReferencias: referencia?.orden == 1,
+                              },
                             ])}
                           >
                             <Link
-                              to={`${props.match.path.slice(0, 20)}/pasaje/${
-                                props.expresion.id
-                              }/${referencia.refid}`}
+                              to={`${props?.match?.path.slice(0, 20)}/pasaje/${
+                                props?.expresion?.id
+                              }/${referencia?.refid}`}
                               className="consultaDePasajes"
                               onClick={(event) =>
                                 handleVisitados(event, index, referencia.refid)
                               }
-                              id={referencia.refid + "/" + index}
+                              id={referencia?.refid + "/" + index}
                             >
-                              {referencia.refid +
+                              {referencia?.refid +
                                 "  :  " +
-                                referencia.referencia_original +
+                                referencia?.referencia_original +
                                 "/" +
-                                referencia.referencia_traduccion}
+                                referencia?.referencia_traduccion}
                             </Link>
                           </Typography>
                         </Grid>

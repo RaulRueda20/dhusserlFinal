@@ -46,6 +46,38 @@ const ResultadoBusquedaReferencia = (props) => {
   });
   // const [referencias, setReferencias] = useState("");
 
+  const componeParametro = (parametro) => {
+    //console.log("ENTRE A COMPONEPARAMETRO");
+    //console.log("parametro al iniciar", parametro);
+    //let nuevoParametro = parametro;
+    parametro = parametro.replace("á", "&aacute;");
+    parametro = parametro.replace("é", "&eacute;");
+    parametro = parametro.replace("í", "&iacute;");
+    parametro = parametro.replace("ó", "&oacute;");
+    parametro = parametro.replace("ú", "&uacute;");
+    parametro = parametro.replace("Á", "&Aacute;");
+    parametro = parametro.replace("É", "&Eacute;");
+    parametro = parametro.replace("Í", "&Iacute;");
+    parametro = parametro.replace("Ó", "&Oacute;");
+    parametro = parametro.replace("Ú", "&Uacute;");
+
+    parametro = parametro.replace("ä", "&auml;");
+    parametro = parametro.replace("ë", "&euml;");
+    parametro = parametro.replace("ï", "&iuml;");
+    parametro = parametro.replace("ö", "&ouml;");
+    parametro = parametro.replace("ü", "&uuml;");
+
+    parametro = parametro.replace("Ä", "&Auml;");
+    parametro = parametro.replace("Ë", "&Euml;");
+    parametro = parametro.replace("Ï", "&Iuml;");
+    parametro = parametro.replace("Ö", "&Ouml;");
+    parametro = parametro.replace("Ü", "&Uuml;");
+
+    //console.log("al final de la funcion", parametro);
+
+    return parametro;
+  };
+
   useEffect(() => {
     setPasajes({
       original: resaltarBusqueda(
@@ -60,7 +92,7 @@ const ResultadoBusquedaReferencia = (props) => {
   }, [posicionPasaje]);
 
   function resaltarBusqueda(string, separador) {
-    var split = string.split(separador);
+    var split = string.split(componeParametro(separador));
     var resultado = split.join(
       "<span class='resaltador'>" + separador + "</span>"
     );

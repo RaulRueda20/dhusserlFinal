@@ -53,9 +53,9 @@ const Expresion = (props) => {
     var expreActual = "";
     var i = 0;
     while (i < referencias.length) {
-      if (expreActual != referencias[i].pretty_e) {
+      if (expreActual != referencias[i].id) {
         posicActual++;
-        expreActual = referencias[i].pretty_e;
+        expreActual = referencias[i].id;
         expresiones.push({
           clave: referencias[i].clave,
           nombreExpresion: referencias[i].expresion,

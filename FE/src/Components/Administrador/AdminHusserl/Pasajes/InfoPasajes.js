@@ -80,6 +80,15 @@ const InfoPasajes = (props) => {
   const [opcionGuardado, setOpcionGuardado] = useState("editar");
 
   useEffect(() => {
+    console.log(
+      "referencias aleman, español de props y traducciones en las vistas",
+      props.pasajeSeleccionado.ref_def_de,
+      props.pasajeSeleccionado.ref_def_de,
+      traduccionPasaje,
+      traduccionPasajeName,
+      expresionPasaje,
+      expresionPasajeName
+    );
     setExpresionClave(props.pasajeSeleccionado.clave);
     setExpresionId(props.pasajeSeleccionado.ref_id);
     setExpresionPasaje(props.pasajeSeleccionado.ref_def_de);
@@ -108,15 +117,20 @@ const InfoPasajes = (props) => {
       clave: expresionClave,
     };
     if (opcionGuardado != "editar") {
+      console.log("expresionId", expresionId);
       let servicio = "/referencias/new/nuevoPasaje";
       adminService(servicio, "POST", JSON.stringify(params), (data) => {
         setSnack({ open: true, text: "Pasaje creado con éxito" });
         props.setReload(!props.reload);
       });
     } else {
+      console.log("expresionId y params", expresionId, params);
       let servicio = "/referencias/editarPasaje/" + expresionId;
+      //params.clave = expresionId;
       adminService(servicio, "POST", JSON.stringify(params), (data) => {
+        console.log("data", data);
         setSnack({ open: true, text: "Pasaje editado con éxito" });
+        props.setReload(!props.reload);
       });
     }
   };
@@ -126,11 +140,11 @@ const InfoPasajes = (props) => {
     if (props.pasajeSeleccionado > 0) {
       setSnack({
         open: true,
-        text:
-          "Este pasaje está relacionado con expresiones del diccionario. Por favor, elimine dichas relaciones antes de continuar.",
+        text: "Este pasaje está relacionado con expresiones del diccionario. Por favor, elimine dichas relaciones antes de continuar.",
       });
       return true;
     } else {
+      console.log("expresionId", expresionId);
       adminService(
         "/referencias/eliminarPasaje/" + expresionId,
         "DELETE",

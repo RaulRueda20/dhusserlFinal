@@ -773,9 +773,10 @@ hr {
 
 .sideListAdmin {
   justify-content: flex-start;
-  align-items: justyfi !important;
-  margin-top: 10px;
+  align-items: baseline;
+  padding: 7.5px;
   border-bottom: 1px lightgray solid;
+  padding-bottom: 5px;
   font-family: "Roboto", "Helvetica", "Arial", sans-serif;
   color: rgba(80, 80, 80);
   cursor: pointer;
