@@ -18,8 +18,10 @@ const Expresiones = () => {
     var service = "/expresiones/todas/" + letraMain;
     adminService(service, "GET", {}, ({ data }) => {
       const { response } = data;
+      console.log("response en el padre", response);
       setExpresiones(response);
       if (idExpresion === "")
+        // console.log("response al entrar al if idExpresion", response[0].id);
         setIdExpresion(response.length > 0 ? response[0].id : "");
     });
   }, [letraMain, reload]);

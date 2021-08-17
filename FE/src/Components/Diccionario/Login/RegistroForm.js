@@ -68,6 +68,7 @@ const RegistroForm = (props) => {
       console.log("lang", lang);
       var service = `/login/registrar/${lang}`;
       loginService(service, "POST", JSON.stringify(params), (data) => {
+        console.log("Data", data.data);
         if (data.data.status == 200) {
           dispatch({
             type: "INICIAR_SESION",

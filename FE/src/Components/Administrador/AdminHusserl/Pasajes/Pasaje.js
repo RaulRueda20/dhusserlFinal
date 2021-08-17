@@ -48,7 +48,7 @@ const InfoPasajes = (props) => {
   const { classes, pasaje, pasajeName, clave } = props;
 
   React.useEffect(() => {
-    console.log("pasaje", pasaje);
+    console.log("clave", clave);
   }, [pasaje]);
 
   return (

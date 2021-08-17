@@ -73,17 +73,17 @@ const Pasaje = (props) => {
   });
 
   const fixReferencias = (referencias) => {
-    let expresiones = [];
-    let posicActual = -1;
-    let expreActual = "";
-    let i = 0;
+    var expresiones = [];
+    var posicActual = -1;
+    var expreActual = "";
+    var i = 0;
     while (i < referencias.length) {
-      if (expreActual != referencias[i].pretty_e) {
+      if (expreActual != referencias[i].id) {
         posicActual++;
-        expreActual = referencias[i].pretty_e;
+        expreActual = referencias[i].id;
         expresiones.push({
           clave: referencias[i].clave,
-          expresion: referencias[i].expresion,
+          nombreExpresion: referencias[i].expresion,
           id: referencias[i].id,
           index_de: referencias[i].index_de,
           index_es: referencias[i].index_es,

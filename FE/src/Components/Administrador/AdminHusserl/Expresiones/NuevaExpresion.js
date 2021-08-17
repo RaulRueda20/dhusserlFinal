@@ -9,6 +9,7 @@ import {
   IconButton,
   Snackbar,
   Tooltip,
+  responsiveFontSizes,
 } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 
@@ -55,6 +56,8 @@ const emptyObj = {
   ref_traduccion: "",
   refid: "",
   tpretty: "",
+  index_de: "",
+  index_es: "",
 };
 
 const NuevaExpresion = (props) => {
@@ -69,14 +72,19 @@ const NuevaExpresion = (props) => {
 
   useEffect(() => {
     if (props.expresionSeleccionada != "") {
+      console.log("expresionSeleccionada", props.expresionSeleccionada);
       var service =
         "/referencias/obtieneReferenciasByTerm/" + props.expresionSeleccionada;
       adminService(service, "GET", {}, ({ data }) => {
         const { response } = data;
+        console.log("response", response);
         if (response.length > 0) {
           setExpresion(response[0]);
-          if (response[0].refid) setPasajes(response);
-          else setPasajes([]);
+          if (response[0].refid) {
+            console.log("ANTES");
+            setPasajes(response);
+            console.log("DESPUES");
+          }
         }
       });
     } else {

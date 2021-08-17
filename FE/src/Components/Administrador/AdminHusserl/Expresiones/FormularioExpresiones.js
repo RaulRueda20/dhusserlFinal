@@ -83,6 +83,10 @@ const FormularioExpresiones = (props) => {
     props.setExpresion(event.target.value);
   };
 
+  // React.useEffect(() => {
+  //   console.log("expresion", props.expresion);
+  // }, []);
+
   return (
     <Fragment>
       <Grid container alignItems="center">

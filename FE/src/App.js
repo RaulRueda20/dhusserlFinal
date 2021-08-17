@@ -27,10 +27,13 @@ const App = () => {
   const { mensaje, open, tituloAlerta } = alert;
 
   const handleAlertClose = () => {
-    setMensajeDeAlerta({
-      open: false,
-      mensaje: mensaje,
-      tituloAlerta: tituloAlerta,
+    dispatch({
+      type: "SET_ALERT",
+      payload: {
+        mensaje: "",
+        open: false,
+        tituloAlerta: "",
+      },
     });
   };
 

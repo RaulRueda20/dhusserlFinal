@@ -43,6 +43,7 @@ const InfoExpresiones = (props) => {
   const [padres, setPadres] = useState([]);
 
   useEffect(() => {
+    // console.log("expresion", props.expresion);
     adminService(
       "/expresiones/al/abuelosList/" + props.expresionId,
       "GET",

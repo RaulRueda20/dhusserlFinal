@@ -63,12 +63,13 @@ const ModalEditar = (props) => {
   useEffect(() => {
     var el = props.expresion.expresion_original.toUpperCase();
     var tl = props.expresion.expresion_traduccion.toUpperCase();
+    // console.log("Letras", props.expresion
     setExpresion(props.expresion.expresion_original);
     setTraduccion(props.expresion.expresion_traduccion);
     setExpresionContenido(props.expresion.epretty);
     setTraduccionContenido(props.expresion.tpretty);
-    setExpresionLetraIndice(el[0]);
-    setTraduccionLetraIndice(tl[0]);
+    setExpresionLetraIndice(props?.expresion?.index_de[0]);
+    setTraduccionLetraIndice(props?.expresion?.index_es[0]);
   }, [props.expresion]);
 
   const handleOpen = () => {

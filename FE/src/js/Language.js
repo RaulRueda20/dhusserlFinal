@@ -96,7 +96,7 @@ const contra = (lang) => {
 const olvidoDeContra = (lang) => {
   switch (lang) {
     case "es":
-      return "Olvidó su contraseña? Puede recuperarla";
+      return "¿Olvidó su contraseña? Puede recuperarla";
     case "en":
       return "Forgot your password? You can retrieve it";
     case "fr":

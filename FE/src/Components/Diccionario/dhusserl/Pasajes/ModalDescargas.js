@@ -78,9 +78,8 @@ const ModalDescargas = (props) => {
   const [checkedC, setCheckedC] = useState(false);
   const [checked, setChecked] = useState([]);
   const [value, setValue] = useState("Texto");
-  const [descargarPasajeSolo, setdescargarPasajeSolo] = useState(
-    "seleccionado"
-  );
+  const [descargarPasajeSolo, setdescargarPasajeSolo] =
+    useState("seleccionado");
   const [flagHtml, setFlagHtml] = useState(false);
 
   const handleChangeA = (name) => (event) => {
