@@ -63,6 +63,7 @@ const PanelExpresion = ({ match, expresion, index, getJerarquia }) => {
       refIdReferenciaConsultada;
     webService(service, "GET", {}, sesion, (data) => {
       const referencias = fixReferenciasConsultadas(data.data.response);
+      // console.log("referencias Panel Expresion", referencias);
       if (!localStore.getObjects("ultimasVisitadas")) {
         let referenciasConsultadas = [];
         referenciasConsultadas.push(referencias);

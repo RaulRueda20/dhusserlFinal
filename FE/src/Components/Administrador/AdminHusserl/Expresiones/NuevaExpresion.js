@@ -84,7 +84,11 @@ const NuevaExpresion = (props) => {
             console.log("ANTES");
             setPasajes(response);
             console.log("DESPUES");
+          } else {
+            setPasajes([]);
           }
+        } else {
+          setPasajes([]);
         }
       });
     } else {

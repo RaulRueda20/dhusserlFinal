@@ -26,8 +26,9 @@ const webService = (service, method, params, sesion, next) => {
       next(response);
     })
     .catch((error) => {
-      // console.log("ERROR EN ", service, error);
+      console.log("ERROR", error);
       alert("Ha habido un error" + error.status + " : " + error.statusText);
+      console.log(error.response);
     });
 };
 

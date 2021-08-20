@@ -32,7 +32,7 @@ const MenuHeader = (props) => {
   };
 
   const exitMain = () => {
-    localStorage.removeItem("sesion");
+    localStorage.removeItem("admin_sesion");
     document.getElementById("toLogin").click();
   };
 
@@ -103,7 +103,7 @@ const MenuHeader = (props) => {
           <ListItemText primary="Salir" />
         </MenuItem>
       </Menu>
-      <Link id="toLogin" to={"/"} />
+      <Link id="toLogin" to={"/administrador"} />
     </Fragment>
   );
 };

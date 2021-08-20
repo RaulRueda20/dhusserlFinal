@@ -61,6 +61,7 @@ const ModalEditar = (props) => {
   const [snack, setSnack] = useState({ open: false, text: "" });
 
   useEffect(() => {
+    // console.log("props.expresion en modal editar", props.expresion);
     var el = props.expresion.expresion_original.toUpperCase();
     var tl = props.expresion.expresion_traduccion.toUpperCase();
     // console.log("Letras", props.expresion

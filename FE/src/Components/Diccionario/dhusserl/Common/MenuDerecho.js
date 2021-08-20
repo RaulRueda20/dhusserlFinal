@@ -94,7 +94,10 @@ const MenuDerecho = (props) => {
   const [padres, setPadres] = useState([]);
 
   useEffect(() => {
-    // console.log("expresionSeleccionada", expresionSeleccionada);
+    // console.log(
+    //   "expresionSeleccionada en el Menu derecho",
+    //   expresionSeleccionada
+    // );
     if (expresionSeleccionada) {
       let service = "/vertambien/" + expresionSeleccionada.id;
       webService(service, "GET", {}, sesion, ({ data }) => {

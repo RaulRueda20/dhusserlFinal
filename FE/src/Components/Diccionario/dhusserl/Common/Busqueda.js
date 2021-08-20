@@ -122,16 +122,6 @@ const Busqueda = (props) => {
               } else {
                 ChunkC(data.response);
               }
-              // } else {
-              //   dispatch({
-              //     type: "SET_SNACKBAR",
-              //     payload: {
-              //       open: true,
-              //       variant: "error",
-              //       message: letraNoCoincide(lang),
-              //     },
-              //   });
-              // }
             }
           );
 
@@ -146,39 +136,6 @@ const Busqueda = (props) => {
             },
           });
           setLoading(false);
-          // var letraCapital = letter.toUpperCase();
-          // var servicebl =
-          //   "/referencias/busquedaExpresionPorLetra" +
-          //   "/" +
-          //   letra +
-          //   "/" +
-          //   langLista;
-          // webService(
-          //   servicebl,
-          //   "POST",
-          //   { parametro: busqueda, case: insensitiveCase },
-          //   sesion,
-          //   ({ data }) => {
-          //     if (letra == letraCapital) {
-          //       console.log("data de busqueda", data.response);
-          //       if (data.response == []) {
-          //         setModalDebusquedas(true);
-          //       } else {
-          //         ChunkC(data.response);
-          //       }
-          //     } else {
-          //       dispatch({
-          //         type: "SET_SNACKBAR",
-          //         payload: {
-          //           open: true,
-          //           variant: "error",
-          //           message: letraNoCoincide(lang),
-          //         },
-          //       });
-          //     }
-          //   }
-          // );
-          // setLoading(false);
         }
       }
     } else {

@@ -13,8 +13,12 @@ import { Typography } from "@material-ui/core";
 //Language
 import { numeroDePasajes, pasajeSingular } from "../../../../js/Language";
 import { languageStore } from "../../../../stores/languageStore";
+import { sesionStore } from "../../../../stores/sesionStore";
 
 const Pasaje = (props) => {
+  const global = useContext(sesionStore);
+  const { state, dispatch } = global;
+  const { lang } = state;
   const globalLanguage = useContext(languageStore);
   const [casillas, setCasillas] = useState([]);
   const [referencias, setReferencias] = useState([]);
@@ -194,9 +198,7 @@ const Pasaje = (props) => {
       ) : null}
       <Typography variant="h5">
         {referencias.length}{" "}
-        {referencias.length > 1
-          ? numeroDePasajes(globalLanguage.lang)
-          : pasajeSingular(globalLanguage.lang)}{" "}
+        {referencias.length > 1 ? numeroDePasajes(lang) : pasajeSingular(lang)}{" "}
       </Typography>
     </div>
   );

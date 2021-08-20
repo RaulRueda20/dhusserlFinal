@@ -46,7 +46,8 @@ const useStyles = makeStyles((theme) => ({
 const ListaDeConsultados = (props) => {
   const classes = useStyles();
   const global = useContext(sesionStore);
-  const globalLanguage = useContext(languageStore);
+  const { state, dispatch } = global;
+  const { lang } = state;
   const [listaC, setListaC] = useState([]);
 
   const fixListaC = (lista) => {
@@ -126,7 +127,7 @@ const ListaDeConsultados = (props) => {
             inputProps={{ "aria-label": "Todas las expresiones consultadas" }}
           />
         }
-        title={marcarConsultadas(globalLanguage.lang)}
+        title={marcarConsultadas(lang)}
       />
       <Divider />
       <List component="div" role="list" className={classes.divLista}>

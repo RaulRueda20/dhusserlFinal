@@ -22,7 +22,7 @@ import BusquedaEscondida from "./BusquedaEscondida";
 import ContenidoPasaje from "./ContenidoPasaje";
 import Paginador from "./Paginador";
 import ListaEscondida from "./ListaEscondida";
-import MenuDerechoPasajes from "../Common/MenuDerecho";
+import MenuDerecho from "../Common/MenuDerecho";
 import MenuEscondido from "./MenuEscondido";
 import ModalDeBusqueda from "../ModalDeBusqueda";
 
@@ -185,6 +185,7 @@ const Pasaje = (props) => {
       setPasajeService(service);
       webService(service, "GET", {}, sesion, ({ data }) => {
         const { response } = data;
+        console.log("response en Pasajes", response);
         attend({
           type: "START_EXPRESIONES",
           payload: {
@@ -266,7 +267,7 @@ const Pasaje = (props) => {
         payload: fixLetter(event.target.innerHTML[0].toUpperCase()),
       });
     }
-    const idExpresion = event.target.id.split("/")[0];
+    // const idExpresion = event.target.id.split("/")[0];
     // const service = "/referencias/obtieneReferencias/" + idExpresion;
     // webService(service, "GET", {}, sesion, (data) => {
     //   let referencias = fixReferenciasConsultadas(data.data.response);
@@ -498,7 +499,7 @@ const Pasaje = (props) => {
                 </ul>
               </div>
             ) : (
-              <MenuDerechoPasajes
+              <MenuDerecho
                 {...props}
                 idExpresion={idExpresion}
                 expresiones={expresiones}

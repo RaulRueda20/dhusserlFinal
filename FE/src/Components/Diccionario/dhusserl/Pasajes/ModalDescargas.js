@@ -1,5 +1,5 @@
 // React
-import React, { useContext, useState, Fragment } from "react";
+import React, { useContext, useState, Fragment, useEffect } from "react";
 
 // Components
 import {
@@ -71,6 +71,8 @@ const modalDescargas = {
 
 const ModalDescargas = (props) => {
   const global = useContext(sesionStore);
+  const { state } = global;
+  const { lang } = state;
   const globalLanguage = useContext(languageStore);
   const { classes } = props;
   const [checkedA, setCheckedA] = useState(false);
@@ -303,6 +305,10 @@ const ModalDescargas = (props) => {
     }
   };
 
+  useEffect(() => {
+    console.log("global Language", globalLanguage);
+  }, []);
+
   return (
     <Fragment>
       {!flagHtml ? (
@@ -321,9 +327,7 @@ const ModalDescargas = (props) => {
               alignContent="center"
             >
               <Grid item xs={11}>
-                <Typography variant="h4">
-                  {descargarConsulta(globalLanguage.lang)}
-                </Typography>
+                <Typography variant="h4">{descargarConsulta(lang)}</Typography>
               </Grid>
               <Grid item xs={1}>
                 <IconButton aria-haspopup="true" onClick={closeDescargas}>
@@ -335,14 +339,10 @@ const ModalDescargas = (props) => {
             <FormGroup>
               <Grid container>
                 <Grid item xs={12}>
-                  <Typography>
-                    {seGeneraArchivo(globalLanguage.lang)}
-                  </Typography>
+                  <Typography>{seGeneraArchivo(lang)}</Typography>
                 </Grid>
                 <Grid item xs={12}>
-                  <Typography>
-                    {menuDerechoJerarquia(globalLanguage.lang)}
-                  </Typography>
+                  <Typography>{menuDerechoJerarquia(lang)}</Typography>
                 </Grid>
                 <Grid item xs={12}>
                   <FormControlLabel
@@ -353,11 +353,11 @@ const ModalDescargas = (props) => {
                         value="checkedA"
                       />
                     }
-                    label={conReferencias(globalLanguage.lang)}
+                    label={conReferencias(lang)}
                   />
                 </Grid>
                 <Grid item xs={12}>
-                  <Typography>{descargarEn(globalLanguage.lang)}</Typography>
+                  <Typography>{descargarEn(lang)}</Typography>
                 </Grid>
                 <Grid item xs={6}>
                   <FormControlLabel
@@ -368,7 +368,7 @@ const ModalDescargas = (props) => {
                         value="checkedB"
                       />
                     }
-                    label={idiomaAl(globalLanguage.lang)}
+                    label={idiomaAl(lang)}
                   />
                 </Grid>
                 <Grid item xs={6}>
@@ -380,16 +380,14 @@ const ModalDescargas = (props) => {
                         value="checkedC"
                       />
                     }
-                    label={idiomaEs(globalLanguage.lang)}
+                    label={idiomaEs(lang)}
                   />
                 </Grid>
                 <Grid item xs={12}>
-                  <Typography>
-                    {pasajeSeleccionadoOTodos(globalLanguage.lang)}
-                  </Typography>
+                  <Typography>{pasajeSeleccionadoOTodos(lang)}</Typography>
                 </Grid>
                 <RadioGroup
-                  aria-label={pasajeSeleccionadoOTodos(globalLanguage.lang)}
+                  aria-label={pasajeSeleccionadoOTodos(lang)}
                   name="Pasaje seleccionado"
                   value={descargarPasajeSolo}
                   onChange={pasajeSeleccionadoRadio}
@@ -400,24 +398,24 @@ const ModalDescargas = (props) => {
                         <FormControlLabel
                           control={<Radio />}
                           value="seleccionado"
-                          label={pasajeSeleccionado(globalLanguage.lang)}
+                          label={pasajeSeleccionado(lang)}
                         />
                       </Grid>
                       <Grid item xs={6}>
                         <FormControlLabel
                           control={<Radio />}
                           value="todos"
-                          label={todosLosPasajes(globalLanguage.lang)}
+                          label={todosLosPasajes(lang)}
                         />
                       </Grid>
                     </Grid>
                   </Grid>
                 </RadioGroup>
                 <Grid item xs={12}>
-                  <Typography>{tipoDeArchivos(globalLanguage.lang)}</Typography>
+                  <Typography>{tipoDeArchivos(lang)}</Typography>
                 </Grid>
                 <RadioGroup
-                  aria-label={tipoDeArchivos(globalLanguage.lang)}
+                  aria-label={tipoDeArchivos(lang)}
                   name="Tipo de archivo"
                   value={value}
                   onChange={handleChangeRadio}
@@ -426,7 +424,7 @@ const ModalDescargas = (props) => {
                     <FormControlLabel
                       control={<Radio />}
                       value="texto"
-                      label={texto(globalLanguage.lang)}
+                      label={texto(lang)}
                     />
                   </Grid>
                   <Grid item xs={6}>
@@ -442,9 +440,7 @@ const ModalDescargas = (props) => {
             <Divider className="divisor" />
             <Grid container>
               <Grid item xs={12} className={classes.tituloConsultados}>
-                <Typography>
-                  {descargarConsultadas(globalLanguage.lang)}
-                </Typography>
+                <Typography>{descargarConsultadas(lang)}</Typography>
               </Grid>
               <Grid item xs={12}>
                 <ListaDeConsultados checked={checked} setChecked={setChecked} />
@@ -458,7 +454,7 @@ const ModalDescargas = (props) => {
                   type="submit"
                   onClick={clickHandleDescarga}
                 >
-                  {descargarConsulta(globalLanguage.lang)}
+                  {descargarConsulta(lang)}
                 </Button>
               </Grid>
             </Grid>
