@@ -89,59 +89,23 @@ const Busqueda = (props) => {
 
   const handleChangeBusquedaExpresiones = (event) => {
     event.preventDefault();
-    if (busqueda != "") {
-      var stringCaracteres = busqueda.replace(/(?!\w|\s)./g, "");
-      var stringNumeros = busqueda.replace(/([0-9])./g, "");
-      if (busqueda.length < 0) {
-        setModalDebusquedas(true);
-      } else if (stringCaracteres.length < 0) {
-        setModalDebusquedas(true);
-      } else if (stringNumeros.length < 0) {
-        setModalDebusquedas(true);
-      } else if (busqueda.length > 0) {
-        setLoading(true);
-        var letter = busqueda.slice(0, 1);
-        var letraCapital = letter.toUpperCase();
-        if (letra == fixLetter(letraCapital)) {
-          var servicebl =
-            "/referencias/busquedaExpresionPorLetra" +
-            "/" +
-            letra +
-            "/" +
-            langLista;
-          webService(
-            servicebl,
-            "POST",
-            { parametro: busqueda, case: insensitiveCase },
-            sesion,
-            ({ data }) => {
-              // if (letra == letraCapital) {
-              console.log("data de busqueda", data.response);
-              if (data.response == []) {
-                setModalDebusquedas(true);
-              } else {
-                ChunkC(data.response);
-              }
-            }
-          );
-
-          setLoading(false);
+    var servicebl =
+      "/referencias/busquedaExpresionPorLetra" + "/" + letra + "/" + langLista;
+    webService(
+      servicebl,
+      "POST",
+      { parametro: busqueda, case: insensitiveCase },
+      sesion,
+      ({ data }) => {
+        // if (letra == letraCapital) {
+        console.log("data de busqueda", data.response);
+        if (data.response == []) {
+          setModalDebusquedas(true);
         } else {
-          dispatch({
-            type: "SET_SNACKBAR",
-            payload: {
-              open: true,
-              variant: "error",
-              message: letraNoCoincide(lang),
-            },
-          });
-          setLoading(false);
+          ChunkC(data.response);
         }
       }
-    } else {
-      setModalDebusquedas(true);
-      ChunkC(expresiones.slice(0, 50));
-    }
+    );
   };
 
   const handleInsensitiveCase = () => {
