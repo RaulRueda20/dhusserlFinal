@@ -224,7 +224,9 @@ router.get('/obtieneReferenciasByTerm/:id', function(req, res, next) {
         termino.t_term_de as expresion_original,\
         termino.t_term_es as expresion_traduccion,\
         termino.t_em_de as epretty,\
-	    termino.t_em_es as tpretty,\
+	termino.t_em_es as tpretty,\
+	termino.t_index_de as index_de,\
+        termino.t_index_es as index_es,\
         termino_referencia.tr_refid as refid,\
         termino_referencia.tr_order as orden,\
         referencia.clave as clave,\
@@ -258,7 +260,9 @@ router.get('/obtieneReferenciasByTerm/:id', function(req, res, next) {
                 t_term_de as expresion_original,\
                 t_term_es as expresion_traduccion,\
                 t_em_de as epretty,\
-                t_em_es as tpretty \
+                t_em_es as tpretty ,\
+                termino.t_index_de as index_de,\
+                termino.t_index_es as index_es\
                 FROM termino WHERE t_id = $1;'
                 
                 res.locals.connection.query(query, filter)
@@ -321,7 +325,8 @@ router.post('/editarPasaje/:refid', function(req, res, next){
     var pas_es = Buffer.from(req.body.pasaje_es, 'base64').toString('ascii');
     var ref_de = Buffer.from(req.body.ref_de, 'base64').toString('ascii');
     var ref_es = Buffer.from(req.body.ref_es, 'base64').toString('ascii');
-	var filter = [pas_de, pas_es, ref_es, ref_de, req.params.refid, req.body.clave]
+    var filter = [pas_de, pas_es, ref_es, ref_de, req.params.refid, req.body.clave]
+    console.log("filter",filter)
     var queryString = "\
 	UPDATE referencia SET clave = $6, ref_def_de = $1, ref_def_es = $2, ref_libro_es = $3, ref_libro_de = $4 WHERE ref_id = $5;";
 	res.locals.connection.query(queryString, filter)
@@ -486,15 +491,20 @@ const fixReferencias = (referencias) => {
     return expresiones;
   };
 
-router.post('/busquedaExpresion', function(req, res, next){
+router.post('/busquedaExpresion/:case', function(req, res, next){
+    console.log("ENTRE A LA BUSQUEDA POR VOCABULARIO")
+     console.log("body.case al entrar al endpoint", req.params.case)
     if(global.rol != "guest"){
+        console.log("params.case", req.params.case)
         var currentdate = new Date();
         var datetime = currentdate.getDay() + "/"+(currentdate.getMonth() + 1)
         + "/" + currentdate.getFullYear() + " @ "
         + currentdate.getHours() + ":"
         + currentdate.getMinutes() + ":" + currentdate.getSeconds();
         var filter = ["%"+req.body.parametro+"%"]
-        var condicion = req.body.case == true ? "where termino.t_term_de like $1 or termino.t_term_es like $1" : "where termino.t_term_de ilike $1 or termino.t_term_es ilike $1"
+        {/*var condicion = req.body.case == true ? "where termino.t_term_de like $1 or termino.t_term_es like $1" : "where termino.t_term_de ilike $1 or termino.t_term_es ilike $1"*/}
+        var condicion = req.params.case == "false" ? 'where termino.t_term_es ilike $1 COLLATE "de_DE" or termino.t_term_de ilike $1 COLLATE "de_DE"' : 'where termino.t_term_es like $1 COLLATE "de_DE" or termino.t_term_de like $1 COLLATE "de_DE"'
+        console.log("condicion", condicion)
         var queryString="\
         select\
         termino.t_id as id,\
@@ -517,24 +527,45 @@ router.post('/busquedaExpresion', function(req, res, next){
         inner join referencia on referencia.ref_id = termino_referencia.tr_refid " + condicion + " order by termino.t_term_de"
     res.locals.connection.query(queryString, filter)
     .then(function (results) {
+        console.log("results", results)
         res.send(JSON.stringify({"status": 200, "error": null, "response": fixReferencias(results)}));
         //If there is no error, all is good and response is 200OK.
   	}).catch(function(error){
+        console.log("error", error)
         res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
       });}else{res.send(JSON.stringify({"status": 401, "error": "Está prohibido para este usuario.", "response": null}));}
 })
 
-router.post('/busquedaExpresionPorLetraAdmin/:letra', function(req, res, next){
-    if(global.rol != "guest"){
-        var currentdate = new Date();
-        var datetime = currentdate.getDay() + "/"+(currentdate.getMonth() + 1)
-        + "/" + currentdate.getFullYear() + " @ "
-        + currentdate.getHours() + ":"
-        + currentdate.getMinutes() + ":" + currentdate.getSeconds();
-        var filter = ["%"+req.body.parametro+"%"]
-        var condicion = req.body.case ? "where termino.t_term_de ilike $1" : "where termino.t_term_de like $1"
-        condicion+= "and termino.t_index_de like '"+req.params.letra+"%'"
-        var queryString="\
+router.post(
+  "/busquedaExpresionPorLetraAdmin/:letra/:case",
+  function (req, res, next) {
+    console.log("ENTRE A LA BUSQUEDA POR LETRA DEL ADMIN");
+    if (global.rol != "guest") {
+      console.log("params.case", req.params.case);
+      console.log("req.body.parametro", req.body.parametro);
+      var currentdate = new Date();
+      var datetime =
+        currentdate.getDay() +
+        "/" +
+        (currentdate.getMonth() + 1) +
+        "/" +
+        currentdate.getFullYear() +
+        " @ " +
+        currentdate.getHours() +
+        ":" +
+        currentdate.getMinutes() +
+        ":" +
+        currentdate.getSeconds();
+      var filter = ["%" + req.body.parametro + "%"];
+      console.log("filter", filter);
+      var condicion =
+        req.params.case == "false"
+          ? "where termino.t_term_de ilike $1"
+          : "where termino.t_term_de like $1";
+      condicion += " and termino.t_index_de like '" + req.params.letra + "%'";
+      console.log("condicion en Administrador", condicion);
+      var queryString =
+        "\
         select\
         termino.t_id as id,\
         termino.t_term_de as expresion,\
@@ -542,26 +573,85 @@ router.post('/busquedaExpresionPorLetraAdmin/:letra', function(req, res, next){
         termino.t_index_de as index_de,\
         termino.t_index_es as index_es,\
         termino.t_em_de AS pretty_e,\
-		termino.t_em_es AS pretty_t,\
-        termino_referencia.tr_termid as term_id,\
-        termino_referencia.tr_refid as term_refid,\
-        referencia.clave AS clave, \
-        referencia.ref_id as refid,\
-        referencia.ref_libro_de as referencia_original,\
-        referencia.ref_libro_es as referencia_traduccion,\
-        referencia.ref_def_de as ref_def_de,\
-        referencia.ref_def_es as ref_def_es\
-        from termino\
-        inner join termino_referencia on cast (termino_referencia.tr_termid as int) = cast(termino.t_id as int)\
-        inner join referencia on referencia.ref_id = termino_referencia.tr_refid " + condicion + " order by termino.t_term_de"
-    res.locals.connection.query(queryString, filter)
-    .then(function (results) {
-        res.send(JSON.stringify({"status": 200, "error": null, "response": fixReferencias(results)}));
-        //If there is no error, all is good and response is 200OK.
-  	}).catch(function(error){
-        res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
-      });}else{res.send(JSON.stringify({"status": 401, "error": "Está prohibido para este usuario.", "response": null}));}
-})
+        termino.t_em_es AS pretty_t\
+        from termino " +
+        condicion +
+        " order by termino.t_term_de";
+      res.locals.connection
+        .query(queryString, filter)
+        .then(function (results) {
+          console.log("results", results);
+          res.send(
+            JSON.stringify({
+              status: 200,
+              error: null,
+              response: fixReferencias(results),
+            })
+          );
+          //If there is no error, all is good and response is 200OK.
+                  })
+                          .catch(function (error) {
+                                    console.log("error", error);
+                                             res.send(
+                                                          JSON.stringify({ status: 500, error: error, response: null })
+                                                                    );
+                                                                            });
+                                                                                } else {
+                                                                                      res.send(
+                                                                                              JSON.stringify({
+                                                                                                        status: 401,
+                                                                                                                  error: "Está prohibido para este usuario.",
+                                                                                                                            response: null,
+                                                                                                                                    })
+                                                                                                                                         );
+                                                                                                                                              }
+                                                                                                                                                }
+                                                                                                                                                );
+
+
+const fixReferenciasDic = (referencias) => {
+    var expresiones = [];
+    var posicActual = -1;
+    var expreActual = "";
+    var i = 0;
+    while (i < referencias.length) {
+      if (expreActual != referencias[i].id) {
+        posicActual++;
+        expreActual = referencias[i].id;
+        expresiones.push({
+          clave: referencias[i].clave,
+          nombreExpresion: referencias[i].expresion,
+          id: referencias[i].id,
+          index_de: referencias[i].index_de,
+          index_es: referencias[i].index_es,
+          pretty_e: referencias[i].pretty_e,
+          pretty_t: referencias[i].pretty_t,
+          referencias: [],
+          traduccion: referencias[i].traduccion,
+        });
+        expresiones[posicActual].referencias.push({
+          referencia_original: referencias[i].referencia_original,
+          referencia_traduccion: referencias[i].referencia_traduccion,
+          refid: referencias[i].refid,
+          orden: referencias[i].orden,
+        });
+        i++;
+      } else {
+        expresiones[posicActual].referencias.push({
+          referencia_original: referencias[i].referencia_original,
+          referencia_traduccion: referencias[i].referencia_traduccion,
+          refid: referencias[i].refid,
+          orden: referencias[i].orden,
+        });
+        i++;
+      }
+    }
+    console.log("lo que regresa la busqueda", expresiones)
+    return expresiones;
+  };
+
+
+
 
 router.post('/busquedaExpresionPorLetra/:letra/:lenguaje', function(req, res, next){
     console.log("req", req.params)
@@ -573,17 +663,14 @@ router.post('/busquedaExpresionPorLetra/:letra/:lenguaje', function(req, res, ne
         + currentdate.getHours() + ":"
         + currentdate.getMinutes() + ":" + currentdate.getSeconds();
         var filter = ["%"+req.body.parametro+"%"]
-        //var letra = req.body.parametro.slice(0,1)
-        //console.log("letra",req.params.letra)
-        //console.log("case al entrar al servicio", req.body.case)
         if(req.params.lenguaje == "es"){
             if(req.body.case){
                 var condicion = "where termino.t_term_es like $1 and termino.t_index_es like '"+req.params.letra+"%'"
             }else{
-                var condicion = "where termino.t_term_es ilike $1 and termino.t_index_de like '"+req.params.letra+"%'"
+                var condicion = "where termino.t_term_es ilike $1 and termino.t_index_es like '"+req.params.letra+"%'"
             }
             //var ordenamiento = "order by termino.t_term_es"
-            var ordenamiento = "order by termino.t_term_es, termino_referencia.tr_order,\
+            var ordenamiento = "order by termino.t_em_es, termino_referencia.tr_order,\
                 CASE WHEN clave = 'IP' THEN 1 \
                 WHEN clave = 'PW' THEN 2 \
                 WHEN clave = 'I1' THEN 3 \
@@ -599,7 +686,7 @@ router.post('/busquedaExpresionPorLetra/:letra/:lenguaje', function(req, res, ne
             }else{
                 var condicion = "where termino.t_term_de ilike $1 and termino.t_index_de ilike '"+req.params.letra+"%'"
             }
-            var ordenamiento = "order by termino.t_term_de, termino_referencia.tr_order,\
+            var ordenamiento = "order by termino.t_em_de, termino_referencia.tr_order,\
     		CASE WHEN clave = 'IP' THEN 1 \
       		WHEN clave = 'PW' THEN 2 \
       		WHEN clave = 'I1' THEN 3 \
@@ -628,11 +715,12 @@ router.post('/busquedaExpresionPorLetra/:letra/:lenguaje', function(req, res, ne
         from termino\
         inner join termino_referencia on cast (termino_referencia.tr_termid as int) = cast(termino.t_id as int)\
         inner join referencia on referencia.ref_id = termino_referencia.tr_refid " + condicion + " " + ordenamiento
-        //console.log("queryString", queryString)
+        console.log("queryString", queryString)
+        console.log("filter", filter)
         res.locals.connection.query(queryString, filter)
     .then(function(results) {
         console.log("resultados!!!", results)
-        res.send(JSON.stringify({"status": 200, "error": null, "response": fixReferencias(results)}));
+        res.send(JSON.stringify({"status": 200, "error": null, "response": fixReferenciasDic(results)}));
         //If there is no error, all is good and response is 200OK.
   	}).catch(function(error){
         console.log("error", error)

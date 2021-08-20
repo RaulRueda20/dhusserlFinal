@@ -1,0 +1,73 @@
+ CONSULTA
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+EXPRESIÓN EN ALEMÁN: ABBILD
+ * I1 (90) - Hua III/1 208
+ * 
+
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+EXPRESIÓN EN ESPAÑOL: IMAGEN
+ * I1 (90) 299
+ * 
+
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+
+DERIVA DE
+BILD // IMAGEN / REPRODUCCIÓN 
+I1 (90) - Hua III/1 208 // I1 (90) 299
+
+EXPRESIONES DERIVADAS
+ABBILDLICHE VORSTELLUNG // REPRESENTACIÓN FIGURATIVA 
+I1 (100) - Hua III/1 235 // I1 (100) 330
+ABBILDUNG // FIGURACIÓN 
+I1 (111) - Hua III/1 252 // I1 (111) 347
+ABBILDUNG // FIGURACIÓN 
+I1 (111) - Hua III/1 252 // I1 (111) 347
+ABBILDUNGSFUNKTION // FUNCIÓN FIGURATIVA 
+I1 (90) - Hua III/1 208 // I1 (90) 299
+ABGEBILDETE // REPRESENTADO EN IMAGEN / FIGURADO 
+I1 (111) - Hua III/1 252 // I1 (111) 347
+ABGEBILDETE // REPRESENTADO EN IMAGEN / FIGURADO 
+I1 (99) - Hua III/1 234 // I1 (99) 328
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+PASAJE EN ALEMÁN
+id='pasaje' I1 (90) - Hua III/1 208
+
+
+
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+Das 5Abbild als reelles Stück in der psychologisch-realen Wahrnehmung wäre wieder ein Reales --- ein Reales, das für ein anderes
+als Bild fungierte. Das könnte es aber nur vermöge eines Abbildungsbewußtseins, in welchem erst einmal etwas erschiene --- womit
+wir eine erste Intentionalität hätten --- und dieses wieder bewußtseinsmäßig10 als "Bildobjekt" für ein anderes fungierte --- wozu
+eine zweite, in der ersten fundierte Intentionalität notwendig wäre. Nicht minder evident ist aber, daß jede einzelne dieser
+Bewußtseinsweisen schon die Unterscheidung zwischen immanentem und wirklichem Objekt fordert, also dasselbe Problem in sich 15
+beschließt, das durch die Konstruktion gelöst werden sollte. (Q.V.) [/#/diccionario/husserl/pasaje/QV/i190-4]
+
+
+
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+PASAJE EN ESPAÑOL
+ I1 (90) 299 - Hua III/1 208
+
+
+
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+La imagen como fragmento ingrediente en la percepción psicológicamente real sería a su vez algo real —algo real que fungiría como
+imagen de otro algo real. Pero esto sólo podría hacerlo en virtud de una “conciencia figurativa” en la que primero aparecería algo
+—con lo que tendríamos una primera intencionalidad— y esto fungiría a su vez en la conciencia como “objeto-imagen” de otro algo
+—para lo que sería necesaria una segunda intencionalidad fundada en la primera. Pero no es menos evidente que cada uno de estos
+modos de conciencia requiere ya la distinción entre objeto inmanente y objeto real, o sea, encierra en sí el mismo problema que
+debía resolverse mediante la construcción. (Q.V.) [/#/diccionario/husserl/pasaje/QV/i190-4]

@@ -217,53 +217,38 @@ var recursive_replace_text_b = (text, replace, lang, refid, res, final) => {
   }
 };
 
+/*const recorreyarregla = (lista,) => {
+	
+}*/
+
 const recorrido = (lista, index,res, next) => {
 	if(index == lista.length) return next(lista)
 	else{
-	recursive_replace_text(
-          lista[index].ref_def_de,
-          ['<a href="#"', '>'],
-          "ref_def_de",
-          lista[index].ref_id,
-		res,
-          () => {
-	  	recursive_replace_text(
-          		lista[index].ref_def_es,
-          		['<a href="#"', '>'],
-          		"ref_def_es",
-          		lista[index].ref_id,
-			res,
-          		() => {
-				recursive_replace_text(
-          				lista[index].ref_def_de,
-          				['<A href="#"', '>'],
-          				"ref_def_de",
-          				lista[index].ref_id,
-                			res,
-          				() => {
-                				recursive_replace_text(
-                        			lista[index].ref_def_es,
-                        			['<A href="#"', '>'],
-                        			"ref_def_es",
-                        			lista[index].ref_id,
-                        			res,
-                        			() => {
-                                			return recorrido(lista, index+1, res,next)
-                        			}
-                				);
-          				}
-        			)
-          		}
-        	);	
-	  }
-        );	
-	}
+		//console.log(lista[index])
+		const reemplazo_de = lista[index].ref_def_de.replace(/(\/pasaje\/)\w+/g, "/pasaje/QV")
+		const reemplazo_es = lista[index].ref_def_es.replace(/(\/pasaje\/)\w+/g, "/pasaje/QV")
+		console.log(lista[index])
+		res.locals.connection
+		      .query("UPDATE referencia SET ref_def_es = $1, ref_def_de = $2 WHERE ref_id = $3;", [
+			              reemplazo_es,
+			      	      reemplazo_de,
+			              lista[index].ref_id
+			            ])
+		      .then(function (results) {
+			      console.log(results)
+			return recorrido(lista, index+1, res, next)
+		      })
+		      .catch(function (error) {
+			              console.log(error);
+			      return recorrido(lista, index+1, res, next)
+			            })
+	}	
 }
 
 const recorrido_b = (lista, index,res, next) => {
         if(index == lista.length) return next(lista)
         else{
-        recursive_replace_text_b(
+       recursive_replace_text_b(
           lista[index].ref_def_de,
           ['exec=', '>'],
           "ref_def_de",

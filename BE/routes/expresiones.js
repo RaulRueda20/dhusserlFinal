@@ -94,7 +94,7 @@ router.get('/todas/:letra', function(req, res, next){
 	console.log(queryString)
 	res.locals.connection.query(queryString)
 	.then(function(results){
-		console.log(datetime + "== expresiones/todas/:letra/ | Término seleccionado por letra con éxito")
+		console.log("results", results)
 		res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
 	}).catch(function(error){
 		console.log(datetime + "== expresiones/todas/:letra/ | " + error)
@@ -459,17 +459,179 @@ router.get('/byId/:id', function(req, res, next){
       });}else{res.send(JSON.stringify({"status": 401, "error": "Está prohibido para este usuario.", "response": null}));}
 })
 
-router.post('/busqueda/:case', function(req, res, next){
+const slugify = str => {
+  const map = {
+    '-' : ' ',
+    '-' : '_',
+    'a' : 'á|à|ã|â|ä|À|Á|Ã|Â|Ä',
+    'e' : 'é|è|ê|ë|É|È|Ê|Ë',
+    'i' : 'í|ì|î|ï|Í|Ì|Î|Ï',
+    'o' : 'ó|ò|ô|õ|ö|Ó|Ò|Ô|Õ|Ö',
+    'u' : 'ú|ù|û|ü|Ú|Ù|Û|Ü',
+    'c' : 'ç|Ç',
+    'n' : 'ñ|Ñ'
+  };
+
+  for (var pattern in map) {
+    str = str.replace(new RegExp(map[pattern], 'g'), pattern);
+ }
+
+  return str;}
+
+const componeParametro = (parametro) => {
+  //console.log("ENTRE A COMPONEPARAMETRO");
+  //console.log("parametro al iniciar", parametro);
+  //let nuevoParametro = parametro;
+  parametro = parametro.replace("á", "&aacute;");
+  parametro = parametro.replace("é", "&eacute;");
+  parametro = parametro.replace("í", "&iacute;");
+  parametro = parametro.replace("ó", "&oacute;");
+  parametro = parametro.replace("ú", "&uacute;");
+  parametro = parametro.replace("Á", "&Aacute;");
+  parametro = parametro.replace("É", "&Eacute;");
+  parametro = parametro.replace("Í", "&Iacute;");
+  parametro = parametro.replace("Ó", "&Oacute;");
+  parametro = parametro.replace("Ú", "&Uacute;");
+
+  parametro = parametro.replace("ä", "&auml;");
+  parametro = parametro.replace("ë", "&euml;");
+  parametro = parametro.replace("ï", "&iuml;");
+  parametro = parametro.replace("ö", "&ouml;");
+  parametro = parametro.replace("ü", "&uuml;");
+
+  parametro = parametro.replace("Ä", "&Auml;");
+  parametro = parametro.replace("Ë", "&Euml;");
+  parametro = parametro.replace("Ï", "&Iuml;");
+  parametro = parametro.replace("Ö", "&Ouml;");
+  parametro = parametro.replace("Ü", "&Uuml;");
+
+  //console.log("al final de la funcion", parametro);
+
+  return parametro;
+};
+
+router.post("/busqueda/:case", function (req, res, next) {
+  //console.log("Entre al endpoint");
+  if (global.rol != "guest") {
+    //console.log("rol", global.rol);
+    var filter = [
+      "%" + req.body.parametro + "%",
+      "%" + componeParametro(req.body.parametro) + "%",
+    ];
+    console.log("filter en busquedal/:case", filter);
+    var condicion =
+      req.params.case == "false"
+        ? " where referencia.ref_def_de ilike $1 or referencia.ref_def_es ilike $1 or termino.t_term_es ilike $1 or termino.t_term_de ilike $1" +
+          " or " +
+          " referencia.ref_def_de ilike $2 or referencia.ref_def_es ilike $2 or termino.t_term_es ilike $2 or termino.t_term_de ilike $2 order by ref_id"
+        : " where referencia.ref_def_de like $1 or referencia.ref_def_es like $1 or termino.t_term_es like $1 or termino.t_term_de like $1" +
+          " or " +
+          " referencia.ref_def_de like $2 or referencia.ref_def_es like $2 or termino.t_term_es like $2 or termino.t_term_de like $2 order by ref_id";
+    //console.log("condicion en busqueda/:case", condicion);
+    var queryString =
+      "\
+        select\
+                referencia.ref_id as ref_id,\
+                referencia.ref_libro_de as ref_libro_de,\
+                referencia.ref_libro_es as ref_libro_es,\
+                referencia.ref_def_de as ref_original,\
+                referencia.ref_def_es as ref_traduccion,\
+                termino_referencia.tr_termId as t_id,\
+                termino_referencia.tr_order as orden,\
+                termino.t_term_es as expresion_traduccion,\
+                termino.t_term_de as expresion_original\
+        from referencia\
+        inner join termino_referencia on referencia.ref_id = termino_referencia.tr_refid\
+        inner join termino on cast (termino_referencia.tr_termId as int) = cast(termino.t_id as int)" +
+      condicion;
+    console.log("querystring", queryString);
+    res.locals.connection
+      .query(queryString, filter)
+      .then(function (results) {
+        console.log("resultados", results);
+        res.send(
+          JSON.stringify({ status: 200, error: null, response: results })
+        );
+      })
+      .catch(function (error) {
+        console.log("error", error);
+        res.send(JSON.stringify({ status: 500, error: error, response: null }));
+      });
+  } else {
+    res.send(
+      JSON.stringify({
+        status: 401,
+        error: "Está prohibido para este usuario.",
+        response: null,
+      })
+    );
+  }
+});
+
+
+{/*router.post('/busqueda/:case', function(req, res, next){
+    console.log("Entre al endpoint")
     if(global.rol != "guest"){
-    var currentdate = new Date();
-    var datetime = currentdate.getDay() + "/"+(currentdate.getMonth() + 1)
+    console.log("rol", global.rol)
+    //var currentdate = new Date();
+    {/*var datetime = currentdate.getDay() + "/"+(currentdate.getMonth() + 1)
     + "/" + currentdate.getFullYear() + " @ "
     + currentdate.getHours() + ":"
 	+ currentdate.getMinutes() + ":" + currentdate.getSeconds();
-	var filter = ["%"+req.body.parametro+"%"]
-	//var condicion = req.params.case == "true" ? "where referencia.ref_def_de ilike $1 or referencia.ref_def_es ilike $1 order by ref_id" : "where referencia.ref_def_de like $1 or referencia.ref_def_es like $1 order by ref_id"
-	var condicion = req.params.case == "true" ? "where referencia.ref_def_de ilike $1 or referencia.ref_def_es ilike $1 or termino.t_term_es ilike $1 or termino.t_term_de ilike $1 order by ref_id" : "where referencia.ref_def_de like $1 or referencia.ref_def_es like $1 or termino.t_term_es like $1 or termino.t_term_de like $1 order by ref_id";
-	    var queryString="\
+    console.log("datatime", datatime)*
+	//console.log(req.body.parametro, slugify(req.body.parametro))
+    var filter = [
+    "%" + req.body.parametro + "%",
+    "%" + componeParametro(req.body.parametro) + "%",
+    ];
+    console.log("filter en busquedal/:case", filter)
+     var condicion = req.params.case == "true" ? "where referencia.ref_def_de ilike $1 or referencia.ref_def_es ilike $1 or termino.t_term_es ilike $1 or termino.t_term_de ilike $1 order by ref_id" +
+          " or " + "where referencia.ref_def_de ilike $2 or referencia.ref_def_es ilike $2 or termino.t_term_es ilike $2 or termino.t_term_de ilike $2 order by ref_id"
+        : "where referencia.ref_def_de like $1 or referencia.ref_def_es like $1 or termino.t_term_es like $1 or termino.t_term_de like $1 order by ref_id" +
+          " or " + "where referencia.ref_def_de like $2 or referencia.ref_def_es like $2 or termino.t_term_es like $2 or termino.t_term_de like $2 order by ref_id";
+    console.log("condicion en busqueda/:case", condicion)
+    var queryString =
+      "\
+	select\
+		referencia.ref_id as ref_id,\
+		referencia.ref_libro_de as ref_libro_de,\
+		referencia.ref_libro_es as ref_libro_es,\
+		referencia.ref_def_de as ref_original,\
+		referencia.ref_def_es as ref_traduccion,\
+		termino_referencia.tr_termId as t_id,\
+		termino_referencia.tr_order as orden,\
+		termino.t_term_es as expresion_traduccion,\
+		termino.t_term_de as expresion_original\
+	from referencia\
+	inner join termino_referencia on referencia.ref_id = termino_referencia.tr_refid\
+	inner join termino on cast (termino_referencia.tr_termId as int) = cast(termino.t_id as int)" +
+      condicion;
+     console.log("querystring", queryString)
+     res.locals.connection
+      .query(queryString, filter)
+      .then(function (results) {
+        console.log("resultados", results)
+        res.send(
+          JSON.stringify({ status: 200, error: null, response: results })
+        );
+        //If there is no error, all is good and response is 200OK.
+         }).catch(function (error) {
+         console.log( "error", error)
+        res.send(JSON.stringify({ status: 500, error: error, response: null }));
+         });
+    }else{res.send(
+      JSON.stringify({
+        status: 401,
+        error: "Está prohibido para este usuario.",
+        response: null,
+      }));}
+
+	{/*var filter = ["%"+slugify(req.body.parametro)+"%"]
+	console.log(filter)
+	var condicion = req.params.case == "false" ? 'where referencia.ref_def_de ilike $1 COLLATE "de_DE" or referencia.ref_def_es ilike $1 COLLATE "de_DE" order by ref_id' : 'where referencia.ref_def_de like $1 COLLATE "de_DE" or referencia.ref_def_es like $1 COLLATE "de_DE" order by ref_id'
+	//var condicion = req.params.case == "true" ? "where referencia.ref_def_de ilike $1 or referencia.ref_def_es ilike $1 order by ref_id" : "where referencia.ref_def_de like $1 or referencia.ref_def_es like $1 order by ref_id";
+	console.log(condicion)    
+	var queryString="\
 	select\
 		referencia.ref_id as ref_id,\
 		referencia.ref_libro_de as ref_libro_de,\
@@ -485,12 +647,13 @@ router.post('/busqueda/:case', function(req, res, next){
 	inner join termino on cast (termino_referencia.tr_termId as int) = cast(termino.t_id as int)" + condicion
     res.locals.connection.query(queryString, filter)
     .then(function (results) {
+        console.log("RESULTADOS", results)
         res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
         //If there is no error, all is good and response is 200OK.
   	}).catch(function(error){
         // console.log(datetime + "== referencias/:id/ | " + error)
         res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
       });}else{res.send(JSON.stringify({"status": 401, "error": "Está prohibido para este usuario.", "response": null}));}
-})
+})*/}
 
 module.exports = router;
