@@ -94,9 +94,22 @@ const PanelExpresionIzquierdo = ({
     return referencia;
   };
 
-  const guardadoDePasajes = (event) => {
+  const guardadoDePasajes = (event, index, referencia, expresionId) => {
+    setTimeout(() => {
+      if (
+        document
+          .getElementById(expresionId + "/" + referencia + "/" + index)
+          .className.indexOf("pasajesVisitados") == -1
+      ) {
+        document.getElementById(
+          expresionId + "/" + referencia + "/" + index
+        ).className += " pasajesVisitados";
+      }
+    }, 1000);
+
     let idReferenciaConsultada = expresion.id;
-    let refIdReferenciaConsultada = event.currentTarget.id.split("/")[0];
+    let refIdReferenciaConsultada = event.currentTarget.id.split("/")[1];
+    // console.log("RefId panel izquierdo", event.currentTarget.id.split("/"));
     let service =
       "/referencias/obtieneReferenciasIdRefId/" +
       idReferenciaConsultada +
@@ -214,7 +227,14 @@ const PanelExpresionIzquierdo = ({
                                 expresion?.id
                               }/${referencia?.refid}`}
                               className="consultaDePasajes"
-                              onClick={(e) => guardadoDePasajes(e)}
+                              onClick={(e) =>
+                                guardadoDePasajes(
+                                  e,
+                                  0,
+                                  expresion.referencias[0].refid,
+                                  expresion.id
+                                )
+                              }
                               id={`${expresion?.id}/${referencia?.refid}/${index}`}
                             >
                               {referencia?.refid +
