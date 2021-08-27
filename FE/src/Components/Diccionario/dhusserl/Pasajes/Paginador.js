@@ -17,9 +17,11 @@ import { sesionStore } from "../../../../stores/sesionStore";
 
 const Pasaje = (props) => {
   const global = useContext(sesionStore);
-  const { state, dispatch } = global;
+  const { state } = global;
   const { lang } = state;
-  const globalLanguage = useContext(languageStore);
+  // const globalExpresion = useContext(expresionesStore);
+  // const { store } = globalExpresion;
+  // const { expresiones, chunk } = store;
   const [casillas, setCasillas] = useState([]);
   const [referencias, setReferencias] = useState([]);
   const [posicion, setPosicion] = useState(0);
@@ -30,6 +32,7 @@ const Pasaje = (props) => {
   // let idDeExpresion es el id que se toma de la URL, idExpresion es un estado que llama servicios y tiene otras funcionalidades
 
   useEffect(() => {
+    // console.log("Expresion en paginador", expresiones)
     setPosicion(0);
     if (props.referencias.length > 0) setReferencias(props.referencias);
     if (props.referenciaSeleccionada != null) {

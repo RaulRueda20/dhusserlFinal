@@ -16,6 +16,7 @@ import { withStyles } from "@material-ui/styles";
 import SwipeableViews from "react-swipeable-views";
 import Delete from "@material-ui/icons/Delete";
 import Add from "@material-ui/icons/NoteAdd";
+import LinearProgress from "@material-ui/core/LinearProgress";
 
 //Other req
 import { adminService } from "../../../../js/webServices";
@@ -78,17 +79,18 @@ const InfoPasajes = (props) => {
   const [traduccionPasaje, setTraduccionPasaje] = useState("");
   const [traduccionPasajeName, setTraduccionPasajeName] = useState("");
   const [opcionGuardado, setOpcionGuardado] = useState("editar");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    console.log(
-      "referencias aleman, español de props y traducciones en las vistas",
-      props.pasajeSeleccionado.ref_def_de,
-      props.pasajeSeleccionado.ref_def_de,
-      traduccionPasaje,
-      traduccionPasajeName,
-      expresionPasaje,
-      expresionPasajeName
-    );
+    // console.log(
+    //   "referencias aleman, español de props y traducciones en las vistas",
+    //   props.pasajeSeleccionado.ref_def_de,
+    //   props.pasajeSeleccionado.ref_def_de,
+    //   traduccionPasaje,
+    //   traduccionPasajeName,
+    //   expresionPasaje,
+    //   expresionPasajeName
+    // );
     setExpresionClave(props.pasajeSeleccionado.clave);
     setExpresionId(props.pasajeSeleccionado.ref_id);
     setExpresionPasaje(props.pasajeSeleccionado.ref_def_de);
@@ -117,20 +119,26 @@ const InfoPasajes = (props) => {
       clave: expresionClave,
     };
     if (opcionGuardado != "editar") {
-      console.log("expresionId", expresionId);
+      // console.log("expresionId", expresionId);
       let servicio = "/referencias/new/nuevoPasaje";
+      setLoading(true);
       adminService(servicio, "POST", JSON.stringify(params), (data) => {
+        console.log("params al crear pasajes", params);
+        console.log("data al crear pasaje", data);
         setSnack({ open: true, text: "Pasaje creado con éxito" });
         props.setReload(!props.reload);
+        setLoading(false);
       });
     } else {
-      console.log("expresionId y params", expresionId, params);
+      console.log("params al editar pasajes", params);
       let servicio = "/referencias/editarPasaje/" + expresionId;
+      setLoading(true);
       //params.clave = expresionId;
       adminService(servicio, "POST", JSON.stringify(params), (data) => {
-        console.log("data", data);
+        console.log("data al editar pasaje", data);
         setSnack({ open: true, text: "Pasaje editado con éxito" });
         props.setReload(!props.reload);
+        setLoading(false);
       });
     }
   };
@@ -272,6 +280,9 @@ const InfoPasajes = (props) => {
           </Button>
         </Grid>
       </Grid>
+      <LinearProgress
+        className={classNames([{ hidden: !loading }, "loadingBar"])}
+      />
     </div>
   );
 };

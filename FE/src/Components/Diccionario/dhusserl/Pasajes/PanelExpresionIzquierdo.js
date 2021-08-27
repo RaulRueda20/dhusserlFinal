@@ -99,7 +99,7 @@ const PanelExpresionIzquierdo = ({
       if (
         document
           .getElementById(expresionId + "/" + referencia + "/" + index)
-          .className.indexOf("pasajesVisitados") == -1
+          .className.indexOf("pasajesVisitados") == 0
       ) {
         document.getElementById(
           expresionId + "/" + referencia + "/" + index

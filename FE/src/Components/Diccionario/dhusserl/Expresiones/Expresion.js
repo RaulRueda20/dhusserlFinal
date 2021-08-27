@@ -30,10 +30,10 @@ import { expresionesStore } from "../../../../stores/expresionStore";
 const Expresion = (props) => {
   const global = useContext(sesionStore);
   const { state } = global;
-  const { sesion, ultimasVisitadas, lang, langLista, letra } = state;
+  const { sesion, ultimasVisitadas, langLista, letra } = state;
 
   const globalExpresion = useContext(expresionesStore);
-  const { store, attend } = globalExpresion;
+  const { attend } = globalExpresion;
 
   const [loading, setLoading] = useState(false);
 

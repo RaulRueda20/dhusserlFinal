@@ -112,7 +112,7 @@ const Recuperacion = (props) => {
           <Grid container spacing={4} style={{ padding: "5% 10%" }}>
             <Grid item xs={12}>
               <Typography variant="h3" className={classes.pass}>
-                El password ha sido actualizado con éxito.
+                La contraseña ha sido actualizado con éxito.
               </Typography>
               <br />
               <hr />
@@ -134,7 +134,7 @@ const Recuperacion = (props) => {
             <Grid container spacing={4} style={{ padding: "5% 10%" }}>
               <Grid item xs={12}>
                 <Typography variant="h3" className={classes.pass}>
-                  Introduce el nuevo password
+                  Introduce la nueva contraseña
                 </Typography>
               </Grid>
               <Grid item xs={12}>
@@ -143,7 +143,7 @@ const Recuperacion = (props) => {
                   className={classes.TextField1}
                   value={nuevoPassword}
                   fullWidth
-                  label="Nuevo Password"
+                  label="Nueva contraseña"
                   onChange={(e) => setNuevoPassword(e.target.value)}
                 />
               </Grid>
@@ -153,7 +153,7 @@ const Recuperacion = (props) => {
                   className={classes.TextField1}
                   value={confirmacion}
                   fullWidth
-                  label="Confirma Password"
+                  label="Confirma contraseña"
                   onChange={(e) => setConfirmacion(e.target.value)}
                 />
               </Grid>
@@ -165,7 +165,7 @@ const Recuperacion = (props) => {
                   size="small"
                   className={classes.botonRecuperar}
                 >
-                  Actualizar Password
+                  Actualizar contraseña
                 </Button>
               </Grid>
             </Grid>

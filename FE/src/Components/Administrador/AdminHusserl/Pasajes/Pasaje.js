@@ -47,9 +47,9 @@ const infopasajes = {
 const InfoPasajes = (props) => {
   const { classes, pasaje, pasajeName, clave } = props;
 
-  React.useEffect(() => {
-    console.log("clave", clave);
-  }, [pasaje]);
+  // React.useEffect(() => {
+  //   console.log("clave", clave);
+  // }, [pasaje]);
 
   return (
     <div className={classes.cartainfodepasajes}>
