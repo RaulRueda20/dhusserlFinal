@@ -267,19 +267,6 @@ const Pasaje = (props) => {
         payload: fixLetter(event.target.innerHTML[0].toUpperCase()),
       });
     }
-    // const idExpresion = event.target.id.split("/")[0];
-    // const service = "/referencias/obtieneReferencias/" + idExpresion;
-    // webService(service, "GET", {}, sesion, (data) => {
-    //   let referencias = fixReferenciasConsultadas(data.data.response);
-    //   let nuevasVisitadas = localStore.getObjects("ultimasVisitadas");
-    //   referencias.nombreExpresion = referencias.expresion;
-    //   nuevasVisitadas.push(referencias);
-    //   localStore.setObjects("ultimasVisitadas", nuevasVisitadas);
-    //   dispatch({
-    //     type: "SET_ULTIMAS_VISITADAS",
-    //     payload: nuevasVisitadas,
-    //   });
-    // });
   }
 
   return (

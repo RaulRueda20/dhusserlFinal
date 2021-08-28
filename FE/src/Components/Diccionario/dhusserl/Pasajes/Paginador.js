@@ -12,16 +12,18 @@ import { Typography } from "@material-ui/core";
 
 //Language
 import { numeroDePasajes, pasajeSingular } from "../../../../js/Language";
-import { languageStore } from "../../../../stores/languageStore";
 import { sesionStore } from "../../../../stores/sesionStore";
+import { expresionesStore } from "../../../../stores/expresionStore";
 
 const Pasaje = (props) => {
   const global = useContext(sesionStore);
   const { state } = global;
   const { lang } = state;
-  // const globalExpresion = useContext(expresionesStore);
-  // const { store } = globalExpresion;
-  // const { expresiones, chunk } = store;
+
+  const globalExpresion = useContext(expresionesStore);
+  const { store } = globalExpresion;
+  const { expresiones } = store;
+
   const [casillas, setCasillas] = useState([]);
   const [referencias, setReferencias] = useState([]);
   const [posicion, setPosicion] = useState(0);
@@ -32,7 +34,12 @@ const Pasaje = (props) => {
   // let idDeExpresion es el id que se toma de la URL, idExpresion es un estado que llama servicios y tiene otras funcionalidades
 
   useEffect(() => {
-    // console.log("Expresion en paginador", expresiones)
+    console.log("props.expresionId en paginador", props.expresionId);
+    console.log(
+      "props.referenciaSeleccionada.refid en paginador",
+      props.referenciaSeleccionada.refid
+    );
+    console.log("posicion en paginador", posicion);
     setPosicion(0);
     if (props.referencias.length > 0) setReferencias(props.referencias);
     if (props.referenciaSeleccionada != null) {
@@ -42,13 +49,25 @@ const Pasaje = (props) => {
     if (indexLista == 0) {
       setTimeout(() => {
         document
-          .getElementById(props.referenciaSeleccionada.refid + "/" + 0)
+          .getElementById(
+            props.expresionId +
+              "/" +
+              props.referenciaSeleccionada.refid +
+              "/" +
+              posicion
+          )
           .classList.add("pasajesVisitados");
       }, 1000);
     } else {
       setTimeout(() => {
         document
-          .getElementById(props.referenciaSeleccionada.refid + "/" + indexLista)
+          .getElementById(
+            props.expresionId +
+              "/" +
+              props.referenciaSeleccionada.refid +
+              "/" +
+              posicion
+          )
           .classList.add("pasajesVisitados");
       }, 1000);
     }

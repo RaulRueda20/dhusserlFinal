@@ -15,13 +15,7 @@ import { sesionStore } from "../../../../stores/sesionStore";
 import { expresionesStore } from "../../../../stores/expresionStore";
 import "../../../../css/expresiones.css";
 
-const PanelExpresionIzquierdo = ({
-  match,
-  expresion,
-  index,
-  getJerarquia,
-  idExpresion,
-}) => {
+const PanelExpresionIzquierdo = ({ match, expresion, index, idExpresion }) => {
   const global = useContext(sesionStore);
   const { state, dispatch } = global;
   const { sesion } = state;
@@ -39,6 +33,9 @@ const PanelExpresionIzquierdo = ({
   }, [match?.params?.expresion]);
 
   const clickHandleVista = (event, index, referencia, expresionId) => {
+    console.log("expresionId panel", expresionId);
+    console.log("referencia panel", referencia);
+    console.log("index panel", index);
     setTimeout(() => {
       if (
         document
@@ -95,15 +92,18 @@ const PanelExpresionIzquierdo = ({
   };
 
   const guardadoDePasajes = (event, index, referencia, expresionId) => {
+    console.log("expresionId panel", expresionId);
+    console.log("referencia panel", referencia);
+    console.log("index panel", index);
     setTimeout(() => {
       if (
         document
           .getElementById(expresionId + "/" + referencia + "/" + index)
-          .className.indexOf("pasajesVisitados") == 0
+          .className.indexOf("pasajesVisitados") == -1
       ) {
-        document.getElementById(
-          expresionId + "/" + referencia + "/" + index
-        ).className += " pasajesVisitados";
+        document
+          .getElementById(expresionId + "/" + referencia + "/" + index)
+          .classList.add("pasajesVisitados");
       }
     }, 1000);
 
@@ -230,7 +230,7 @@ const PanelExpresionIzquierdo = ({
                               onClick={(e) =>
                                 guardadoDePasajes(
                                   e,
-                                  0,
+                                  index,
                                   expresion.referencias[0].refid,
                                   expresion.id
                                 )
