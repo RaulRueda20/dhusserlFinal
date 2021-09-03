@@ -10,7 +10,6 @@ import {
   TextField,
   Divider,
   Tooltip,
-  Snackbar,
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
 import SwipeableViews from "react-swipeable-views";
@@ -73,7 +72,6 @@ const InfoPasajes = (props) => {
   const [expresionClave, setExpresionClave] = useState("");
   const [expresionId, setExpresionId] = useState("");
   const [openAlP, setOpenAlP] = useState(false);
-  const [snack, setSnack] = useState({ open: false, text: "" });
   const [expresionPasaje, setExpresionPasaje] = useState("");
   const [expresionPasajeName, setExpresionPasajeName] = useState("");
   const [traduccionPasaje, setTraduccionPasaje] = useState("");
@@ -125,7 +123,7 @@ const InfoPasajes = (props) => {
       adminService(servicio, "POST", JSON.stringify(params), (data) => {
         console.log("params al crear pasajes", params);
         console.log("data al crear pasaje", data);
-        setSnack({ open: true, text: "Pasaje creado con éxito" });
+        props.setSnack({ open: true, text: "Pasaje creado con éxito" });
         props.setReload(!props.reload);
         setLoading(false);
       });
@@ -136,7 +134,7 @@ const InfoPasajes = (props) => {
       //params.clave = expresionId;
       adminService(servicio, "POST", JSON.stringify(params), (data) => {
         console.log("data al editar pasaje", data);
-        setSnack({ open: true, text: "Pasaje editado con éxito" });
+        props.setSnack({ open: true, text: "Pasaje editado con éxito" });
         props.setReload(!props.reload);
         setLoading(false);
       });
@@ -146,19 +144,19 @@ const InfoPasajes = (props) => {
   const handleClickEliminarPasaje = () => {
     setOpenAlP(false);
     if (props.pasajeSeleccionado > 0) {
-      setSnack({
+      props.setSnack({
         open: true,
         text: "Este pasaje está relacionado con expresiones del diccionario. Por favor, elimine dichas relaciones antes de continuar.",
       });
       return true;
     } else {
-      console.log("expresionId", expresionId);
+      // console.log("expresionId", expresionId);
       adminService(
         "/referencias/eliminarPasaje/" + expresionId,
         "DELETE",
         {},
         (datad) => {
-          setSnack({ open: true, text: "Pasaje eliminado con éxito." });
+          props.setSnack({ open: true, text: "Pasaje eliminado con éxito." });
           handleClickiNuevoPasaje();
           props.setReload(!props.reload);
         }
@@ -180,16 +178,6 @@ const InfoPasajes = (props) => {
 
   return (
     <div className={classes.cartainfodepasajes}>
-      <Snackbar
-        anchorOrigin={{ vertical: "top", horizontal: "left" }}
-        key={`top,left`}
-        open={snack.open}
-        onClose={() => setSnack({ open: false, text: "" })}
-        ContentProps={{
-          "aria-describedby": "message-id",
-        }}
-        message={<span id="message-id">{snack.text}</span>}
-      />
       <Grid container alignItems="center" className={classes.headerContainer}>
         <Grid item xs={10} className={classes.textCont}>
           <TextField

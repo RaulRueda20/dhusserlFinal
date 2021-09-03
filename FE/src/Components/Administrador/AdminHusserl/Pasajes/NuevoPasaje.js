@@ -46,6 +46,8 @@ const NuevoPasaje = (props) => {
   return (
     <div className={classes.contenedorpaperpasajes}>
       <InfoPasajes
+        snack={props.snack}
+        setSnack={props.setSnack}
         pasajeSeleccionado={pasaje}
         setPasajeSeleccionado={setPasaje}
         setPasajeSeleccionadoId={props.setPasajeSeleccionado}

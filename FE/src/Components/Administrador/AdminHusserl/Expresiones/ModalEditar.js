@@ -33,7 +33,7 @@ const estiloModalExpresiones = (theme) => ({
     top: "10vh",
     left: "calc(20vw - 120px)",
     width: "60vw",
-    height: "70vh",
+    height: "50vh",
     padding: "20px 30px",
     position: "absolute",
   },
