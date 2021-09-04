@@ -1,5 +1,5 @@
 //React
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 
 //Elements
 import classNames from "classnames";
@@ -20,9 +20,9 @@ import LinearProgress from "@material-ui/core/LinearProgress";
 
 //Other req
 import { adminService } from "../../../../js/webServices";
+import { sesionStore } from "../../../../stores/sesionStore";
 
 //Components
-import AlertaPasaje from "./AlertaPasaje";
 import Pasaje from "./Pasaje";
 
 const infopasajes = {
@@ -68,18 +68,18 @@ const emptyPasajeNuevo = {
 };
 
 const InfoPasajes = (props) => {
+  const global = useContext(sesionStore);
+  const { state, dispatch } = global;
   const { classes } = props;
   const [vista, setVista] = useState(0);
   const [expresionClave, setExpresionClave] = useState("");
   const [expresionId, setExpresionId] = useState("");
   const [openAlP, setOpenAlP] = useState(false);
-  const [snack, setSnack] = useState({ open: false, text: "" });
   const [expresionPasaje, setExpresionPasaje] = useState("");
   const [expresionPasajeName, setExpresionPasajeName] = useState("");
   const [traduccionPasaje, setTraduccionPasaje] = useState("");
   const [traduccionPasajeName, setTraduccionPasajeName] = useState("");
   const [opcionGuardado, setOpcionGuardado] = useState("editar");
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     // console.log(
@@ -118,27 +118,32 @@ const InfoPasajes = (props) => {
       ref_es: btoa(traduccionPasajeName),
       clave: expresionClave,
     };
+    dispatch({ type: "START_LOADING" });
     if (opcionGuardado != "editar") {
       // console.log("expresionId", expresionId);
       let servicio = "/referencias/new/nuevoPasaje";
-      setLoading(true);
       adminService(servicio, "POST", JSON.stringify(params), (data) => {
         console.log("params al crear pasajes", params);
         console.log("data al crear pasaje", data);
-        setSnack({ open: true, text: "Pasaje creado con éxito" });
+        dispatch({
+          type: "SET_SNACKBAR",
+          payload: { open: true, text: "Pasaje creado con éxito" },
+        });
         props.setReload(!props.reload);
-        setLoading(false);
+        dispatch({ type: "STOP_LOADING" });
       });
     } else {
       console.log("params al editar pasajes", params);
       let servicio = "/referencias/editarPasaje/" + expresionId;
-      setLoading(true);
       //params.clave = expresionId;
       adminService(servicio, "POST", JSON.stringify(params), (data) => {
         console.log("data al editar pasaje", data);
-        setSnack({ open: true, text: "Pasaje editado con éxito" });
+        dispatch({
+          type: "SET_SNACKBAR",
+          payload: { open: true, text: "Pasaje editado con éxito" },
+        });
         props.setReload(!props.reload);
-        setLoading(false);
+        dispatch({ type: "STOP_LOADING" });
       });
     }
   };
@@ -146,9 +151,12 @@ const InfoPasajes = (props) => {
   const handleClickEliminarPasaje = () => {
     setOpenAlP(false);
     if (props.pasajeSeleccionado > 0) {
-      setSnack({
-        open: true,
-        text: "Este pasaje está relacionado con expresiones del diccionario. Por favor, elimine dichas relaciones antes de continuar.",
+      dispatch({
+        type: "SET_SNACKBAR",
+        payload: {
+          open: true,
+          text: "Este pasaje está relacionado con expresiones del diccionario. Por favor, elimine dichas relaciones antes de continuar.",
+        },
       });
       return true;
     } else {
@@ -158,7 +166,10 @@ const InfoPasajes = (props) => {
         "DELETE",
         {},
         (datad) => {
-          setSnack({ open: true, text: "Pasaje eliminado con éxito." });
+          dispatch({
+            type: "SET_SNACKBAR",
+            payload: { open: true, text: "Pasaje eliminado con éxito." },
+          });
           handleClickiNuevoPasaje();
           props.setReload(!props.reload);
         }
@@ -180,16 +191,6 @@ const InfoPasajes = (props) => {
 
   return (
     <div className={classes.cartainfodepasajes}>
-      <Snackbar
-        anchorOrigin={{ vertical: "top", horizontal: "left" }}
-        key={`top,left`}
-        open={snack.open}
-        onClose={() => setSnack({ open: false, text: "" })}
-        ContentProps={{
-          "aria-describedby": "message-id",
-        }}
-        message={<span id="message-id">{snack.text}</span>}
-      />
       <Grid container alignItems="center" className={classes.headerContainer}>
         <Grid item xs={10} className={classes.textCont}>
           <TextField
