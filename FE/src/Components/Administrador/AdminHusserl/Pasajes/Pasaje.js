@@ -1,11 +1,12 @@
 //React
-import React from "react";
+import { useContext } from "react";
 
 //Ekements
 
 import CKEditor from "ckeditor4-react-advanced";
 import { Grid, TextField } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
+import { adminStore } from "../../../../stores/adminStore.js";
 
 const infopasajes = {
   cartainfodepasajes: {
@@ -44,8 +45,51 @@ const infopasajes = {
   },
 };
 
-const InfoPasajes = (props) => {
-  const { classes, pasaje, pasajeName, clave } = props;
+const Pasaje = (props) => {
+  const global = useContext(adminStore);
+  const { action, store } = global;
+  const { claveSeleccionada, refIdSeleccionado, original, traduccion } = store;
+  const { classes, tipo } = props;
+
+  const updateName = (event) => {
+    if (tipo === "original") {
+      action({
+        type: "SET_PASAJE_ORIGINAL",
+        payload: {
+          ...original,
+          nombre: event.target.value,
+        },
+      });
+    } else {
+      action({
+        type: "SET_PASAJE_TRADUCCION",
+        payload: {
+          ...traduccion,
+          nombre: event.target.value,
+        },
+      });
+    }
+  };
+
+  const updateContenido = (data) => {
+    if (tipo === "original") {
+      action({
+        type: "SET_PASAJE_ORIGINAL",
+        payload: {
+          ...original,
+          contenido: data,
+        },
+      });
+    } else {
+      action({
+        type: "SET_PASAJE_TRADUCCION",
+        payload: {
+          ...traduccion,
+          contenido: data,
+        },
+      });
+    }
+  };
 
   return (
     <div className={classes.cartainfodepasajes}>
@@ -53,15 +97,17 @@ const InfoPasajes = (props) => {
         <Grid item xs={2}>
           <TextField
             id="standard-name"
-            value={clave}
-            onChange={(event) => props.setClave(event.target.value)}
+            value={claveSeleccionada}
+            onChange={(event) =>
+              action({ type: "SET_CLAVE", payload: event.target.value })
+            }
           ></TextField>
         </Grid>
         <Grid item xs={10}>
           <TextField
             id="standard-name"
-            value={pasajeName}
-            onChange={(event) => props.setPasajeName(event.target.value)}
+            value={tipo === "original" ? original.nombre : traduccion.nombre}
+            onChange={updateName}
             className={classes.contenedorselectpasaje}
           />
         </Grid>
@@ -73,10 +119,10 @@ const InfoPasajes = (props) => {
           id={"pasaje" + pasajeName}
         >
           <CKEditor
-            data={pasaje}
+            data={tipo === "original" ? original.contenido : traduccion.nombre}
             onChange={(evt) => {
-              var data = evt.editor.getData();
-              props.setPasaje(data);
+              const data = evt.editor.getData();
+              updateContenido(data);
             }}
             config={{
               toolbar: [
@@ -166,4 +212,4 @@ const InfoPasajes = (props) => {
   );
 };
 
-export default withStyles(infopasajes)(InfoPasajes);
+export default withStyles(infopasajes)(Pasaje);

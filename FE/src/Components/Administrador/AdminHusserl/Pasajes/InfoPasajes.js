@@ -75,26 +75,44 @@ const InfoPasajes = (props) => {
 
   const adminGlobal = useContext(adminStore);
   const { store, action } = adminGlobal;
-  const { pasajeSeleccionado, pasaje, pasajes } = store;
+  const {
+    pasajeSeleccionado,
+    pasaje,
+    pasajes,
+    original,
+    traduccion,
+    refIdSeleccionado,
+    claveSeleccionada,
+  } = store;
 
   const { classes } = props;
   const [vista, setVista] = useState(0);
-  const [expresionClave, setExpresionClave] = useState("");
-  const [expresionId, setExpresionId] = useState("");
   const [openAlP, setOpenAlP] = useState(false);
-  const [expresionPasaje, setExpresionPasaje] = useState("");
-  const [expresionPasajeName, setExpresionPasajeName] = useState("");
-  const [traduccionPasaje, setTraduccionPasaje] = useState("");
-  const [traduccionPasajeName, setTraduccionPasajeName] = useState("");
   const [opcionGuardado, setOpcionGuardado] = useState("editar");
 
   useEffect(() => {
-    setExpresionClave(pasajeSeleccionado.clave);
-    setExpresionId(pasajeSeleccionado.ref_id);
-    setExpresionPasaje(pasajeSeleccionado.ref_def_de);
-    setExpresionPasajeName(pasajeSeleccionado.ref_libro_de);
-    setTraduccionPasaje(pasajeSeleccionado.ref_def_es);
-    setTraduccionPasajeName(pasajeSeleccionado.ref_libro_es);
+    action({
+      type: "SET_CLAVE",
+      payload: pasajeSeleccionado.clave,
+    });
+    action({
+      type: "SET_REFID",
+      payload: pasajeSeleccionado.ref_id,
+    });
+    action({
+      type: "SET_PASAJE_ORIGINAL",
+      payload: {
+        nombre: pasajeSeleccionado.ref_libro_de,
+        contenido: pasajeSeleccionado.ref_def_de,
+      },
+    });
+    action({
+      type: "SET_PASAJE_TRADUCCION",
+      payload: {
+        nombre: pasajeSeleccionado.ref_def_es,
+        contenido: pasajeSeleccionado.ref_def_es,
+      },
+    });
   }, [pasajeSeleccionado]);
 
   const handleChangeC = (event) => {
@@ -109,12 +127,12 @@ const InfoPasajes = (props) => {
 
   const handleClickEditarPasaje = () => {
     const params = {
-      ref_id: btoa(expresionId),
-      pasaje_de: btoa(expresionPasaje),
-      ref_de: btoa(expresionPasajeName),
-      pasaje_es: btoa(traduccionPasaje),
-      ref_es: btoa(traduccionPasajeName),
-      clave: expresionClave,
+      ref_id: btoa(refIdSeleccionado),
+      pasaje_de: btoa(original.contenido),
+      ref_de: btoa(original.nombre),
+      pasaje_es: btoa(traduccion.contenido),
+      ref_es: btoa(traduccion.nombre),
+      clave: claveSeleccionada,
     };
     dispatch({ type: "START_LOADING" });
     if (opcionGuardado != "editar") {
@@ -165,9 +183,8 @@ const InfoPasajes = (props) => {
       });
       return true;
     } else {
-      // console.log("expresionId", expresionId);
       adminService(
-        "/referencias/eliminarPasaje/" + expresionId,
+        "/referencias/eliminarPasaje/" + refIdSeleccionado,
         "DELETE",
         {},
         (datad) => {
@@ -257,26 +274,8 @@ const InfoPasajes = (props) => {
         index={vista}
         onChangeIndex={setVista}
       >
-        <Pasaje
-          clave={expresionClave}
-          setClave={setExpresionClave}
-          eId={expresionId}
-          setEId={setExpresionId}
-          pasaje={expresionPasaje}
-          setPasaje={setExpresionPasaje}
-          pasajeName={expresionPasajeName}
-          setPasajeName={setExpresionPasajeName}
-        />
-        <Pasaje
-          clave={expresionClave}
-          setClave={setExpresionClave}
-          eId={expresionId}
-          setEId={setExpresionId}
-          pasaje={traduccionPasaje}
-          setPasaje={setTraduccionPasaje}
-          pasajeName={traduccionPasajeName}
-          setPasajeName={setTraduccionPasajeName}
-        />
+        <Pasaje tipo="original" />
+        <Pasaje tipo="traduccion" />
       </SwipeableViews>
       <Divider className="divisor" />
       <Grid container justify="flex-end">

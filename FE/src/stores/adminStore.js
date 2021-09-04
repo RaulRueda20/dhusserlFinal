@@ -18,6 +18,10 @@ const initialState = {
   pasajes: [],
   pasajeSeleccionado: "",
   pasaje: emptyPasaje,
+  original: {},
+  traduccion: {},
+  claveSeleccionada: "",
+  refIdSeleccionado: "",
   reload: false,
 };
 
@@ -31,8 +35,16 @@ const sesionReducer = (state, action) => {
       return { ...state, pasajeSeleccionado: payload };
     case "SET_PASAJE":
       return { ...state, pasaje: payload };
+    case "SET_PASAJE_TRADUCCION":
+      return { ...state, traduccion: payload };
+    case "SET_PASAJE_ORIGINAL":
+      return { ...state, original: payload };
     case "RESET_PASAJE":
       return { ...state, pasaje: emptyPasaje };
+    case "SET_CLAVE":
+      return { ...state, claveSeleccionada: payload };
+    case "SET_REFID":
+      return { ...state, refIdSeleccionado: payload };
     case "RELOAD":
       return { ...state, reload: !state.reload };
     default:
