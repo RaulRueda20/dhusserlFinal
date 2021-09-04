@@ -1,5 +1,5 @@
 //React
-import React, { useEffect, Fragment } from "react";
+import { useEffect } from "react";
 import { Switch, Redirect, Route } from "react-router-dom";
 
 //Components
@@ -12,6 +12,7 @@ import Usuarios from "./Usuarios/Usuarios";
 
 //Other req
 import * as localStore from "../../../js/localStore";
+import { AdminProvider } from ".../../../stores/adminStore";
 
 const Subvistas = (props) => {
   const { match } = props;
@@ -22,7 +23,7 @@ const Subvistas = (props) => {
   }, [true]);
 
   return (
-    <Fragment>
+    <AdminProvider>
       <HeaderMain match={props.match} />
       <Switch>
         <Route path={`${url}/husserl/alfabeto`} component={Expresiones} />
@@ -34,7 +35,7 @@ const Subvistas = (props) => {
           <Redirect to={`${url}/husserl/alfabeto`} component={Expresiones} />
         </Route>
       </Switch>
-    </Fragment>
+    </AdminProvider>
   );
 };
 

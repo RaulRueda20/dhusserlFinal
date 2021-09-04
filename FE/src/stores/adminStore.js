@@ -25,7 +25,7 @@ const initialState = {
   reload: false,
 };
 
-const sesionReducer = (state, action) => {
+const adminReducer = (state, action) => {
   const { type, payload } = action;
 
   switch (type) {
@@ -48,12 +48,12 @@ const sesionReducer = (state, action) => {
     case "RELOAD":
       return { ...state, reload: !state.reload };
     default:
-      break;
+      return state;
   }
 };
 
 const AdminProvider = ({ children }) => {
-  const [store, action] = useReducer(sesionReducer, initialState);
+  const [store, action] = useReducer(adminReducer, initialState);
   return <Provider value={{ store, action }}>{children}</Provider>;
 };
 
