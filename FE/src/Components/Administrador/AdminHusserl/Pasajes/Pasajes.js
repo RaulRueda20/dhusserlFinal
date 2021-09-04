@@ -1,5 +1,5 @@
 //React
-import React, { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 
 //Elements
 import Grid from "@material-ui/core/Grid";
@@ -7,23 +7,26 @@ import { Snackbar } from "@material-ui/core";
 
 //Other req
 import { adminService } from "../../../../js/webServices";
-
+import { adminStore } from "../../../../stores/adminStore.js";
 import BusquedaPasajes from "./BusquedaPasajes";
 import ListaClaves from "./ListaClaves";
 import NuevoPasaje from "./NuevoPasaje";
 
 const Pasajes = () => {
+  const global = useContext(adminStore);
+  const { store, action } = global;
+  const { reload } = store;
+
   const [pasajes, setPasajes] = useState([]);
   const [pasajeSeleccionado, setPasajeSeleccionado] = useState("");
   const [reload, setReload] = useState(true);
-  const [snack, setSnack] = useState({ open: false, text: "" });
 
   useEffect(() => {
     var service = "/referencias/lista";
     adminService(service, "GET", {}, ({ data }) => {
       const { response } = data;
-      setPasajes(response);
-      setPasajeSeleccionado(response[1].ref_id);
+      action({ type: "SET_PASAJES", payload: response });
+      action({ type: "SET_PASAJE_SELECCIONADO", payload: response[1].ref_id });
       document.getElementById("listaClaves").firstChild.click();
     });
   }, [reload]);
@@ -31,35 +34,12 @@ const Pasajes = () => {
   return (
     <Grid container>
       <Grid item xs={3} style={{ borderRight: "1px rgb(230, 230, 230) solid" }}>
-        <BusquedaPasajes pasajes={pasajes} setPasajes={setPasajes} />
-        <ListaClaves
-          pasajes={pasajes}
-          pasajeId={pasajeSeleccionado}
-          setPasajeId={setPasajeSeleccionado}
-        />
+        <BusquedaPasajes />
+        <ListaClaves />
       </Grid>
       <Grid item xs={9}>
-        <NuevoPasaje
-          snack={snack}
-          setSnack={setSnack}
-          setPasajeSeleccionado={setPasajeSeleccionado}
-          pasajeSeleccionado={pasajeSeleccionado}
-          setReload={setReload}
-          reload={reload}
-        />
+        <NuevoPasaje />
       </Grid>
-      <div>
-        <Snackbar
-          anchorOrigin={{ vertical: "top", horizontal: "left" }}
-          key={`top,left`}
-          open={snack.open}
-          onClose={() => setSnack({ open: false, text: "" })}
-          ContentProps={{
-            "aria-describedby": "message-id",
-          }}
-          message={<span id="message-id">{snack.text}</span>}
-        />
-      </div>
     </Grid>
   );
 };

@@ -1,5 +1,5 @@
 //React
-import React, { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 
 //Elements
 import classNames from "classnames";
@@ -21,6 +21,7 @@ import AlertaPasaje from "./AlertaPasaje.js";
 //Other req
 import { adminService } from "../../../../js/webServices";
 import { sesionStore } from "../../../../stores/sesionStore";
+import { adminStore } from "../../../../stores/adminStore";
 
 //Components
 import Pasaje from "./Pasaje";
@@ -71,6 +72,11 @@ const InfoPasajes = (props) => {
   const global = useContext(sesionStore);
   const { state, dispatch } = global;
   const { loading } = state;
+
+  const adminGlobal = useContext(adminStore);
+  const { store, action } = adminGlobal;
+  const { pasajeSeleccionado, pasaje, pasajes } = store;
+
   const { classes } = props;
   const [vista, setVista] = useState(0);
   const [expresionClave, setExpresionClave] = useState("");
@@ -83,15 +89,6 @@ const InfoPasajes = (props) => {
   const [opcionGuardado, setOpcionGuardado] = useState("editar");
 
   useEffect(() => {
-    // console.log(
-    //   "referencias aleman, español de props y traducciones en las vistas",
-    //   props.pasajeSeleccionado.ref_def_de,
-    //   props.pasajeSeleccionado.ref_def_de,
-    //   traduccionPasaje,
-    //   traduccionPasajeName,
-    //   expresionPasaje,
-    //   expresionPasajeName
-    // );
     setExpresionClave(props.pasajeSeleccionado.clave);
     setExpresionId(props.pasajeSeleccionado.ref_id);
     setExpresionPasaje(props.pasajeSeleccionado.ref_def_de);

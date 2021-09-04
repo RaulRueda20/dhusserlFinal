@@ -1,12 +1,17 @@
 //React
-import React, { Fragment } from "react";
+import { useContext } from "react";
+import { adminStore } from "../../../../stores/adminStore.js";
 import classNames from "classnames";
 
 const ListaClaves = (props) => {
+  const global = useContext(adminStore);
+  const { store, action } = global;
+  const { pasajes } = store;
+
   return (
-    <Fragment>
+    <>
       <ul className="list-containerP" id="listaClaves">
-        {props.pasajes.map((referencia) => {
+        {pasajes.map((referencia) => {
           return (
             <li
               id={referencia.ref_id}
@@ -15,7 +20,12 @@ const ListaClaves = (props) => {
                 { selected: referencia.ref_id == props.pasajeId },
                 "sideListAdmin"
               )}
-              onClick={() => props.setPasajeId(referencia.ref_id)}
+              onClick={() =>
+                action({
+                  type: "SET_PASAJE_SELECCIONADO",
+                  payload: props.setPasajeId(referencia.ref_id),
+                })
+              }
             >
               {referencia.ref_id +
                 ": " +
@@ -26,7 +36,7 @@ const ListaClaves = (props) => {
           );
         })}
       </ul>
-    </Fragment>
+    </>
   );
 };
 

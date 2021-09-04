@@ -1,5 +1,5 @@
 //React
-import React from "react";
+import { useContext } from "react";
 
 //Elements
 import {
@@ -10,6 +10,7 @@ import {
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
 import SearchIcon from "@material-ui/icons/Search";
+import { adminStore } from "../../../../stores/adminStore.js";
 
 //Other req
 import "../../../../css/pasajes.css";
@@ -21,15 +22,19 @@ const styles = {
 };
 
 const BusquedaPasajes = (props) => {
+  const global = useContext(adminStore);
+  const { action, store } = global;
+  const { pasajes, pasajeSeleccionado } = store;
+
   const { classes } = props;
 
   const handleChangeBusqueda = (event) => {
     event.preventDefault();
-    var busqueda = event.target.value;
-    props.pasajes.map((pasaje) => {
-      var pasajeNombre =
+    const busqueda = event.target.value;
+    pasajes.map((pasaje) => {
+      const pasajeNombre =
         pasaje.ref_libro_de + pasaje.ref_libro_es + pasaje.ref_id;
-      var pasajeBuscado = pasajeNombre.indexOf(busqueda);
+      const pasajeBuscado = pasajeNombre.indexOf(busqueda);
       document.getElementById(pasaje.ref_id).classList.remove("hidden");
       if (pasajeBuscado == -1) {
         document.getElementById(pasaje.ref_id).className += " hidden";
