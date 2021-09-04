@@ -1,6 +1,6 @@
 //React
 import { useContext } from "react";
-import { adminStore } from "../../../../stores/adminStore.js";
+import { adminStore } from "../../../../stores/adminStore";
 import classNames from "classnames";
 
 const ListaClaves = (props) => {

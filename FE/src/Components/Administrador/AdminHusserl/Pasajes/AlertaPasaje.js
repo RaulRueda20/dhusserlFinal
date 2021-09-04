@@ -1,6 +1,3 @@
-//React
-import React from "react";
-
 //Elements
 import {
   Button,

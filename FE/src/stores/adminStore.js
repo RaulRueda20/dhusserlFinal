@@ -54,7 +54,6 @@ const sesionReducer = (state, action) => {
 
 const AdminProvider = ({ children }) => {
   const [store, action] = useReducer(sesionReducer, initialState);
-
   return <Provider value={{ store, action }}>{children}</Provider>;
 };
 

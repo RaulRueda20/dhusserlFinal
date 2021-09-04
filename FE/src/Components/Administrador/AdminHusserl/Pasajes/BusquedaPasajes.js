@@ -10,7 +10,7 @@ import {
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
 import SearchIcon from "@material-ui/icons/Search";
-import { adminStore } from "../../../../stores/adminStore.js";
+import { adminStore } from "../../../../stores/adminStore";
 
 //Other req
 import "../../../../css/pasajes.css";

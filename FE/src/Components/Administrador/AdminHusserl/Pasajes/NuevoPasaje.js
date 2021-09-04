@@ -9,7 +9,7 @@ import InfoPasajes from "./InfoPasajes";
 
 //Other req
 import { adminService } from "../../../../js/webServices";
-import { adminStore } from "../../../../stores/adminStore.js";
+import { adminStore } from "../../../../stores/adminStore";
 import "../../../../css/pasajes.css";
 
 const botonpasaje = {

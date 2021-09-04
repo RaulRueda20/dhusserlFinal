@@ -16,7 +16,7 @@ import SwipeableViews from "react-swipeable-views";
 import Delete from "@material-ui/icons/Delete";
 import Add from "@material-ui/icons/NoteAdd";
 import LinearProgress from "@material-ui/core/LinearProgress";
-import AlertaPasaje from "./AlertaPasaje.js";
+import AlertaPasaje from "./AlertaPasaje";
 
 //Other req
 import { adminService } from "../../../../js/webServices";

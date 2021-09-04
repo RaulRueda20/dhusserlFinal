@@ -1,12 +1,11 @@
 //React
 import { useContext } from "react";
 
-//Ekements
-
+//Elements
 import CKEditor from "ckeditor4-react-advanced";
 import { Grid, TextField } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
-import { adminStore } from "../../../../stores/adminStore.js";
+import { adminStore } from "../../../../stores/adminStore";
 
 const infopasajes = {
   cartainfodepasajes: {
