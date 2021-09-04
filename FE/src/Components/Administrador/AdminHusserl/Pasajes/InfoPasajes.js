@@ -151,7 +151,7 @@ const InfoPasajes = (props) => {
         dispatch({ type: "STOP_LOADING" });
       });
     } else {
-      let servicio = "/referencias/editarPasaje/" + expresionId;
+      let servicio = "/referencias/editarPasaje/" + refIdSeleccionado;
       //params.clave = expresionId;
       adminService(servicio, "POST", JSON.stringify(params), (data) => {
         console.log("data al editar pasaje", data);
@@ -212,7 +212,7 @@ const InfoPasajes = (props) => {
   };
 
   const handleChangePasajes = (event) => {
-    setExpresionId(event.target.value);
+    action({ type: "SET_REFID", payload: event.target.value });
   };
 
   return (
@@ -221,7 +221,7 @@ const InfoPasajes = (props) => {
         <Grid item xs={10} className={classes.textCont}>
           <TextField
             id="standard-name"
-            value={expresionId}
+            value={refIdSeleccionado}
             className={classes.textfieldlista}
             onChange={handleChangePasajes}
           />
