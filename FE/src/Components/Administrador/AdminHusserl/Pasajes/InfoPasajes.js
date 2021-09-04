@@ -70,6 +70,7 @@ const emptyPasajeNuevo = {
 const InfoPasajes = (props) => {
   const global = useContext(sesionStore);
   const { state, dispatch } = global;
+  const { loading } = state;
   const { classes } = props;
   const [vista, setVista] = useState(0);
   const [expresionClave, setExpresionClave] = useState("");
