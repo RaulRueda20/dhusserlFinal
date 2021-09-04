@@ -10,7 +10,6 @@ import {
   TextField,
   Divider,
   Tooltip,
-  Snackbar,
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
 import SwipeableViews from "react-swipeable-views";
@@ -160,7 +159,7 @@ const InfoPasajes = (props) => {
       });
       return true;
     } else {
-      console.log("expresionId", expresionId);
+      // console.log("expresionId", expresionId);
       adminService(
         "/referencias/eliminarPasaje/" + expresionId,
         "DELETE",

@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 
 //Elements
 import Grid from "@material-ui/core/Grid";
+import { Snackbar } from "@material-ui/core";
 
 //Other req
 import { adminService } from "../../../../js/webServices";
@@ -15,6 +16,7 @@ const Pasajes = () => {
   const [pasajes, setPasajes] = useState([]);
   const [pasajeSeleccionado, setPasajeSeleccionado] = useState("");
   const [reload, setReload] = useState(true);
+  const [snack, setSnack] = useState({ open: false, text: "" });
 
   useEffect(() => {
     var service = "/referencias/lista";
@@ -38,12 +40,26 @@ const Pasajes = () => {
       </Grid>
       <Grid item xs={9}>
         <NuevoPasaje
+          snack={snack}
+          setSnack={setSnack}
           setPasajeSeleccionado={setPasajeSeleccionado}
           pasajeSeleccionado={pasajeSeleccionado}
           setReload={setReload}
           reload={reload}
         />
       </Grid>
+      <div>
+        <Snackbar
+          anchorOrigin={{ vertical: "top", horizontal: "left" }}
+          key={`top,left`}
+          open={snack.open}
+          onClose={() => setSnack({ open: false, text: "" })}
+          ContentProps={{
+            "aria-describedby": "message-id",
+          }}
+          message={<span id="message-id">{snack.text}</span>}
+        />
+      </div>
     </Grid>
   );
 };
