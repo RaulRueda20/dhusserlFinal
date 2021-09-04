@@ -7,7 +7,7 @@ import { Snackbar } from "@material-ui/core";
 
 //Other req
 import { adminService } from "../../../../js/webServices";
-import { adminStore } from "../../../../stores/adminStore.js";
+import { adminStore } from "../../../../stores/adminStore";
 import BusquedaPasajes from "./BusquedaPasajes";
 import ListaClaves from "./ListaClaves";
 import NuevoPasaje from "./NuevoPasaje";
@@ -16,10 +16,6 @@ const Pasajes = () => {
   const global = useContext(adminStore);
   const { store, action } = global;
   const { reload } = store;
-
-  const [pasajes, setPasajes] = useState([]);
-  const [pasajeSeleccionado, setPasajeSeleccionado] = useState("");
-  const [reload, setReload] = useState(true);
 
   useEffect(() => {
     var service = "/referencias/lista";
