@@ -128,7 +128,11 @@ const InfoPasajes = (props) => {
         console.log("data al crear pasaje", data);
         dispatch({
           type: "SET_SNACKBAR",
-          payload: { open: true, text: "Pasaje creado con éxito" },
+          payload: {
+            open: true,
+            variant: "success",
+            message: "Pasaje creado con éxito",
+          },
         });
         props.setReload(!props.reload);
         dispatch({ type: "STOP_LOADING" });
@@ -141,7 +145,11 @@ const InfoPasajes = (props) => {
         console.log("data al editar pasaje", data);
         dispatch({
           type: "SET_SNACKBAR",
-          payload: { open: true, text: "Pasaje editado con éxito" },
+          payload: {
+            open: true,
+            variant: "success",
+            message: "Pasaje editado con éxito",
+          },
         });
         props.setReload(!props.reload);
         dispatch({ type: "STOP_LOADING" });
@@ -156,7 +164,9 @@ const InfoPasajes = (props) => {
         type: "SET_SNACKBAR",
         payload: {
           open: true,
-          text: "Este pasaje está relacionado con expresiones del diccionario. Por favor, elimine dichas relaciones antes de continuar.",
+          variant: "warning",
+          message:
+            "Este pasaje está relacionado con expresiones del diccionario. Por favor, elimine dichas relaciones antes de continuar.",
         },
       });
       return true;
@@ -169,7 +179,11 @@ const InfoPasajes = (props) => {
         (datad) => {
           dispatch({
             type: "SET_SNACKBAR",
-            payload: { open: true, text: "Pasaje eliminado con éxito." },
+            payload: {
+              open: true,
+              variant: "success",
+              message: "Pasaje eliminado con éxito.",
+            },
           });
           handleClickiNuevoPasaje();
           props.setReload(!props.reload);
