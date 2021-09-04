@@ -89,21 +89,21 @@ const InfoPasajes = (props) => {
   const [opcionGuardado, setOpcionGuardado] = useState("editar");
 
   useEffect(() => {
-    setExpresionClave(props.pasajeSeleccionado.clave);
-    setExpresionId(props.pasajeSeleccionado.ref_id);
-    setExpresionPasaje(props.pasajeSeleccionado.ref_def_de);
-    setExpresionPasajeName(props.pasajeSeleccionado.ref_libro_de);
-    setTraduccionPasaje(props.pasajeSeleccionado.ref_def_es);
-    setTraduccionPasajeName(props.pasajeSeleccionado.ref_libro_es);
-  }, [props.pasajeSeleccionado]);
+    setExpresionClave(pasajeSeleccionado.clave);
+    setExpresionId(pasajeSeleccionado.ref_id);
+    setExpresionPasaje(pasajeSeleccionado.ref_def_de);
+    setExpresionPasajeName(pasajeSeleccionado.ref_libro_de);
+    setTraduccionPasaje(pasajeSeleccionado.ref_def_es);
+    setTraduccionPasajeName(pasajeSeleccionado.ref_libro_es);
+  }, [pasajeSeleccionado]);
 
   const handleChangeC = (event) => {
     setClave(event.target.value);
   };
 
   const handleClickiNuevoPasaje = () => {
-    props.setPasajeSeleccionado(emptyPasajeNuevo);
-    props.setPasajeSeleccionadoId("");
+    action({ type: "RESET_PASAJE" });
+    action({ type: "SET_PASAJE_SELECCIONADO", payload: "" });
     setOpcionGuardado("nuevo");
   };
 
@@ -121,8 +121,6 @@ const InfoPasajes = (props) => {
       // console.log("expresionId", expresionId);
       let servicio = "/referencias/new/nuevoPasaje";
       adminService(servicio, "POST", JSON.stringify(params), (data) => {
-        console.log("params al crear pasajes", params);
-        console.log("data al crear pasaje", data);
         dispatch({
           type: "SET_SNACKBAR",
           payload: {
@@ -131,11 +129,10 @@ const InfoPasajes = (props) => {
             message: "Pasaje creado con éxito",
           },
         });
-        props.setReload(!props.reload);
+        action({ type: "RELOAD" });
         dispatch({ type: "STOP_LOADING" });
       });
     } else {
-      console.log("params al editar pasajes", params);
       let servicio = "/referencias/editarPasaje/" + expresionId;
       //params.clave = expresionId;
       adminService(servicio, "POST", JSON.stringify(params), (data) => {
@@ -148,7 +145,7 @@ const InfoPasajes = (props) => {
             message: "Pasaje editado con éxito",
           },
         });
-        props.setReload(!props.reload);
+        action({ type: "RELOAD" });
         dispatch({ type: "STOP_LOADING" });
       });
     }
@@ -156,7 +153,7 @@ const InfoPasajes = (props) => {
 
   const handleClickEliminarPasaje = () => {
     setOpenAlP(false);
-    if (props.pasajeSeleccionado > 0) {
+    if (pasajeSeleccionado > 0) {
       dispatch({
         type: "SET_SNACKBAR",
         payload: {
@@ -183,7 +180,7 @@ const InfoPasajes = (props) => {
             },
           });
           handleClickiNuevoPasaje();
-          props.setReload(!props.reload);
+          action({ type: "RELOAD" });
         }
       );
     }
