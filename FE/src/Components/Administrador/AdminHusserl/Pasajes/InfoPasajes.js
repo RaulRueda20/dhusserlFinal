@@ -1,5 +1,5 @@
 //React
-import { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 
 //Elements
 import classNames from "classnames";

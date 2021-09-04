@@ -1,5 +1,5 @@
 //React
-import { useContext } from "react";
+import React, { useContext } from "react";
 
 //Elements
 import {
@@ -26,7 +26,7 @@ const BusquedaPasajes = (props) => {
   const { action, store } = global;
   const { pasajes, pasajeSeleccionado } = store;
 
-  const { classes } = props;
+  Const { classes } = props;
 
   const handleChangeBusqueda = (event) => {
     event.preventDefault();

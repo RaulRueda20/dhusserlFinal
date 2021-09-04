@@ -1,5 +1,5 @@
 //React
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { Switch, Redirect, Route } from "react-router-dom";
 
 //Components
@@ -12,7 +12,7 @@ import Usuarios from "./Usuarios/Usuarios";
 
 //Other req
 import * as localStore from "../../../js/localStore";
-import { AdminProvider } from ".../../../stores/adminStore";
+import { AdminProvider } from "../../../stores/adminStore";
 
 const Subvistas = (props) => {
   const { match } = props;

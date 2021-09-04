@@ -1,5 +1,5 @@
 //React
-import { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext } from "react";
 
 //Elements
 import { withStyles } from "@material-ui/styles";
@@ -38,15 +38,7 @@ const NuevoPasaje = (props) => {
 
   return (
     <div className={classes.contenedorpaperpasajes}>
-      <InfoPasajes
-        snack={props.snack}
-        setSnack={props.setSnack}
-        pasajeSeleccionado={pasaje}
-        setPasajeSeleccionado={setPasaje}
-        setPasajeSeleccionadoId={props.setPasajeSeleccionado}
-        reload={props.reload}
-        setReload={props.setReload}
-      />
+      <InfoPasajes />
     </div>
   );
 };
