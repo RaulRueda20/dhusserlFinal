@@ -25,9 +25,10 @@ const NuevoPasaje = (props) => {
   const { pasaje, pasajeSeleccionado } = store;
 
   useEffect(() => {
+    console.log("REFRESH", pasajeSeleccionado);
     // console.log("pasaje seleccionado en NuevoPasaje", props.pasajeSeleccionado);
     if (pasajeSeleccionado != "") {
-      var service = "/referencias/" + pasajeSeleccionado;
+      const service = "/referencias/" + pasajeSeleccionado;
       adminService(service, "GET", {}, (data) => {
         action({ type: "SET_PASAJE", payload: data.data.response[0] });
       });

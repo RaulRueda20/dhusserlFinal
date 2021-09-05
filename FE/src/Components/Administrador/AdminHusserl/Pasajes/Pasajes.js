@@ -20,11 +20,11 @@ const Pasajes = () => {
 
   useEffect(() => {
     var service = "/referencias/lista";
+    console.log("RELOAD");
     adminService(service, "GET", {}, ({ data }) => {
       const { response } = data;
       action({ type: "SET_PASAJES", payload: response });
-      action({ type: "SET_PASAJE_SELECCIONADO", payload: response[1].ref_id });
-      document.getElementById("listaClaves").firstChild.click();
+      action({ type: "SET_PASAJE_SELECCIONADO", payload: response[0].ref_id });
     });
   }, [reload]);
 

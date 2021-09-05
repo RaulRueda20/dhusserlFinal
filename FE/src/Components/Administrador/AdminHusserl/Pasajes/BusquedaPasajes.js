@@ -26,7 +26,7 @@ const BusquedaPasajes = (props) => {
   const { action, store } = global;
   const { pasajes, pasajeSeleccionado } = store;
 
-  Const { classes } = props;
+  const { classes } = props;
 
   const handleChangeBusqueda = (event) => {
     event.preventDefault();

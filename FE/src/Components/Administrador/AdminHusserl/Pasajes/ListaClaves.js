@@ -6,7 +6,7 @@ import classNames from "classnames";
 const ListaClaves = (props) => {
   const global = useContext(adminStore);
   const { store, action } = global;
-  const { pasajes } = store;
+  const { pasajes, pasajeSeleccionado } = store;
 
   return (
     <>
@@ -17,7 +17,7 @@ const ListaClaves = (props) => {
               id={referencia.ref_id}
               key={referencia.ref_id}
               className={classNames(
-                { selected: referencia.ref_id == props.pasajeId },
+                { selected: referencia.ref_id == pasajeSeleccionado },
                 "sideListAdmin"
               )}
               onClick={() =>

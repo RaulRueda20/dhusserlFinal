@@ -121,7 +121,9 @@ const Pasaje = (props) => {
           }
         >
           <CKEditor
-            data={tipo === "original" ? original.contenido : traduccion.nombre}
+            data={
+              tipo === "original" ? original.contenido : traduccion.contenido
+            }
             onChange={(evt) => {
               const data = evt.editor.getData();
               updateContenido(data);

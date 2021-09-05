@@ -59,15 +59,6 @@ const infopasajes = {
   },
 };
 
-const emptyPasajeNuevo = {
-  clave: "",
-  ref_def_de: "",
-  ref_def_es: "",
-  ref_id: "",
-  ref_libro_de: "",
-  ref_libro_es: "",
-};
-
 const InfoPasajes = (props) => {
   const global = useContext(sesionStore);
   const { state, dispatch } = global;
@@ -91,26 +82,27 @@ const InfoPasajes = (props) => {
   const [opcionGuardado, setOpcionGuardado] = useState("editar");
 
   useEffect(() => {
+    console.log("INFO");
     action({
       type: "SET_CLAVE",
-      payload: pasajeSeleccionado.clave,
+      payload: pasaje.clave,
     });
     action({
       type: "SET_REFID",
-      payload: pasajeSeleccionado.ref_id,
+      payload: pasaje.ref_id,
     });
     action({
       type: "SET_PASAJE_ORIGINAL",
       payload: {
-        nombre: pasajeSeleccionado.ref_libro_de,
-        contenido: pasajeSeleccionado.ref_def_de,
+        nombre: pasaje.ref_libro_de,
+        contenido: pasaje.ref_def_de,
       },
     });
     action({
       type: "SET_PASAJE_TRADUCCION",
       payload: {
-        nombre: pasajeSeleccionado.ref_def_es,
-        contenido: pasajeSeleccionado.ref_def_es,
+        nombre: pasaje.ref_libro_es,
+        contenido: pasaje.ref_def_es,
       },
     });
   }, [pasajeSeleccionado]);
@@ -127,13 +119,21 @@ const InfoPasajes = (props) => {
 
   const handleClickEditarPasaje = () => {
     const params = {
-      ref_id: btoa(refIdSeleccionado),
+      ref_id: btoa(pasajeSeleccionado),
       pasaje_de: btoa(original.contenido),
       ref_de: btoa(original.nombre),
       pasaje_es: btoa(traduccion.contenido),
       ref_es: btoa(traduccion.nombre),
       clave: claveSeleccionada,
     };
+    console.log({
+      ref_id: pasajeSeleccionado,
+      pasaje_de: original.contenido,
+      ref_de: original.nombre,
+      pasaje_es: traduccion.contenido,
+      ref_es: traduccion.nombre,
+      clave: claveSeleccionada,
+    });
     dispatch({ type: "START_LOADING" });
     if (opcionGuardado != "editar") {
       // console.log("expresionId", expresionId);
