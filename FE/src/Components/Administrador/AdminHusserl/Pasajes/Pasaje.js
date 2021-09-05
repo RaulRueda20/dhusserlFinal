@@ -115,7 +115,10 @@ const Pasaje = (props) => {
         <Grid
           item
           className={classes.contenedoreditorpasaje}
-          id={"pasaje" + pasajeName}
+          id={
+            "pasaje" +
+            (tipo === "original" ? original.nombre : traduccion.nombre)
+          }
         >
           <CKEditor
             data={tipo === "original" ? original.contenido : traduccion.nombre}
