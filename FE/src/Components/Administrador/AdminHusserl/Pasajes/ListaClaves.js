@@ -23,7 +23,7 @@ const ListaClaves = (props) => {
               onClick={() =>
                 action({
                   type: "SET_PASAJE_SELECCIONADO",
-                  payload: props.setPasajeId(referencia.ref_id),
+                  payload: referencia.ref_id,
                 })
               }
             >
