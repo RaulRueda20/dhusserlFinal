@@ -16,7 +16,7 @@ import NuevoPasaje from "./NuevoPasaje";
 const Pasajes = () => {
   const global = useContext(adminStore);
   const { store, action } = global;
-  const { reload } = store;
+  const { reload, pasajeSeleccionado } = store;
 
   useEffect(() => {
     var service = "/referencias/lista";
@@ -24,7 +24,11 @@ const Pasajes = () => {
     adminService(service, "GET", {}, ({ data }) => {
       const { response } = data;
       action({ type: "SET_PASAJES", payload: response });
-      action({ type: "SET_PASAJE_SELECCIONADO", payload: response[0].ref_id });
+      if (pasajeSeleccionado === "")
+        action({
+          type: "SET_PASAJE_SELECCIONADO",
+          payload: response[0].ref_id,
+        });
     });
   }, [reload]);
 

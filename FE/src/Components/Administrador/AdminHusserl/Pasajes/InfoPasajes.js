@@ -105,7 +105,7 @@ const InfoPasajes = (props) => {
         contenido: pasaje.ref_def_es,
       },
     });
-  }, [pasajeSeleccionado]);
+  }, [pasaje]);
 
   const handleChangeC = (event) => {
     setClave(event.target.value);
@@ -126,17 +126,8 @@ const InfoPasajes = (props) => {
       ref_es: btoa(traduccion.nombre),
       clave: claveSeleccionada,
     };
-    console.log({
-      ref_id: pasajeSeleccionado,
-      pasaje_de: original.contenido,
-      ref_de: original.nombre,
-      pasaje_es: traduccion.contenido,
-      ref_es: traduccion.nombre,
-      clave: claveSeleccionada,
-    });
     dispatch({ type: "START_LOADING" });
     if (opcionGuardado != "editar") {
-      // console.log("expresionId", expresionId);
       let servicio = "/referencias/new/nuevoPasaje";
       adminService(servicio, "POST", JSON.stringify(params), (data) => {
         dispatch({
@@ -152,9 +143,7 @@ const InfoPasajes = (props) => {
       });
     } else {
       let servicio = "/referencias/editarPasaje/" + refIdSeleccionado;
-      //params.clave = expresionId;
       adminService(servicio, "POST", JSON.stringify(params), (data) => {
-        console.log("data al editar pasaje", data);
         dispatch({
           type: "SET_SNACKBAR",
           payload: {
