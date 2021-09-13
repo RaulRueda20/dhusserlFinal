@@ -1,0 +1,171 @@
+* Diccionario Husserl
+
+** Introducción
+El proyecto tiene 3 carpetas principales:
+
+- BE :: Contiene el código del Backend (API y conexión a base de
+  datos) del proyecto. Está desarrollado con NodeJS y Express.
+- FE :: Contiene el código del Frontend (Interfaz gráfica) del
+  proyecto. Está desarrollado con ReactJS.
+- db :: El respaldo de la base de datos creada con PostgreSQL.
+
+** Dependencias
+Este proyecto ha sido instalado sobre *Centos 7* y *MacOS*. Se dará una
+breve explicación sobre cómo instalar dichas dependencias en ambos:
+
+*** Brew (sólo para MacOS)
+- Versión :: La versión mas reciente del programa para hacer
+  instalación de dependencias del SO.
+
+  =/bin/bash -c "$(curl -fsSL
+  https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"=
+
+*** Git
+- Versión :: La versión mas reciente del programa para clonar el
+  repositorio en el servidor o máquina local donde se ejecutará el
+  proyecto.
+
+- Instalación
+  - MacOS
+    =brew install git=
+  - Centos 7
+    =yum install git=
+
+*** Node y Npmjs
+- Versión :: La versión utilizada en el servidor es 16.8.0 y 7.12.0
+  respectivamente.
+
+- Instalación
+  - MacOS
+    + =brew install nvm=
+    + =nvm install node=
+    + =nvm use node=
+  - Linux
+    - =curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash=
+    - =nvm install node=
+    - =nvm use node=
+*** Postgres
+- Versión :: La versión utilizada en el servidor es 13.4, se
+  recomienda utilizar la misma.
+
+- Instalación
+  - MacOS
+    + =brew install postgresql13=
+  - Centos 7
+    + =sudo yum -y install
+      https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm=
+    + =sudo yum -y update && sudo yum upgrade=
+    + =sudo yum -y install postgresql13 postgresql13-server=
+
+** Instalación
+Con Git clonamos el proyecto en nuestra carpeta de trabajo:
+=https://github.com/RaulRueda20/dhusserlFinal=.
+
+Una vez que se haya clonado el repositorio, tendremos las 3 carpetas
+principales: BE, FE, db. Hay que instalarlas de la siguiente manera:
+
+*** BE
+Basta con que ejecutemos =npm i= en la raíz del proyecto. Una vez que se
+termine la ejecución, corremos =npm audit fix=, para corregir posibles
+advertencias de seguridad.
+
+*** FE
+Basta con que ejecutemos =npm i= en la raíz del proyecto. Una vez que se
+termine la ejecución, corremos =npm audit fix=, para corregir posibles
+advertencias de seguridad.
+
+*** db
+Una vez que tengamos instalada nuestra base de datos Postgres, es
+necesario contar con lo siguiente:
+- Un usuario llamado *clafenor_termuse*, con password: /Cl4f3n0r_t3rmus3/.
+- Una base de datos llamada *clafenor_terminos*.
+- Deben darse todos los privilegios al usuario *clafenor_termuse* hacia
+  la base de datos.
+
+Para recuperar la base de datos se ejecuta el siguiente comando:
+
+=psql clafenor_terminos < clafenor_terminos_final.pgsql=
+
+** Ejecución
+
+*** BE
+
+Para ejecutar el programa en modo desarrollo.
+
+=npm start=
+
+y si se desea instalar en un entorno productivo, se recomienda una
+combinación de PM2 con un proxy reverso de nginx.
+
+Para instalar pm2 =npm i -g pm2=. Y sólo es necesario levantar el
+proyecto desde la raíz de BE.
+
+=pm2 start bin/dhusserl=
+
+y se incluye la configuración utilizada de nginx, para poderlo
+utilizar como reverse proxy. Para instalar nginx:
+
+- MacOS :: =brew install nginx=
+- Centos :: =sudo yum install nginx=
+- EC2 :: =sudo amazon-linux-extras install nginx1=
+
+se debe reemplazar el archivo *nginx.conf* por el archivo de la ruta:
+//etc/nginx/nginx.conf/.
+
+*** FE
+
+Para ejecutar el programa en modo desarrollo.
+
+=npm start=
+
+Para hacer un build para producción sólo basta ejecutar:
+
+=npm run build=
+
+Se recomienda poner en el public de la instancia de nginx. La ruta
+varía entre sistemas operativos y versiones de nginx.
+
+- Centos :: //usr/share/nginx/html//
+
+** Sobre el Proyecto
+
+El proyecto es, en síntesis, un repositorio interactivo de expresiones
+y pasajes del filósofo alemán *Edmund Husserl*, tanto en español como
+alemán. Alojado en el dominio: https://diccionariohusserl.org/
+
+La interfaz cuenta con 2 vistas principales:
+
+- Administrador :: Panel administrativo para agregar, editar y
+  eliminar expresiones y pasajes. Se aloja en la dirección:
+  /.../#/administrador/husserl// y cuenta con
+  las siguientes subvistas:
+  - /.../#/administrador/husserl/alfabeto/ :: Administrador de
+    expresiones.
+  - /.../#/administrador/husserl/pasajes/ :: Administrador de pasajes.
+  - /.../#/administrador/husserl/acercade/ :: Administrador del texto de
+    la sección: *Acerca de*.
+  - /.../#/administrador/husserl/manual/ :: Administrador del texto de
+    la sección: *Manual*
+  - /...#/administrador/husserl/usuarios/ :: Visualizador de usuarios.
+- Diccionario :: La vista para el público. Se aloja en la dirección:
+  https://diccionariohusserl.org/#/diccionario/husserl y cuenta con
+  las siguientes subvistas:
+  - /...#/diccionario/husserl/expresiones/ :: Catalogo de expresiones
+    ordenadas por letra e idioma.
+  - /...#/diccionario/husserl/busquedas/ :: Módulo para realizar
+    búsquedas por todo el catálogo.
+  - /...#/diccionario/husserl/pasaje/ :: Vista de la expresión
+    seleccionada, que muestra los pasajes relacionados a la expresión.
+  - /...#/diccionario/husserl/acercade/ :: Vista del texto de
+    justificación del proyecto.
+  - /...#/diccionario/husserl/guia/ :: Vista del texto de manual o guía.
+  - /...#/diccionario/TerminosyCondiciones/ :: Vista del texto que
+    describe los términos y condiciones del sitio.
+  - /...#/diccionario/aviso_privacidad/ :: Vista que muestra el aviso de
+    privacidad del sitio.
+
+** Mantenimiento
+
+*** Certificados SSL
+
+*** Cron Jobs
