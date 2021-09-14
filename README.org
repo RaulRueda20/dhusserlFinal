@@ -167,5 +167,12 @@ La interfaz cuenta con 2 vistas principales:
 ** Mantenimiento
 
 *** Certificados SSL
+  Cada tres meses se tiene que renovar el certificado de seguridad, esto se hace de
+  la siguiente manera:
+
+  - Dentro del servidor, ingresar *certbot renew --quiet*
 
 *** Cron Jobs
+  El proyecto tiene dos tipos de cron jobs, lo que sirven para hacer un respaldo de la DB y
+  los que después de cierto tiempo borran los respaldos.
+  Los primeros se activan semanalmente y se manda un correo al cliente para avisarle.
