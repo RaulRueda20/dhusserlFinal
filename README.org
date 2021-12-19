@@ -69,6 +69,8 @@ Basta con que ejecutemos =npm i= en la raíz del proyecto. Una vez que se
 termine la ejecución, corremos =npm audit fix=, para corregir posibles
 advertencias de seguridad.
 
+Posterior a la instalación del backend, si al levantar el servidor con node aparece error con el paquete http-errors, se debe instalar de manera manual con el comando npm i https-errors 
+
 *** FE
 Basta con que ejecutemos =npm i= en la raíz del proyecto. Una vez que se
 termine la ejecución, corremos =npm audit fix=, para corregir posibles
