@@ -38,8 +38,8 @@ breve explicación sobre cómo instalar dichas dependencias en ambos:
 - Instalación
   - MacOS
     + =brew install nvm=
-    + =nvm install node=
-    + =nvm use node=
+    + =nvm install v.16.8.0=
+    + =nvm use v.16.8.0=
   - Linux
     - =curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash=
     - =nvm install node=
@@ -68,6 +68,10 @@ principales: BE, FE, db. Hay que instalarlas de la siguiente manera:
 Basta con que ejecutemos =npm i= en la raíz del proyecto. Una vez que se
 termine la ejecución, corremos =npm audit fix=, para corregir posibles
 advertencias de seguridad.
+
+Posterior a la instalación del backend, si al levantar el servidor con node aparece error con el paquete http-errors, se debe instalar de manera manual con el comando npm i https-errors.
+
+Para el paquete Bcrypt se tiene que agregar sudo yum install gcc-c++ openssl-devel make como parte de sus dependencias.
 
 *** FE
 Basta con que ejecutemos =npm i= en la raíz del proyecto. Una vez que se
@@ -167,5 +171,12 @@ La interfaz cuenta con 2 vistas principales:
 ** Mantenimiento
 
 *** Certificados SSL
+  Cada tres meses se tiene que renovar el certificado de seguridad, esto se hace de
+  la siguiente manera:
+
+  - Dentro del servidor, ingresar *certbot renew --quiet*
 
 *** Cron Jobs
+  El proyecto tiene dos tipos de cron jobs, lo que sirven para hacer un respaldo de la DB y
+  los que después de cierto tiempo borran los respaldos.
+  Los primeros se activan semanalmente y se manda un correo al cliente para avisarle.
