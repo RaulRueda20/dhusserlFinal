@@ -14,7 +14,7 @@
     "@react-pdf/renderer": "^1.6.13",
     "abort-controller": "^3.0.0",
     "autoscroll-react": "^3.2.0",
-    "axios": "^0.18.0",
+    "axios": "^0.21.2",
     "babel-plugin-syntax-async-functions": "^6.13.0",
     "ckeditor4-react": "^1.1.1",
     "ckeditor4-react-advanced": "^1.1.7",
