@@ -90,6 +90,8 @@ Para recuperar la base de datos se ejecuta el siguiente comando:
 
 =psql clafenor_terminos < clafenor_terminos_final.pgsql=
 
+- Se debe modificar en el archivo pg_hba.conf los indent y peer por md5 o password;
+
 ** Ejecución
 
 *** BE
