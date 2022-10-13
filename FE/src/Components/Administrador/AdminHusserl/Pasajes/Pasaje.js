@@ -1,5 +1,5 @@
 //React
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 
 //Elements
 import CKEditor from "ckeditor4-react-advanced";
