@@ -1,7 +1,11 @@
 #pasaje .ck-content {
-	height: 54vh;
+  height: 54vh;
 }
 
-.hidden{
-	display: none;
+.hidden {
+  display: none;
+}
+
+.contenedorPasaje {
+  height: 55vh !important;
 }

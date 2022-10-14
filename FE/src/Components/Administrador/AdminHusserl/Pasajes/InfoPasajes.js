@@ -105,10 +105,6 @@ const InfoPasajes = (props) => {
     });
   }, [pasaje]);
 
-  const handleChangeC = (event) => {
-    setClave(event.target.value);
-  };
-
   const handleClickiNuevoPasaje = () => {
     action({ type: "RESET_PASAJE" });
     action({ type: "SET_PASAJE_SELECCIONADO", payload: "" });
@@ -125,7 +121,7 @@ const InfoPasajes = (props) => {
       clave: claveSeleccionada,
     };
     dispatch({ type: "START_LOADING" });
-    if (opcionGuardado != "editar") {
+    if (opcionGuardado !== "editar") {
       let servicio = "/referencias/new/nuevoPasaje";
       adminService(servicio, "POST", JSON.stringify(params), (data) => {
         dispatch({
@@ -140,7 +136,7 @@ const InfoPasajes = (props) => {
         dispatch({ type: "STOP_LOADING" });
       });
     } else {
-      let servicio = "/referencias/editarPasaje/" + refIdSeleccionado;
+      let servicio = "/referencias/editarPasaje/" + pasajeSeleccionado;
       adminService(servicio, "POST", JSON.stringify(params), (data) => {
         dispatch({
           type: "SET_SNACKBAR",

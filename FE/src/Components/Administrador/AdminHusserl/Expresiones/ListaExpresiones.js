@@ -3,7 +3,6 @@ import classNames from "classnames";
 
 const ListaExpresiones = (props) => {
   const handleClickExpresion = (event) => {
-    // console.log("target Value de lista expresiones", event.target.value);
     props.setIdExpresion(event.target.value);
   };
 

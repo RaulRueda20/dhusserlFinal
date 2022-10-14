@@ -88,7 +88,7 @@ const ModalVerTambien = (props) => {
     if (props.expresion.id != null) {
       var service = "/vertambien/" + props.expresion.id;
       adminService(service, "GET", {}, ({ data }) => {
-        const { response } = data
+        const { response } = data;
         setListaVerTambien(response);
       });
     }
@@ -168,15 +168,13 @@ const ModalVerTambien = (props) => {
     props.expresiones.map((expresionp) => {
       var expresionVertNombre =
         expresionp.t_id + expresionp.t_term_de + expresionp.t_term_es;
-      var expresionVertEncontrada = expresionVertNombre.indexOf(
-        expresionVertBuscada
-      );
+      var expresionVertEncontrada =
+        expresionVertNombre.indexOf(expresionVertBuscada);
       document
-        .getElementById("vertam" + props.expresion.t_id)
-        .classList.remove("hiddenE");
-      if (expresionVertEncontrada == -1) {
-        document.getElementById("vertam" + expresionp.t_id).className +=
-          " hiddenE";
+        .getElementById("vt" + props.expresion.t_id)
+        ?.classList?.remove("hiddenE");
+      if (expresionVertEncontrada === -1) {
+        document.getElementById("vt" + expresionp.t_id).className += " hiddenE";
       }
     });
   };

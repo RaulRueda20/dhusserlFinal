@@ -89,12 +89,10 @@ const Busquedas = (props) => {
   const handleChangeBusqueda = (event) => {
     event.preventDefault();
     dispatch({ type: "START_LOADING" });
-    console.log("Busqueda", busqueda);
     if (busqueda == "") {
       setModalDebusquedas(true);
       dispatch({ type: "STOP_LOADING" });
     } else {
-      console.log("tipoBusqueda", tipoBusqueda);
       if (tipoBusqueda == "Referencia") {
         const servicebr = "/expresiones/busqueda/" + insensitiveCase;
         webService(
@@ -128,9 +126,7 @@ const Busquedas = (props) => {
           sesion,
           ({ data }) => {
             const { response } = data;
-            console.log("response", response);
             if (response != null) {
-              console.log("Entre");
               attend({
                 type: "SET_TIPO_BUSQUEDA_REALIZADA",
                 payload: "Expresion",
@@ -150,7 +146,6 @@ const Busquedas = (props) => {
   };
 
   useEffect(() => {
-    console.log("expresionesEncontradas", expresionesEncontradas);
     attend({
       type: "SET_POSICION_PASAJE",
       payload: 0,

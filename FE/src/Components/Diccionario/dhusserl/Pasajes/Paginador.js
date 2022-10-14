@@ -34,12 +34,6 @@ const Pasaje = (props) => {
   // let idDeExpresion es el id que se toma de la URL, idExpresion es un estado que llama servicios y tiene otras funcionalidades
 
   useEffect(() => {
-    console.log("props.expresionId en paginador", props.expresionId);
-    console.log(
-      "props.referenciaSeleccionada.refid en paginador",
-      props.referenciaSeleccionada.refid
-    );
-    console.log("posicion en paginador", posicion);
     setPosicion(0);
     if (props.referencias.length > 0) setReferencias(props.referencias);
     if (props.referenciaSeleccionada != null) {
