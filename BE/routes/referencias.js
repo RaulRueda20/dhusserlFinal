@@ -445,17 +445,15 @@ router.post("/new/nuevoPasaje/", function (req, res) {
     res.locals.connection
       .query("select * from referencia where ref_id=$1;", [ref_id])
       .then(function (result) {
-        // console.log(result)
         if (result.length <= 0) {
           var filter = [req.body.clave, pas_de, pas_es, ref_de, ref_es, ref_id];
-          // console.log(filter)
+          console.log("Filtro!!!!", filter);
           var queryString =
             "\
-                INSERT INTO referencia (clave, ref_def_de, ref_def_es, ref_libro_es, ref_libro_de, ref_id) VALUES ($1, $2, $3, $4, $5, $6);";
+                INSERT INTO referencia (clave, ref_def_de, ref_def_es, ref_libro_de, ref_libro_es, ref_id) VALUES ($1, $2, $3, $4, $5, $6);";
           res.locals.connection
             .query(queryString, filter)
             .then(function (results) {
-              // console.log(results)
               res.send(
                 JSON.stringify({ status: 200, error: null, response: "Hey" })
               );
