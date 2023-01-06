@@ -1,5 +1,5 @@
 //React
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 
 //Elements
 import CKEditor from "ckeditor4-react-advanced";
@@ -122,7 +122,7 @@ const Pasaje = (props) => {
         >
           <CKEditor
             data={
-              tipo === "original" ? original.contenido : traduccion.contenido
+              tipo !== "traduccion" ? original.contenido : traduccion.contenido
             }
             onChange={(evt) => {
               const data = evt.editor.getData();

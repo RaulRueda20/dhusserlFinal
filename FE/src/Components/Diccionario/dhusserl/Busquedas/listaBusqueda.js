@@ -48,7 +48,7 @@ const ListaBusqueda = (props) => {
 
     attend({
       type: "SET_ID_PASAJE",
-      payload: id.split("-")[0],
+      payload: id.split("-")[1],
     });
   };
 

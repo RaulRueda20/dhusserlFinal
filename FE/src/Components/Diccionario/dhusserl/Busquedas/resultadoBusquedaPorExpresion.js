@@ -140,29 +140,27 @@ const ResultadoBusquedaExpresion = (props) => {
             {pasajesAsociados(lang)}
           </Typography>
           <ul className="ulExpresionesRelacionadas">
-            {expresionSeleccionada?.referencias.map((referenciasList) => (
-              <li
-                key={expresionSeleccionada.id}
-                className="liExpresionesRelacionadas"
-              >
-                <Link
-                  to={`${props?.match?.path.slice(0, 20)}/pasaje/${
-                    expresionSeleccionada?.id
-                  }/${expresionSeleccionada?.referencias[0].refid}`}
-                  onClick={(e) => consultaDePasajes(e)}
-                  id={
-                    expresionSeleccionada.referencias[0].refid +
-                    "/" +
-                    expresionSeleccionada.id
-                  }
+            {referencias.map((referenciasList, index) => {
+              return referenciasList ? (
+                <li
+                  key={referenciasList.refid}
+                  className="liExpresionesRelacionadas"
                 >
-                  <Typography className="referenciasTypo">
-                    {referenciasList?.referencia_original} {" // "}
-                    {referenciasList?.referencia_traduccion}
-                  </Typography>
-                </Link>
-              </li>
-            ))}
+                  <Link
+                    to={`${props?.match?.path.slice(0, 20)}/pasaje/${
+                      expresionSeleccionada?.id
+                    }/${referenciasList.refid}`}
+                    onClick={(e) => consultaDePasajes(e)}
+                    id={referenciasList.refid + "/" + expresionSeleccionada.id}
+                  >
+                    <Typography className="referenciasTypo">
+                      {referenciasList?.referencia_original} {" // "}
+                      {referenciasList?.referencia_traduccion}
+                    </Typography>
+                  </Link>
+                </li>
+              ) : null;
+            })}
           </ul>
         </Grid>
         <Grid item xs={12} sm={4} md={4} lg={4}>
