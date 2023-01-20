@@ -1,5 +1,5 @@
 //React
-import React, { useEffect, useState, Fragment } from "react";
+import React, { useEffect, useState } from "react";
 
 //Elements
 import { Typography, Grid, Divider } from "@material-ui/core";
@@ -41,6 +41,7 @@ const InfoExpresiones = (props) => {
   const { classes } = props;
   const [hijos, setHijos] = useState([]);
   const [padres, setPadres] = useState([]);
+  const [verTambien, setVerTambien] = useState([]);
 
   useEffect(() => {
     // console.log("expresion", props.expresion);
@@ -62,6 +63,17 @@ const InfoExpresiones = (props) => {
         setHijos(response);
       }
     );
+    if (props.expresionId) {
+      adminService(
+        "/vertambien/" + props.expresionId,
+        "GET",
+        {},
+        ({ data }) => {
+          const { response } = data;
+          setVerTambien(response);
+        }
+      );
+    }
   }, [props.expresionId, props.reloadExpresion]);
 
   const paintJerarquia = (lista) => {
@@ -74,7 +86,7 @@ const InfoExpresiones = (props) => {
   };
 
   return (
-    <Fragment>
+    <>
       <Grid container className={classes.titulo} alignItems="center">
         <Grid item xs={7} className={classes.tit}>
           <Typography variant="h3">
@@ -99,7 +111,7 @@ const InfoExpresiones = (props) => {
       </Grid>
       <Divider className="divisor" />
       <Grid container className={classes.infoPanel}>
-        <Grid item xs={6} className={classes.contenedordeinfo}>
+        <Grid item md={4} xs={12} className={classes.contenedordeinfo}>
           <Typography variant="h3" className={classes.subtitulos}>
             Información
           </Typography>
@@ -142,7 +154,7 @@ const InfoExpresiones = (props) => {
           </Grid>
         </Grid>
 
-        <Grid item xs={6}>
+        <Grid item md={4} xs={12} className={classes.contenedordeinfo}>
           <Typography variant="h3" className={classes.subtitulos}>
             Parentesco
           </Typography>
@@ -184,9 +196,31 @@ const InfoExpresiones = (props) => {
             </Grid>
           </Grid>
         </Grid>
+
+        <Grid item md={4} xs={12}>
+          <Typography variant="h3" className={classes.subtitulos}>
+            Ver También
+          </Typography>
+          <br />
+          <br />
+          {verTambien?.map((verTambienItem) => (
+            <Grid container spacing={2}>
+              <Grid item xs={6}>
+                <Typography variant="h4">
+                  {verTambienItem?.expresion}
+                </Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Typography variant="h4">
+                  {verTambienItem?.traduccion}
+                </Typography>
+              </Grid>
+            </Grid>
+          ))}
+        </Grid>
       </Grid>
       <Divider className="divisor" />
-    </Fragment>
+    </>
   );
 };
 
