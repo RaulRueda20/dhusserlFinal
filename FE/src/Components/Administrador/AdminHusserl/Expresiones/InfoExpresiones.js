@@ -27,6 +27,8 @@ const infoExpresiones = {
   },
   infoPanel: {
     padding: "25px 0px",
+    maxHeight: "35vh",
+    overflowY: "scroll",
   },
   w100: {
     width: "100% !important",
