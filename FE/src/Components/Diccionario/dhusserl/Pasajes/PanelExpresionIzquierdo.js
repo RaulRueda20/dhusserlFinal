@@ -33,9 +33,6 @@ const PanelExpresionIzquierdo = ({ match, expresion, index, idExpresion }) => {
   }, [match?.params?.expresion]);
 
   const clickHandleVista = (event, index, referencia, expresionId) => {
-    console.log("expresionId panel", expresionId);
-    console.log("referencia panel", referencia);
-    console.log("index panel", index);
     setTimeout(() => {
       if (
         document
@@ -92,9 +89,6 @@ const PanelExpresionIzquierdo = ({ match, expresion, index, idExpresion }) => {
   };
 
   const guardadoDePasajes = (event, index, referencia, expresionId) => {
-    console.log("expresionId panel", expresionId);
-    console.log("referencia panel", referencia);
-    console.log("index panel", index);
     setTimeout(() => {
       if (
         document
@@ -109,7 +103,6 @@ const PanelExpresionIzquierdo = ({ match, expresion, index, idExpresion }) => {
 
     let idReferenciaConsultada = expresion.id;
     let refIdReferenciaConsultada = event.currentTarget.id.split("/")[1];
-    // console.log("RefId panel izquierdo", event.currentTarget.id.split("/"));
     let service =
       "/referencias/obtieneReferenciasIdRefId/" +
       idReferenciaConsultada +
@@ -209,7 +202,6 @@ const PanelExpresionIzquierdo = ({ match, expresion, index, idExpresion }) => {
             {expresion?.referencias[0]?.refid == null
               ? "No hay ninguna referencia para esta expresión. Ver por favor la lista de expresiones derivadas."
               : expresion?.referencias.map((referencia, index) => {
-                  // console.log("referencia", referencia);
                   return (
                     <li className="referencia" id={"panel" + index}>
                       <Grid container justify="center" alignItems="center">

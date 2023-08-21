@@ -1,5 +1,5 @@
 // React
-import React, { useContext, useState, Fragment } from "react";
+import React, { useContext, useState } from "react";
 
 // Components
 import { Link } from "react-router-dom";
@@ -63,7 +63,6 @@ const PanelExpresion = ({ match, expresion, index, getJerarquia }) => {
       refIdReferenciaConsultada;
     webService(service, "GET", {}, sesion, (data) => {
       const referencias = fixReferenciasConsultadas(data.data.response);
-      // console.log("referencias Panel Expresion", referencias);
       if (!localStore.getObjects("ultimasVisitadas")) {
         let referenciasConsultadas = [];
         referenciasConsultadas.push(referencias);
@@ -112,7 +111,7 @@ const PanelExpresion = ({ match, expresion, index, getJerarquia }) => {
   };
 
   return (
-    <Fragment>
+    <>
       <li
         className={classNames([
           { pasajeSeleccionado: expresion.id == expresionSeleccionada?.id },
@@ -203,7 +202,7 @@ const PanelExpresion = ({ match, expresion, index, getJerarquia }) => {
           </ul>
         ) : null}
       </li>
-    </Fragment>
+    </>
   );
 };
 

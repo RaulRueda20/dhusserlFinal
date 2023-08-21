@@ -1,5 +1,5 @@
 //React
-import React, { useContext, useState, useEffect, Fragment } from "react";
+import React, { useContext, useState, useEffect } from "react";
 
 //Elements
 import classNames from "classnames";
@@ -126,7 +126,7 @@ const Expresion = (props) => {
   };
 
   return (
-    <Fragment>
+    <>
       <Grid container>
         <Grid item xs={12}>
           <ListaLetras />
@@ -229,7 +229,7 @@ const Expresion = (props) => {
         setModalDebusquedas={setModalDebusquedas}
         match={props.match}
       />
-    </Fragment>
+    </>
   );
 };
 

@@ -1,9 +1,10 @@
-var express = require("express");
+const express = require("express");
 //var bcrypt = require('bcrypt');
-var router = express.Router();
-var fs = require("fs"),
+const router = express.Router();
+const fs = require("fs"),
   path = require("path"),
   filePath = path.join(__dirname, "queryprincipal");
+const R = require("ramda");
 
 router.post("/agregarReferencia", function (req, res, next) {
   if (global.rol == "admin") {
@@ -447,7 +448,6 @@ router.post("/new/nuevoPasaje/", function (req, res) {
       .then(function (result) {
         if (result.length <= 0) {
           var filter = [req.body.clave, pas_de, pas_es, ref_de, ref_es, ref_id];
-          console.log("Filtro!!!!", filter);
           var queryString =
             "\
                 INSERT INTO referencia (clave, ref_def_de, ref_def_es, ref_libro_de, ref_libro_es, ref_id) VALUES ($1, $2, $3, $4, $5, $6);";
@@ -770,8 +770,8 @@ router.post("/busquedaExpresion/:case", function (req, res, next) {
     }
     var condicion =
       req.params.case == "false"
-        ? 'where termino.t_term_es ilike $1 COLLATE "de_DE" or termino.t_term_de ilike $1 COLLATE "de_DE"'
-        : 'where termino.t_term_es like $1 COLLATE "de_DE" or termino.t_term_de like $1 COLLATE "de_DE"';
+        ? "where termino.t_term_es ilike $1 or termino.t_term_de ilike $1"
+        : "where termino.t_term_es like $1 or termino.t_term_de like $1";
     console.log("condicion", condicion);
     var queryString =
       "\
@@ -976,8 +976,9 @@ router.post(
                 WHEN clave = 'PW' THEN 2 \
                 WHEN clave = 'I1' THEN 3 \
                 WHEN clave = 'I2' THEN 4 \
-                WHEN clave = 'PV' THEN 5 \
-                WHEN clave = 'CM' THEN 6 \
+                WHEN clave = 'I3' THEN 5 \
+                WHEN clave = 'PV' THEN 6 \
+                WHEN clave = 'CM' THEN 7 \
                 END, refid;";
         var terminos =
           "termino.t_term_es as expresion, termino.t_term_de as traduccion,";
@@ -997,13 +998,14 @@ router.post(
         }
         var ordenamiento =
           "order by termino.t_em_de, termino_referencia.tr_order,\
-    		CASE WHEN clave = 'IP' THEN 1 \
-      		WHEN clave = 'PW' THEN 2 \
-      		WHEN clave = 'I1' THEN 3 \
-      		WHEN clave = 'I2' THEN 4 \
-      		WHEN clave = 'PV' THEN 5 \
-      		WHEN clave = 'CM' THEN 6 \
-     		END, refid;";
+    		    CASE WHEN clave = 'IP' THEN 1 \
+            WHEN clave = 'PW' THEN 2 \
+            WHEN clave = 'I1' THEN 3 \
+            WHEN clave = 'I2' THEN 4 \
+            WHEN clave = 'I3' THEN 5 \
+            WHEN clave = 'PV' THEN 6 \
+            WHEN clave = 'CM' THEN 7 \
+            END, refid;";
         var terminos =
           "termino.t_term_de as expresion, termino.t_term_es as traduccion,";
         var prettys =
