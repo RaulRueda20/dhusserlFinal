@@ -455,8 +455,6 @@ a:hover {
 
 .listaReferencia {
   margin-top: 30px !important;
-  padding-left: 100px !important;
-  padding-right: 348px !important;
   max-height: 73vh;
   overflow: scroll;
 }

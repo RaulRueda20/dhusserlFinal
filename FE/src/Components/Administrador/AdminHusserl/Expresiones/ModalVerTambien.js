@@ -1,5 +1,5 @@
 //React
-import React, { useEffect, useState, Fragment } from "react";
+import React, { useEffect, useState } from "react";
 
 //Elements
 import classNames from "classnames";
@@ -33,8 +33,11 @@ import { adminService } from "../../../../js/webServices";
 const addVT = (expresionId, index, lista, last) => {
   var service = "/vertambien/" + expresionId + "/" + lista[index].split("t")[1];
   adminService(service, "POST", {}, (datax) => {
+    console.log({ datax });
     if (index + 1 < lista.length) {
-      return addVT(expresionId, index + 1, lista, last);
+      console.log("entre aqui");
+      return last();
+      // return addVT(expresionId, index + 1, lista, last);
     } else {
       return last();
     }
@@ -83,12 +86,13 @@ const ModalVerTambien = (props) => {
   const [loading, setLoading] = useState(false);
   const [reload, setReload] = useState(true);
   const [open, setOpen] = useState(false);
+  const [busqueda, setBusqueda] = useState("");
 
   useEffect(() => {
     if (props.expresion.id != null) {
       var service = "/vertambien/" + props.expresion.id;
       adminService(service, "GET", {}, ({ data }) => {
-        const { response } = data
+        const { response } = data;
         setListaVerTambien(response);
       });
     }
@@ -128,6 +132,7 @@ const ModalVerTambien = (props) => {
 
   const add = () => {
     if (!checkExistence()) {
+      console.log("checkExistence", checkExistence);
       setLoading(true);
       addVT(props.expresion.id, 0, selectedExpresions, () => {
         setLoading(false);
@@ -135,6 +140,15 @@ const ModalVerTambien = (props) => {
           open: true,
           text: "Se ha(n) vinculado el/los expresión(es) con éxito.",
         });
+        console.log("addVT", addVT);
+        setSelectedExpresions([]);
+        document
+          .getElementsByClassName("selected")
+          .forEach((element) => element.classList.remove("selected"));
+        hiddenE
+          .getElementsByClassName("hiddenE")
+          .forEach((element) => element.classList.remove("hiddenE"));
+        setBusqueda("");
         setReload(!reload);
       });
     }
@@ -145,7 +159,7 @@ const ModalVerTambien = (props) => {
   }
 
   const addEToList = (id) => {
-    var se = selectedExpresions;
+    let se = selectedExpresions;
     if (se.indexOf(id) < 0) se.push(id);
     else se.splice(selectedExpresions.indexOf(id), 1);
     document.getElementById(id).classList.toggle("selected");
@@ -165,24 +179,23 @@ const ModalVerTambien = (props) => {
 
   const handleChangeBusquedaVerTambien = (event) => {
     var expresionVertBuscada = event.target.value;
-    props.expresiones.map((expresionp) => {
+    setBusqueda(expresionVertBuscada);
+    props.expresiones.forEach((expresionp) => {
       var expresionVertNombre =
         expresionp.t_id + expresionp.t_term_de + expresionp.t_term_es;
-      var expresionVertEncontrada = expresionVertNombre.indexOf(
-        expresionVertBuscada
-      );
+      var expresionVertEncontrada =
+        expresionVertNombre.indexOf(expresionVertBuscada);
       document
-        .getElementById("vertam" + props.expresion.t_id)
-        .classList.remove("hiddenE");
-      if (expresionVertEncontrada == -1) {
-        document.getElementById("vertam" + expresionp.t_id).className +=
-          " hiddenE";
+        .getElementById("vt" + props.expresion.t_id)
+        ?.classList?.remove("hiddenE");
+      if (expresionVertEncontrada === -1) {
+        document.getElementById("vt" + expresionp.t_id).className += " hiddenE";
       }
     });
   };
 
   return (
-    <Fragment>
+    <>
       <Tooltip title="Ver También">
         <IconButton onClick={() => handleOpenModal()}>
           <Share />
@@ -253,6 +266,7 @@ const ModalVerTambien = (props) => {
                   <SearchIcon />
                 </InputAdornment>
               }
+              value={busqueda}
               onChange={handleChangeBusquedaVerTambien}
             />
           </FormControl>
@@ -281,7 +295,7 @@ const ModalVerTambien = (props) => {
           </Button>
         </Paper>
       </Modal>
-    </Fragment>
+    </>
   );
 };
 

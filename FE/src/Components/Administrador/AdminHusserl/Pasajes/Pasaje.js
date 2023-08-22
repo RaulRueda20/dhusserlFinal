@@ -1,5 +1,5 @@
 //React
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 
 //Elements
 import CKEditor from "ckeditor4-react-advanced";
@@ -47,7 +47,7 @@ const infopasajes = {
 const Pasaje = (props) => {
   const global = useContext(adminStore);
   const { action, store } = global;
-  const { claveSeleccionada, refIdSeleccionado, original, traduccion } = store;
+  const { claveSeleccionada, original, traduccion } = store;
   const { classes, tipo } = props;
 
   const updateName = (event) => {
@@ -114,7 +114,7 @@ const Pasaje = (props) => {
       <Grid container>
         <Grid
           item
-          className={classes.contenedoreditorpasaje}
+          className={"contenedorPasaje"}
           id={
             "pasaje" +
             (tipo === "original" ? original.nombre : traduccion.nombre)
@@ -122,7 +122,7 @@ const Pasaje = (props) => {
         >
           <CKEditor
             data={
-              tipo === "original" ? original.contenido : traduccion.contenido
+              tipo !== "traduccion" ? original.contenido : traduccion.contenido
             }
             onChange={(evt) => {
               const data = evt.editor.getData();

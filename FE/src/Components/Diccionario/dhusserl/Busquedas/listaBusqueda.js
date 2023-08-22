@@ -48,21 +48,14 @@ const ListaBusqueda = (props) => {
 
     attend({
       type: "SET_ID_PASAJE",
-      payload: id.split("-")[0],
+      payload: id.split("-")[1],
     });
   };
 
   useEffect(() => {
-    console.log(
-      "ultimo consolelog en hacer mtfckr",
-      expresionesEncontradas,
-      tipoBusqueda
-    );
     if (tipoBusqueda == "Referencia") {
       document.getElementById("listaReferencia").firstChild.scrollIntoView();
     } else {
-      //console.log(document.getElementById("listaExpresion").firstChild);
-      console.log("expresionesEncontradas en la lista", expresionesEncontradas);
       document.getElementById("listaExpresion").firstChild.scrollIntoView();
     }
   }, [expresionesEncontradas]);

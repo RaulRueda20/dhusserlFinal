@@ -47,9 +47,6 @@ const ResultadoBusquedaReferencia = (props) => {
   // const [referencias, setReferencias] = useState("");
 
   const componeParametro = (parametro) => {
-    //console.log("ENTRE A COMPONEPARAMETRO");
-    //console.log("parametro al iniciar", parametro);
-    //let nuevoParametro = parametro;
     parametro = parametro.replace("á", "&aacute;");
     parametro = parametro.replace("é", "&eacute;");
     parametro = parametro.replace("í", "&iacute;");
@@ -72,8 +69,6 @@ const ResultadoBusquedaReferencia = (props) => {
     parametro = parametro.replace("Ï", "&Iuml;");
     parametro = parametro.replace("Ö", "&Ouml;");
     parametro = parametro.replace("Ü", "&Uuml;");
-
-    //console.log("al final de la funcion", parametro);
 
     return parametro;
   };

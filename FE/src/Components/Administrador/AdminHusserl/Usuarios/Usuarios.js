@@ -23,6 +23,7 @@ import { makeStyles, useTheme } from "@material-ui/styles";
 // Other req
 import { adminService } from "../../../../js/webServices";
 import "../../../../css/expresiones.css";
+import { Pages } from "@material-ui/icons";
 
 const useStyles1 = makeStyles((theme) => ({
   root: {
@@ -154,10 +155,6 @@ const Usuarios = () => {
     rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
   };
 
-  const handleChangePage = (newPage) => {
-    setPage(newPage);
-  };
-
   function handleChangeRowsPerPage(event) {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
@@ -240,7 +237,7 @@ const Usuarios = () => {
                   inputProps: { "aria-label": "rows per page" },
                   native: true,
                 }}
-                onChangePage={handleChangePage}
+                onChangePage={(event, page) => setPage(page)}
                 onChangeRowsPerPage={handleChangeRowsPerPage}
                 ActionsComponent={TablePaginationActions}
                 className={classes.paginador}

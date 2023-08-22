@@ -72,18 +72,14 @@ const NuevaExpresion = (props) => {
 
   useEffect(() => {
     if (props.expresionSeleccionada != "") {
-      console.log("expresionSeleccionada", props.expresionSeleccionada);
       var service =
         "/referencias/obtieneReferenciasByTerm/" + props.expresionSeleccionada;
       adminService(service, "GET", {}, ({ data }) => {
         const { response } = data;
-        console.log("response", response);
         if (response.length > 0) {
           setExpresion(response[0]);
           if (response[0].refid) {
-            console.log("ANTES");
             setPasajes(response);
-            console.log("DESPUES");
           } else {
             setPasajes([]);
           }

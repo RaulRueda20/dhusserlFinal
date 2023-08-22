@@ -69,7 +69,6 @@ const InfoPasajes = (props) => {
   const {
     pasajeSeleccionado,
     pasaje,
-    pasajes,
     original,
     traduccion,
     refIdSeleccionado,
@@ -82,7 +81,6 @@ const InfoPasajes = (props) => {
   const [opcionGuardado, setOpcionGuardado] = useState("editar");
 
   useEffect(() => {
-    console.log("INFO");
     action({
       type: "SET_CLAVE",
       payload: pasaje.clave,
@@ -107,10 +105,6 @@ const InfoPasajes = (props) => {
     });
   }, [pasaje]);
 
-  const handleChangeC = (event) => {
-    setClave(event.target.value);
-  };
-
   const handleClickiNuevoPasaje = () => {
     action({ type: "RESET_PASAJE" });
     action({ type: "SET_PASAJE_SELECCIONADO", payload: "" });
@@ -119,7 +113,7 @@ const InfoPasajes = (props) => {
 
   const handleClickEditarPasaje = () => {
     const params = {
-      ref_id: btoa(pasajeSeleccionado),
+      ref_id: btoa(refIdSeleccionado),
       pasaje_de: btoa(original.contenido),
       ref_de: btoa(original.nombre),
       pasaje_es: btoa(traduccion.contenido),
@@ -127,7 +121,7 @@ const InfoPasajes = (props) => {
       clave: claveSeleccionada,
     };
     dispatch({ type: "START_LOADING" });
-    if (opcionGuardado != "editar") {
+    if (opcionGuardado !== "editar") {
       let servicio = "/referencias/new/nuevoPasaje";
       adminService(servicio, "POST", JSON.stringify(params), (data) => {
         dispatch({
@@ -142,7 +136,7 @@ const InfoPasajes = (props) => {
         dispatch({ type: "STOP_LOADING" });
       });
     } else {
-      let servicio = "/referencias/editarPasaje/" + refIdSeleccionado;
+      let servicio = "/referencias/editarPasaje/" + pasajeSeleccionado;
       adminService(servicio, "POST", JSON.stringify(params), (data) => {
         dispatch({
           type: "SET_SNACKBAR",
@@ -200,19 +194,19 @@ const InfoPasajes = (props) => {
     setOpenAlP(false);
   };
 
-  const handleChangePasajes = (event) => {
-    action({ type: "SET_REFID", payload: event.target.value });
+  const handleChangePasajes = (e) => {
+    action({ type: "SET_REFID", payload: e.target.value });
   };
 
   return (
     <div className={classes.cartainfodepasajes}>
-      <Grid container alignItems="center" className={classes.headerContainer}>
+      <Grid container alignItem="center" className={classes.headerContainer}>
         <Grid item xs={10} className={classes.textCont}>
           <TextField
             id="standard-name"
             value={refIdSeleccionado}
             className={classes.textfieldlista}
-            onChange={handleChangePasajes}
+            onChange={(e) => handleChangePasajes(e)}
           />
         </Grid>
         <Grid item xs={1} className={classes.botoneliminarpasaje}>

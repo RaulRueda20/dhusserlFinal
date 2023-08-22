@@ -1,5 +1,5 @@
 //React
-import React, { useContext, useState, useEffect, Fragment } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 //Elements
 import {
@@ -136,43 +136,6 @@ const Pasaje = (props) => {
     }
   };
 
-  const fixPasajes = (pasajes) => {
-    let pasajesArreglados = [];
-    let posicionActual = -1;
-    let pasajeActual = "";
-    let i = 0;
-    while (i < pasajes.length) {
-      if (pasajeActual != pasajes[i].ref_id) {
-        posicionActual++;
-        pasajeActual = pasajes[i].ref_id;
-        pasajesArreglados.push({
-          ref_id: pasajes[i].refid,
-          ref_original: pasajes[i].ref_original,
-          ref_traduccion: pasajes[i].ref_traduccion,
-          ref_libro_de: pasajes[i].pasaje_original,
-          ref_libro_es: pasajes[i].pasaje_traduccion,
-          expresiones: [],
-        });
-        pasajesArreglados[posicionActual].expresiones.push({
-          orden: pasajes[i].orden,
-          expresion_original: pasajes[i].expresion_original,
-          expresion_traduccion: pasajes[i].expresion_traduccion,
-          t_id: pasajes[i].id,
-        });
-        i++;
-      } else {
-        pasajesArreglados[posicionActual].expresiones.push({
-          orden: pasajes[i].orden,
-          expresion_original: pasajes[i].expresion_original,
-          expresion_traduccion: pasajes[i].expresion_traduccion,
-          t_id: pasajes[i].id,
-        });
-        i++;
-      }
-    }
-    return pasajesArreglados;
-  };
-
   useEffect(() => {
     setLoading(true);
     const idDeExpresion = props.match.params.expresion;
@@ -194,17 +157,13 @@ const Pasaje = (props) => {
           },
         });
         setLoading(false);
-        // setExpresiones(fixReferencias(response));
-        // setChunkList(fixReferencias(response).slice(0, 50));
       });
     }
     if (idDeExpresion == "QV") {
       service = "/referencias/obtieneReferenciasByRef/" + idDeLaReferencia;
       webService(service, "GET", {}, sesion, ({ data }) => {
         const { response } = data;
-        // console.log(response);
-        const fixedThing = fixPasajes(response);
-        // console.log("Fixed thing", fixedThing);
+        const fixedThing = fixReferencias(response);
         setQv(fixedThing[0]);
         setIsQV(true);
         setLoading(false);
@@ -231,7 +190,6 @@ const Pasaje = (props) => {
           });
           setReferenciaSeleccionada("none");
         }
-        // console.log(response);
         attend({
           type: "SELECT_EXPRESION",
           payload: {
@@ -270,7 +228,7 @@ const Pasaje = (props) => {
   }
 
   return (
-    <Fragment>
+    <>
       <Hidden xsDown>
         {panelIzquierdo == false ? (
           <IconButton
@@ -408,7 +366,7 @@ const Pasaje = (props) => {
           className={classNames([{ contenidoPasajes: openHidden == true }])}
         >
           {!isQV ? (
-            <Fragment>
+            <>
               <ContenidoPasaje
                 referencias={referencias}
                 referenciaSeleccionada={referenciaSeleccionada}
@@ -427,7 +385,7 @@ const Pasaje = (props) => {
                   expresionId={props.match.params.expresion}
                 />
               )}
-            </Fragment>
+            </>
           ) : (
             <div style={{ padding: "30px 15px" }}>
               <div dangerouslySetInnerHTML={htmlPasajeOriginal()}></div>
@@ -527,7 +485,7 @@ const Pasaje = (props) => {
         setModalDebusquedas={setModalDebusquedas}
         match={props.match}
       />
-    </Fragment>
+    </>
   );
 };
 

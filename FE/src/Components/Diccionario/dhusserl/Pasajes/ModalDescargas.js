@@ -212,7 +212,6 @@ const ModalDescargas = (props) => {
         //   }
         // });
         if (checked.length > 0) {
-          console.log("ENTRE al segundo if");
           for (let i in checked) {
             let refid = checked[i].split("/")[0];
             let id = checked[i].split("/")[1];
@@ -304,10 +303,6 @@ const ModalDescargas = (props) => {
       }
     }
   };
-
-  useEffect(() => {
-    console.log("global Language", globalLanguage);
-  }, []);
 
   return (
     <Fragment>
