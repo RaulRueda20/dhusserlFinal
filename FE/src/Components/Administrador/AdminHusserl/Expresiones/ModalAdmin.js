@@ -29,25 +29,23 @@ const estiloModalExpresiones = (theme) => ({
     width: "80%",
   },
   modalin: {
-    top: "20vh",
-    left: "calc(20vw - 30px)",
+    top: "10vh",
+    left: "calc(50% - 30vw)",
     width: "60vw",
     padding: "20px 30px",
     position: "absolute",
-    height: "70vh",
   },
   contenedorSubtitulos: {
-    width: "100%",
     padding: "15px 15px",
-  },
-  botonClear: {
-    // left: "210px",
-    // bottom: "20px"
   },
   botonAgregar: {
     width: "50%",
     left: "50%",
-    top: "10px",
+    marginTop: "15px !important",
+    marginRight: "30 px !importan",
+  },
+  closeButton: {
+    textAlign: "right",
   },
 });
 
@@ -129,8 +127,8 @@ function ModalAdmin(props) {
             <Grid item xs={11}>
               <Typography variant="h3">Nueva Expresión</Typography>
             </Grid>
-            <Grid item xs={1}>
-              <IconButton onClick={handleClose} className={classes.botonClear}>
+            <Grid item xs={1} className={classes.closeButton}>
+              <IconButton onClick={handleClose}>
                 <ClearIcon fontSize="small" />
               </IconButton>
             </Grid>

@@ -128,6 +128,7 @@ const Pasaje = (props) => {
               const data = evt.editor.getData();
               updateContenido(data);
             }}
+            className="pasajeCKE"
             config={{
               toolbar: [
                 [

@@ -125,6 +125,7 @@ ul {
   border-bottom: 1px lightgray solid;
   font-family: "Roboto", "Helvetica", "Arial", sans-serif;
   color: rgba(80, 80, 80);
+  cursor: pointer;
 }
 
 .listasAdmin {

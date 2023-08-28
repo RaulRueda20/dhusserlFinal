@@ -31,9 +31,8 @@ const estiloModalExpresiones = (theme) => ({
   },
   modalin: {
     top: "10vh",
-    left: "calc(20vw - 120px)",
+    left: "calc(50% - 30vw)",
     width: "60vw",
-    height: "50vh",
     padding: "20px 30px",
     position: "absolute",
   },
@@ -45,6 +44,9 @@ const estiloModalExpresiones = (theme) => ({
     left: "50%",
     marginTop: "15px !important",
     marginRight: "30 px !importan",
+  },
+  closeButton: {
+    textAlign: "right",
   },
 });
 
@@ -130,7 +132,7 @@ const ModalEditar = (props) => {
             <Grid item xs={11}>
               <Typography variant="h3">Editar Expresión</Typography>
             </Grid>
-            <Grid item xs={1}>
+            <Grid item xs={1} className={classes.closeButton}>
               <IconButton onClick={handleClose} className={classes.botonClear}>
                 <ClearIcon fontSize="small" />
               </IconButton>

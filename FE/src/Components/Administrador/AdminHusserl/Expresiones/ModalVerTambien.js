@@ -132,7 +132,6 @@ const ModalVerTambien = (props) => {
 
   const add = () => {
     if (!checkExistence()) {
-      console.log("checkExistence", checkExistence);
       setLoading(true);
       addVT(props.expresion.id, 0, selectedExpresions, () => {
         setLoading(false);
@@ -140,12 +139,12 @@ const ModalVerTambien = (props) => {
           open: true,
           text: "Se ha(n) vinculado el/los expresión(es) con éxito.",
         });
-        console.log("addVT", addVT);
+
         setSelectedExpresions([]);
         document
           .getElementsByClassName("selected")
           .forEach((element) => element.classList.remove("selected"));
-        hiddenE
+        document
           .getElementsByClassName("hiddenE")
           .forEach((element) => element.classList.remove("hiddenE"));
         setBusqueda("");
