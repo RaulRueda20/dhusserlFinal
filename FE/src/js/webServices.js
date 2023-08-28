@@ -1,20 +1,17 @@
 import axios from "axios";
 import * as localStore from "./localStore";
 //const serverUrl = "http://18.119.90.126:1938/api/v1.0";
-//const serverUrl = "http://localhost:1938/api/v1.0";
-const serverUrl = "https://diccionariohusserl.org/api/v1.0";
+const serverUrl = "http://localhost:1938/api/v1.0";
+//const serverUrl = "https://diccionariohusserl.org/api/v1.0";
 
 const webService = (service, method, params, sesion, next) => {
   var serverUsername = localStore.getObjects("sesion").user;
   var serverPassword = localStore.getObjects("sesion").password;
-  // var serverUsername = sesion?.usuario ?? localStore.getObjects("sesion").user;
-  // var serverPassword = sesion?.password ?? localStore.getObjects("sesion").password;
 
   var auth = "Basic " + btoa(serverUsername + ":" + serverPassword);
 
   axios({
     method: method,
-    // contentType : 'application/json',
     url: serverUrl + service,
     data: params,
     headers: {
@@ -23,33 +20,38 @@ const webService = (service, method, params, sesion, next) => {
     },
   })
     .then((response) => {
-      next(response);
+      if (response.data.status !== 200) {
+        alert(response.data.error);
+      } else next(response);
     })
     .catch((error) => {
       console.log("ERROR", error);
-      alert("Ha habido un error" + error.status + " : " + error.statusText);
-      console.log(error.response);
+      alert("Ha ocurrido un error en el servidor: " + error);
     });
 };
 
 const webServiceAsync = async (service, method, params, sesion) => {
   var serverUsername = localStore.getObjects("sesion").user;
   var serverPassword = localStore.getObjects("sesion").password;
-  // var serverUsername = sesion?.usuario ?? localStore.getObjects("sesion").user;
-  // var serverPassword = sesion?.password ?? localStore.getObjects("sesion").password;
   var auth = "Basic " + btoa(serverUsername + ":" + serverPassword);
-  const response = await axios({
-    method: method,
-    // contentType : 'application/json',
-    url: serverUrl + service,
-    data: params,
-    headers: {
-      Authorization: auth,
-      "Content-Type": "application/json",
-    },
-  });
+  try {
+    const response = await axios({
+      method: method,
+      url: serverUrl + service,
+      data: params,
+      headers: {
+        Authorization: auth,
+        "Content-Type": "application/json",
+      },
+    });
 
-  return response;
+    if (response.data.status !== 200) {
+      alert(response.data.error);
+    } else return response;
+  } catch (error) {
+    console.log(error);
+    alert("Ha ocurrido un error en el servidor: " + error);
+  }
 };
 
 const adminService = (service, method, params, next) => {
@@ -58,7 +60,6 @@ const adminService = (service, method, params, next) => {
   var auth = "Basic " + btoa(serverUsername + ":" + serverPassword);
   axios({
     method: method,
-    // contentType : 'application/json',
     url: serverUrl + service,
     data: params,
     headers: {
@@ -67,10 +68,12 @@ const adminService = (service, method, params, next) => {
     },
   })
     .then((response) => {
-      return next(response);
+      if (response.data.status !== 200) {
+        alert(response.data.error);
+      } else return next(response);
     })
     .catch((error) => {
-      alert("Ha habido un error" + error.status + " : " + error.statusText);
+      alert("Ha ocurrido un error en el servidor: " + error);
     });
 };
 
@@ -79,12 +82,9 @@ const loginService = (service, method, params, next) => {
   var serverPassword = "abcde";
   var auth = "Basic " + btoa(serverUsername + ":" + serverPassword);
   axios({
-    // contentType : 'application/json',
     method: method,
     url: serverUrl + service,
     responseType: "json",
-    // jsonp : false,
-    // cache: 'true',
     headers: {
       Authorization: auth,
       "Content-Type": "application/json",
@@ -92,10 +92,12 @@ const loginService = (service, method, params, next) => {
     data: params,
   })
     .then((response) => {
-      return next(response);
+      if (response.data.status !== 200) {
+        alert(response.data.error);
+      } else return next(response);
     })
     .catch((error) => {
-      alert("Ha habido un error" + error.status + " : " + error.statusText);
+      alert("Ha ocurrido un error en el servidor: " + error);
     });
 };
 

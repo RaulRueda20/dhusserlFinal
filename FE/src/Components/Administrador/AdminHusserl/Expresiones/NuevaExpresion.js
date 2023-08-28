@@ -1,5 +1,5 @@
 //React
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, useEffect } from "react";
 
 //Elements
 import { withStyles } from "@material-ui/styles";
@@ -9,7 +9,6 @@ import {
   IconButton,
   Snackbar,
   Tooltip,
-  responsiveFontSizes,
 } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 
@@ -42,6 +41,9 @@ const estiloModalExpresiones = (theme) => ({
     left: "50%",
     marginTop: "15px !important",
     marginRight: "30 px !importan",
+  },
+  contenedorPasajes: {
+    padding: 10,
   },
 });
 
@@ -119,7 +121,7 @@ const NuevaExpresion = (props) => {
   };
 
   return (
-    <Fragment>
+    <>
       <Snackbar
         anchorOrigin={{ vertical: "top", horizontal: "left" }}
         key={`top,left`}
@@ -180,7 +182,7 @@ const NuevaExpresion = (props) => {
         handleCloseAl={handleCloseAl}
         accept={() => deletePasaje(pasajeToDelete)}
       />
-    </Fragment>
+    </>
   );
 };
 

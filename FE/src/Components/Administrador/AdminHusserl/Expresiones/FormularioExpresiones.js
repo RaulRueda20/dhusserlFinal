@@ -1,5 +1,5 @@
 //React
-import React, { Fragment } from "react";
+import React from "react";
 
 //Components
 import CKEditor from "ckeditor4-react-advanced";
@@ -83,12 +83,8 @@ const FormularioExpresiones = (props) => {
     props.setExpresion(event.target.value);
   };
 
-  // React.useEffect(() => {
-  //   console.log("expresion", props.expresion);
-  // }, []);
-
   return (
-    <Fragment>
+    <>
       <Grid container alignItems="center">
         <Grid item xs={8}>
           <Typography variant="h4">{props.label}</Typography>
@@ -227,7 +223,7 @@ const FormularioExpresiones = (props) => {
           }}
         />
       </div>
-    </Fragment>
+    </>
   );
 };
 

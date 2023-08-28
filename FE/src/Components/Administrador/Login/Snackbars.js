@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import { Snackbar, SnackbarContent } from "@material-ui/core";
 import { amber, green, red } from "@material-ui/core/colors";
 import clsx from "clsx";
@@ -68,7 +68,7 @@ const Snackbars = (props) => {
   const classes = useStyle2();
 
   return (
-    <Fragment>
+    <>
       <Snackbar
         anchorOrigin={{
           vertical: "bottom",
@@ -82,7 +82,7 @@ const Snackbars = (props) => {
           message={props.snackbar.message}
         />
       </Snackbar>
-    </Fragment>
+    </>
   );
 };
 

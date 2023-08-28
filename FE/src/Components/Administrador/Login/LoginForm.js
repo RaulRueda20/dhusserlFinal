@@ -56,10 +56,11 @@ const LoginForm = (props) => {
       });
     } else if (correo != "" && password != "") {
       setLoading(true);
-      localStore.setObjects("admin_sesion", params);
       let service = "/login/admin?userId=" + correo + "&password=" + password;
       loginService(service, "GET", params, (data) => {
         setLoading(false);
+        localStore.setObjects("admin_sesion", params);
+
         localStorage.removeItem("admin_sesion");
         setStore(data.data.response.email, data.data.response.user_password);
         props.history.push(`${props.match.url}/husserl`);

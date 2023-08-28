@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import classNames from "classnames";
 import { Typography, Grid, Divider } from "@material-ui/core/";
 import { withStyles } from "@material-ui/styles";
@@ -15,7 +15,7 @@ const stylesHed = {
 const Header = (props) => {
   const { classes } = props;
   return (
-    <Fragment>
+    <>
       <Grid
         className={classNames("grids", classes.grids)}
         container
@@ -38,7 +38,7 @@ const Header = (props) => {
       </Grid>
       <br />
       <Divider className="divisor" />
-    </Fragment>
+    </>
   );
 };
 

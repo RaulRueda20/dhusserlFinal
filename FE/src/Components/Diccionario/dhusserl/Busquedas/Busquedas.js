@@ -1,5 +1,5 @@
 //React
-import React, { useState, useContext, Fragment, useEffect } from "react";
+import React, { useState, useContext, useEffect } from "react";
 
 //Components
 import SearchIcon from "@material-ui/icons/Search";
@@ -157,7 +157,7 @@ const Busquedas = (props) => {
   };
 
   return (
-    <Fragment>
+    <>
       <form onSubmit={handleChangeBusqueda}>
         <Grid container>
           <Grid item xs={12}>
@@ -206,7 +206,7 @@ const Busquedas = (props) => {
         modalDeBusquedas={modalDeBusquedas}
         setModalDebusquedas={setModalDebusquedas}
       />
-    </Fragment>
+    </>
   );
 };
 

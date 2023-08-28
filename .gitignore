@@ -5,6 +5,7 @@
 /.pnp
 .pnp.js
 FE/node_modules
+FE/dist
 BE/node_modules
 
 # testing

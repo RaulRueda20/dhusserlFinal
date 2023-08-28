@@ -1,5 +1,5 @@
 // React
-import React, { useState, useContext, Fragment } from "react";
+import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 
 // Elements
@@ -29,8 +29,8 @@ const ITEM_HEIGHT = 48;
 
 const ListaPadresBajo = (props) => {
   const global = useContext(sesionStore);
-  const { state, dispatch } = global
-  const { langLista, lang, sesion, ultimasVisitadas } = state
+  const { state, dispatch } = global;
+  const { langLista, lang, sesion, ultimasVisitadas } = state;
 
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -97,20 +97,20 @@ const ListaPadresBajo = (props) => {
       nuevasVisitadas.push(referencias);
       dispatch({
         type: "SET_ULTIMAS_VISITADAS",
-        payload: nuevasVisitadas
-      })
+        payload: nuevasVisitadas,
+      });
     });
   };
 
   return (
-    <Fragment>
+    <>
       <li key={props.padre.refid + "-" + props.index}>
         <Grid container alignItems="center">
           <Grid item xs={8}>
             <Link
               to={`${props.match.path.slice(0, 20)}/pasaje/${
                 props.padre.padre
-                }`}
+              }`}
               onClick={(event) => handleFlagLetraMain(event)}
             >
               <Typography
@@ -153,58 +153,54 @@ const ListaPadresBajo = (props) => {
             {padreDePadres.length < 1 ? (
               <MenuItem>{noDerivaDe(lang)}</MenuItem>
             ) : (
-                padreDePadres.map((padresPadre, index) => (
-                  <MenuItem
-                    onClick={handleCloseDerivadaDe}
-                    key={padresPadre.id + "-" + index}
+              padreDePadres.map((padresPadre, index) => (
+                <MenuItem
+                  onClick={handleCloseDerivadaDe}
+                  key={padresPadre.id + "-" + index}
+                >
+                  <Link
+                    to={`${props.match.path.slice(0, 20)}/pasaje/${
+                      padresPadre.padre
+                    }`}
+                    onClick={(event) => handleFlagLetraMain(event)}
                   >
-                    <Link
-                      to={`${props.match.path.slice(0, 20)}/pasaje/${
-                        padresPadre.padre
-                        }`}
-                      onClick={(event) => handleFlagLetraMain(event)}
-                    >
-                      <Typography id={padresPadre.padre + "/" + index}>
-                        {padresPadre.expresion}
-                      </Typography>
-                    </Link>
-                  </MenuItem>
-                ))
-              )}
+                    <Typography id={padresPadre.padre + "/" + index}>
+                      {padresPadre.expresion}
+                    </Typography>
+                  </Link>
+                </MenuItem>
+              ))
+            )}
             <Divider />
             <MenuItem>
-              <b>
-                {menuDerechoJerarquiaExpresionesDerivadas(lang)}
-              </b>
+              <b>{menuDerechoJerarquiaExpresionesDerivadas(lang)}</b>
             </MenuItem>
             <Divider />
             {hijosDePadres.length < 1 ? (
-              <MenuItem>
-                {noContieneExpresionesDerivadas(lang)}
-              </MenuItem>
+              <MenuItem>{noContieneExpresionesDerivadas(lang)}</MenuItem>
             ) : (
-                hijosDePadres.map((hijosPadre, index) => (
-                  <MenuItem
-                    onClick={handleCloseDerivadaDe}
-                    key={hijosDePadres.id + "-" + index}
+              hijosDePadres.map((hijosPadre, index) => (
+                <MenuItem
+                  onClick={handleCloseDerivadaDe}
+                  key={hijosDePadres.id + "-" + index}
+                >
+                  <Link
+                    to={`${props.match.path.slice(0, 20)}/pasaje/${
+                      hijosPadre.hijo
+                    }`}
+                    onClick={(event) => handleFlagLetraMain(event)}
                   >
-                    <Link
-                      to={`${props.match.path.slice(0, 20)}/pasaje/${
-                        hijosPadre.hijo
-                        }`}
-                      onClick={(event) => handleFlagLetraMain(event)}
-                    >
-                      <Typography id={hijosPadre.hijo + "/" + index}>
-                        {hijosPadre.expresion}
-                      </Typography>
-                    </Link>
-                  </MenuItem>
-                ))
-              )}
+                    <Typography id={hijosPadre.hijo + "/" + index}>
+                      {hijosPadre.expresion}
+                    </Typography>
+                  </Link>
+                </MenuItem>
+              ))
+            )}
           </Menu>
         </Grid>
       </li>
-    </Fragment>
+    </>
   );
 };
 

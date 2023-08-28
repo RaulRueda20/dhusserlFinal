@@ -1,5 +1,5 @@
 // React
-import React, { useContext, useState, Fragment, useEffect } from "react";
+import React, { useContext, useState } from "react";
 
 // Components
 import {
@@ -305,7 +305,7 @@ const ModalDescargas = (props) => {
   };
 
   return (
-    <Fragment>
+    <>
       {!flagHtml ? (
         <Modal
           aria-labelledby="simple-modal-title"
@@ -458,7 +458,7 @@ const ModalDescargas = (props) => {
       ) : (
         <div id="toDownloadDiv"></div>
       )}
-    </Fragment>
+    </>
     // {!flagHtml  ?  }
   );
 };

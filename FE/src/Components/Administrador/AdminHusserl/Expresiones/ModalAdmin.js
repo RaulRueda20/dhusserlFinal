@@ -1,5 +1,5 @@
 //Components
-import React, { useState, Fragment } from "react";
+import React, { useState } from "react";
 
 //Elements
 import {
@@ -98,7 +98,7 @@ function ModalAdmin(props) {
   };
 
   return (
-    <Fragment>
+    <>
       <Snackbar
         anchorOrigin={{ vertical: "top", horizontal: "left" }}
         key={`top,left`}
@@ -174,7 +174,7 @@ function ModalAdmin(props) {
           </Button>
         </Paper>
       </Modal>
-    </Fragment>
+    </>
   );
 }
 

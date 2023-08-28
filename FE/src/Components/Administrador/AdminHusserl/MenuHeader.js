@@ -1,5 +1,5 @@
 //React
-import React, { Fragment, useState } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 //Elements
@@ -41,7 +41,7 @@ const MenuHeader = (props) => {
   const { url } = match;
 
   return (
-    <Fragment>
+    <>
       <IconButton
         aria-haspopup="true"
         aria-owns={anchorEl ? "menuheader" : undefined}
@@ -104,7 +104,7 @@ const MenuHeader = (props) => {
         </MenuItem>
       </Menu>
       <Link id="toLogin" to={"/administrador"} />
-    </Fragment>
+    </>
   );
 };
 

@@ -1,5 +1,5 @@
 // React
-import React, { useContext, useState, Fragment } from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 
 // Elements
@@ -29,8 +29,8 @@ const ITEM_HEIGHT = 48;
 
 const ListaHijosBajo = (props) => {
   const global = useContext(sesionStore);
-  const { state, dispatch } = global
-  const { langLista, lang, sesion, ultimasVisitadas } = state
+  const { state, dispatch } = global;
+  const { langLista, lang, sesion, ultimasVisitadas } = state;
 
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -97,13 +97,13 @@ const ListaHijosBajo = (props) => {
       nuevasVisitadas.push(referencias);
       dispatch({
         type: "SET_ULTIMAS_VISITADAS",
-        payload: nuevasVisitadas
-      })
+        payload: nuevasVisitadas,
+      });
     });
   };
 
   return (
-    <Fragment>
+    <>
       <li key={props.hijo.refid + "-" + props.index}>
         <Grid container alignItems="center">
           <Grid item xs={8}>
@@ -149,58 +149,54 @@ const ListaHijosBajo = (props) => {
             {padreDeHijos.length < 1 ? (
               <MenuItem>{noDerivaDe(lang)}</MenuItem>
             ) : (
-                padreDeHijos.map((padresHijo, index) => (
-                  <MenuItem
-                    onClick={handleCloseExpresionesDerivadas}
-                    key={padresHijo.id + "-" + index}
+              padreDeHijos.map((padresHijo, index) => (
+                <MenuItem
+                  onClick={handleCloseExpresionesDerivadas}
+                  key={padresHijo.id + "-" + index}
+                >
+                  <Link
+                    to={`${props.match.path.slice(0, 20)}/pasaje/${
+                      padresHijo.padre
+                    }`}
+                    onClick={(event) => handleFlagLetraMain(event)}
                   >
-                    <Link
-                      to={`${props.match.path.slice(0, 20)}/pasaje/${
-                        padresHijo.padre
-                        }`}
-                      onClick={(event) => handleFlagLetraMain(event)}
-                    >
-                      <Typography id={padresHijo.padre + "/" + index}>
-                        {padresHijo.expresion}
-                      </Typography>
-                    </Link>
-                  </MenuItem>
-                ))
-              )}
+                    <Typography id={padresHijo.padre + "/" + index}>
+                      {padresHijo.expresion}
+                    </Typography>
+                  </Link>
+                </MenuItem>
+              ))
+            )}
             <Divider />
             <MenuItem>
-              <b>
-                {menuDerechoJerarquiaExpresionesDerivadas(lang)}
-              </b>
+              <b>{menuDerechoJerarquiaExpresionesDerivadas(lang)}</b>
             </MenuItem>
             <Divider />
             {hijosDeHijos.length < 1 ? (
-              <MenuItem>
-                {noContieneExpresionesDerivadas(lang)}
-              </MenuItem>
+              <MenuItem>{noContieneExpresionesDerivadas(lang)}</MenuItem>
             ) : (
-                hijosDeHijos.map((hijosHijo, index) => (
-                  <MenuItem
-                    onClick={handleCloseExpresionesDerivadas}
-                    key={hijosHijo.id + "-" + index}
+              hijosDeHijos.map((hijosHijo, index) => (
+                <MenuItem
+                  onClick={handleCloseExpresionesDerivadas}
+                  key={hijosHijo.id + "-" + index}
+                >
+                  <Link
+                    to={`${props.match.path.slice(0, 20)}/pasaje/${
+                      hijosHijo.hijo
+                    }`}
+                    onClick={(event) => handleFlagLetraMain(event)}
                   >
-                    <Link
-                      to={`${props.match.path.slice(0, 20)}/pasaje/${
-                        hijosHijo.hijo
-                        }`}
-                      onClick={(event) => handleFlagLetraMain(event)}
-                    >
-                      <Typography id={hijosHijo.hijo + "/" + index}>
-                        {hijosHijo.expresion}
-                      </Typography>
-                    </Link>
-                  </MenuItem>
-                ))
-              )}
+                    <Typography id={hijosHijo.hijo + "/" + index}>
+                      {hijosHijo.expresion}
+                    </Typography>
+                  </Link>
+                </MenuItem>
+              ))
+            )}
           </Menu>
         </Grid>
       </li>
-    </Fragment>
+    </>
   );
 };
 

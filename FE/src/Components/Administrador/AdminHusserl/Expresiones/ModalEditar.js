@@ -1,5 +1,5 @@
 //React
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, useEffect } from "react";
 
 //Elements
 import {
@@ -61,10 +61,8 @@ const ModalEditar = (props) => {
   const [snack, setSnack] = useState({ open: false, text: "" });
 
   useEffect(() => {
-    // console.log("props.expresion en modal editar", props.expresion);
     var el = props.expresion.expresion_original.toUpperCase();
     var tl = props.expresion.expresion_traduccion.toUpperCase();
-    // console.log("Letras", props.expresion
     setExpresion(props.expresion.expresion_original);
     setTraduccion(props.expresion.expresion_traduccion);
     setExpresionContenido(props.expresion.epretty);
@@ -111,7 +109,7 @@ const ModalEditar = (props) => {
   };
 
   return (
-    <Fragment>
+    <>
       <Tooltip title="Editar Expresión">
         <IconButton onClick={() => handleOpen()}>
           <Create />
@@ -191,7 +189,7 @@ const ModalEditar = (props) => {
         }}
         message={<span id="message-id">{snack.text}</span>}
       />
-    </Fragment>
+    </>
   );
 };
 

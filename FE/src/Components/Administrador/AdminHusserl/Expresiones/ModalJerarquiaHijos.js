@@ -1,5 +1,5 @@
 //React
-import React, { Fragment, useState } from "react";
+import React, { useState } from "react";
 
 //Elements
 import classNames from "classnames";
@@ -153,7 +153,7 @@ const ModalJerarquiaHijos = (props) => {
   };
 
   return (
-    <Fragment>
+    <>
       <Snackbar
         anchorOrigin={{ vertical: "top", horizontal: "left" }}
         key={`top,left`}
@@ -217,7 +217,7 @@ const ModalJerarquiaHijos = (props) => {
       >
         Agregar
       </Button>
-    </Fragment>
+    </>
   );
 };
 

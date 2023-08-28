@@ -76,7 +76,7 @@ const ModalAgregarPasaje = (props) => {
   const [snack, setSnack] = useState({ open: false, text: "" });
 
   useEffect(() => {
-    var service = "/referencias/lista";
+    const service = "/referencias/lista";
     adminService(service, "GET", {}, ({ data }) => {
       const { response } = data;
       setPasajes(response);
@@ -97,12 +97,12 @@ const ModalAgregarPasaje = (props) => {
   };
 
   const handleClickAddPasaje = () => {
-    var params = {
+    const params = {
       termId: props.expresion.id,
       orden: parseInt(nivel),
       referencia: selectedPasajes.ref_id,
     };
-    var service = "/referencias/agregarReferencia";
+    const service = "/referencias/agregarReferencia";
     adminService(service, "POST", JSON.stringify(params), (data) => {
       setSnack({ open: true, text: "Pasaje agregado con éxito." });
       props.setReload(!props.reload);
@@ -110,11 +110,11 @@ const ModalAgregarPasaje = (props) => {
   };
 
   const handleChangeBusquedaAgregar = (event) => {
-    var busquedaAg = event.target.value;
+    const busquedaAg = event.target.value;
     pasajes.map((pasaje) => {
-      var pasajeNombre =
+      const pasajeNombre =
         pasaje.ref_libro_de + pasaje.ref_libro_es + pasaje.ref_id;
-      var pasajeBuscado = pasajeNombre.indexOf(busquedaAg);
+      const pasajeBuscado = pasajeNombre.indexOf(busquedaAg);
       document
         .getElementById("agregar" + pasaje.ref_id)
         .classList.remove("hidden");
@@ -190,7 +190,6 @@ const ModalAgregarPasaje = (props) => {
         />
         <List className={classes.listacontenedor}>
           {pasajes.map((pasaje) => (
-            // <li key={expresionp.t_id} className="sideList" onClick={addEToList(expresionp.t_id)}>
             <li
               id={"agregar" + pasaje.ref_id}
               key={pasaje.ref_id}

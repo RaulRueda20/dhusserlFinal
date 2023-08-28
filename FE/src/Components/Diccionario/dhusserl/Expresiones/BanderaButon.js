@@ -1,4 +1,4 @@
-import React, { useContext, Fragment } from "react";
+import React, { useContext } from "react";
 import { Button, Tooltip } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
 
@@ -22,19 +22,19 @@ const bandIn = {
 const BanderaButon = (props) => {
   const { classes } = props;
   const global = useContext(sesionStore);
-  const { state, dispatch } = global
-  const { langLista, lang } = state
+  const { state, dispatch } = global;
+  const { langLista, lang } = state;
 
   const clickChangeLanguageEs = () => {
-    dispatch({ type: "SET_LANGLISTA", payload: "es" })
+    dispatch({ type: "SET_LANGLISTA", payload: "es" });
   };
 
   const clickChangeLanguageAl = () => {
-    dispatch({ type: "SET_LANGLISTA", payload: "al" })
+    dispatch({ type: "SET_LANGLISTA", payload: "al" });
   };
 
   return (
-    <Fragment>
+    <>
       {langLista == "es" ? (
         <Tooltip title={toolTipIdiomaDeLaLista(lang)}>
           <Button
@@ -46,17 +46,17 @@ const BanderaButon = (props) => {
           </Button>
         </Tooltip>
       ) : (
-          <Tooltip title={toolTipIdiomaDeLaLista(lang)}>
-            <Button
-              size="small"
-              className={classes.imagenesBandera}
-              onClick={clickChangeLanguageEs}
-            >
-              <img className="banderaIzquierda" src={es} />
-            </Button>
-          </Tooltip>
-        )}
-    </Fragment>
+        <Tooltip title={toolTipIdiomaDeLaLista(lang)}>
+          <Button
+            size="small"
+            className={classes.imagenesBandera}
+            onClick={clickChangeLanguageEs}
+          >
+            <img className="banderaIzquierda" src={es} />
+          </Button>
+        </Tooltip>
+      )}
+    </>
   );
 };
 

@@ -4,7 +4,6 @@ const router = express.Router();
 const fs = require("fs"),
   path = require("path"),
   filePath = path.join(__dirname, "queryprincipal");
-const R = require("ramda");
 
 router.post("/agregarReferencia", function (req, res, next) {
   if (global.rol == "admin") {

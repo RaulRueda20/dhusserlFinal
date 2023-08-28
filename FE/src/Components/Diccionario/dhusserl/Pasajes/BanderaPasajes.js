@@ -1,4 +1,4 @@
-import React, { useContext, Fragment } from "react";
+import React, { useContext } from "react";
 
 import { Button, Tooltip } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
@@ -35,7 +35,7 @@ const BanderaPasajes = (props) => {
   };
 
   return (
-    <Fragment>
+    <>
       <Tooltip title={idiomaConsultas(lang)}>
         {pasajeLang == "es" ? (
           <Button
@@ -53,7 +53,7 @@ const BanderaPasajes = (props) => {
           </Button>
         )}
       </Tooltip>
-    </Fragment>
+    </>
   );
 };
 

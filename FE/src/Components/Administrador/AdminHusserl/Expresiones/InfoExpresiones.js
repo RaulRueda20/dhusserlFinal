@@ -46,7 +46,6 @@ const InfoExpresiones = (props) => {
   const [verTambien, setVerTambien] = useState([]);
 
   useEffect(() => {
-    // console.log("expresion", props.expresion);
     adminService(
       "/expresiones/al/abuelosList/" + props.expresionId,
       "GET",
@@ -72,6 +71,7 @@ const InfoExpresiones = (props) => {
         {},
         ({ data }) => {
           const { response } = data;
+          console.log(response);
           setVerTambien(response);
         }
       );
@@ -206,7 +206,7 @@ const InfoExpresiones = (props) => {
           <br />
           <br />
           {verTambien?.map((verTambienItem) => (
-            <Grid container spacing={2}>
+            <Grid container spacing={2} key={verTambienItem.id}>
               <Grid item xs={6}>
                 <Typography variant="h4">
                   {verTambienItem?.expresion}

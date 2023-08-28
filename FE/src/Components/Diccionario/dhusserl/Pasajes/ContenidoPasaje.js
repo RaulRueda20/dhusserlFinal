@@ -1,5 +1,5 @@
 //React
-import React, { useState, Fragment } from "react";
+import React, { useState } from "react";
 
 //Elements
 import { IconButton, Grid } from "@material-ui/core";
@@ -46,7 +46,7 @@ const ContenidoPasaje = (props) => {
   };
 
   return (
-    <Fragment>
+    <>
       <Grid container className={classes.contenedor}>
         <Hidden smUp>
           <Grid item xs={2} sm={2} md={6} lg={6}>
@@ -72,7 +72,7 @@ const ContenidoPasaje = (props) => {
         idExpresion={props.idExpresion}
         match={props.match}
       />
-    </Fragment>
+    </>
   );
 };
 

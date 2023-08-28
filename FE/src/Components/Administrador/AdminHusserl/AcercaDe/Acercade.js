@@ -1,5 +1,5 @@
 //React
-import React, { useEffect, useState, Fragment } from "react";
+import React, { useEffect, useState } from "react";
 
 //Elements
 import classNames from "classnames";
@@ -127,7 +127,7 @@ const Acercade = (props) => {
   };
 
   return (
-    <Fragment>
+    <>
       <div>
         <Snackbar
           anchorOrigin={{ vertical: "top", horizontal: "left" }}
@@ -219,7 +219,7 @@ const Acercade = (props) => {
           Guardar
         </Button>
       </div>
-    </Fragment>
+    </>
   );
 };
 export default withStyles(acercade)(Acercade);

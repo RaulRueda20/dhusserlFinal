@@ -65,7 +65,6 @@ const InfoExpresiones = (props) => {
     var service = "/expresiones/getAllList";
     adminService(service, "GET", {}, ({ data }) => {
       const { response } = data;
-      // console.log("response en Menu Barra", response);
       setAllExpresiones(response);
     });
   }, [props.reload]);

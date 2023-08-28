@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, useEffect } from "react";
 import Grid from "@material-ui/core/Grid";
 
 import { adminService } from "../../../../js/webServices";
@@ -18,16 +18,14 @@ const Expresiones = () => {
     var service = "/expresiones/todas/" + letraMain;
     adminService(service, "GET", {}, ({ data }) => {
       const { response } = data;
-      console.log("response en el padre", response);
       setExpresiones(response);
       if (idExpresion === "")
-        // console.log("response al entrar al if idExpresion", response[0].id);
         setIdExpresion(response.length > 0 ? response[0].id : "");
     });
   }, [letraMain, reload]);
 
   return (
-    <Fragment>
+    <>
       <Grid container>
         <Grid item xs={12}>
           <ListaLetras letraMain={letraMain} setLetraMain={setLetraMain} />
@@ -60,7 +58,7 @@ const Expresiones = () => {
           />
         </Grid>
       </Grid>
-    </Fragment>
+    </>
   );
 };
 

@@ -1,5 +1,5 @@
 //React
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, useEffect } from "react";
 
 //Elements
 import classNames from "classnames";
@@ -143,7 +143,7 @@ const Manual = (props) => {
   };
 
   return (
-    <Fragment>
+    <>
       <div>
         <Snackbar
           anchorOrigin={{ vertical: "top", horizontal: "left" }}
@@ -233,7 +233,7 @@ const Manual = (props) => {
           Guardar
         </Button>
       </div>
-    </Fragment>
+    </>
   );
 };
 export default withStyles(manual)(Manual);

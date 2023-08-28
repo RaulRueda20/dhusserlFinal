@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, Fragment, useContext } from "react";
+import React, { Suspense, lazy, useContext } from "react";
 import classNames from "classnames";
 import {
   Typography,
@@ -32,7 +32,7 @@ const Header = (props) => {
   const { lang } = state;
 
   return (
-    <Fragment>
+    <>
       <Grid
         className={classNames("grids", classes.grids)}
         container
@@ -59,7 +59,7 @@ const Header = (props) => {
         </Grid>
       </Grid>
       <br />
-    </Fragment>
+    </>
   );
 };
 

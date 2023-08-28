@@ -1,5 +1,5 @@
 //React
-import React, { useEffect, Fragment } from "react";
+import React, { useEffect } from "react";
 
 //Components
 import LoginForm from "./LoginForm";
@@ -25,12 +25,12 @@ function LoginA(props) {
   }, [true]);
 
   return (
-    <Fragment>
+    <>
       <Header />
       <LoginForm {...props} />
       <br />
       <Footer />
-    </Fragment>
+    </>
   );
 }
 

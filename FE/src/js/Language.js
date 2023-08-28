@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 
 const tituloDiccionario = (lang) => {
@@ -1327,7 +1327,7 @@ const terminosYCondiciones = (lang) => {
   switch (lang) {
     case "es":
       return (
-        <Fragment>
+        <>
           Al registrarse en nuestro sitio, usted afirma que está de acuerdo con
           nuestros{" "}
           <Link to="/diccionario/TerminosyCondiciones">
@@ -1335,22 +1335,22 @@ const terminosYCondiciones = (lang) => {
           </Link>
           , y que ha leído y conoce nuestro{" "}
           <Link to="/diccionario/aviso_privacidad">Aviso de Privacidad</Link>
-        </Fragment>
+        </>
       );
     case "en":
       return (
-        <Fragment>
+        <>
           By registering on our site, you affirm that you agree to our{" "}
           <Link to="/diccionario/TerminosyCondiciones">
             Terms and Conditions of use
           </Link>
           and that you have read and are aware of our{" "}
           <Link to="/diccionario/aviso_privacidad">Privacy Notice</Link>
-        </Fragment>
+        </>
       );
     case "fr":
       return (
-        <Fragment>
+        <>
           En vous inscrivant sur notre site, vous affirmez que vous acceptez nos{" "}
           <Link to="/diccionario/TerminosyCondiciones">
             Conditions Générales d'Utilisation
@@ -1359,19 +1359,19 @@ const terminosYCondiciones = (lang) => {
           <Link to="/diccionario/aviso_privacidad">
             Politique de Confidentialité
           </Link>
-        </Fragment>
+        </>
       );
     case "al":
       return (
-        <Fragment>
+        <>
           Indem Sie sich auf unserer Seite registrieren, bestätigen Sie, dass
           Sie mit unseren Nutzungsbedingungen einverstanden sind und dass Sie
           unsere Datenschutzhinweise gelesen haben und sich dieser bewusst sind.
-        </Fragment>
+        </>
       );
     case "ca":
       return (
-        <Fragment>
+        <>
           A l'registrar al nostre lloc, vostè afirma que està d'acord amb els
           nostres{" "}
           <Link to="/diccionario/TerminosyCondiciones">
@@ -1379,7 +1379,7 @@ const terminosYCondiciones = (lang) => {
           </Link>
           , i que ha llegit i coneix el nostre
           <Link to="/diccionario/aviso_privacidad">Avís de Privadesa</Link>.
-        </Fragment>
+        </>
       );
   }
 };
@@ -1388,42 +1388,42 @@ const leaAviso = (lang) => {
   switch (lang) {
     case "es":
       return (
-        <Fragment>
+        <>
           Lea nuestro{" "}
           <Link to="/diccionario/aviso_privacidad">aviso de privacidad</Link>
-        </Fragment>
+        </>
       );
     case "en":
       return (
-        <Fragment>
+        <>
           Read our{" "}
           <Link to="/diccionario/aviso_privacidad">privacy notice</Link>
-        </Fragment>
+        </>
       );
     case "fr":
       return (
-        <Fragment>
+        <>
           Lisez notre{" "}
           <Link to="/diccionario/aviso_privacidad">
             Avis de confidentialité
           </Link>
-        </Fragment>
+        </>
       );
     case "al":
       return (
-        <Fragment>
+        <>
           Lesen{" "}
           <Link to="/diccionario/aviso_privacidad">
             Sie unsere Datenschutzhinweise
           </Link>
-        </Fragment>
+        </>
       );
     case "ca":
       return (
-        <Fragment>
+        <>
           Llegiu el nostre{" "}
           <Link to="/diccionario/aviso_privacidad">Avís de privadesa</Link>
-        </Fragment>
+        </>
       );
   }
 };

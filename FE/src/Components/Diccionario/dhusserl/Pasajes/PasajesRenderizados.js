@@ -1,5 +1,5 @@
 //React
-import React, { useState, useContext, Fragment, useEffect } from "react";
+import React, { useState, useContext, useEffect } from "react";
 
 //Elements
 import { IconButton, Grid, Tooltip } from "@material-ui/core";
@@ -145,7 +145,7 @@ const PasajesRenderizados = (props) => {
   };
 
   return (
-    <Fragment>
+    <>
       {props.cerrado ? (
         <Grid container style={{ maxHeight: "80vh" }}>
           <Grid container xs={6}>
@@ -286,7 +286,7 @@ const PasajesRenderizados = (props) => {
           </Grid>
         </Grid>
       )}
-    </Fragment>
+    </>
   );
 };
 

@@ -1,5 +1,5 @@
 //React
-import React, { useState, Fragment } from "react";
+import React, { useState } from "react";
 
 //Elements
 import classNames from "classnames";
@@ -157,7 +157,7 @@ const ModalJerarquiaPadres = (props) => {
   };
 
   return (
-    <Fragment>
+    <>
       <Snackbar
         anchorOrigin={{ vertical: "top", horizontal: "left" }}
         key={`top,left`}
@@ -221,7 +221,7 @@ const ModalJerarquiaPadres = (props) => {
       >
         Agregar
       </Button>
-    </Fragment>
+    </>
   );
 };
 

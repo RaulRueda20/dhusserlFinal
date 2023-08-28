@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import {
   Dialog,
   DialogContent,
@@ -15,7 +15,7 @@ const Transition = React.forwardRef((props, ref) => {
 
 const Alerts = () => {
   return (
-    <Fragment>
+    <>
       <Dialog
         open={this.props.open}
         onClose={this.props.handleClose}
@@ -37,7 +37,7 @@ const Alerts = () => {
           </Button>
         </DialogActions>
       </Dialog>
-    </Fragment>
+    </>
   );
 };
 

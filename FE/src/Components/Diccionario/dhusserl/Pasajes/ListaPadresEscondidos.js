@@ -1,5 +1,5 @@
 // React
-import React, { useContext, useState, Fragment } from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 
 // Elements
@@ -116,7 +116,7 @@ const ListaPadresEscondidos = (props) => {
   };
 
   return (
-    <Fragment>
+    <>
       <li key={props.padre.refid + "-" + props.index}>
         <Grid container alignItems="center">
           <Grid item xs={8}>
@@ -217,7 +217,7 @@ const ListaPadresEscondidos = (props) => {
           </Menu>
         </Grid>
       </li>
-    </Fragment>
+    </>
   );
 };
 

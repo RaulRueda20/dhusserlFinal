@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from "react";
+import React, { useState } from "react";
 import classNames from "classnames";
 import {
   IconButton,
@@ -70,7 +70,7 @@ const ModalJerarquia = (props) => {
   };
 
   return (
-    <Fragment>
+    <>
       <Tooltip title="Jerarquia de la expresión">
         <IconButton onClick={() => handleOpenModal()}>
           <Jerarquia />
@@ -128,17 +128,17 @@ const ModalJerarquia = (props) => {
               setReload={props.setReload}
             />
           ) : (
-              <ModalJerarquiaHijos
-                expresionSeleccionada={props.expresionSeleccionada}
-                hijos={props.hijos}
-                expresiones={props.expresiones}
-                reload={props.reload}
-                setReload={props.setReload}
-              />
-            )}
+            <ModalJerarquiaHijos
+              expresionSeleccionada={props.expresionSeleccionada}
+              hijos={props.hijos}
+              expresiones={props.expresiones}
+              reload={props.reload}
+              setReload={props.setReload}
+            />
+          )}
         </Paper>
       </Modal>
-    </Fragment>
+    </>
   );
 };
 
