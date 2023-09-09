@@ -1,139 +1,291 @@
-var express = require('express');
-//var bcrypt = require('bcrypt');
+var express = require("express");
 var router = express.Router();
 
-router.post('/nuevaExpresion', function(req, res, next){
-	console.log(global.rol)
-	if(global.rol == "admin"){
-		var currentdate = new Date();
-		var datetime = currentdate.getDay() + "/"+(currentdate.getMonth() + 1)
-			+ "/" + currentdate.getFullYear() + " @ "
-			+ currentdate.getHours() + ":"
-			+ currentdate.getMinutes() + ":" + currentdate.getSeconds();
-		res.locals.connection.query("select MAX(t_id) as count from termino;")
-		.then(function(qty){
-		//		obj = results
-			console.log(qty)
-			var filter = [parseInt(qty[0].count) + 1, req.body.traduccion, req.body.expresion, req.body.indice_de, req.body.indice_es, req.body.pretty_de, req.body.pretty_es]
-			console.log(filter)
-			var queryString = "\
+router.post("/nuevaExpresion", function (req, res, next) {
+  console.log(global.rol);
+  if (global.rol == "admin") {
+    var currentdate = new Date();
+    var datetime =
+      currentdate.getDay() +
+      "/" +
+      (currentdate.getMonth() + 1) +
+      "/" +
+      currentdate.getFullYear() +
+      " @ " +
+      currentdate.getHours() +
+      ":" +
+      currentdate.getMinutes() +
+      ":" +
+      currentdate.getSeconds();
+    res.locals.connection
+      .query("select MAX(t_id) as count from termino;")
+      .then(function (qty) {
+        //		obj = results
+        console.log(qty);
+        var filter = [
+          parseInt(qty[0].count) + 1,
+          req.body.traduccion,
+          req.body.expresion,
+          req.body.indice_de,
+          req.body.indice_es,
+          req.body.pretty_de,
+          req.body.pretty_es,
+        ];
+        console.log(filter);
+        var queryString =
+          "\
 			insert into termino (t_id, t_term_es, t_term_de, t_index_de, t_index_es, t_em_de, t_em_es) values ($1, $2, $3, $4, $5, $6, $7)";
-			console.log(queryString)
-			res.locals.connection.query(queryString, filter)
-			.then(function(results){
-				console.log(datetime + "== expresiones/nuevaExpresion/ | Nueva expresión guardada con éxito| Expresion:" + req.body.expresion)
-				res.send(JSON.stringify({"status": 200, "error": null, "response": results.rows}));
-			}).catch(function(error){
-				console.log(datetime + "== expresiones/nuevaExpresion/ | " + error)
-				res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
-			})
-		}).catch(function(error){
-			console.log(datetime + "== expresiones/nuevaExpresion/ | " + error)
-			res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
-		})
-	}else{res.send(JSON.stringify({"status": 401, "error": "Está prohibido para este usuario.", "response": null}));}
+        console.log(queryString);
+        res.locals.connection
+          .query(queryString, filter)
+          .then(function (results) {
+            console.log(
+              datetime +
+                "== expresiones/nuevaExpresion/ | Nueva expresión guardada con éxito| Expresion:" +
+                req.body.expresion
+            );
+            res.send(
+              JSON.stringify({
+                status: 200,
+                error: null,
+                response: results.rows,
+              })
+            );
+          })
+          .catch(function (error) {
+            console.log(datetime + "== expresiones/nuevaExpresion/ | " + error);
+            res.send(
+              JSON.stringify({ status: 500, error: error, response: null })
+            );
+          });
+      })
+      .catch(function (error) {
+        console.log(datetime + "== expresiones/nuevaExpresion/ | " + error);
+        res.send(JSON.stringify({ status: 500, error: error, response: null }));
+      });
+  } else {
+    res.send(
+      JSON.stringify({
+        status: 401,
+        error: "Está prohibido para este usuario.",
+        response: null,
+      })
+    );
+  }
 });
 
-router.post('/updateExpresion/:id', function(req, res, next){
-	if(global.rol == "admin"){
-	var currentdate = new Date();
-	var datetime = currentdate.getDay() + "/"+(currentdate.getMonth() + 1)
-		+ "/" + currentdate.getFullYear() + " @ "
-		+ currentdate.getHours() + ":"
-		+ currentdate.getMinutes() + ":" + currentdate.getSeconds();
-	var filter = [req.params.id, req.body.traduccion, req.body.expresion, req.body.indice_de, req.body.indice_es, req.body.pretty_de, req.body.pretty_es]
-	// console.log("filtro", filter)
-    var queryString = "update termino set t_term_es = $2, t_term_de = $3, t_index_de = $4, t_index_es = $5, t_em_de = $6, t_em_es = $7 where t_id = $1;"
-	res.locals.connection.query(queryString, filter)
-	.then(function(results){
-		console.log("results", results)
-		res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
-	}).catch(function(error){
-		// console.log("Error",error)
-		res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
-	})}else{res.send(JSON.stringify({"status": 401, "error": "Está prohibido para este usuario.", "response": null}));}
+router.post("/updateExpresion/:id", function (req, res, next) {
+  if (global.rol == "admin") {
+    var currentdate = new Date();
+    var datetime =
+      currentdate.getDay() +
+      "/" +
+      (currentdate.getMonth() + 1) +
+      "/" +
+      currentdate.getFullYear() +
+      " @ " +
+      currentdate.getHours() +
+      ":" +
+      currentdate.getMinutes() +
+      ":" +
+      currentdate.getSeconds();
+    var filter = [
+      req.params.id,
+      req.body.traduccion,
+      req.body.expresion,
+      req.body.indice_de,
+      req.body.indice_es,
+      req.body.pretty_de,
+      req.body.pretty_es,
+    ];
+    // console.log("filtro", filter)
+    var queryString =
+      "update termino set t_term_es = $2, t_term_de = $3, t_index_de = $4, t_index_es = $5, t_em_de = $6, t_em_es = $7 where t_id = $1;";
+    res.locals.connection
+      .query(queryString, filter)
+      .then(function (results) {
+        console.log("results", results);
+        res.send(
+          JSON.stringify({ status: 200, error: null, response: results })
+        );
+      })
+      .catch(function (error) {
+        // console.log("Error",error)
+        res.send(JSON.stringify({ status: 500, error: error, response: null }));
+      });
+  } else {
+    res.send(
+      JSON.stringify({
+        status: 401,
+        error: "Está prohibido para este usuario.",
+        response: null,
+      })
+    );
+  }
 });
 
-router.delete('/deleteExpresion/:id', function(req, res, next){
-	if(global.rol == "admin"){
-	var currentdate = new Date();
-	var datetime = currentdate.getDay() + "/"+(currentdate.getMonth() + 1)
-		+ "/" + currentdate.getFullYear() + " @ "
-		+ currentdate.getHours() + ":"
-		+ currentdate.getMinutes() + ":" + currentdate.getSeconds();
-	var filter = [req.params.id]
-	var queryString = "\
+router.delete("/deleteExpresion/:id", function (req, res, next) {
+  if (global.rol == "admin") {
+    var currentdate = new Date();
+    var datetime =
+      currentdate.getDay() +
+      "/" +
+      (currentdate.getMonth() + 1) +
+      "/" +
+      currentdate.getFullYear() +
+      " @ " +
+      currentdate.getHours() +
+      ":" +
+      currentdate.getMinutes() +
+      ":" +
+      currentdate.getSeconds();
+    var filter = [req.params.id];
+    var queryString =
+      "\
 	delete from termino where t_id = $1";
-	console.log(filter)
-	res.locals.connection.query(queryString, filter)
-	.then(function(results){
-		console.log(datetime + "== expresiones/deleteExpresion/:id/ | Expresión borrada con éxito")
-		res.send(JSON.stringify({"status": 200, "error": null, "response": results.rows}));
-	}).catch(function(error){
-		console.log(datetime + "== expresiones/deleteExpresion/:id/ | " + error)
-		res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
-	})}else{res.send(JSON.stringify({"status": 401, "error": "Está prohibido para este usuario.", "response": null}));}
+    console.log(filter);
+    res.locals.connection
+      .query(queryString, filter)
+      .then(function (results) {
+        console.log(
+          datetime +
+            "== expresiones/deleteExpresion/:id/ | Expresión borrada con éxito"
+        );
+        res.send(
+          JSON.stringify({ status: 200, error: null, response: results.rows })
+        );
+      })
+      .catch(function (error) {
+        console.log(
+          datetime + "== expresiones/deleteExpresion/:id/ | " + error
+        );
+        res.send(JSON.stringify({ status: 500, error: error, response: null }));
+      });
+  } else {
+    res.send(
+      JSON.stringify({
+        status: 401,
+        error: "Está prohibido para este usuario.",
+        response: null,
+      })
+    );
+  }
 });
 
-router.get('/todas/:letra', function(req, res, next){
-	if(global.rol != "guest"){
-	var currentdate = new Date();
-	var datetime = currentdate.getDay() + "/"+(currentdate.getMonth() + 1)
-		+ "/" + currentdate.getFullYear() + " @ "
-		+ currentdate.getHours() + ":"
-		+ currentdate.getMinutes() + ":" + currentdate.getSeconds();
-	var conditionPart = ""
-	conditionPart = "WHERE termino.t_index_de = '" + req.params.letra + "'"
-	var queryString = "\
+router.get("/todas/:letra", function (req, res, next) {
+  if (global.rol != "guest") {
+    var currentdate = new Date();
+    var datetime =
+      currentdate.getDay() +
+      "/" +
+      (currentdate.getMonth() + 1) +
+      "/" +
+      currentdate.getFullYear() +
+      " @ " +
+      currentdate.getHours() +
+      ":" +
+      currentdate.getMinutes() +
+      ":" +
+      currentdate.getSeconds();
+    var conditionPart = "";
+    conditionPart = "WHERE termino.t_index_de = '" + req.params.letra + "'";
+    var queryString =
+      "\
 	SELECT \
 		termino.t_id AS id, termino.t_index_es AS indice_es, termino.t_index_de AS indice_de,\
 		termino.t_term_es AS expresion_es, termino.t_term_de AS expresion_de,\
 		termino.t_em_es AS pretty_es, termino.t_em_de AS pretty_de from termino ";
-	queryString += conditionPart
-	queryString += " ORDER BY expresion_de;"
-	console.log(queryString)
-	res.locals.connection.query(queryString)
-	.then(function(results){
-		console.log("results", results)
-		res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
-	}).catch(function(error){
-		console.log(datetime + "== expresiones/todas/:letra/ | " + error)
-		res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
-	})}else{res.send(JSON.stringify({"status": 401, "error": "Está prohibido para este usuario.", "response": null}));}
+    queryString += conditionPart;
+    queryString += " ORDER BY expresion_de;";
+    console.log(queryString);
+    res.locals.connection
+      .query(queryString)
+      .then(function (results) {
+        console.log("results", results);
+        res.send(
+          JSON.stringify({ status: 200, error: null, response: results })
+        );
+      })
+      .catch(function (error) {
+        console.log(datetime + "== expresiones/todas/:letra/ | " + error);
+        res.send(JSON.stringify({ status: 500, error: error, response: null }));
+      });
+  } else {
+    res.send(
+      JSON.stringify({
+        status: 401,
+        error: "Está prohibido para este usuario.",
+        response: null,
+      })
+    );
+  }
 });
 
-router.get('/getAllList', function(req, res, next){
-	if(global.rol != "guest"){
-	var currentdate = new Date();
-	var datetime = currentdate.getDay() + "/"+(currentdate.getMonth() + 1)
-		+ "/" + currentdate.getFullYear() + " @ "
-		+ currentdate.getHours() + ":"
-		+ currentdate.getMinutes() + ":" + currentdate.getSeconds();
-	var queryString = "\
+router.get("/getAllList", function (req, res, next) {
+  if (global.rol != "guest") {
+    var currentdate = new Date();
+    var datetime =
+      currentdate.getDay() +
+      "/" +
+      (currentdate.getMonth() + 1) +
+      "/" +
+      currentdate.getFullYear() +
+      " @ " +
+      currentdate.getHours() +
+      ":" +
+      currentdate.getMinutes() +
+      ":" +
+      currentdate.getSeconds();
+    var queryString =
+      "\
 	SELECT * FROM termino ORDER BY t_term_de;";
-	console.log(queryString)
-	res.locals.connection.query(queryString)
-	.then(function(results){
-		console.log(datetime + "== expresiones/getAllList | Lista seleccionada con éxito")
-		res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
-	}).catch(function(error){
-		console.log(datetime + "== expresiones/getAllList  | " + error)
-		res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
-	})}else{res.send(JSON.stringify({"status": 401, "error": "Está prohibido para este usuario.", "response": null}));}
+    console.log(queryString);
+    res.locals.connection
+      .query(queryString)
+      .then(function (results) {
+        console.log(
+          datetime + "== expresiones/getAllList | Lista seleccionada con éxito"
+        );
+        res.send(
+          JSON.stringify({ status: 200, error: null, response: results })
+        );
+      })
+      .catch(function (error) {
+        console.log(datetime + "== expresiones/getAllList  | " + error);
+        res.send(JSON.stringify({ status: 500, error: error, response: null }));
+      });
+  } else {
+    res.send(
+      JSON.stringify({
+        status: 401,
+        error: "Está prohibido para este usuario.",
+        response: null,
+      })
+    );
+  }
 });
 
-router.get('/al/:letra', function(req, res, next){
-	console.log(global.rol)
-	if(global.rol != "guest"){
-	var currentdate = new Date();
-	var datetime = currentdate.getDay() + "/"+(currentdate.getMonth() + 1)
-		+ "/" + currentdate.getFullYear() + " @ "
-		+ currentdate.getHours() + ":"
-		+ currentdate.getMinutes() + ":" + currentdate.getSeconds();
-	var conditionPart = ""
-	conditionPart = "WHERE termino.t_index_de = '" + req.params.letra + "'"
-	console.log(req.params.letra)
-	var queryString = "\
+router.get("/al/:letra", function (req, res, next) {
+  console.log(global.rol);
+  if (global.rol != "guest") {
+    var currentdate = new Date();
+    var datetime =
+      currentdate.getDay() +
+      "/" +
+      (currentdate.getMonth() + 1) +
+      "/" +
+      currentdate.getFullYear() +
+      " @ " +
+      currentdate.getHours() +
+      ":" +
+      currentdate.getMinutes() +
+      ":" +
+      currentdate.getSeconds();
+    var conditionPart = "";
+    conditionPart = "WHERE termino.t_index_de = '" + req.params.letra + "'";
+    console.log(req.params.letra);
+    var queryString =
+      "\
 	SELECT * FROM ( \
 		SELECT DISTINCT \
 			termino.t_id AS id, \
@@ -153,35 +305,63 @@ router.get('/al/:letra', function(req, res, next){
 			termino_referencia AS termref \
 			ON termino.t_id = CAST(termref.tr_termid AS int)  \
 			LEFT JOIN referencia  \
-			ON termref.tr_refid = referencia.ref_id " + conditionPart + ") Sub ORDER BY expresion, id, orden, \
+			ON termref.tr_refid = referencia.ref_id " +
+      conditionPart +
+      ") Sub ORDER BY expresion, id, orden, \
 			CASE WHEN clave = 'IP' THEN 1 \
 		      WHEN clave = 'PW' THEN 2 \
 		      WHEN clave = 'I1' THEN 3 \
 		      WHEN clave = 'I2' THEN 4 \
-		      WHEN clave = 'PV' THEN 5 \
-		      WHEN clave LIKE 'CM' THEN 6 \
-		 	END, refid;"
-	console.log(queryString)
-	res.locals.connection.query(queryString)
-	.then(function(results){
-		console.log(datetime + "== expresiones/al/:letra | Término en aleman encontrado con éxito")
-		res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
-	}).catch(function(error){
-		console.log(datetime + "== expresiones/al/:letra  | " + error)
-		res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
-	})}else{res.send(JSON.stringify({"status": 401, "error": "Está prohibido para este usuario.", "response": null}));}
+			  WHEN clave = 'I3' THEN 5 \
+		      WHEN clave = 'PV' THEN 6 \
+		      WHEN clave LIKE 'CM' THEN 7 \
+		 	END, refid;";
+    console.log(queryString);
+    res.locals.connection
+      .query(queryString)
+      .then(function (results) {
+        console.log(
+          datetime +
+            "== expresiones/al/:letra | Término en aleman encontrado con éxito"
+        );
+        res.send(
+          JSON.stringify({ status: 200, error: null, response: results })
+        );
+      })
+      .catch(function (error) {
+        console.log(datetime + "== expresiones/al/:letra  | " + error);
+        res.send(JSON.stringify({ status: 500, error: error, response: null }));
+      });
+  } else {
+    res.send(
+      JSON.stringify({
+        status: 401,
+        error: "Está prohibido para este usuario.",
+        response: null,
+      })
+    );
+  }
 });
 
-router.get('/es/:letra', function(req, res, next){
-	if(global.rol != "guest"){
-	var currentdate = new Date();
-	var datetime = currentdate.getDay() + "/"+(currentdate.getMonth() + 1)
-		+ "/" + currentdate.getFullYear() + " @ "
-		+ currentdate.getHours() + ":"
-		+ currentdate.getMinutes() + ":" + currentdate.getSeconds();
-	var conditionPart = ""
-	conditionPart = "WHERE termino.t_index_es = '" + req.params.letra + "'"
-	var queryString = "\
+router.get("/es/:letra", function (req, res, next) {
+  if (global.rol != "guest") {
+    var currentdate = new Date();
+    var datetime =
+      currentdate.getDay() +
+      "/" +
+      (currentdate.getMonth() + 1) +
+      "/" +
+      currentdate.getFullYear() +
+      " @ " +
+      currentdate.getHours() +
+      ":" +
+      currentdate.getMinutes() +
+      ":" +
+      currentdate.getSeconds();
+    var conditionPart = "";
+    conditionPart = "WHERE termino.t_index_es = '" + req.params.letra + "'";
+    var queryString =
+      "\
 	SELECT * FROM ( \
 		SELECT DISTINCT \
 			termino.t_id AS id, \
@@ -201,92 +381,176 @@ router.get('/es/:letra', function(req, res, next){
 			termino_referencia AS termref \
 			ON termino.t_id = CAST(termref.tr_termid AS int)  \
 			LEFT JOIN referencia  \
-			ON termref.tr_refid = referencia.ref_id " + conditionPart + ") Sub ORDER BY expresion, id, orden, \
-			CASE WHEN clave = 'IP' THEN 1 \
-		      WHEN clave = 'PW' THEN 2 \
-		      WHEN clave = 'I1' THEN 3 \
-		      WHEN clave = 'I2' THEN 4 \
-		      WHEN clave = 'PV' THEN 5 \
-		      WHEN clave LIKE 'CM' THEN 6 \
-		 	END, refid;"
-	console.log(queryString)
-	res.locals.connection.query(queryString)
-	.then(function(results){
-		console.log(datetime + "== expresiones/es/:letra | Término en español encontrado con éxito")
-		res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
-	}).catch(function(error){
-		console.log(datetime + "== expresiones/es/:letra  | " + error)
-		res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
-	})}else{res.send(JSON.stringify({"status": 401, "error": "Está prohibido para este usuario.", "response": null}));}
+			ON termref.tr_refid = referencia.ref_id " +
+      conditionPart +
+      ") Sub ORDER BY expresion, id, orden, \
+		CASE WHEN clave = 'IP' THEN 1 \
+			WHEN clave = 'PW' THEN 2 \
+			WHEN clave = 'I1' THEN 3 \
+			WHEN clave = 'I2' THEN 4 \
+			WHEN clave = 'I3' THEN 5 \
+			WHEN clave = 'PV' THEN 6 \
+			WHEN clave LIKE 'CM' THEN 7 \
+		END, refid;";
+    console.log(queryString);
+    res.locals.connection
+      .query(queryString)
+      .then(function (results) {
+        console.log(
+          datetime +
+            "== expresiones/es/:letra | Término en español encontrado con éxito"
+        );
+        res.send(
+          JSON.stringify({ status: 200, error: null, response: results })
+        );
+      })
+      .catch(function (error) {
+        console.log(datetime + "== expresiones/es/:letra  | " + error);
+        res.send(JSON.stringify({ status: 500, error: error, response: null }));
+      });
+  } else {
+    res.send(
+      JSON.stringify({
+        status: 401,
+        error: "Está prohibido para este usuario.",
+        response: null,
+      })
+    );
+  }
 });
 
-router.get('/:lang/abuelosList/:expresion', function(req, res, next){
-	if(global.rol != "guest"){
-	var currentdate = new Date();
-	var datetime = currentdate.getDay() + "/"+(currentdate.getMonth() + 1)
-		+ "/" + currentdate.getFullYear() + " @ "
-		+ currentdate.getHours() + ":"
-		+ currentdate.getMinutes() + ":" + currentdate.getSeconds();
-	switch(req.params.lang){
-		case "es":
-			var queryString = "select distinct parentezco.p_padre as padre, parentezco.p_hijo as id, termino.t_term_es as expresion, termino.t_index_de as index_de, termino.t_index_es as index_es, termino.t_index_es as indice from parentezco inner join\
+router.get("/:lang/abuelosList/:expresion", function (req, res, next) {
+  if (global.rol != "guest") {
+    var currentdate = new Date();
+    var datetime =
+      currentdate.getDay() +
+      "/" +
+      (currentdate.getMonth() + 1) +
+      "/" +
+      currentdate.getFullYear() +
+      " @ " +
+      currentdate.getHours() +
+      ":" +
+      currentdate.getMinutes() +
+      ":" +
+      currentdate.getSeconds();
+    switch (req.params.lang) {
+      case "es":
+        var queryString =
+          "select distinct parentezco.p_padre as padre, parentezco.p_hijo as id, termino.t_term_es as expresion, termino.t_index_de as index_de, termino.t_index_es as index_es, termino.t_index_es as indice from parentezco inner join\
 		termino on cast(parentezco.p_padre as int) = cast(termino.t_id as int) where parentezco.p_hijo = $1;";
-			break;
-		case "al":
-			var queryString = "select distinct parentezco.p_padre as padre, parentezco.p_hijo as id, termino.t_term_de as expresion, termino.t_index_de as index_de, termino.t_index_es as index_es, termino.t_index_de as indice from parentezco inner join\
+        break;
+      case "al":
+        var queryString =
+          "select distinct parentezco.p_padre as padre, parentezco.p_hijo as id, termino.t_term_de as expresion, termino.t_index_de as index_de, termino.t_index_es as index_es, termino.t_index_de as indice from parentezco inner join\
 		termino on cast(parentezco.p_padre as int) = cast(termino.t_id as int) where parentezco.p_hijo = $1;";
-			break
-	}
-	res.locals.connection.query(queryString, [req.params.expresion])
-	.then(function(results){
-		console.log(results)
-		console.log(datetime + "== expresiones/abuelosList/:expresion | Término superior encontrado con éxito")
-		res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
-	}).catch(function(error){
-		console.log(datetime + "== expresiones/abuelosList/:expresion  | " + error)
-		res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
-	})}else{res.send(JSON.stringify({"status": 401, "error": "Está prohibido para este usuario.", "response": null}));}
+        break;
+    }
+    res.locals.connection
+      .query(queryString, [req.params.expresion])
+      .then(function (results) {
+        console.log(results);
+        console.log(
+          datetime +
+            "== expresiones/abuelosList/:expresion | Término superior encontrado con éxito"
+        );
+        res.send(
+          JSON.stringify({ status: 200, error: null, response: results })
+        );
+      })
+      .catch(function (error) {
+        console.log(
+          datetime + "== expresiones/abuelosList/:expresion  | " + error
+        );
+        res.send(JSON.stringify({ status: 500, error: error, response: null }));
+      });
+  } else {
+    res.send(
+      JSON.stringify({
+        status: 401,
+        error: "Está prohibido para este usuario.",
+        response: null,
+      })
+    );
+  }
 });
 
-router.get('/:lang/hijosList/:expresion', function(req, res, next){
-	if(global.rol != "guest"){
-	var currentdate = new Date();
-	var datetime = currentdate.getDay() + "/"+(currentdate.getMonth() + 1)
-		+ "/" + currentdate.getFullYear() + " @ "
-		+ currentdate.getHours() + ":"
-		+ currentdate.getMinutes() + ":" + currentdate.getSeconds();
-	// var queryString = "select distinct parentezco.p_padre as id, parentezco.p_hijo as hijo, termino.t_term_de as expresion from parentezco inner join\
-	// termino on cast(parentezco.p_hijo as int) = cast(termino.t_id as int) where parentezco.p_padre = $1;";
-	switch(req.params.lang){
-		case "es":
-			var queryString = "select distinct parentezco.p_padre as id, parentezco.p_hijo as hijo, termino.t_term_es as expresion, termino.t_index_de as index_de, termino.t_index_es as index_es, termino.t_index_es as indice from parentezco inner join\
+router.get("/:lang/hijosList/:expresion", function (req, res, next) {
+  if (global.rol != "guest") {
+    var currentdate = new Date();
+    var datetime =
+      currentdate.getDay() +
+      "/" +
+      (currentdate.getMonth() + 1) +
+      "/" +
+      currentdate.getFullYear() +
+      " @ " +
+      currentdate.getHours() +
+      ":" +
+      currentdate.getMinutes() +
+      ":" +
+      currentdate.getSeconds();
+    // var queryString = "select distinct parentezco.p_padre as id, parentezco.p_hijo as hijo, termino.t_term_de as expresion from parentezco inner join\
+    // termino on cast(parentezco.p_hijo as int) = cast(termino.t_id as int) where parentezco.p_padre = $1;";
+    switch (req.params.lang) {
+      case "es":
+        var queryString =
+          "select distinct parentezco.p_padre as id, parentezco.p_hijo as hijo, termino.t_term_es as expresion, termino.t_index_de as index_de, termino.t_index_es as index_es, termino.t_index_es as indice from parentezco inner join\
 		termino on cast(parentezco.p_hijo as int) = cast(termino.t_id as int) where parentezco.p_padre = $1;";
-			break;
-		case "al":
-			var queryString = "select distinct parentezco.p_padre as id, parentezco.p_hijo as hijo, termino.t_term_de as expresion, termino.t_index_de as index_de, termino.t_index_es as index_es, termino.t_index_de as indice from parentezco inner join\
+        break;
+      case "al":
+        var queryString =
+          "select distinct parentezco.p_padre as id, parentezco.p_hijo as hijo, termino.t_term_de as expresion, termino.t_index_de as index_de, termino.t_index_es as index_es, termino.t_index_de as indice from parentezco inner join\
 		termino on cast(parentezco.p_hijo as int) = cast(termino.t_id as int) where parentezco.p_padre = $1;";
-			break
-	}
-	console.log(queryString)
-	res.locals.connection.query(queryString, [req.params.expresion])
-	.then(function(results){
-		console.log(datetime + "== expresiones/hijosList/:expresion | Término inferior encontrado con éxito")
-		res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
-	}).catch(function(error){
-		console.log(datetime + "== expresiones/hijosList/:expresion | " + error)
-		res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
-	})}else{res.send(JSON.stringify({"status": 401, "error": "Está prohibido para este usuario.", "response": null}));}
+        break;
+    }
+    console.log(queryString);
+    res.locals.connection
+      .query(queryString, [req.params.expresion])
+      .then(function (results) {
+        console.log(
+          datetime +
+            "== expresiones/hijosList/:expresion | Término inferior encontrado con éxito"
+        );
+        res.send(
+          JSON.stringify({ status: 200, error: null, response: results })
+        );
+      })
+      .catch(function (error) {
+        console.log(
+          datetime + "== expresiones/hijosList/:expresion | " + error
+        );
+        res.send(JSON.stringify({ status: 500, error: error, response: null }));
+      });
+  } else {
+    res.send(
+      JSON.stringify({
+        status: 401,
+        error: "Está prohibido para este usuario.",
+        response: null,
+      })
+    );
+  }
 });
 
-router.get('/getHierarchy/:expresion', function(req, res, next) {
-	if(global.rol != "guest"){
-	var currentdate = new Date();
-	var datetime = currentdate.getDay() + "/"+(currentdate.getMonth() + 1)
-		+ "/" + currentdate.getFullYear() + " @ "
-		+ currentdate.getHours() + ":"
-		+ currentdate.getMinutes() + ":" + currentdate.getSeconds();
-	filter = [req.params.expresion]
-	var queryString = "\
+router.get("/getHierarchy/:expresion", function (req, res, next) {
+  if (global.rol != "guest") {
+    var currentdate = new Date();
+    var datetime =
+      currentdate.getDay() +
+      "/" +
+      (currentdate.getMonth() + 1) +
+      "/" +
+      currentdate.getFullYear() +
+      " @ " +
+      currentdate.getHours() +
+      ":" +
+      currentdate.getMinutes() +
+      ":" +
+      currentdate.getSeconds();
+    filter = [req.params.expresion];
+    var queryString =
+      "\
 		SELECT  DISTINCT\
 	    parentezco.p_hijo id,\
 	    term.t_term_es AS traduccion,\
@@ -305,8 +569,9 @@ router.get('/getHierarchy/:expresion', function(req, res, next) {
 		INNER JOIN referencia\
 	    ON termref.tr_refid = referencia.ref_id\
 		WHERE\
-		termino.t_id = $1;"
-	var queryString2 = "\
+		termino.t_id = $1;";
+    var queryString2 =
+      "\
 		SELECT  DISTINCT\
 		parentezco.p_padre AS id,\
 		term.t_term_es AS traduccion,\
@@ -325,8 +590,9 @@ router.get('/getHierarchy/:expresion', function(req, res, next) {
 		INNER JOIN referencia\
 	    ON termref.tr_refid = referencia.ref_id\
 		WHERE\
-		termino.t_id = $1"
-	var queryString3 = "\
+		termino.t_id = $1";
+    var queryString3 =
+      "\
 		SELECT \
 		termino.t_id as id,\
 		termino.t_term_es as traduccion,\
@@ -339,144 +605,276 @@ router.get('/getHierarchy/:expresion', function(req, res, next) {
 		WHERE\
 		termino.t_id = $1\
 		ORDER BY orden\
-		LIMIT 1;"
-	res.locals.connection.query(queryString, filter)
-	.then(function(results1){
-		var hijos_list = results1
-		console.log("hijos > ")
-		console.log(hijos_list)
-		res.locals.connection.query(queryString2, filter)
-		.then(function(results2){
-			var abuelos_list = results2
-			console.log("abuelos > ")
-			console.log(abuelos_list)
-			res.locals.connection.query(queryString3, filter)
-			.then(function(results3){
-				var jerarquia = results3[0]
-				console.log(jerarquia)
-				jerarquia["hijos"] = hijos_list
-				jerarquia["abuelos"] = abuelos_list
-				console.log(datetime + "== expresiones/getHierarchy/:expresion | Jerarquia encontrada con éxito")
-				res.send(JSON.stringify({"status": 200, "error": null, "response": jerarquia}));
-			}).catch(function(error){
-				console.log(datetime + "== expresiones/getHierarchy/:expresion | " + error)
-				res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
-			})
-		}).catch(function(error){
-			console.log(datetime + "== expresiones/getHierarchy/:expresion | " + error)
-			res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
-		})
-	}).catch(function(error){
-		console.log(datetime + "== expresiones/getHierarchy/:expresion | " + error)
-		res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
-	})}else{res.send(JSON.stringify({"status": 401, "error": "Está prohibido para este usuario.", "response": null}));}
+		LIMIT 1;";
+    res.locals.connection
+      .query(queryString, filter)
+      .then(function (results1) {
+        var hijos_list = results1;
+        console.log("hijos > ");
+        console.log(hijos_list);
+        res.locals.connection
+          .query(queryString2, filter)
+          .then(function (results2) {
+            var abuelos_list = results2;
+            console.log("abuelos > ");
+            console.log(abuelos_list);
+            res.locals.connection
+              .query(queryString3, filter)
+              .then(function (results3) {
+                var jerarquia = results3[0];
+                console.log(jerarquia);
+                jerarquia["hijos"] = hijos_list;
+                jerarquia["abuelos"] = abuelos_list;
+                console.log(
+                  datetime +
+                    "== expresiones/getHierarchy/:expresion | Jerarquia encontrada con éxito"
+                );
+                res.send(
+                  JSON.stringify({
+                    status: 200,
+                    error: null,
+                    response: jerarquia,
+                  })
+                );
+              })
+              .catch(function (error) {
+                console.log(
+                  datetime + "== expresiones/getHierarchy/:expresion | " + error
+                );
+                res.send(
+                  JSON.stringify({ status: 500, error: error, response: null })
+                );
+              });
+          })
+          .catch(function (error) {
+            console.log(
+              datetime + "== expresiones/getHierarchy/:expresion | " + error
+            );
+            res.send(
+              JSON.stringify({ status: 500, error: error, response: null })
+            );
+          });
+      })
+      .catch(function (error) {
+        console.log(
+          datetime + "== expresiones/getHierarchy/:expresion | " + error
+        );
+        res.send(JSON.stringify({ status: 500, error: error, response: null }));
+      });
+  } else {
+    res.send(
+      JSON.stringify({
+        status: 401,
+        error: "Está prohibido para este usuario.",
+        response: null,
+      })
+    );
+  }
 });
 
-router.post('/agregarHijo/:id', function(req, res, next){
-	if(global.rol == "admin"){
-	var currentdate = new Date();
-	var datetime = currentdate.getDay() + "/"+(currentdate.getMonth() + 1)
-		+ "/" + currentdate.getFullYear() + " @ "
-		+ currentdate.getHours() + ":"
-		+ currentdate.getMinutes() + ":" + currentdate.getSeconds();
-	var queryString = "\
-	INSERT INTO parentezco (p_padre, p_hijo, p_idioma) VALUES ($1, $2, 'al');";
-		var filter = [req.params.id, req.body.hijo]
-		console.log(filter)
-		res.locals.connection.query(queryString, filter)
-		.then(function(results){
-			console.log(datetime + "== expresiones/agregarHijo/:id | Término inferior agregado con éxito")
-			res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
-		}).catch(function(error){
-			console.log(datetime + "== expresiones/agregarHijo/:id | " + error)
-			res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
-		})
-	}else{res.send(JSON.stringify({"status": 401, "error": "Está prohibido para este usuario.", "response": null}));}
-});
-
-router.post('/agregarPadre/:id', function(req, res, next){
-	if(global.rol == "admin"){
-	var currentdate = new Date();
-	var datetime = currentdate.getDay() + "/"+(currentdate.getMonth() + 1)
-		+ "/" + currentdate.getFullYear() + " @ "
-		+ currentdate.getHours() + ":"
-		+ currentdate.getMinutes() + ":" + currentdate.getSeconds();
-	var queryString = "\
-	INSERT INTO parentezco (p_padre, p_hijo, p_idioma) VALUES ($2, $1, 'al');";
-		var filter = [req.params.id, req.body.padre]
-		res.locals.connection.query(queryString, filter)
-		.then(function(results){
-			console.log(datetime + "== expresiones/agregarPadre/:id | Término superior agregado con éxito")
-			res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
-		}).catch(function(error){
-				console.log(datetime + "== expresiones/agregarPadre/:id | " + error)
-			res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
-		})
-	}else{res.send(JSON.stringify({"status": 401, "error": "Está prohibido para este usuario.", "response": null}));}
-});
-
-router.delete('/eliminarRelacion/:hijo/:padre', function(req, res, next){
-	if(global.rol == "admin"){
-	var currentdate = new Date();
-	var datetime = currentdate.getDay() + "/"+(currentdate.getMonth() + 1)
-		+ "/" + currentdate.getFullYear() + " @ "
-		+ currentdate.getHours() + ":"
-		+ currentdate.getMinutes() + ":" + currentdate.getSeconds();
-	var filter = [req.params.hijo, req.params.padre]
-	var queryString = "\
-	DELETE FROM parentezco WHERE p_hijo = $1 AND p_padre = $2;";
-	console.log(queryString)
-	res.locals.connection.query(queryString, filter)
-	.then(function(results){
-		console.log(datetime + "== expresiones/eliminarRelacion/:hijo/:padre | Términos relacionados eliminados con éxito")
-		res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
-	}).catch(function(error){
-		console.log(datetime + "== expresiones/eliminarRelacion/:hijo/:padre | " + error)
-		res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
-	})}else{res.send(JSON.stringify({"status": 401, "error": "Está prohibido para este usuario.", "response": null}));}
-});
-
-router.get('/byId/:id', function(req, res, next){
-    if(global.rol != "guest"){
+router.post("/agregarHijo/:id", function (req, res, next) {
+  if (global.rol == "admin") {
     var currentdate = new Date();
-    var datetime = currentdate.getDay() + "/"+(currentdate.getMonth() + 1)
-    + "/" + currentdate.getFullYear() + " @ "
-    + currentdate.getHours() + ":"
-    + currentdate.getMinutes() + ":" + currentdate.getSeconds();
-    filter = [req.params.id]
-	var queryString = "select distinct t_term_es as expresion_traduccion,\
+    var datetime =
+      currentdate.getDay() +
+      "/" +
+      (currentdate.getMonth() + 1) +
+      "/" +
+      currentdate.getFullYear() +
+      " @ " +
+      currentdate.getHours() +
+      ":" +
+      currentdate.getMinutes() +
+      ":" +
+      currentdate.getSeconds();
+    var queryString =
+      "\
+	INSERT INTO parentezco (p_padre, p_hijo, p_idioma) VALUES ($1, $2, 'al');";
+    var filter = [req.params.id, req.body.hijo];
+    console.log(filter);
+    res.locals.connection
+      .query(queryString, filter)
+      .then(function (results) {
+        console.log(
+          datetime +
+            "== expresiones/agregarHijo/:id | Término inferior agregado con éxito"
+        );
+        res.send(
+          JSON.stringify({ status: 200, error: null, response: results })
+        );
+      })
+      .catch(function (error) {
+        console.log(datetime + "== expresiones/agregarHijo/:id | " + error);
+        res.send(JSON.stringify({ status: 500, error: error, response: null }));
+      });
+  } else {
+    res.send(
+      JSON.stringify({
+        status: 401,
+        error: "Está prohibido para este usuario.",
+        response: null,
+      })
+    );
+  }
+});
+
+router.post("/agregarPadre/:id", function (req, res, next) {
+  if (global.rol == "admin") {
+    var currentdate = new Date();
+    var datetime =
+      currentdate.getDay() +
+      "/" +
+      (currentdate.getMonth() + 1) +
+      "/" +
+      currentdate.getFullYear() +
+      " @ " +
+      currentdate.getHours() +
+      ":" +
+      currentdate.getMinutes() +
+      ":" +
+      currentdate.getSeconds();
+    var queryString =
+      "\
+	INSERT INTO parentezco (p_padre, p_hijo, p_idioma) VALUES ($2, $1, 'al');";
+    var filter = [req.params.id, req.body.padre];
+    res.locals.connection
+      .query(queryString, filter)
+      .then(function (results) {
+        console.log(
+          datetime +
+            "== expresiones/agregarPadre/:id | Término superior agregado con éxito"
+        );
+        res.send(
+          JSON.stringify({ status: 200, error: null, response: results })
+        );
+      })
+      .catch(function (error) {
+        console.log(datetime + "== expresiones/agregarPadre/:id | " + error);
+        res.send(JSON.stringify({ status: 500, error: error, response: null }));
+      });
+  } else {
+    res.send(
+      JSON.stringify({
+        status: 401,
+        error: "Está prohibido para este usuario.",
+        response: null,
+      })
+    );
+  }
+});
+
+router.delete("/eliminarRelacion/:hijo/:padre", function (req, res, next) {
+  if (global.rol == "admin") {
+    var currentdate = new Date();
+    var datetime =
+      currentdate.getDay() +
+      "/" +
+      (currentdate.getMonth() + 1) +
+      "/" +
+      currentdate.getFullYear() +
+      " @ " +
+      currentdate.getHours() +
+      ":" +
+      currentdate.getMinutes() +
+      ":" +
+      currentdate.getSeconds();
+    var filter = [req.params.hijo, req.params.padre];
+    var queryString =
+      "\
+	DELETE FROM parentezco WHERE p_hijo = $1 AND p_padre = $2;";
+    console.log(queryString);
+    res.locals.connection
+      .query(queryString, filter)
+      .then(function (results) {
+        console.log(
+          datetime +
+            "== expresiones/eliminarRelacion/:hijo/:padre | Términos relacionados eliminados con éxito"
+        );
+        res.send(
+          JSON.stringify({ status: 200, error: null, response: results })
+        );
+      })
+      .catch(function (error) {
+        console.log(
+          datetime + "== expresiones/eliminarRelacion/:hijo/:padre | " + error
+        );
+        res.send(JSON.stringify({ status: 500, error: error, response: null }));
+      });
+  } else {
+    res.send(
+      JSON.stringify({
+        status: 401,
+        error: "Está prohibido para este usuario.",
+        response: null,
+      })
+    );
+  }
+});
+
+router.get("/byId/:id", function (req, res, next) {
+  if (global.rol != "guest") {
+    var currentdate = new Date();
+    var datetime =
+      currentdate.getDay() +
+      "/" +
+      (currentdate.getMonth() + 1) +
+      "/" +
+      currentdate.getFullYear() +
+      " @ " +
+      currentdate.getHours() +
+      ":" +
+      currentdate.getMinutes() +
+      ":" +
+      currentdate.getSeconds();
+    filter = [req.params.id];
+    var queryString =
+      "select distinct t_term_es as expresion_traduccion,\
 	t_term_de as expresion_original, t_id as id, t_em_de as epretty,\
 	t_em_es as epretty \
 	from termino where t_id = $1";
-    res.locals.connection.query(queryString, filter)
-    .then(function (results) {
-      console.log(datetime + "== referencias/:id/ | Éxito")
-        res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
+    res.locals.connection
+      .query(queryString, filter)
+      .then(function (results) {
+        console.log(datetime + "== referencias/:id/ | Éxito");
+        res.send(
+          JSON.stringify({ status: 200, error: null, response: results })
+        );
         //If there is no error, all is good and response is 200OK.
-  	}).catch(function(error){
-        console.log(datetime + "== referencias/:id/ | " + error)
-        res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
-      });}else{res.send(JSON.stringify({"status": 401, "error": "Está prohibido para este usuario.", "response": null}));}
-})
+      })
+      .catch(function (error) {
+        console.log(datetime + "== referencias/:id/ | " + error);
+        res.send(JSON.stringify({ status: 500, error: error, response: null }));
+      });
+  } else {
+    res.send(
+      JSON.stringify({
+        status: 401,
+        error: "Está prohibido para este usuario.",
+        response: null,
+      })
+    );
+  }
+});
 
-const slugify = str => {
+const slugify = (str) => {
   const map = {
-    '-' : ' ',
-    '-' : '_',
-    'a' : 'á|à|ã|â|ä|À|Á|Ã|Â|Ä',
-    'e' : 'é|è|ê|ë|É|È|Ê|Ë',
-    'i' : 'í|ì|î|ï|Í|Ì|Î|Ï',
-    'o' : 'ó|ò|ô|õ|ö|Ó|Ò|Ô|Õ|Ö',
-    'u' : 'ú|ù|û|ü|Ú|Ù|Û|Ü',
-    'c' : 'ç|Ç',
-    'n' : 'ñ|Ñ'
+    "-": " ",
+    "-": "_",
+    a: "á|à|ã|â|ä|À|Á|Ã|Â|Ä",
+    e: "é|è|ê|ë|É|È|Ê|Ë",
+    i: "í|ì|î|ï|Í|Ì|Î|Ï",
+    o: "ó|ò|ô|õ|ö|Ó|Ò|Ô|Õ|Ö",
+    u: "ú|ù|û|ü|Ú|Ù|Û|Ü",
+    c: "ç|Ç",
+    n: "ñ|Ñ",
   };
 
   for (var pattern in map) {
-    str = str.replace(new RegExp(map[pattern], 'g'), pattern);
- }
+    str = str.replace(new RegExp(map[pattern], "g"), pattern);
+  }
 
-  return str;}
+  return str;
+};
 
 const componeParametro = (parametro) => {
   //console.log("ENTRE A COMPONEPARAMETRO");
@@ -568,8 +966,8 @@ router.post("/busqueda/:case", function (req, res, next) {
   }
 });
 
-
-{/*router.post('/busqueda/:case', function(req, res, next){
+{
+  /*router.post('/busqueda/:case', function(req, res, next){
     console.log("Entre al endpoint")
     if(global.rol != "guest"){
     console.log("rol", global.rol)
@@ -654,6 +1052,7 @@ router.post("/busqueda/:case", function (req, res, next) {
         // console.log(datetime + "== referencias/:id/ | " + error)
         res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
       });}else{res.send(JSON.stringify({"status": 401, "error": "Está prohibido para este usuario.", "response": null}));}
-})*/}
+})*/
+}
 
 module.exports = router;

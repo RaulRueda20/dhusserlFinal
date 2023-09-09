@@ -1,5 +1,4 @@
 const express = require("express");
-//var bcrypt = require('bcrypt');
 const router = express.Router();
 const fs = require("fs"),
   path = require("path"),
@@ -7,34 +6,17 @@ const fs = require("fs"),
 
 router.post("/agregarReferencia", function (req, res, next) {
   if (global.rol == "admin") {
-    var currentdate = new Date();
-    var datetime =
-      currentdate.getDay() +
-      "/" +
-      (currentdate.getMonth() + 1) +
-      "/" +
-      currentdate.getFullYear() +
-      " @ " +
-      currentdate.getHours() +
-      ":" +
-      currentdate.getMinutes() +
-      ":" +
-      currentdate.getSeconds();
-    var queryString2 =
+    const queryString2 =
       "insert into termino_referencia(tr_termid, tr_refid, tr_order) values($1,$2,$3);";
-    // console.log(queryString2)
-    var filter2 = [req.body.termId, req.body.referencia, req.body.orden];
-    // console.log(filter2)
+    const filter2 = [req.body.termId, req.body.referencia, req.body.orden];
     res.locals.connection
       .query(queryString2, filter2)
       .then(function (response) {
-        // console.log(datetime + "== referencias/agregarReferencia/ | Referencia agregada con éxito")
         res.send(
           JSON.stringify({ status: 200, error: null, response: "DONE!" })
         );
       })
       .catch(function (error) {
-        // console.log(datetime + "== referencias/agregarReferencia/ | " + error)
         res.send(JSON.stringify({ status: 500, error: error, response: null }));
       });
   } else {
@@ -50,32 +32,16 @@ router.post("/agregarReferencia", function (req, res, next) {
 
 router.get("/lista", function (req, res, next) {
   if (global.rol != "guest") {
-    var currentdate = new Date();
-    var datetime =
-      currentdate.getDay() +
-      "/" +
-      (currentdate.getMonth() + 1) +
-      "/" +
-      currentdate.getFullYear() +
-      " @ " +
-      currentdate.getHours() +
-      ":" +
-      currentdate.getMinutes() +
-      ":" +
-      currentdate.getSeconds();
-    var queryString =
+    const queryString =
       "select distinct ref_id, ref_libro_de, ref_libro_es, clave from referencia order by ref_libro_de;";
     res.locals.connection
       .query(queryString)
       .then(function (results) {
-        // console.log(datetime + "== referencias/lista/ | Éxito")
         res.send(
           JSON.stringify({ status: 200, error: null, response: results })
         );
-        //If there is no error, all is good and response is 200OK.
       })
       .catch(function (error) {
-        console.log(datetime + "== referencias/lista/ | " + error);
         res.send(JSON.stringify({ status: 500, error: error, response: null }));
       });
   } else {
@@ -91,21 +57,8 @@ router.get("/lista", function (req, res, next) {
 
 router.get("/:id", function (req, res, next) {
   if (global.rol != "guest") {
-    var currentdate = new Date();
-    var datetime =
-      currentdate.getDay() +
-      "/" +
-      (currentdate.getMonth() + 1) +
-      "/" +
-      currentdate.getFullYear() +
-      " @ " +
-      currentdate.getHours() +
-      ":" +
-      currentdate.getMinutes() +
-      ":" +
-      currentdate.getSeconds();
     filter = [req.params.id];
-    var queryString = "select distinct * from referencia where ref_id = $1";
+    const queryString = "select distinct * from referencia where ref_id = $1";
     res.locals.connection
       .query(queryString, filter)
       .then(function (results) {
@@ -131,23 +84,9 @@ router.get("/:id", function (req, res, next) {
 });
 
 router.get("/obtieneReferencias/:id", function (req, res, next) {
-  // console.log("ENTRA")
   if (global.rol != "guest") {
-    var currentdate = new Date();
-    var datetime =
-      currentdate.getDay() +
-      "/" +
-      (currentdate.getMonth() + 1) +
-      "/" +
-      currentdate.getFullYear() +
-      " @ " +
-      currentdate.getHours() +
-      ":" +
-      currentdate.getMinutes() +
-      ":" +
-      currentdate.getSeconds();
-    var filter = [req.params.id];
-    var queryString =
+    const filter = [req.params.id];
+    const queryString =
       "\
     select * from\
     (select distinct\
@@ -174,24 +113,21 @@ router.get("/obtieneReferencias/:id", function (req, res, next) {
     where\
     termino.t_id = $1) Sub order by expresion_original, orden, \
     CASE WHEN clave = 'IP' THEN 1 \
-      WHEN clave = 'PW' THEN 2 \
-      WHEN clave = 'I1' THEN 3 \
-      WHEN clave = 'I2' THEN 4 \
-      WHEN clave = 'PV' THEN 5 \
-      WHEN clave = 'CM' THEN 6 \
-     END, refid;";
-    //  console.log(queryString)
+		      WHEN clave = 'PW' THEN 2 \
+		      WHEN clave = 'I1' THEN 3 \
+		      WHEN clave = 'I2' THEN 4 \
+			  WHEN clave = 'I3' THEN 5 \
+		      WHEN clave = 'PV' THEN 6 \
+		      WHEN clave LIKE 'CM' THEN 7 \
+		 	END, refid;";
     res.locals.connection
       .query(queryString, filter)
       .then(function (results) {
-        // console.log("results  ",results)
-        // console.log(datetime + "== referencias/obtieneReferencias/:id/ | Referencia obtenida con éxito")
         res.send(
           JSON.stringify({ status: 200, error: null, response: results })
         );
       })
       .catch(function (error) {
-        // console.log(datetime + "== referencias/obtieneReferencias/:id/ | " + error)
         res.send(JSON.stringify({ status: 500, error: null, response: null }));
       });
   } else {
@@ -207,21 +143,8 @@ router.get("/obtieneReferencias/:id", function (req, res, next) {
 
 router.get("/obtieneReferenciasByRef/:refid", function (req, res, next) {
   if (global.rol != "guest") {
-    var currentdate = new Date();
-    var datetime =
-      currentdate.getDay() +
-      "/" +
-      (currentdate.getMonth() + 1) +
-      "/" +
-      currentdate.getFullYear() +
-      " @ " +
-      currentdate.getHours() +
-      ":" +
-      currentdate.getMinutes() +
-      ":" +
-      currentdate.getSeconds();
-    var filter = [req.params.refid];
-    var queryString =
+    const filter = [req.params.refid];
+    const queryString =
       "\
     SELECT * FROM \
     (select distinct\
@@ -275,21 +198,8 @@ router.get("/obtieneReferenciasByRef/:refid", function (req, res, next) {
 
 router.get("/obtieneReferenciasIdRefId/:id/:refid", function (req, res, next) {
   if (global.rol != "guest") {
-    var currentdate = new Date();
-    var datetime =
-      currentdate.getDay() +
-      "/" +
-      (currentdate.getMonth() + 1) +
-      "/" +
-      currentdate.getFullYear() +
-      " @ " +
-      currentdate.getHours() +
-      ":" +
-      currentdate.getMinutes() +
-      ":" +
-      currentdate.getSeconds();
-    var filter = [req.params.refid, req.params.id];
-    var queryString =
+    const filter = [req.params.refid, req.params.id];
+    const queryString =
       "\
     SELECT * FROM \
     (select distinct\
@@ -343,21 +253,8 @@ router.get("/obtieneReferenciasIdRefId/:id/:refid", function (req, res, next) {
 
 router.get("/obtieneReferenciasByTerm/:id", function (req, res, next) {
   if (global.rol != "guest") {
-    var currentdate = new Date();
-    var datetime =
-      currentdate.getDay() +
-      "/" +
-      (currentdate.getMonth() + 1) +
-      "/" +
-      currentdate.getFullYear() +
-      " @ " +
-      currentdate.getHours() +
-      ":" +
-      currentdate.getMinutes() +
-      ":" +
-      currentdate.getSeconds();
-    var filter = [req.params.id];
-    var queryString =
+    const filter = [req.params.id];
+    const queryString =
       "\
         SELECT * FROM\
         (select distinct\
@@ -393,11 +290,8 @@ router.get("/obtieneReferenciasByTerm/:id", function (req, res, next) {
     res.locals.connection
       .query(queryString, filter)
       .then(function (results) {
-        // console.log(datetime + "== referencias/obtieneReferenciasByRef/:refid/ | Referencia obtenida con éxito")
-        console.log("LEN", results.length);
         if (results.length == 0) {
-          console.log("2ND QUERY", filter);
-          var query =
+          const query =
             "SELECT \
                 t_id as id,\
                 t_term_de as expresion_original,\
@@ -409,7 +303,6 @@ router.get("/obtieneReferenciasByTerm/:id", function (req, res, next) {
                 FROM termino WHERE t_id = $1;";
 
           res.locals.connection.query(query, filter).then(function (results) {
-            console.log("RES", results);
             res.send(
               JSON.stringify({ status: 200, error: null, response: results })
             );
@@ -420,7 +313,6 @@ router.get("/obtieneReferenciasByTerm/:id", function (req, res, next) {
           );
       })
       .catch(function (error) {
-        // console.log(datetime + "== referencias/obtieneReferenciasByRef/:refid/ | " + error)
         res.send(JSON.stringify({ status: 500, error: null, response: null }));
       });
   } else {
@@ -435,19 +327,25 @@ router.get("/obtieneReferenciasByTerm/:id", function (req, res, next) {
 });
 
 router.post("/new/nuevoPasaje/", function (req, res) {
-  // console.log("Nuevo")
   if (global.rol == "admin") {
-    var ref_id = Buffer.from(req.body.ref_id, "base64").toString("ascii");
-    var pas_de = Buffer.from(req.body.pasaje_de, "base64").toString("ascii");
-    var pas_es = Buffer.from(req.body.pasaje_es, "base64").toString("ascii");
-    var ref_de = Buffer.from(req.body.ref_de, "base64").toString("ascii");
-    var ref_es = Buffer.from(req.body.ref_es, "base64").toString("ascii");
+    const ref_id = Buffer.from(req.body.ref_id, "base64").toString("ascii");
+    const pas_de = Buffer.from(req.body.pasaje_de, "base64").toString("ascii");
+    const pas_es = Buffer.from(req.body.pasaje_es, "base64").toString("ascii");
+    const ref_de = Buffer.from(req.body.ref_de, "base64").toString("ascii");
+    const ref_es = Buffer.from(req.body.ref_es, "base64").toString("ascii");
     res.locals.connection
       .query("select * from referencia where ref_id=$1;", [ref_id])
       .then(function (result) {
         if (result.length <= 0) {
-          var filter = [req.body.clave, pas_de, pas_es, ref_de, ref_es, ref_id];
-          var queryString =
+          const filter = [
+            req.body.clave,
+            pas_de,
+            pas_es,
+            ref_de,
+            ref_es,
+            ref_id,
+          ];
+          const queryString =
             "\
                 INSERT INTO referencia (clave, ref_def_de, ref_def_es, ref_libro_de, ref_libro_es, ref_id) VALUES ($1, $2, $3, $4, $5, $6);";
           res.locals.connection
@@ -488,12 +386,12 @@ router.post("/new/nuevoPasaje/", function (req, res) {
 
 router.post("/editarPasaje/:refid", function (req, res, next) {
   if (global.rol == "admin") {
-    var pas_de = Buffer.from(req.body.pasaje_de, "base64").toString("ascii");
-    var pas_es = Buffer.from(req.body.pasaje_es, "base64").toString("ascii");
-    var ref_de = Buffer.from(req.body.ref_de, "base64").toString("ascii");
-    var ref_es = Buffer.from(req.body.ref_es, "base64").toString("ascii");
-    var ref_id = Buffer.from(req.body.ref_id, "base64").toString("ascii");
-    var filter = [
+    const pas_de = Buffer.from(req.body.pasaje_de, "base64").toString("ascii");
+    const pas_es = Buffer.from(req.body.pasaje_es, "base64").toString("ascii");
+    const ref_de = Buffer.from(req.body.ref_de, "base64").toString("ascii");
+    const ref_es = Buffer.from(req.body.ref_es, "base64").toString("ascii");
+    const ref_id = Buffer.from(req.body.ref_id, "base64").toString("ascii");
+    const filter = [
       pas_de,
       pas_es,
       ref_es,
@@ -503,7 +401,7 @@ router.post("/editarPasaje/:refid", function (req, res, next) {
       req.body.clave,
     ];
 
-    var queryString =
+    const queryString =
       "\
 	UPDATE referencia SET clave = $7, ref_def_de = $1, ref_def_es = $2, ref_libro_es = $3, ref_libro_de = $4, ref_id = $5 WHERE ref_id = $6;";
     res.locals.connection
@@ -529,33 +427,18 @@ router.post("/editarPasaje/:refid", function (req, res, next) {
 
 router.get("/buscarPasaje/:refid", function (req, res, next) {
   if (global.rol != "guest") {
-    var currentdate = new Date();
-    var datetime =
-      currentdate.getDay() +
-      "/" +
-      (currentdate.getMonth() + 1) +
-      "/" +
-      currentdate.getFullYear() +
-      " @ " +
-      currentdate.getHours() +
-      ":" +
-      currentdate.getMinutes() +
-      ":" +
-      currentdate.getSeconds();
-    var filter = [req.params.refid];
-    var queryString = "\
+    const filter = [req.params.refid];
+    const queryString =
+      "\
 	SELECT * FROM termino_referencia WHERE tr_refid = $1;";
-    // console.log(queryString)
     res.locals.connection
       .query(queryString, filter)
       .then(function (results) {
-        // console.log(datetime + "== referencias/buscarPasaje/:refid/ | Pasaje encontrado con éxito")
         res.send(
           JSON.stringify({ status: 200, error: null, response: results })
         );
       })
       .catch(function (error) {
-        // console.log(datetime + "== referencias/buscarPasaje/:refid/ | " + error)
         res.send(JSON.stringify({ status: 500, error: error, response: null }));
       });
   } else {
@@ -571,33 +454,18 @@ router.get("/buscarPasaje/:refid", function (req, res, next) {
 
 router.delete("/eliminarPasaje/:refid", function (req, res, next) {
   if (global.rol == "admin") {
-    var currentdate = new Date();
-    var datetime =
-      currentdate.getDay() +
-      "/" +
-      (currentdate.getMonth() + 1) +
-      "/" +
-      currentdate.getFullYear() +
-      " @ " +
-      currentdate.getHours() +
-      ":" +
-      currentdate.getMinutes() +
-      ":" +
-      currentdate.getSeconds();
-    var filter = [req.params.refid];
-    var queryString = "\
+    const filter = [req.params.refid];
+    const queryString =
+      "\
 	DELETE FROM referencia WHERE ref_id = $1;";
-    // console.log(queryString)
     res.locals.connection
       .query(queryString, filter)
       .then(function (results) {
-        // console.log(datetime + "== referencias/eliminarPasaje/"+ req.params.refid +" | Pasaje eliminado con éxito")
         res.send(
           JSON.stringify({ status: 200, error: null, response: results })
         );
       })
       .catch(function (error) {
-        // console.log(datetime + "== referencias/eliminarPasaje/"+ req.params.refid +" | " + error)
         res.send(JSON.stringify({ status: 500, error: error, response: null }));
       });
   } else {
@@ -613,34 +481,18 @@ router.delete("/eliminarPasaje/:refid", function (req, res, next) {
 
 router.delete("/quitarPasaje/:refid/:termid", function (req, res, next) {
   if (global.rol == "admin") {
-    var currentdate = new Date();
-    var datetime =
-      currentdate.getDay() +
-      "/" +
-      (currentdate.getMonth() + 1) +
-      "/" +
-      currentdate.getFullYear() +
-      " @ " +
-      currentdate.getHours() +
-      ":" +
-      currentdate.getMinutes() +
-      ":" +
-      currentdate.getSeconds();
-    var filter = [req.params.refid, req.params.termid];
-    var queryString =
+    const filter = [req.params.refid, req.params.termid];
+    const queryString =
       "\
 	DELETE FROM termino_referencia WHERE tr_refid = $1 AND tr_termid = $2;";
-    // console.log(queryString)
     res.locals.connection
       .query(queryString, filter)
       .then(function (results) {
-        // console.log(datetime + "== referencias/quitarPasaje/:refid/ | Pasaje removido con éxito")
         res.send(
           JSON.stringify({ status: 200, error: null, response: results })
         );
       })
       .catch(function (error) {
-        // console.log(datetime + "== referencias/quitarPasaje/:refid/ | " + error)
         res.send(JSON.stringify({ status: 500, error: error, response: null }));
       });
   } else {
@@ -654,61 +506,11 @@ router.delete("/quitarPasaje/:refid/:termid", function (req, res, next) {
   }
 });
 
-/*const fixReferencias = (referencias) => {
-    var expresionesUnicas=[]
-    var coincidencia = null
-    for (var i in referencias){
-        var bandera = false
-        var actual = referencias[i]
-        for(var j in expresionesUnicas){
-            if(expresionesUnicas[j].term_id == actual.term_id){
-                coincidencia = j
-                bandera = true
-            }
-        }
-        if(!bandera){
-            var nuevaExpresion = {
-                clave : actual.clave,
-                expresion : actual.expresion,
-                id : actual.id,
-                index_de: actual.index_de,
-                index_es: actual.index_es,
-                pretty_e: actual.pretty_e,
-                pretty_t: actual.pretty_t,
-                traduccion: actual.traduccion,
-                referencias : [
-                    {
-                        ref_def_de: actual.ref_def_de,
-                        ref_def_es: actual.ref_def_es,
-                        refid: actual.refid,
-                        referencia_original: actual.referencia_original,
-                        referencia_traduccion: actual.referencia_traduccion
-                    }
-                ],
-                term_de: actual.term_de,
-                term_es: actual.term_es,
-                term_id: actual.term_id
-            }
-            expresionesUnicas.push(nuevaExpresion)
-        }else if(coincidencia != null){
-            expresionesUnicas[coincidencia].referencias.push({
-                ref_def_de: actual.ref_def_de,
-                ref_def_es: actual.ref_def_es,
-                refid: actual.refid,
-                referencia_original: actual.referencia_original,
-                referencia_traduccion: actual.referencia_traduccion
-            })
-            coincidencia = null
-        }
-    }
-    return expresionesUnicas 
-}*/
-
 const fixReferencias = (referencias) => {
-  var expresiones = [];
-  var posicActual = -1;
-  var expreActual = "";
-  var i = 0;
+  let expresiones = [];
+  let posicActual = -1;
+  let expreActual = "";
+  let i = 0;
   while (i < referencias.length) {
     if (expreActual != referencias[i].expresion) {
       posicActual++;
@@ -746,33 +548,13 @@ const fixReferencias = (referencias) => {
 };
 
 router.post("/busquedaExpresion/:case", function (req, res, next) {
-  console.log("ENTRE A LA BUSQUEDA POR VOCABULARIO");
-  console.log("body.case al entrar al endpoint", req.params.case);
   if (global.rol != "guest") {
-    console.log("params.case", req.params.case);
-    var currentdate = new Date();
-    var datetime =
-      currentdate.getDay() +
-      "/" +
-      (currentdate.getMonth() + 1) +
-      "/" +
-      currentdate.getFullYear() +
-      " @ " +
-      currentdate.getHours() +
-      ":" +
-      currentdate.getMinutes() +
-      ":" +
-      currentdate.getSeconds();
-    var filter = ["%" + req.body.parametro + "%"];
-    {
-      /*var condicion = req.body.case == true ? "where termino.t_term_de like $1 or termino.t_term_es like $1" : "where termino.t_term_de ilike $1 or termino.t_term_es ilike $1"*/
-    }
-    var condicion =
+    const filter = ["%" + req.body.parametro + "%"];
+    const condicion =
       req.params.case == "false"
         ? "where termino.t_term_es ilike $1 or termino.t_term_de ilike $1"
         : "where termino.t_term_es like $1 or termino.t_term_de like $1";
-    console.log("condicion", condicion);
-    var queryString =
+    const queryString =
       "\
         select\
         termino.t_id as id,\
@@ -798,7 +580,6 @@ router.post("/busquedaExpresion/:case", function (req, res, next) {
     res.locals.connection
       .query(queryString, filter)
       .then(function (results) {
-        console.log("results", results);
         res.send(
           JSON.stringify({
             status: 200,
@@ -806,10 +587,8 @@ router.post("/busquedaExpresion/:case", function (req, res, next) {
             response: fixReferencias(results),
           })
         );
-        //If there is no error, all is good and response is 200OK.
       })
       .catch(function (error) {
-        console.log("error", error);
         res.send(JSON.stringify({ status: 500, error: error, response: null }));
       });
   } else {
@@ -826,32 +605,15 @@ router.post("/busquedaExpresion/:case", function (req, res, next) {
 router.post(
   "/busquedaExpresionPorLetraAdmin/:letra/:case",
   function (req, res, next) {
-    console.log("ENTRE A LA BUSQUEDA POR LETRA DEL ADMIN");
     if (global.rol != "guest") {
-      console.log("params.case", req.params.case);
-      console.log("req.body.parametro", req.body.parametro);
-      var currentdate = new Date();
-      var datetime =
-        currentdate.getDay() +
-        "/" +
-        (currentdate.getMonth() + 1) +
-        "/" +
-        currentdate.getFullYear() +
-        " @ " +
-        currentdate.getHours() +
-        ":" +
-        currentdate.getMinutes() +
-        ":" +
-        currentdate.getSeconds();
-      var filter = ["%" + req.body.parametro + "%"];
-      console.log("filter", filter);
-      var condicion =
+      const filter = ["%" + req.body.parametro + "%"];
+
+      let condicion =
         req.params.case == "false"
           ? "where termino.t_term_de ilike $1"
           : "where termino.t_term_de like $1";
       condicion += " and termino.t_index_de like '" + req.params.letra + "%'";
-      console.log("condicion en Administrador", condicion);
-      var queryString =
+      const queryString =
         "\
         select\
         termino.t_id as id,\
@@ -875,10 +637,8 @@ router.post(
               response: fixReferencias(results),
             })
           );
-          //If there is no error, all is good and response is 200OK.
         })
         .catch(function (error) {
-          console.log("error", error);
           res.send(
             JSON.stringify({ status: 500, error: error, response: null })
           );
@@ -896,10 +656,10 @@ router.post(
 );
 
 const fixReferenciasDic = (referencias) => {
-  var expresiones = [];
-  var posicActual = -1;
-  var expreActual = "";
-  var i = 0;
+  let expresiones = [];
+  let posicActual = -1;
+  let expreActual = "";
+  let i = 0;
   while (i < referencias.length) {
     if (expreActual != referencias[i].id) {
       posicActual++;
@@ -932,30 +692,14 @@ const fixReferenciasDic = (referencias) => {
       i++;
     }
   }
-  console.log("lo que regresa la busqueda", expresiones);
   return expresiones;
 };
 
 router.post(
   "/busquedaExpresionPorLetra/:letra/:lenguaje",
   function (req, res, next) {
-    console.log("req", req.params);
-    //console.log("global.rol", global.rol)
     if (global.rol != "guest") {
-      var currentdate = new Date();
-      var datetime =
-        currentdate.getDay() +
-        "/" +
-        (currentdate.getMonth() + 1) +
-        "/" +
-        currentdate.getFullYear() +
-        " @ " +
-        currentdate.getHours() +
-        ":" +
-        currentdate.getMinutes() +
-        ":" +
-        currentdate.getSeconds();
-      var filter = ["%" + req.body.parametro + "%"];
+      const filter = ["%" + req.body.parametro + "%"];
       if (req.params.lenguaje == "es") {
         if (req.body.case) {
           var condicion =
@@ -968,7 +712,6 @@ router.post(
             req.params.letra +
             "%'";
         }
-        //var ordenamiento = "order by termino.t_term_es"
         var ordenamiento =
           "order by termino.t_em_es, termino_referencia.tr_order,\
                 CASE WHEN clave = 'IP' THEN 1 \
@@ -1010,8 +753,7 @@ router.post(
         var prettys =
           "termino.t_em_de as pretty_e, termino.t_em_es as pretty_t,";
       }
-      //console.log("ordenamiento", terminos)
-      var queryString =
+      const queryString =
         "\
         select\
         termino.t_id as id," +
@@ -1034,12 +776,10 @@ router.post(
         condicion +
         " " +
         ordenamiento;
-      console.log("queryString", queryString);
-      console.log("filter", filter);
+
       res.locals.connection
         .query(queryString, filter)
         .then(function (results) {
-          console.log("resultados!!!", results);
           res.send(
             JSON.stringify({
               status: 200,
@@ -1047,10 +787,8 @@ router.post(
               response: fixReferenciasDic(results),
             })
           );
-          //If there is no error, all is good and response is 200OK.
         })
         .catch(function (error) {
-          console.log("error", error);
           res.send(
             JSON.stringify({ status: 500, error: error, response: null })
           );
@@ -1069,24 +807,19 @@ router.post(
 
 const fixPasajes = (res, pasaje, tid) => {
   if (pasaje.indexOf("onclick") > -1) {
-    var posicionInicial = pasaje.indexOf("onclick") - 12;
-    var posicion = posicionInicial + 1;
-    var posicionFinal = 0;
-    // console.log(pasajeACortar[posicionInicial])
+    let posicionInicial = pasaje.indexOf("onclick") - 12;
+    let posicion = posicionInicial + 1;
+    let posicionFinal = 0;
     while (posicion < pasaje.length) {
       if (pasaje[posicion] == ">") {
         posicionFinal = posicion;
         posicion = pasaje.length;
-        // console.log("posicion Inicial   ", posicionInicial)
-        // console.log("posicion Final  ", posicionFinal)
-        var pedazo = pasaje.slice(posicionInicial, posicionFinal + 1);
-        // console.log("========================================")
-        // console.log("pedazo  ", pedazo)
+        const pedazo = pasaje.slice(posicionInicial, posicionFinal + 1);
         if (pedazo.indexOf("onclick") > -1) {
-          var posicionClick = pedazo.indexOf("onclick");
-          var pedazoClick = pedazo.slice(posicionClick, posicionFinal + 1);
-          var refid = pedazoClick.split("'")[1];
-          var reemplazo =
+          const posicionClick = pedazo.indexOf("onclick");
+          const pedazoClick = pedazo.slice(posicionClick, posicionFinal + 1);
+          const refid = pedazoClick.split("'")[1];
+          const reemplazo =
             pasaje.split(pedazo)[0] +
             "<a href='/#/diccionario/husserl/pasaje/" +
             tid +
@@ -1094,7 +827,6 @@ const fixPasajes = (res, pasaje, tid) => {
             refid +
             "'>" +
             pasaje.split(pedazo)[1];
-          // console.log(reemplazo)
           return fixPasajes(res, reemplazo);
         }
       }
@@ -1105,7 +837,7 @@ const fixPasajes = (res, pasaje, tid) => {
   }
 };
 
-var recorre = (lista, index, res, next) => {
+const recorre = (lista, index, res, next) => {
   var pasajeResuelto = lista[index];
   if (index >= lista.length) return next();
   pasajeResuelto.ref_def_de = fixPasajes(
@@ -1118,7 +850,6 @@ var recorre = (lista, index, res, next) => {
     lista[index].ref_def_es,
     lista[index].tr_termid
   );
-  // console.log(pasajeResuelto)
   res.locals.connection
     .query(
       "UPDATE referencia SET ref_def_de = $1, ref_def_es = $2 where ref_id = $3;",
@@ -1129,13 +860,11 @@ var recorre = (lista, index, res, next) => {
       ]
     )
     .then((r) => {
-      console.log(r);
       return recorre(lista, index + 1, res, next);
     });
 };
 
 router.post("/reemplazo2", function (req, res) {
-  // console.log('pitos');
   res.locals.connection
     .query(
       "\
@@ -1149,8 +878,6 @@ router.post("/reemplazo2", function (req, res) {
       []
     )
     .then((results) => {
-      console.log(results);
-      // res.send(results)
       recorre(results, 0, res, () => {
         console.log("DONE");
         res.send("pasajes cambiados.");

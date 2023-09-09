@@ -31,7 +31,7 @@ import { sesionStore } from "../../../../stores/sesionStore";
 import { expresionesStore } from "../../../../stores/expresionStore";
 import { webService } from "../../../../js/webServices";
 import { expresionesAsociadas } from "../../../../js/Language";
-import { fixLetter } from "../../../../js/utils";
+import { fixLetter, fixReferencias } from "../../../../js/utils";
 
 const Pasaje = (props) => {
   const { match } = props;
@@ -42,8 +42,6 @@ const Pasaje = (props) => {
 
   const globalExpresion = useContext(expresionesStore);
   const { attend } = globalExpresion;
-  // const { expresiones, chunk } = store
-
   const [expresiones, setExpresiones] = useState([]);
   const [idExpresion, setIdExpresion] = useState("");
   const [referenciaSeleccionada, setReferenciaSeleccionada] = useState(null);
@@ -71,46 +69,6 @@ const Pasaje = (props) => {
     ref_traduccion: "",
     expresiones: [],
   });
-
-  const fixReferencias = (referencias) => {
-    var expresiones = [];
-    var posicActual = -1;
-    var expreActual = "";
-    var i = 0;
-    while (i < referencias.length) {
-      if (expreActual != referencias[i].id) {
-        posicActual++;
-        expreActual = referencias[i].id;
-        expresiones.push({
-          clave: referencias[i].clave,
-          nombreExpresion: referencias[i].expresion,
-          id: referencias[i].id,
-          index_de: referencias[i].index_de,
-          index_es: referencias[i].index_es,
-          pretty_e: referencias[i].pretty_e,
-          pretty_t: referencias[i].pretty_t,
-          referencias: [],
-          traduccion: referencias[i].traduccion,
-        });
-        expresiones[posicActual].referencias.push({
-          referencia_original: referencias[i].referencia_original,
-          referencia_traduccion: referencias[i].referencia_traduccion,
-          refid: referencias[i].refid,
-          orden: referencias[i].orden,
-        });
-        i++;
-      } else {
-        expresiones[posicActual].referencias.push({
-          referencia_original: referencias[i].referencia_original,
-          referencia_traduccion: referencias[i].referencia_traduccion,
-          refid: referencias[i].refid,
-          orden: referencias[i].orden,
-        });
-        i++;
-      }
-    }
-    return expresiones;
-  };
 
   const findReferencias = (referencias, referenciaId) => {
     let referenciaEncontrada = null;
