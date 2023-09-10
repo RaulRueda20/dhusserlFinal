@@ -65,7 +65,6 @@ const ListaIzquierdaExpresiones = (props) => {
               idExpresion={props.idExpresion}
               open={props.idExpresion == expresion.id}
               match={props.match}
-              idExpresion={props.idExpresion}
               idDeLaReferencia={props.idDeLaReferencia}
             />
           );

@@ -203,7 +203,11 @@ const PanelExpresionIzquierdo = ({ match, expresion, index, idExpresion }) => {
               ? "No hay ninguna referencia para esta expresión. Ver por favor la lista de expresiones derivadas."
               : expresion?.referencias.map((referencia, index) => {
                   return (
-                    <li className="referencia" id={"panel" + index}>
+                    <li
+                      className="referencia"
+                      id={"panel" + index}
+                      key={referencia.refid}
+                    >
                       <Grid container justify="center" alignItems="center">
                         <Grid item xs={10} id={expresion?.id + "/" + index}>
                           <Typography

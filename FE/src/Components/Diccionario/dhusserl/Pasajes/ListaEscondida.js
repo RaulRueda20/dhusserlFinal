@@ -69,7 +69,6 @@ const ListaEscondida = (props) => {
             idReferencias={props.idReferencias}
             setIdReferencias={props.setIdReferencias}
             idExpresion={props.idExpresion}
-            idExpresion={props.idExpresion}
           />
         ))}
       </ul>

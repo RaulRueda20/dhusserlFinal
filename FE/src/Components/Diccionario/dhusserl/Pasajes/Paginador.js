@@ -166,6 +166,7 @@ const Pasaje = (props) => {
           {casillas.map((referencia, index) => {
             return (
               <Link
+                key={referencia.refid}
                 to={`${props.match.path.slice(0, 20)}/pasaje/${
                   props.expresionId
                 }/${referencia.refid}`}
