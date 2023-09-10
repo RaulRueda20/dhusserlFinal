@@ -2,7 +2,6 @@ var express = require("express");
 var router = express.Router();
 
 router.post("/nuevaExpresion", function (req, res, next) {
-  console.log(global.rol);
   if (global.rol == "admin") {
     var currentdate = new Date();
     var datetime =
@@ -35,7 +34,6 @@ router.post("/nuevaExpresion", function (req, res, next) {
         var queryString =
           "\
 			insert into termino (t_id, t_term_es, t_term_de, t_index_de, t_index_es, t_em_de, t_em_es) values ($1, $2, $3, $4, $5, $6, $7)";
-        console.log(queryString);
         res.locals.connection
           .query(queryString, filter)
           .then(function (results) {
@@ -290,7 +288,7 @@ router.get("/al/:letra", function (req, res, next) {
 		SELECT DISTINCT \
 			termino.t_id AS id, \
 			termino.t_index_es AS index_es,\
-            termino.t_index_de AS index_de,\
+      termino.t_index_de AS index_de,\
 			termino.t_term_es AS traduccion, \
 			termino.t_term_de AS expresion, \
 			termino.t_em_de AS pretty_e,\

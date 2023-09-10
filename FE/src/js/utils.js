@@ -65,4 +65,19 @@ const fixReferencias = (referencias) => {
   return expresiones;
 };
 
-export { fixLetter, fixReferencias };
+const fixQV = (referencias) => {
+  return {
+    refid: referencias[0].refid,
+    pasaje_original: referencias[0].pasaje_original,
+    pasaje_traduccion: referencias[0].pasaje_traduccion,
+    ref_original: referencias[0].ref_original,
+    ref_traduccion: referencias[0].ref_traduccion,
+    expresiones: referencias.map((referencia) => ({
+      t_id: referencia.id,
+      expresion_original: referencia.expresion_original,
+      expresion_traduccion: referencia.expresion_traduccion,
+    })),
+  };
+};
+
+export { fixLetter, fixReferencias, fixQV };

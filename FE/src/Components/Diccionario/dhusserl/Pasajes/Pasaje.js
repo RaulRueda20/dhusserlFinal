@@ -31,7 +31,7 @@ import { sesionStore } from "../../../../stores/sesionStore";
 import { expresionesStore } from "../../../../stores/expresionStore";
 import { webService } from "../../../../js/webServices";
 import { expresionesAsociadas } from "../../../../js/Language";
-import { fixLetter, fixReferencias } from "../../../../js/utils";
+import { fixLetter, fixQV, fixReferencias } from "../../../../js/utils";
 
 const Pasaje = (props) => {
   const { match } = props;
@@ -106,7 +106,6 @@ const Pasaje = (props) => {
       setPasajeService(service);
       webService(service, "GET", {}, sesion, ({ data }) => {
         const { response } = data;
-        console.log("response en Pasajes", response);
         attend({
           type: "START_EXPRESIONES",
           payload: {
@@ -121,8 +120,8 @@ const Pasaje = (props) => {
       service = "/referencias/obtieneReferenciasByRef/" + idDeLaReferencia;
       webService(service, "GET", {}, sesion, ({ data }) => {
         const { response } = data;
-        const fixedThing = fixReferencias(response);
-        setQv(fixedThing[0]);
+        const fixedThing = fixQV(response);
+        setQv(fixedThing);
         setIsQV(true);
         setLoading(false);
       });
@@ -169,11 +168,11 @@ const Pasaje = (props) => {
   }, [letra, langLista, match.params.expresion, match.params.id]);
 
   function htmlPasajeOriginal() {
-    return { __html: qv.ref_libro_de };
+    return { __html: qv.pasaje_original };
   }
 
   function htmlPasajeTraduccion() {
-    return { __html: qv.ref_libro_es };
+    return { __html: qv.pasaje_traduccion };
   }
 
   function consultaDePasajes(event) {
@@ -345,7 +344,14 @@ const Pasaje = (props) => {
               )}
             </>
           ) : (
-            <div style={{ padding: "30px 15px" }}>
+            <div
+              style={{
+                padding: "30px 15px",
+                height: "calc(91vh - 31px)",
+                overflowY: "scroll",
+                boxSizing: "border-box",
+              }}
+            >
               <div dangerouslySetInnerHTML={htmlPasajeOriginal()}></div>
               <br />
               <Divider />
@@ -388,7 +394,7 @@ const Pasaje = (props) => {
                       <Link
                         to={`${match.path.slice(0, 20)}/pasaje/${
                           expresion.t_id
-                        }/${qv?.ref_id}`}
+                        }/${qv?.refid}`}
                         onClick={(e) => consultaDePasajes(e)}
                       >
                         <Typography id={expresion.t_id + "/" + index}>
