@@ -24,8 +24,8 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: "5px",
   },
   lang: {
-    fontSize: "2.5rem",
-    color: "black",
+    fontSize: "2.25rem",
+    color: "white",
   },
 }));
 

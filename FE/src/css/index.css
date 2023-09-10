@@ -365,7 +365,8 @@ a {
 
 .headerMain {
   height: 9vh;
-  /* max-height: 94px; */
+  position: relative !important;
+  width: 100%;
 }
 
 .bordeDeConsultas {

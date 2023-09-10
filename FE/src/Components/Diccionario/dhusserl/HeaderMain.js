@@ -40,56 +40,60 @@ function HeaderMain(props) {
   const { lang } = state;
 
   return (
-    <Grid container direction="row" justify="center" className="grids">
-      <AppBar position="static" color="primary" className="headerMain">
-        <Toolbar variant="dense">
-          <Grid item xs={2} sm={1} md={1} lg={1} className={classes.menu}>
-            <MenuHeader
-              history={props.history}
-              match={props.match}
-              setLogged={props.setLogged}
-            />
-          </Grid>
-          {props.flagCambio == "expresiones" ? (
-            <Grid item xs={2} sm={1} md={1} lg={1}>
-              <Tooltip title="Ir al módulo de búsquedas">
-                <Link to={`${props.match.url}/busquedas`}>
-                  <IconButton>
-                    <PageviewIcon className="iconos" />
-                  </IconButton>
-                </Link>
-              </Tooltip>
-            </Grid>
-          ) : props.flagCambio == "busquedas" ? (
-            <Grid item xs={2} sm={1} md={1} lg={1}>
-              <Link to={`${props.match.url}/diccionario`}>
-                <Tooltip title="Ir al diccionario">
-                  <IconButton>
-                    <Book className="iconos" />
-                  </IconButton>
-                </Tooltip>
-              </Link>
-            </Grid>
-          ) : (
-            <Grid item xs={2} sm={1} md={1} lg={1}>
+    <AppBar position="static" color="primary" className="headerMain">
+      <Grid
+        container
+        direction="row"
+        justify="center"
+        alignContent="center"
+        alignItems="center"
+      >
+        <Grid item xs={1} className={classes.menu}>
+          <MenuHeader
+            history={props.history}
+            match={props.match}
+            setLogged={props.setLogged}
+          />
+        </Grid>
+        {props.flagCambio == "expresiones" ? (
+          <Grid item xs={1} className={classes.menu}>
+            <Tooltip title="Ir al módulo de búsquedas">
               <Link to={`${props.match.url}/busquedas`}>
                 <IconButton>
                   <PageviewIcon className="iconos" />
                 </IconButton>
               </Link>
-            </Grid>
-          )}
-          <Grid item xs={6} sm={8} md={8} lg={8} align="center">
-            <Typography variant="h2" className={classes.titulo}>
-              {tituloDiccionario(lang)}
-            </Typography>
+            </Tooltip>
           </Grid>
-          <Grid item xs={2} sm={1} md={1} lg={1} className={classes.idiomas}>
-            <MenuIdioma />
+        ) : props.flagCambio == "busquedas" ? (
+          <Grid item xs={1} className={classes.menu}>
+            <Link to={`${props.match.url}/diccionario`}>
+              <Tooltip title="Ir al diccionario">
+                <IconButton>
+                  <Book className="iconos" />
+                </IconButton>
+              </Tooltip>
+            </Link>
           </Grid>
-        </Toolbar>
-      </AppBar>
-    </Grid>
+        ) : (
+          <Grid item xs={1} className={classes.menu}>
+            <Link to={`${props.match.url}/busquedas`}>
+              <IconButton>
+                <PageviewIcon className="iconos" />
+              </IconButton>
+            </Link>
+          </Grid>
+        )}
+        <Grid item xs={8} className={classes.menu}>
+          <Typography variant="h2" className={classes.titulo}>
+            {tituloDiccionario(lang)}
+          </Typography>
+        </Grid>
+        <Grid item xs={2} className={classes.idiomas}>
+          <MenuIdioma />
+        </Grid>
+      </Grid>
+    </AppBar>
   );
 }
 
