@@ -169,11 +169,13 @@ router.get("/obtieneReferenciasByRef/:refid", function (req, res, next) {
     where\
     termino_referencia.tr_refid = $1) Sub order by expresion_original, orden, \
     CASE WHEN clave = 'IP' THEN 1 \
-      WHEN clave = 'PW' THEN 2 \
-      WHEN clave = 'I1' THEN 3 \
-      WHEN clave = 'I2' THEN 4 \
-      WHEN clave = 'PV' THEN 5 \
-      WHEN clave = 'CM' THEN 6 \
+      WHEN clave = 'ZB' THEN 2 \
+      WHEN clave = 'PW' THEN 3 \
+      WHEN clave = 'I1' THEN 4 \
+      WHEN clave = 'I2' THEN 5 \
+      WHEN clave = 'I3' THEN 6 \
+      WHEN clave = 'PV' THEN 7 \
+      WHEN clave = 'CM' THEN 8 \
      END, refid;";
     res.locals.connection
       .query(queryString, filter)
@@ -224,11 +226,13 @@ router.get("/obtieneReferenciasIdRefId/:id/:refid", function (req, res, next) {
     where\
     termino_referencia.tr_refid = $1 AND termino.t_id = $2) Sub order by expresion_original, orden, \
     CASE WHEN clave = 'IP' THEN 1 \
-      WHEN clave = 'PW' THEN 2 \
-      WHEN clave = 'I1' THEN 3 \
-      WHEN clave = 'I2' THEN 4 \
-      WHEN clave = 'PV' THEN 5 \
-      WHEN clave = 'CM' THEN 6 \
+    WHEN clave = 'ZB' THEN 2 \
+    WHEN clave = 'PW' THEN 3 \
+    WHEN clave = 'I1' THEN 4 \
+    WHEN clave = 'I2' THEN 5 \
+    WHEN clave = 'I3' THEN 6 \
+    WHEN clave = 'PV' THEN 7 \
+    WHEN clave LIKE 'CM' THEN 8 \
      END, refid;";
     res.locals.connection
       .query(queryString, filter)
@@ -281,11 +285,13 @@ router.get("/obtieneReferenciasByTerm/:id", function (req, res, next) {
         where\
         termino_referencia.tr_termid = $1) Sub order by expresion_original, orden, \
         CASE WHEN clave = 'IP' THEN 1 \
-        WHEN clave = 'PW' THEN 2 \
-        WHEN clave = 'I1' THEN 3 \
-        WHEN clave = 'I2' THEN 4 \
-        WHEN clave = 'PV' THEN 5 \
-        WHEN clave = 'CM' THEN 6 \
+        WHEN clave = 'ZB' THEN 2 \
+        WHEN clave = 'PW' THEN 3 \
+        WHEN clave = 'I1' THEN 4 \
+        WHEN clave = 'I2' THEN 5 \
+        WHEN clave = 'I3' THEN 6 \
+        WHEN clave = 'PV' THEN 7 \
+        WHEN clave LIKE 'CM' THEN 8 \
         END, refid;";
     res.locals.connection
       .query(queryString, filter)
@@ -715,12 +721,13 @@ router.post(
         var ordenamiento =
           "order by termino.t_em_es, termino_referencia.tr_order,\
                 CASE WHEN clave = 'IP' THEN 1 \
-                WHEN clave = 'PW' THEN 2 \
-                WHEN clave = 'I1' THEN 3 \
-                WHEN clave = 'I2' THEN 4 \
-                WHEN clave = 'I3' THEN 5 \
-                WHEN clave = 'PV' THEN 6 \
-                WHEN clave = 'CM' THEN 7 \
+                WHEN clave = 'ZB' THEN 2 \
+                WHEN clave = 'PW' THEN 3 \
+                WHEN clave = 'I1' THEN 4 \
+                WHEN clave = 'I2' THEN 5 \
+                WHEN clave = 'I3' THEN 6 \
+                WHEN clave = 'PV' THEN 7 \
+                WHEN clave LIKE 'CM' THEN 8 \
                 END, refid;";
         var terminos =
           "termino.t_term_es as expresion, termino.t_term_de as traduccion,";
@@ -741,12 +748,13 @@ router.post(
         var ordenamiento =
           "order by termino.t_em_de, termino_referencia.tr_order,\
     		    CASE WHEN clave = 'IP' THEN 1 \
-            WHEN clave = 'PW' THEN 2 \
-            WHEN clave = 'I1' THEN 3 \
-            WHEN clave = 'I2' THEN 4 \
-            WHEN clave = 'I3' THEN 5 \
-            WHEN clave = 'PV' THEN 6 \
-            WHEN clave = 'CM' THEN 7 \
+            WHEN clave = 'ZB' THEN 2 \
+            WHEN clave = 'PW' THEN 3 \
+            WHEN clave = 'I1' THEN 4 \
+            WHEN clave = 'I2' THEN 5 \
+            WHEN clave = 'I3' THEN 6 \
+            WHEN clave = 'PV' THEN 7 \
+            WHEN clave LIKE 'CM' THEN 8 \
             END, refid;";
         var terminos =
           "termino.t_term_de as expresion, termino.t_term_es as traduccion,";

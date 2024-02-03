@@ -307,12 +307,13 @@ router.get("/al/:letra", function (req, res, next) {
       conditionPart +
       ") Sub ORDER BY expresion, id, orden, \
 			CASE WHEN clave = 'IP' THEN 1 \
-		      WHEN clave = 'PW' THEN 2 \
-		      WHEN clave = 'I1' THEN 3 \
-		      WHEN clave = 'I2' THEN 4 \
-			  WHEN clave = 'I3' THEN 5 \
-		      WHEN clave = 'PV' THEN 6 \
-		      WHEN clave LIKE 'CM' THEN 7 \
+          WHEN clave = 'ZB' THEN 2 \
+		      WHEN clave = 'PW' THEN 3 \
+		      WHEN clave = 'I1' THEN 4 \
+		      WHEN clave = 'I2' THEN 5 \
+			  WHEN clave = 'I3' THEN 6 \
+		      WHEN clave = 'PV' THEN 7 \
+		      WHEN clave LIKE 'CM' THEN 8 \
 		 	END, refid;";
     console.log(queryString);
     res.locals.connection
@@ -383,12 +384,13 @@ router.get("/es/:letra", function (req, res, next) {
       conditionPart +
       ") Sub ORDER BY expresion, id, orden, \
 		CASE WHEN clave = 'IP' THEN 1 \
-			WHEN clave = 'PW' THEN 2 \
-			WHEN clave = 'I1' THEN 3 \
-			WHEN clave = 'I2' THEN 4 \
-			WHEN clave = 'I3' THEN 5 \
-			WHEN clave = 'PV' THEN 6 \
-			WHEN clave LIKE 'CM' THEN 7 \
+      WHEN clave = 'ZB' THEN 2 \
+			WHEN clave = 'PW' THEN 3 \
+			WHEN clave = 'I1' THEN 4 \
+			WHEN clave = 'I2' THEN 5 \
+			WHEN clave = 'I3' THEN 6 \
+			WHEN clave = 'PV' THEN 7 \
+			WHEN clave LIKE 'CM' THEN 8 \
 		END, refid;";
     console.log(queryString);
     res.locals.connection
